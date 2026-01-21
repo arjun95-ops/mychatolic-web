@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { ToastProvider } from "@/components/ui/Toast";
 import { ThemeToggle } from "@/components/ui/ThemeToggle"; // Fixed named import
-import { LayoutDashboard, Database, UserCheck, LogOut, Menu, MessageCircleHeart, Newspaper, Users, Book } from "lucide-react"; // Using Lucide icons for consistency
+import { LayoutDashboard, Database, UserCheck, LogOut, Menu, MessageCircleHeart, Newspaper, Users, Book, Calendar, BookOpen } from "lucide-react"; // Using Lucide icons for consistency
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -37,7 +37,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const menuItems = [
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
         { name: 'Master Data', href: '/dashboard/master-data', icon: Database },
-        { name: 'Alkitab & Liturgi', href: '/dashboard/bible', icon: Book },
+        { name: 'Alkitab', href: '/dashboard/bible', icon: Book },
+        { name: 'Input Alkitab', href: '/dashboard/bible/manual', icon: BookOpen },
+        { name: 'Kalender Liturgi', href: '/dashboard/liturgy', icon: Calendar },
         { name: 'Verifikasi', href: '/dashboard/verification', icon: UserCheck },
         { name: 'Consilium', href: '/dashboard/consilium', icon: MessageCircleHeart },
         { name: 'CMS', href: '/dashboard/cms', icon: Newspaper },

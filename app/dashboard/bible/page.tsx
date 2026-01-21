@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient"; // Using the project's existing client
 import { Upload, Check, AlertTriangle, Trash2, FileText, Loader2, Book } from "lucide-react";
+import Link from "next/link";
 
 // Types based on the requirements
 interface Verse {
@@ -237,14 +238,23 @@ export default function BiblePage() {
                         Upload dan kelola database Alkitab Katolik
                     </p>
                 </div>
-                <button
-                    onClick={handleClearData}
-                    disabled={isLoading}
-                    className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-sm font-medium transition-colors border border-red-200 disabled:opacity-50"
-                >
-                    <Trash2 className="w-4 h-4" />
-                    Hapus Semua Data
-                </button>
+                <div className="flex items-center gap-3">
+                    <Link
+                        href="/dashboard/bible/manual"
+                        className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg text-sm font-medium transition-colors border border-slate-200 dark:border-slate-700 shadow-sm"
+                    >
+                        <FileText className="w-4 h-4" />
+                        Input Manual
+                    </Link>
+                    <button
+                        onClick={handleClearData}
+                        disabled={isLoading}
+                        className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-sm font-medium transition-colors border border-red-200 disabled:opacity-50"
+                    >
+                        <Trash2 className="w-4 h-4" />
+                        Hapus Semua Data
+                    </button>
+                </div>
             </div>
 
             {/* Main Upload Card */}
