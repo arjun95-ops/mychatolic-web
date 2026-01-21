@@ -128,19 +128,17 @@ export default function BibleImportPage() {
                     } else {
                         // Insert New Book
                         const abbr = generateAbbreviation(row.book_name);
-                        // We need a unique check for abbr strictly speaking, but let's try insert
-                        // If conflict on abbr, we might append a random char or number?
-                        // For this bulk tool, we assume 'upsert' ignore on ID but we don't have ID.
-                        // We rely on name uniqueness logic or just create.
+                        // We need a unique check for abbr strictly speaking
 
-                        // NOTE: Schema constraints might fail here if abbr exists.
-                        // We will try to fetch by abbreviation to be safe.
+                        // Note: In V3 Schema 'abbreviation' is unique.
+                        // Use maybeSingle to check safely
                         const { data: existingAbbr } = await supabase
                             .from('bible_books')
                             .select('id')
                             .eq('abbreviation', abbr)
                             .maybeSingle();
 
+                        // If abbreviation exists, append a random digit to make it unique for now
                         const finalAbbr = existingAbbr ? `${abbr}${Math.floor(Math.random() * 10)}` : abbr;
 
                         const { data: newBook, error: bookError } = await supabase
@@ -149,15 +147,15 @@ export default function BibleImportPage() {
                                 name: row.book_name,
                                 abbreviation: finalAbbr,
                                 category: row.category,
-                                book_order: 999 // Default order, user fixes later
+                                book_order: 999
                             })
                             .select('id')
                             .single();
 
                         if (bookError) {
                             console.error(`Failed to create book ${row.book_name}`, bookError);
-                            // Try to fetch again in case parallel race condition? (Unlikely in serial loop)
-                            // Skip this row if book failure
+                            // If it failed because of Unique Constraint race condition or similar, we skip row
+                            // Ideally we should retry, but for valid bulk data assume clean state
                             continue;
                         }
                         bookId = newBook.id;
@@ -209,7 +207,7 @@ export default function BibleImportPage() {
                     if (chapterId) chapterCache[chapterKey] = chapterId;
                 }
 
-                if (!chapterId) continue; // Should not happen
+                if (!chapterId) continue;
 
                 // 3. Upsert Verse
                 const { error: verseError } = await supabase

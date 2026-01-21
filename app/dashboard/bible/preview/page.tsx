@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { BookOpen, ChevronRight, Bookmark, ArrowLeft, Search } from "lucide-react";
+import { BookOpen, ChevronRight, Bookmark, ArrowLeft, Search, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 interface BibleBook {
     id: string;
     name: string;
     category: string;
-    total_chapters?: number; // Optional, we can fetch count separately
+    abbreviation: string;
 }
 
 interface BibleVerse {
@@ -26,30 +26,39 @@ export default function BiblePreviewPage() {
     const [chapters, setChapters] = useState<number[]>([]);
     const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
     const [verses, setVerses] = useState<BibleVerse[]>([]);
-    const [loadingBooks, setLoadingBooks] = useState(false);
-    const [loadingContent, setLoadingContent] = useState(false);
 
-    // Fetch Books when category changes
+    // Loading States
+    const [loadingBooks, setLoadingBooks] = useState(false);
+    const [loadingChapters, setLoadingChapters] = useState(false);
+    const [loadingContent, setLoadingContent] = useState(false);
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+    // 1. Fetch Books when category changes
     useEffect(() => {
         const fetchBooks = async () => {
             setLoadingBooks(true);
             setBooks([]);
             setSelectedBook(null);
             setChapters([]);
+            setErrorMsg(null);
 
             try {
-                const { data, error } = await supabase
+                let query = supabase
                     .from('bible_books')
-                    .select('id, name, category')
-                    .eq('category', selectedCategory)
-                    .order('book_order', { ascending: true }); // Assume sorting logic
+                    .select('id, name, category, abbreviation')
+                    .order('book_order', { ascending: true });
+
+                if (selectedCategory) {
+                    query = query.eq('category', selectedCategory);
+                }
+
+                const { data, error } = await query;
 
                 if (error) throw error;
-                // If book_order is not reliable yet, sort by ID asc or Name (default DB sort)
-                // For now, trusting the query order.
                 setBooks(data || []);
-            } catch (err) {
-                console.error("Error fetching books", err);
+            } catch (err: any) {
+                console.error("Error fetching books:", err.message || err);
+                setErrorMsg("Gagal memuat data kitab. Silakan coba lagi.");
             } finally {
                 setLoadingBooks(false);
             }
@@ -58,39 +67,45 @@ export default function BiblePreviewPage() {
         fetchBooks();
     }, [selectedCategory]);
 
-    // Fetch Chapters when Book is selected
+    // 2. Fetch Chapters when Book is selected
     useEffect(() => {
         if (!selectedBook) return;
 
         const fetchChapters = async () => {
-            // Count chapters? Using distinct count or max number
-            // Easier: Select all chapters for book_id and list their numbers
-            const { data, error } = await supabase
-                .from('bible_chapters')
-                .select('chapter_number')
-                .eq('book_id', selectedBook.id)
-                .order('chapter_number', { ascending: true });
+            setLoadingChapters(true);
+            try {
+                const { data, error } = await supabase
+                    .from('bible_chapters')
+                    .select('chapter_number')
+                    .eq('book_id', selectedBook.id)
+                    .order('chapter_number', { ascending: true });
 
-            if (data) {
-                const nums = data.map(c => c.chapter_number);
-                setChapters(nums);
-                // Auto-select first chapter if available and not set?
-                // Let user pick.
-                setSelectedChapter(null);
-                setVerses([]);
+                if (error) throw error;
+
+                if (data) {
+                    const nums = data.map(c => c.chapter_number);
+                    setChapters(nums);
+                    // Reset selection
+                    setSelectedChapter(null);
+                    setVerses([]);
+                }
+            } catch (err) {
+                console.error("Error fetching chapters", err);
+            } finally {
+                setLoadingChapters(false);
             }
         };
         fetchChapters();
     }, [selectedBook]);
 
-    // Fetch Verses when Chapter is selected
+    // 3. Fetch Verses when Chapter is selected
     useEffect(() => {
         if (!selectedBook || !selectedChapter) return;
 
         const fetchVerses = async () => {
             setLoadingContent(true);
             try {
-                // 1. Get Chapter ID first
+                // Get Chapter ID first
                 const { data: chapData } = await supabase
                     .from('bible_chapters')
                     .select('id')
@@ -100,7 +115,7 @@ export default function BiblePreviewPage() {
 
                 if (!chapData) return;
 
-                // 2. Get Verses
+                // Get Verses
                 const { data: versesData, error } = await supabase
                     .from('bible_verses')
                     .select('id, verse_number, text, pericope')
@@ -111,7 +126,7 @@ export default function BiblePreviewPage() {
                 setVerses(versesData || []);
 
             } catch (err) {
-                console.error(err);
+                console.error("Error fetching verses", err);
             } finally {
                 setLoadingContent(false);
             }
@@ -122,27 +137,46 @@ export default function BiblePreviewPage() {
 
     const categories = ["Perjanjian Lama", "Perjanjian Baru", "Deuterokanonika"];
 
+    const handleNextChapter = () => {
+        if (!selectedChapter) return;
+        const idx = chapters.indexOf(selectedChapter);
+        if (idx < chapters.length - 1) {
+            setSelectedChapter(chapters[idx + 1]);
+        }
+    };
+
+    const handlePrevChapter = () => {
+        if (!selectedChapter) return;
+        const idx = chapters.indexOf(selectedChapter);
+        if (idx > 0) {
+            setSelectedChapter(chapters[idx - 1]);
+        }
+    };
+
     return (
-        <div className="flex h-screen overflow-hidden bg-white dark:bg-slate-950">
+        <div className="flex h-[calc(100vh-theme(spacing.4))] overflow-hidden bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
             {/* Sidebar (Navigation) */}
-            <aside className="w-80 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50 dark:bg-slate-900 border-none">
+            <aside className="w-80 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-slate-50 dark:bg-slate-900 overflow-hidden">
                 {/* Header */}
-                <div className="h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 gap-3">
-                    <Link href="/dashboard/bible" className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200">
+                <div className="h-16 flex items-center px-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 gap-3">
+                    <Link href="/dashboard/bible" className="p-2 -ml-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-500">
                         <ArrowLeft className="w-5 h-5" />
                     </Link>
-                    <span className="font-bold text-slate-800 dark:text-white">Bible Reader</span>
+                    <span className="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                        <BookOpen className="w-5 h-5 text-purple-600" />
+                        Pustaka Alkitab
+                    </span>
                 </div>
 
-                {/* Tabs */}
+                {/* Categories Tabs */}
                 <div className="flex p-2 gap-1 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shrink-0 overflow-x-auto scrollbar-hide">
                     {categories.map(cat => (
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={`px-3 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap transition-colors ${selectedCategory === cat
-                                    ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
-                                    : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            className={`px-3 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap transition-colors border ${selectedCategory === cat
+                                ? "bg-purple-50 border-purple-200 text-purple-700 dark:bg-purple-900/30 dark:border-purple-800 dark:text-purple-300"
+                                : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
                                 }`}
                         >
                             {cat}
@@ -150,23 +184,35 @@ export default function BiblePreviewPage() {
                     ))}
                 </div>
 
-                {/* Books List (Filtered) */}
-                <div className="flex-1 overflow-y-auto">
-                    {loadingBooks ? (
-                        <div className="p-8 text-center text-slate-400 text-sm">Loading books...</div>
+                {/* Books List */}
+                <div className="flex-1 overflow-y-auto custom-scrollbar">
+                    {errorMsg ? (
+                        <div className="p-4 text-center">
+                            <p className="text-red-500 text-xs mb-2">{errorMsg}</p>
+                            <button
+                                onClick={() => window.location.reload()}
+                                className="text-xs text-blue-500 hover:underline"
+                            >
+                                Reload Halaman
+                            </button>
+                        </div>
+                    ) : loadingBooks ? (
+                        <div className="p-8 flex justify-center">
+                            <div className="w-6 h-6 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
                     ) : (
                         <div className="p-2 space-y-1">
-                            {books.length === 0 && <div className="p-4 text-xs text-slate-400 text-center">Belum ada buku untuk kategori ini.</div>}
+                            {books.length === 0 && <div className="p-4 text-xs text-slate-400 text-center italic">Tidak ada buku ditemukan.</div>}
                             {books.map(book => (
                                 <button
                                     key={book.id}
                                     onClick={() => setSelectedBook(book)}
-                                    className={`w-full text-left px-4 py-3 rounded-xl flex items-center justify-between group transition-all text-sm ${selectedBook?.id === book.id
-                                            ? "bg-purple-600 text-white shadow-md shadow-purple-200 dark:shadow-purple-900/20"
-                                            : "text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm"
+                                    className={`w-full text-left px-4 py-3 rounded-lg flex items-center justify-between group transition-all text-sm ${selectedBook?.id === book.id
+                                        ? "bg-purple-600 text-white shadow-md shadow-purple-200 dark:shadow-purple-900/20"
+                                        : "text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm"
                                         }`}
                                 >
-                                    <span className="font-medium">{book.name}</span>
+                                    <span className="font-medium truncate">{book.name}</span>
                                     {selectedBook?.id === book.id && <ChevronRight className="w-4 h-4 opacity-80" />}
                                 </button>
                             ))}
@@ -174,115 +220,129 @@ export default function BiblePreviewPage() {
                     )}
                 </div>
 
-                {/* Chapter Grid (If Book Selected) */}
+                {/* Chapter Selector (Bottom Panel) */}
                 {selectedBook && (
-                    <div className="h-48 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 flex flex-col">
-                        <div className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800/50">
-                            Chapters ({chapters.length})
+                    <div className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 flex flex-col max-h-[40%]">
+                        <div className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center">
+                            <span>Pasal / Chapter</span>
+                            <span className="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 rounded">{chapters.length}</span>
                         </div>
-                        <div className="flex-1 overflow-y-auto p-4">
-                            <div className="grid grid-cols-5 gap-2">
-                                {chapters.map(num => (
-                                    <button
-                                        key={num}
-                                        onClick={() => setSelectedChapter(num)}
-                                        className={`h-8 rounded-lg text-xs font-bold flex items-center justify-center transition-all ${selectedChapter === num
-                                                ? "bg-purple-600 text-white shadow-sm"
-                                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600"
-                                            }`}
-                                    >
-                                        {num}
-                                    </button>
-                                ))}
-                            </div>
+                        <div className="flex-1 overflow-y-auto p-3 custom-scrollbar">
+                            {loadingChapters ? (
+                                <div className="text-center py-4 text-xs text-slate-400">Loading...</div>
+                            ) : (
+                                <div className="grid grid-cols-5 gap-2">
+                                    {chapters.map(num => (
+                                        <button
+                                            key={num}
+                                            onClick={() => setSelectedChapter(num)}
+                                            className={`h-8 rounded-lg text-xs font-bold flex items-center justify-center transition-all border ${selectedChapter === num
+                                                ? "bg-purple-600 text-white border-purple-600 shadow-sm"
+                                                : "bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-purple-300 dark:hover:border-purple-700 hover:text-purple-600"
+                                                }`}
+                                        >
+                                            {num}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
             </aside>
 
-            {/* Reading Pane */}
-            <main className="flex-1 h-full overflow-y-auto bg-slate-50 dark:bg-slate-950 scroll-smooth">
+            {/* Reading Pane (Main Content) */}
+            <main className="flex-1 h-full overflow-y-auto bg-slate-50 dark:bg-slate-950 scroll-smooth relative">
                 {!selectedBook || !selectedChapter ? (
                     <div className="h-full flex flex-col items-center justify-center text-slate-400 p-8 text-center max-w-sm mx-auto">
-                        <div className="w-16 h-16 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mb-4">
-                            <BookOpen className="w-8 h-8 text-slate-300" />
+                        <div className="w-20 h-20 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mb-6">
+                            <BookOpen className="w-10 h-10 text-slate-300" />
                         </div>
-                        <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300">Pilih Bacaan</h3>
-                        <p className="text-sm">Silakan pilih Kitab dan Pasal dari menu sebelah kiri untuk mulai membaca.</p>
+                        <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">Mulai Membaca</h3>
+                        <p className="text-sm leading-relaxed">
+                            Pilih <span className="font-semibold text-slate-600 dark:text-slate-400">Kitab</span> dan <span className="font-semibold text-slate-600 dark:text-slate-400">Pasal</span> dari panel sebelah kiri untuk menampilkan ayat Alkitab.
+                        </p>
                     </div>
                 ) : (
-                    <div className="max-w-3xl mx-auto py-12 px-8 min-h-full bg-white dark:bg-slate-950 shadow-sm md:border-x border-slate-100 dark:border-slate-900">
-                        {/* Header Title */}
-                        <div className="mb-10 text-center border-b border-double border-slate-200 dark:border-slate-800 pb-8">
-                            <h1 className="text-4xl font-serif font-bold text-slate-900 dark:text-white mb-2">
+                    <div className="max-w-4xl mx-auto py-12 px-8 md:px-12 min-h-full bg-white dark:bg-slate-950 shadow-sm border-x border-slate-100 dark:border-slate-900">
+                        {/* Book Title Header */}
+                        <div className="mb-12 text-center border-b-2 border-slate-100 dark:border-slate-900 pb-8">
+                            <h1 className="text-4xl md:text-5xl font-serif font-extrabold text-slate-900 dark:text-white mb-3 tracking-tight">
                                 {selectedBook.name}
                             </h1>
-                            <span className="text-xl font-serif italic text-slate-500 dark:text-slate-400 block">
+                            <span className="text-2xl font-serif italic text-slate-500 dark:text-slate-400 block">
                                 Pasal {selectedChapter}
                             </span>
                         </div>
 
-                        {/* Content */}
+                        {/* Verses Content */}
                         {loadingContent ? (
-                            <div className="space-y-4 animate-pulse">
-                                {[1, 2, 3, 4].map(i => (
-                                    <div key={i} className="flex gap-4">
+                            <div className="space-y-6 animate-pulse max-w-2xl mx-auto">
+                                {[1, 2, 3, 4, 5].map(i => (
+                                    <div key={i} className="flex gap-4 items-start">
                                         <div className="w-4 h-4 rounded bg-slate-200 dark:bg-slate-800 mt-1 shrink-0"></div>
-                                        <div className="h-4 bg-slate-200 dark:bg-slate-800 w-full rounded"></div>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="space-y-6 text-lg leading-relaxed font-serif text-slate-800 dark:text-slate-300">
-                                {verses.length === 0 && (
-                                    <div className="text-center text-slate-400 italic py-10">Ayat belum tersedia.</div>
-                                )}
-                                {verses.map((verse) => (
-                                    <div key={verse.id}>
-                                        {/* Pericope Section Header */}
-                                        {verse.pericope && (
-                                            <h3 className="text-xl font-sans font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
-                                                {verse.pericope}
-                                            </h3>
-                                        )}
-
-                                        {/* Verse Text */}
-                                        <div className="relative pl-0 group">
-                                            <span className="absolute -left-8 top-1 text-xs font-sans font-bold text-purple-600/50 w-6 text-right select-none">
-                                                {verse.verse_number}
-                                            </span>
-                                            <span className="align-baseline">
-                                                {verse.text}
-                                            </span>
+                                        <div className="space-y-2 w-full">
+                                            <div className="h-4 bg-slate-200 dark:bg-slate-800 w-full rounded"></div>
+                                            <div className="h-4 bg-slate-200 dark:bg-slate-800 w-[90%] rounded"></div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
+                        ) : (
+                            <div className="text-lg md:text-xl leading-8 md:leading-9 font-serif text-slate-800 dark:text-slate-300 max-w-3xl mx-auto text-justify">
+                                {verses.length === 0 && (
+                                    <div className="text-center text-slate-400 italic py-10 font-sans text-sm">Ayat belum tersedia untuk pasal ini.</div>
+                                )}
+
+                                {verses.map((verse, idx) => (
+                                    <span key={verse.id} className="relative inline">
+                                        {/* Pericope Section Header - Breaks the inline flow */}
+                                        {verse.pericope && (
+                                            <span className="block mt-8 mb-4">
+                                                <h3 className="text-lg md:text-xl font-sans font-bold text-slate-900 dark:text-white tracking-tight border-l-4 border-purple-600 pl-4 py-1">
+                                                    {verse.pericope}
+                                                </h3>
+                                            </span>
+                                        )}
+
+                                        {/* Verse Number & Text */}
+                                        <span className="group">
+                                            <sup className="text-[10px] md:text-xs font-sans font-bold text-purple-600 dark:text-purple-400 select-none mr-1 opacity-70 group-hover:opacity-100">
+                                                {verse.verse_number}
+                                            </sup>
+                                            <span className={idx === verses.length - 1 ? "" : "mr-1"}>
+                                                {verse.text}
+                                            </span>
+                                        </span>
+                                    </span>
+                                ))}
+                            </div>
                         )}
 
-                        {/* Footer Nav Hint */}
-                        <div className="mt-20 pt-10 border-t border-slate-100 dark:border-slate-900 flex justify-between text-sm text-slate-400 font-sans">
+                        {/* Footer Navigation */}
+                        <div className="mt-24 pt-8 border-t border-slate-100 dark:border-slate-900 flex justify-between items-center text-sm font-sans">
                             <button
-                                onClick={() => {
-                                    /* Logic for prev chapter */
-                                    const idx = chapters.indexOf(selectedChapter);
-                                    if (idx > 0) setSelectedChapter(chapters[idx - 1]);
-                                }}
+                                onClick={handlePrevChapter}
                                 disabled={chapters.indexOf(selectedChapter) === 0}
-                                className="hover:text-purple-600 disabled:opacity-0 transition-colors cursor-pointer"
+                                className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                             >
-                                &larr; Pasal Sebelumnya
+                                <ChevronLeft className="w-4 h-4" />
+                                <div className="text-left">
+                                    <div className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Sebelumnya</div>
+                                    <div>Pasal {chapters[chapters.indexOf(selectedChapter) - 1]}</div>
+                                </div>
                             </button>
+
                             <button
-                                onClick={() => {
-                                    /* Logic for next chapter */
-                                    const idx = chapters.indexOf(selectedChapter);
-                                    if (idx < chapters.length - 1) setSelectedChapter(chapters[idx + 1]);
-                                }}
+                                onClick={handleNextChapter}
                                 disabled={chapters.indexOf(selectedChapter) === chapters.length - 1}
-                                className="hover:text-purple-600 disabled:opacity-0 transition-colors cursor-pointer"
+                                className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-right"
                             >
-                                Pasal Selanjutnya &rarr;
+                                <div className="text-right">
+                                    <div className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Selanjutnya</div>
+                                    <div>Pasal {chapters[chapters.indexOf(selectedChapter) + 1]}</div>
+                                </div>
+                                <ChevronRight className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
