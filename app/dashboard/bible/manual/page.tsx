@@ -6,8 +6,9 @@ import { useToast } from "@/components/ui/Toast";
 import { Save, BookOpen, Hash, AlignLeft, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
+
 interface BibleBook {
-    id: number;
+    id: string;
     name: string;
     abbreviation: string;
 }
@@ -19,6 +20,7 @@ export default function ManualEntryPage() {
     const [chapter, setChapter] = useState<string>("");
     const [verseNumber, setVerseNumber] = useState<string>("");
     const [verseText, setVerseText] = useState<string>("");
+    const [pericope, setPericope] = useState<string>("");
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -57,7 +59,7 @@ export default function ManualEntryPage() {
 
         try {
             // 1. Get or Create Chapter ID
-            let chapterId: number;
+            let chapterId: string;
 
             // Check if chapter exists
             const { data: existingChapter, error: checkError } = await supabase
@@ -78,7 +80,7 @@ export default function ManualEntryPage() {
                 const { data: newChapter, error: insertError } = await supabase
                     .from('bible_chapters')
                     .insert({
-                        book_id: parseInt(selectedBookId),
+                        book_id: selectedBookId,
                         chapter_number: parseInt(chapter)
                     })
                     .select()
@@ -94,7 +96,8 @@ export default function ManualEntryPage() {
                 .upsert({
                     chapter_id: chapterId,
                     verse_number: parseInt(verseNumber),
-                    text: verseText
+                    text: verseText,
+                    pericope: pericope || null
                 }, {
                     onConflict: 'chapter_id, verse_number'
                 });
@@ -104,8 +107,9 @@ export default function ManualEntryPage() {
             // 3. Success Feedback
             showToast("Ayat berhasil disimpan!", "success");
 
-            // Clear text field, auto-increment verse number for convenience
+            // Clear text field, auto-increment verse number
             setVerseText("");
+            setPericope(""); // Clear pericope too
             setVerseNumber((prev) => (parseInt(prev) + 1).toString());
 
         } catch (err: any) {
@@ -196,6 +200,21 @@ export default function ManualEntryPage() {
                                 required
                             />
                         </div>
+                    </div>
+
+
+                    {/* Pericope Input (Optional) */}
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                            <span className="text-slate-500 font-normal italic">Judul Perikop (Opsional)</span>
+                        </label>
+                        <input
+                            type="text"
+                            value={pericope}
+                            onChange={(e) => setPericope(e.target.value)}
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-400 transition-all placeholder:text-slate-400"
+                            placeholder="Contoh: Yesus memberi makan lelima ribu orang"
+                        />
                     </div>
 
                     {/* Verse Text Input */}

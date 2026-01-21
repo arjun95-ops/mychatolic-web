@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient"; // Using the project's existing client
-import { Upload, Check, AlertTriangle, Trash2, FileText, Loader2, Book } from "lucide-react";
+import { Upload, Check, AlertTriangle, Trash2, FileText, Loader2, Book, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 // Types based on the requirements
@@ -245,6 +245,23 @@ export default function BiblePage() {
                     >
                         <FileText className="w-4 h-4" />
                         Input Manual
+                    </Link>
+                    <Link
+                        href="/dashboard/bible/import"
+                        className="flex items-center gap-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg text-sm font-medium transition-colors border border-green-200 dark:border-green-800 shadow-sm"
+                    >
+                        <div className="flex items-center gap-2">
+                            {/* Small icon if available, or just text */}
+                            <span className="font-bold">+</span>
+                            Import Excel
+                        </div>
+                    </Link>
+                    <Link
+                        href="/dashboard/bible/preview"
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg text-sm font-medium transition-colors border border-blue-200 dark:border-blue-800 shadow-sm"
+                    >
+                        <BookOpen className="w-4 h-4" />
+                        Preview Reader
                     </Link>
                     <button
                         onClick={handleClearData}
