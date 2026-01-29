@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import Image from 'next/image';
 import { X, Check, Calendar, User, MapPin, Heart, Shield } from 'lucide-react';
-import { createBrowserClient } from '@supabase/ssr'; // FIXED: Menggunakan paket SSR modern
+import { createBrowserClient } from '@supabase/ssr';
 import toast from 'react-hot-toast';
 
 // Helper untuk format tanggal
@@ -20,7 +20,7 @@ interface VerificationModalProps {
     isOpen: boolean;
     onClose: () => void;
     user: any;
-    onSuccess: () => void;
+    onSuccess?: () => void; // FIXED: Dibuat Optional agar tidak crash jika kosong
 }
 
 export default function VerificationModal({ isOpen, onClose, user, onSuccess }: VerificationModalProps) {
@@ -28,7 +28,6 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
     const [rejectReason, setRejectReason] = useState('');
     const [showRejectInput, setShowRejectInput] = useState(false);
 
-    // FIXED: Inisialisasi Supabase Client versi SSR
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -41,7 +40,7 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
     const isCatechumen = user.is_catechumen || user.faith_status === 'catechumen';
     const isUmat = !isClergy && !isCatechumen;
 
-    // Handler Action (Memanggil API Route Admin untuk bypass RLS)
+    // Handler Action
     const handleAction = async (status: 'verified_catholic' | 'verified_pastoral' | 'rejected') => {
         if (status === 'rejected' && !rejectReason.trim()) {
             toast.error('Wajib isi alasan penolakan');
@@ -80,7 +79,12 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
 
             // 3. Sukses
             toast.success(status === 'rejected' ? 'Verifikasi ditolak' : 'Verifikasi berhasil disetujui');
-            onSuccess();
+
+            // FIXED: Safe Call (Cek dulu sebelum panggil)
+            if (onSuccess) {
+                onSuccess();
+            }
+
             onClose();
 
         } catch (error: any) {

@@ -25,7 +25,9 @@ export default function VerificationManager() {
     // Modal State
     const [selectedUser, setSelectedUser] = useState<any>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
+
+    // NOTE: isUpdating tidak lagi dibutuhkan di Parent karena loading ditangani di dalam Modal
+    // const [isUpdating, setIsUpdating] = useState(false);
 
     // Initial Stats Fetch
     const fetchStats = async () => {
@@ -87,38 +89,11 @@ export default function VerificationManager() {
         setIsModalOpen(true);
     };
 
-    const handleVerify = async (status: 'approved' | 'rejected') => {
-        if (!selectedUser) return;
-        setIsUpdating(true);
-
-        try {
-            const updates: any = {
-                verification_status: status
-            };
-
-            // If approved, verify the role as well
-            if (status === 'approved') {
-                updates.is_approved_role = true;
-            }
-
-            const { error } = await supabase
-                .from('profiles')
-                .update(updates)
-                .eq('id', selectedUser.id);
-
-            if (error) throw error;
-
-            showToast(`User berhasil di-${status === 'approved' ? 'terima' : 'tolak'}`, "success");
-            setIsModalOpen(false);
-
-            // Refresh data
-            fetchUsers();
-            fetchStats(); // Update pending count
-        } catch (e: any) {
-            showToast("Gagal update status: " + e.message, "error");
-        } finally {
-            setIsUpdating(false);
-        }
+    // Callback ketika modal sukses melakukan update
+    const handleSuccessUpdate = () => {
+        fetchUsers(); // Refresh tabel data
+        fetchStats(); // Update statistik (pending count berkurang)
+        setIsModalOpen(false); // Tutup modal (meskipun di dalam modal sudah ada, ini safety)
     };
 
     return (
@@ -149,8 +124,7 @@ export default function VerificationManager() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 user={selectedUser}
-                onVerify={handleVerify}
-                isUpdating={isUpdating}
+                onSuccess={handleSuccessUpdate} // CONNECTED: Sinyal sukses memicu refresh
             />
         </div>
     );
