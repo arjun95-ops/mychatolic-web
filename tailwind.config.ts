@@ -1,52 +1,38 @@
-import type { Config } from "next";
+import type { Config } from "tailwindcss";
 
 const config: Config = {
     content: [
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
+        // Adding src paths just in case, though current structure seems to be flat in root based on previous context.
+        // But adhering to USER REQUEST strictness is safer for path resolution.
+        "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
+    darkMode: 'class',
     theme: {
         extend: {
             colors: {
                 brand: {
-                    DEFAULT: "#1F5D8C", // Brand Primary
-                    50: "#E8F1F8",
-                    100: "#CFE0EF",
+                    primary: "var(--brand-primary)",
                 },
-                action: {
-                    DEFAULT: "#2F80ED", // Action/Accent
-                    hover: "#256BC9",
-                },
-                userchat: "#3A7CA5",
-
-                // --- STATUS COLORS ---
-                success: {
-                    DEFAULT: "#2E7D32",
-                    light: "#E8F5E9",
-                },
-                pending: {
-                    DEFAULT: "#4A90E2",
-                    light: "#EDF5FD",
-                },
-                error: {
-                    DEFAULT: "#C0392B",
-                    light: "#F9EBEA",
-                },
-                disabled: "#BDBDBD",
-
-                // --- SURFACES & TEXT ---
+                action: "var(--action)",
                 surface: {
-                    light: "#FFFFFF",
-                    alt: "#EFEFEF",
-                    dark: "#1C1C1C",
-                    gray: "#F3F4F6", // Helper for background
+                    primary: "var(--surface-primary)",
+                    secondary: "var(--surface-secondary)",
                 },
                 text: {
-                    primary: "#1A1A1A",
-                    secondary: "#666666",
-                    white: "#FFFFFF",
-                }
+                    primary: "var(--text-primary)",
+                    secondary: "var(--text-secondary)",
+                },
+                status: {
+                    success: "var(--status-success)",
+                    pending: "var(--status-pending)",
+                    error: "var(--status-error)",
+                    disabled: "var(--status-disabled)",
+                },
             },
         },
     },

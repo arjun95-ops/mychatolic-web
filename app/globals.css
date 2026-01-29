@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        /* Brand Palette */
+        --brand-primary: #1F5D8C;
+        --action: #2F80ED;
+        --user-chat: #3A7CA5;
+
+        /* Surfaces */
+        --surface-primary: #FFFFFF;
+        --surface-secondary: #F8FAFC;
+
+        /* Text */
+        --text-primary: #1A1A1A;
+        --text-secondary: #64748B;
+
+        /* Status */
+        --status-success: #2E7D32;
+        --status-pending: #4A90E2;
+        --status-error: #C0392B;
+        --status-disabled: #BDBDBD;
+    }
+
+    .dark {
+        /* Brand Palette - Dark Mode adjustments */
+        --brand-primary: #1F5D8C;
+
+        /* Surfaces - Dark */
+        --surface-primary: #0A0A0A;
+        --surface-secondary: #1C1C1C;
+
+        /* Text - Dark */
+        --text-primary: #EDEDED;
+        --text-secondary: #94A3B8;
+    }
+}
