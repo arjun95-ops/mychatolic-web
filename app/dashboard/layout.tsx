@@ -70,7 +70,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     const menuItems: MenuItem[] = [
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-        { name: 'Homepage Settings', href: '/dashboard/homepage', icon: Smartphone },
+        // Removed Homepage Settings
+
         {
             name: 'Data Alkitab',
             icon: Book,
@@ -126,8 +127,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                         <button
                                             onClick={() => toggleMenu(item.name)}
                                             className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group ${isActiveParent
-                                                    ? 'bg-purple-50/50 dark:bg-purple-900/10 text-purple-700 dark:text-purple-300'
-                                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                                ? 'bg-purple-50/50 dark:bg-purple-900/10 text-purple-700 dark:text-purple-300'
+                                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                                                 }`}
                                         >
                                             <div className="flex items-center gap-3">
@@ -148,8 +149,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                                             key={sub.name}
                                                             href={sub.href!}
                                                             className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-all duration-200 ${isSubActive
-                                                                    ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
-                                                                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                                                                ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-medium'
+                                                                : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                                                                 }`}
                                                         >
                                                             <SubIcon className="w-4 h-4 opacity-70" />

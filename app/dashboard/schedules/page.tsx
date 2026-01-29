@@ -2,40 +2,71 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { useToast } from "@/components/ui/Toast";
+import {
+    Calendar,
+    Plus,
+    Clock,
+    MapPin,
+    Globe,
+    Edit2,
+    Trash2,
+    Search,
+    X,
+    Save,
+    Loader2
+} from "lucide-react";
 
 interface Schedule {
     id: string;
     church_id: string;
     activity_name: string;
-    day_of_week: string;
+    day_of_week: number;
     start_time: string;
     language?: string;
+    category?: string;
     churches?: {
         name: string;
     };
 }
 
-const DAYS = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
-const LANGUAGES = ["Bahasa Indonesia", "English", "Bahasa Jawa", "Bahasa Mandarin"];
+const DAYS = [
+    { value: 1, label: "Senin" },
+    { value: 2, label: "Selasa" },
+    { value: 3, label: "Rabu" },
+    { value: 4, label: "Kamis" },
+    { value: 5, label: "Jumat" },
+    { value: 6, label: "Sabtu" },
+    { value: 7, label: "Minggu" }
+];
+
+const LANGUAGES = ["Bahasa Indonesia", "English", "Bahasa Mandarin", "Bahasa Jawa"];
+const CATEGORIES = ["Misa Harian", "Misa Mingguan", "Misa Jumat Pertama", "Adorasi", "Pengakuan Dosa"];
 
 export default function SchedulesPage() {
+    const { showToast } = useToast();
+
     // Data State
     const [churches, setChurches] = useState<any[]>([]);
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [loading, setLoading] = useState(true);
-    const [submitting, setSubmitting] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
-    // Form State
-    const [churchId, setChurchId] = useState("");
-    const [activityName, setActivityName] = useState("");
-    const [day, setDay] = useState(DAYS[6]); // Default Minggu
-    const [time, setTime] = useState("");
-    const [language, setLanguage] = useState(LANGUAGES[0]);
-
-    // Edit State
+    // Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
 
-    // Initial Fetch
+    // Form State
+    const [formData, setFormData] = useState({
+        church_id: "",
+        activity_name: "", // Will be auto-filled by category logic if needed, or manual
+        day_of_week: 7,
+        start_time: "08:00",
+        language: "Bahasa Indonesia",
+        category: "Misa Mingguan"
+    });
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -44,161 +75,266 @@ export default function SchedulesPage() {
         try {
             setLoading(true);
 
-            // Fetch Churches
-            const { data: churchData } = await supabase
-                .from('churches')
-                .select('id, name')
-                .order('name');
-            if (churchData) setChurches(churchData);
+            // Parallel fetch
+            const [churchRes, scheduleRes] = await Promise.all([
+                supabase.from('churches').select('id, name').order('name'),
+                supabase.from('mass_schedules').select(`*, churches(name)`).order('day_of_week').order('start_time')
+            ]);
 
-            // Fetch Schedules
-            await fetchSchedules();
+            if (churchRes.error) throw churchRes.error;
+            if (scheduleRes.error) throw scheduleRes.error;
 
-        } catch (error) {
+            setChurches(churchRes.data || []);
+            setSchedules(scheduleRes.data as Schedule[] || []);
+
+        } catch (error: any) {
             console.error("Error loading data:", error);
+            showToast("Gagal memuat data jadwal", "error");
         } finally {
             setLoading(false);
         }
     };
 
-    const fetchSchedules = async () => {
-        const { data, error } = await supabase
-            .from('mass_schedules')
-            .select(`
-                *,
-                churches ( name )
-            `)
-            .order('day_of_week')
-            .order('start_time');
+    const handleOpenModal = (schedule?: Schedule) => {
+        if (schedule) {
+            setEditingId(schedule.id);
+            setFormData({
+                church_id: schedule.church_id,
+                activity_name: schedule.activity_name,
+                day_of_week: schedule.day_of_week,
+                start_time: schedule.start_time,
+                language: schedule.language || "Bahasa Indonesia",
+                category: schedule.category || "Misa Mingguan"
+            });
+        } else {
+            setEditingId(null);
+            // Reset to defaults
+            setFormData({
+                church_id: churches.length > 0 ? churches[0].id : "",
+                activity_name: "",
+                day_of_week: 7,
+                start_time: "08:00",
+                language: "Bahasa Indonesia",
+                category: "Misa Mingguan"
+            });
+        }
+        setIsModalOpen(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Hapus jadwal ini?")) return;
+
+        // Optimistic update
+        const previous = [...schedules];
+        setSchedules(prev => prev.filter(s => s.id !== id));
+
+        const { error } = await supabase.from('mass_schedules').delete().eq('id', id);
 
         if (error) {
-            console.error("Error fetching schedules:", error);
-        } else if (data) {
-            setSchedules(data as Schedule[]);
+            setSchedules(previous);
+            showToast("Gagal menghapus data", "error");
+        } else {
+            showToast("Jadwal dihapus", "success");
         }
-    };
-
-    const handleEdit = (schedule: Schedule) => {
-        setEditingId(schedule.id);
-        setChurchId(schedule.church_id);
-        setActivityName(schedule.activity_name);
-        setDay(schedule.day_of_week);
-        setTime(schedule.start_time);
-        setLanguage(schedule.language || LANGUAGES[0]);
-        // Scroll to form (optional, simplified by layout)
-    };
-
-    const handleCancelEdit = () => {
-        setEditingId(null);
-        setActivityName("");
-        setTime("");
-        setLanguage(LANGUAGES[0]);
-        setDay(DAYS[6]);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitting(true);
 
-        if (!churchId || !activityName || !day || !time) {
-            alert("Mohon lengkapi semua field required.");
-            setSubmitting(false);
+        if (!formData.church_id || !formData.category) {
+            showToast("Mohon lengkapi data", "error");
             return;
         }
 
+        setSaving(true);
         try {
+            // Auto-generate name if empty? Or just use Category + Language? 
+            // Let's ensure activity_name is populated.
+            const finalActivityName = formData.activity_name || `${formData.category} (${formData.language})`;
+
+            const payload = {
+                church_id: formData.church_id,
+                activity_name: finalActivityName,
+                day_of_week: Number(formData.day_of_week),
+                start_time: formData.start_time,
+                language: formData.language,
+                category: formData.category
+            };
+
             if (editingId) {
-                // Update Logic
                 const { error } = await supabase
                     .from('mass_schedules')
-                    .update({
-                        church_id: churchId,
-                        activity_name: activityName,
-                        day_of_week: day,
-                        start_time: time,
-                        language: language
-                    })
+                    .update(payload)
                     .eq('id', editingId);
-
                 if (error) throw error;
-                alert("Jadwal berhasil diperbarui!");
-                handleCancelEdit(); // Reset edit state
+                showToast("Jadwal diperbarui", "success");
             } else {
-                // Insert Logic
-                const { error } = await supabase.from('mass_schedules').insert({
-                    church_id: churchId,
-                    activity_name: activityName,
-                    day_of_week: day,
-                    start_time: time,
-                    language: language
-                });
-
+                const { error } = await supabase
+                    .from('mass_schedules')
+                    .insert(payload);
                 if (error) throw error;
-                alert("Jadwal Misa berhasil ditambahkan!");
-                // Reset form fields
-                setActivityName("");
-                setTime("");
+                showToast("Jadwal baru ditambahkan", "success");
             }
 
-            await fetchSchedules();
+            setIsModalOpen(false);
+            fetchData(); // Refresh list
 
         } catch (error: any) {
-            alert("Gagal menyimpan jadwal: " + error.message);
+            console.error("Save error:", error);
+            showToast(`Error: ${error.message}`, "error");
         } finally {
-            setSubmitting(false);
+            setSaving(false);
         }
     };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm("Apakah Anda yakin ingin menghapus jadwal ini?")) return;
+    const getDayLabel = (val: number) => DAYS.find(d => d.value === val)?.label || "Unknown";
 
-        try {
-            const { error } = await supabase
-                .from('mass_schedules')
-                .delete()
-                .eq('id', id);
-
-            if (error) throw error;
-
-            setSchedules(prev => prev.filter(s => s.id !== id));
-
-        } catch (error: any) {
-            alert("Gagal menghapus: " + error.message);
-        }
-    };
+    // Client-side filtering
+    const filteredSchedules = schedules.filter(s =>
+        (s.activity_name?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (s.churches?.name?.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
 
     return (
-        <div className="min-h-screen bg-[#2C225B] text-gray-100 font-sans p-6 md:p-12">
-            <div className="max-w-7xl mx-auto">
-                <h1 className="text-3xl font-bold mb-2">Manajemen Jawal Misa</h1>
-                <p className="text-indigo-200 mb-8">Atur jadwal perayaan ekaristi dan kegiatan gereja lainnya.</p>
+        <div className="space-y-6 max-w-7xl mx-auto">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <Calendar className="w-8 h-8 text-purple-600" />
+                        Manajemen Jadwal Misa
+                    </h1>
+                    <p className="text-slate-500 dark:text-slate-400">
+                        Atur jadwal ekaristi, pengakuan dosa, dan event rutin gereja.
+                    </p>
+                </div>
+                <button
+                    onClick={() => handleOpenModal()}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transition-all transform hover:-translate-y-0.5"
+                >
+                    <Plus className="w-5 h-5" />
+                    Tambah Jadwal
+                </button>
+            </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Toolbar */}
+            <div className="flex gap-4 items-center bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                        type="text"
+                        placeholder="Cari berdasarkan nama gereja atau kegiatan..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                </div>
+            </div>
 
-                    {/* LEFT PANEL: FORM */}
-                    <div className="lg:col-span-1">
-                        <div className="bg-[#1F1842] p-6 rounded-2xl shadow-xl border border-indigo-900/50 sticky top-24">
-                            <h2 className="text-xl font-bold mb-6 text-orange-400 flex items-center gap-2">
-                                {editingId ? (
-                                    <>
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                        Edit Jadwal
-                                    </>
-                                ) : (
-                                    <>
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                                        Tambah Jadwal Baru
-                                    </>
-                                )}
-                            </h2>
+            {/* Table */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm">
+                        <thead className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-wider">
+                            <tr>
+                                <th className="px-6 py-4">Gereja</th>
+                                <th className="px-6 py-4">Hari & Waktu</th>
+                                <th className="px-6 py-4">Kegiatan</th>
+                                <th className="px-6 py-4">Kategori / Bahasa</th>
+                                <th className="px-6 py-4 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                            {loading ? (
+                                <tr>
+                                    <td colSpan={5} className="p-8 text-center text-slate-400">Loading...</td>
+                                </tr>
+                            ) : filteredSchedules.length === 0 ? (
+                                <tr>
+                                    <td colSpan={5} className="p-8 text-center text-slate-400 italic">Tidak ada jadwal ditemukan.</td>
+                                </tr>
+                            ) : (
+                                filteredSchedules.map((schedule) => (
+                                    <tr key={schedule.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                        <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">
+                                            {schedule.churches?.name}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center gap-2">
+                                                <span className={`px-2 py-1 rounded text-xs font-bold w-16 text-center ${schedule.day_of_week === 7 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' :
+                                                        schedule.day_of_week === 6 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300' :
+                                                            'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                                                    }`}>
+                                                    {getDayLabel(schedule.day_of_week)}
+                                                </span>
+                                                <div className="flex items-center gap-1 font-mono text-slate-600 dark:text-slate-400">
+                                                    <Clock className="w-3 h-3" />
+                                                    {schedule.start_time.slice(0, 5)}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 font-medium">
+                                            {schedule.activity_name}
+                                        </td>
+                                        <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                                            <div className="space-y-1">
+                                                {schedule.category && (
+                                                    <div className="text-xs bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded inline-block">
+                                                        {schedule.category}
+                                                    </div>
+                                                )}
+                                                <div className="flex items-center gap-1 text-xs">
+                                                    <Globe className="w-3 h-3" /> {schedule.language}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button
+                                                    onClick={() => handleOpenModal(schedule)}
+                                                    className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                                                >
+                                                    <Edit2 className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(schedule.id)}
+                                                    className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                            <form onSubmit={handleSubmit} className="space-y-5">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-1">Gereja</label>
+            {/* Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
+                    <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+                        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-950">
+                            <h3 className="font-bold text-lg flex items-center gap-2">
+                                {editingId ? "Edit Jadwal" : "Tambah Jadwal Baru"}
+                            </h3>
+                            <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                            {/* Church Select */}
+                            <div className="space-y-1">
+                                <label className="text-xs font-bold text-slate-500 uppercase">Pilih Gereja</label>
+                                <div className="relative">
+                                    <MapPin className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
                                     <select
-                                        value={churchId}
-                                        onChange={(e) => setChurchId(e.target.value)}
-                                        className="w-full bg-[#2C225B] border border-indigo-900 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500 transition-colors"
+                                        value={formData.church_id}
+                                        onChange={(e) => setFormData({ ...formData, church_id: e.target.value })}
+                                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-sm"
                                         required
                                     >
                                         <option value="">-- Pilih Gereja --</option>
@@ -207,146 +343,91 @@ export default function SchedulesPage() {
                                         ))}
                                     </select>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-1">Nama Kegiatan</label>
-                                    <input
-                                        type="text"
-                                        value={activityName}
-                                        onChange={(e) => setActivityName(e.target.value)}
-                                        placeholder="Contoh: Misa Minggu Pagi"
-                                        className="w-full bg-[#2C225B] border border-indigo-900 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500 transition-colors placeholder-indigo-400/50"
-                                        required
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-400 mb-1">Hari</label>
-                                        <select
-                                            value={day}
-                                            onChange={(e) => setDay(e.target.value)}
-                                            className="w-full bg-[#2C225B] border border-indigo-900 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500 transition-colors"
-                                        >
-                                            {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-400 mb-1">Jam Mulai</label>
-                                        <input
-                                            type="time"
-                                            value={time}
-                                            onChange={(e) => setTime(e.target.value)}
-                                            className="w-full bg-[#2C225B] border border-indigo-900 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500 transition-colors"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-1">Bahasa (Opsional)</label>
+                            {/* Category & Language */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Kategori</label>
                                     <select
-                                        value={language}
-                                        onChange={(e) => setLanguage(e.target.value)}
-                                        className="w-full bg-[#2C225B] border border-indigo-900 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500 transition-colors"
+                                        value={formData.category}
+                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-sm"
                                     >
-                                        <option value="">-- Tidak Spesifik --</option>
+                                        {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                                    </select>
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Bahasa</label>
+                                    <select
+                                        value={formData.language}
+                                        onChange={(e) => setFormData({ ...formData, language: e.target.value })}
+                                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-sm"
+                                    >
                                         {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
                                     </select>
                                 </div>
-
-                                <button
-                                    type="submit"
-                                    disabled={submitting}
-                                    className={`w-full font-bold py-3 rounded-lg shadow-lg transition-all active:scale-95 mt-4 disabled:opacity-50 ${editingId
-                                            ? 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 shadow-blue-900/20 text-white'
-                                            : 'bg-gradient-to-r from-orange-500 to-pink-600 hover:from-orange-400 hover:to-pink-500 shadow-orange-900/20 text-white'
-                                        }`}
-                                >
-                                    {submitting ? 'Menyimpan...' : (editingId ? 'Update Jadwal' : 'Simpan Jadwal')}
-                                </button>
-
-                                {editingId && (
-                                    <button
-                                        type="button"
-                                        onClick={handleCancelEdit}
-                                        className="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium py-3 rounded-lg transition-colors mt-2"
-                                    >
-                                        Batal Edit
-                                    </button>
-                                )}
-                            </form>
-                        </div>
-                    </div>
-
-                    {/* RIGHT PANEL: LIST */}
-                    <div className="lg:col-span-2">
-                        <div className="bg-[#1F1842] rounded-2xl shadow-xl border border-indigo-900/50 overflow-hidden">
-                            <div className="p-6 border-b border-indigo-900/50">
-                                <h2 className="text-xl font-bold text-white">Daftar Jadwal Misa</h2>
                             </div>
 
-                            {loading ? (
-                                <div className="p-8 text-center text-gray-400 animate-pulse">Memuat data...</div>
-                            ) : schedules.length === 0 ? (
-                                <div className="p-8 text-center text-gray-500">
-                                    Belum ada jadwal yang ditambahkan.
-                                </div>
-                            ) : (
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-full divide-y divide-indigo-900/50">
-                                        <thead className="bg-[#181236]">
-                                            <tr>
-                                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Gereja</th>
-                                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Kegiatan</th>
-                                                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Waktu</th>
-                                                <th className="px-6 py-3 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-indigo-900/50">
-                                            {schedules.map((schedule) => (
-                                                <tr key={schedule.id} className={`transition-colors ${editingId === schedule.id ? 'bg-indigo-900/30 border-l-2 border-orange-500' : 'hover:bg-indigo-900/20'}`}>
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="text-sm font-medium text-white">{schedule.churches?.name}</div>
-                                                        <div className="text-xs text-indigo-300">{schedule.language}</div>
-                                                    </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="text-sm text-gray-200">{schedule.activity_name}</div>
-                                                    </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                                                            {schedule.day_of_week}, {schedule.start_time.slice(0, 5)}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <div className="flex justify-end gap-2">
-                                                            <button
-                                                                onClick={() => handleEdit(schedule)}
-                                                                className="text-blue-400 hover:text-blue-300 bg-blue-900/20 p-2 rounded-lg border border-blue-900/50 hover:bg-blue-900/40 transition-colors"
-                                                                title="Edit"
-                                                            >
-                                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleDelete(schedule.id)}
-                                                                className="text-red-400 hover:text-red-300 bg-red-900/20 p-2 rounded-lg border border-red-900/50 hover:bg-red-900/40 transition-colors"
-                                                                title="Hapus"
-                                                            >
-                                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                            {/* Activity Name (Optional Override) */}
+                            <div className="space-y-1">
+                                <label className="text-xs font-bold text-slate-500 uppercase">Nama Kegiatan (Opsional)</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ex: Misa Paskah (Default: Kategori + Bahasa)"
+                                    value={formData.activity_name}
+                                    onChange={(e) => setFormData({ ...formData, activity_name: e.target.value })}
+                                    className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-sm"
+                                />
+                            </div>
 
+                            {/* Day & Time */}
+                            <div className="grid grid-cols-2 gap-4 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Hari</label>
+                                    <select
+                                        value={formData.day_of_week}
+                                        onChange={(e) => setFormData({ ...formData, day_of_week: parseInt(e.target.value) })}
+                                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-medium"
+                                    >
+                                        {DAYS.map(d => <option key={d.value} value={d.value}>{d.label}</option>)}
+                                    </select>
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Jam</label>
+                                    <input
+                                        type="time"
+                                        value={formData.start_time}
+                                        onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
+                                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono font-bold"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Footer */}
+                            <div className="pt-4 flex justify-end gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsModalOpen(false)}
+                                    disabled={saving}
+                                    className="px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={saving}
+                                    className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-bold shadow-md flex items-center gap-2"
+                                >
+                                    {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                                    Simpan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
