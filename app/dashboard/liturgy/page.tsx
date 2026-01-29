@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { useToast } from "@/components/ui/Toast";
+import { toast } from "react-hot-toast"; // Changed to react-hot-toast
 import { Save, Calendar, CheckCircle2, AlertCircle, BookOpen } from "lucide-react";
 
 type LiturgicalColor = "green" | "red" | "white" | "purple";
@@ -15,11 +15,11 @@ interface Readings {
 }
 
 interface BibleVerseCheck {
-    [key: string]: boolean; // key is the reference string (e.g. "Injil"), boolean is Found/NotFound
+    [key: string]: boolean;
 }
 
 export default function LiturgyPage() {
-    const { showToast } = useToast();
+    // Removed legacy useToast hook
     const [date, setDate] = useState<string>("");
     const [feastName, setFeastName] = useState("");
     const [color, setColor] = useState<LiturgicalColor>("green");
@@ -81,34 +81,29 @@ export default function LiturgyPage() {
                 }
             } catch (err: any) {
                 console.error("Error fetching liturgy:", err);
-                showToast("Gagal mengambil data liturgi", "error");
+                toast.error("Gagal mengambil data liturgi");
             } finally {
                 setFetching(false);
             }
         };
 
         fetchData();
-    }, [date, showToast]);
+    }, [date]); // Removed showToast dependency
 
-    // Simple validation logic (Bonus)
-    // Tries to find if the text input resembles a valid book in our system
-    // Very naive implementation as requested 'Bonus'
+    // Simple validation logic
     const validateInjil = async (text: string) => {
         if (!text) {
             setInjilFound(null);
             return;
         }
 
-        // Try to extract book name/abbr. e.g., "Mrk 1:1" -> "Mrk"
         const match = text.trim().split(' ')[0];
         if (!match) return;
 
-        // Remove numbers if attached (unlikely in standardized inputs but possible)
         const bookQuery = match.replace(/[0-9:,-]/g, '');
 
         if (bookQuery.length < 2) return;
 
-        // Check if bible_books has a match for name or abbreviation
         const { data, error } = await supabase
             .from('bible_books')
             .select('id')
@@ -145,10 +140,10 @@ export default function LiturgyPage() {
 
             if (error) throw error;
 
-            showToast("Data Liturgi Tersimpan", "success");
+            toast.success("Data Liturgi Tersimpan");
         } catch (err: any) {
             console.error("Error saving liturgy:", err);
-            showToast(`Gagal menyimpan: ${err.message}`, "error");
+            toast.error(`Gagal menyimpan: ${err.message}`);
         } finally {
             setLoading(false);
         }
@@ -157,7 +152,7 @@ export default function LiturgyPage() {
     const colors = [
         { value: 'green', label: 'Hijau (Masa Biasa)', bg: 'bg-green-600' },
         { value: 'red', label: 'Merah (Martir/Roh Kudus)', bg: 'bg-red-600' },
-        { value: 'white', label: 'Putih (Hari Raya)', bg: 'bg-slate-100 border-slate-300' }, // visible on white
+        { value: 'white', label: 'Putih (Hari Raya)', bg: 'bg-slate-100 border-slate-300' },
         { value: 'purple', label: 'Ungu (Adven/Prapaskah)', bg: 'bg-purple-600' },
     ];
 
@@ -197,8 +192,8 @@ export default function LiturgyPage() {
                                 <label
                                     key={c.value}
                                     className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${color === c.value
-                                            ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20'
-                                            : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'
+                                        ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20'
+                                        : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'
                                         }`}
                                 >
                                     <input

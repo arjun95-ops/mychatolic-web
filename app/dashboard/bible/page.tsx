@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { supabase } from "@/lib/supabaseClient";
-import { useToast } from "@/components/ui/Toast";
+import { createBrowserClient } from '@supabase/ssr'; // Switched to local creation for reliability
+import { toast } from "react-hot-toast";
 import {
     Book,
     BookOpen,
@@ -30,20 +30,24 @@ interface BibleVerse {
     verse_number: number;
     text: string;
     pericope?: string | null;
-    book_name?: string; // Client-side hydration
-    chapter_number?: number; // Client-side hydration
+    book_name?: string;
+    chapter_number?: number;
     book_id?: string;
 }
 
 export default function BibleDataManagerPage() {
-    const { showToast } = useToast();
+    // Supabase Client Initialization
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
 
     // Filters
     const [selectedCategory, setSelectedCategory] = useState("Perjanjian Lama");
     const [books, setBooks] = useState<BibleBook[]>([]);
     const [selectedBookId, setSelectedBookId] = useState<string>("");
     const [chapters, setChapters] = useState<number[]>([]);
-    const [selectedChapter, setSelectedChapter] = useState<string>(""); // Chapter Number as string used in UI
+    const [selectedChapter, setSelectedChapter] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState("");
 
     // Data
@@ -58,31 +62,36 @@ export default function BibleDataManagerPage() {
     // Categories
     const categories = ["Perjanjian Lama", "Perjanjian Baru", "Deuterokanonika"];
 
-    // 1. Fetch Books on Category Change
+    // 1. Fetch Books
     useEffect(() => {
         const fetchBooks = async () => {
-            const { data } = await supabase
+            const { data, error } = await supabase
                 .from('bible_books')
                 .select('*')
                 .eq('category', selectedCategory)
                 .order('book_order');
 
-            setBooks(data || []);
-            // Reset downstream filters
-            setSelectedBookId("");
-            setChapters([]);
-            setSelectedChapter("");
-            setVerses([]);
+            if (data) {
+                setBooks(data);
+                // Reset downstream
+                setSelectedBookId("");
+                setChapters([]);
+                setSelectedChapter("");
+                setVerses([]);
+            } else if (error) {
+                console.error("Error fetching books:", error);
+                toast.error("Gagal memuat daftar buku");
+            }
         };
         fetchBooks();
-    }, [selectedCategory]);
+    }, [selectedCategory, supabase]);
 
-    // 2. Fetch Chapters on Book Change
+    // 2. Fetch Chapters
     useEffect(() => {
         if (!selectedBookId) return;
 
         const fetchChapters = async () => {
-            const { data } = await supabase
+            const { data, error } = await supabase
                 .from('bible_chapters')
                 .select('chapter_number')
                 .eq('book_id', selectedBookId)
@@ -90,22 +99,27 @@ export default function BibleDataManagerPage() {
 
             if (data) {
                 setChapters(data.map(c => c.chapter_number));
-                // Default select first chapter? No, let user choose.
                 setVerses([]);
                 setSelectedChapter("");
+            } else if (error) {
+                console.error("Error fetching chapters:", error);
             }
         };
         fetchChapters();
-    }, [selectedBookId]);
+    }, [selectedBookId, supabase]);
 
-    // 3. Fetch Verses (filtered)
+    // 3. Fetch Verses
     useEffect(() => {
         fetchVerses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedBookId, selectedChapter, searchQuery]);
 
     const fetchVerses = async () => {
         setLoading(true);
         try {
+            console.log("Fetching verses...", { selectedBookId, selectedChapter, searchQuery });
+
+            // Ensure we select necessary fields from nested relations
             let query = supabase
                 .from('bible_verses')
                 .select(`
@@ -114,19 +128,24 @@ export default function BibleDataManagerPage() {
                     text, 
                     pericope,
                     bible_chapters!inner(
+                        id,
                         chapter_number,
-                        bible_books!inner(id, name, category)
+                        bible_books!inner(
+                            id, 
+                            name, 
+                            category
+                        )
                     )
                 `)
                 .order('verse_number', { ascending: true })
-                .limit(100); // Pagination limit for performance
+                .limit(50); // Limit to 50 for initial load speed
 
-            // Apply filters
+            // Filter Logic
             if (selectedBookId) {
-                // Filter by related book
-                // Note: Does Supabase support deep filtering nicely in one go? 
-                // Yes, using the inner join notation in the filter:
                 query = query.eq('bible_chapters.bible_books.id', selectedBookId);
+            } else {
+                // If no book selected, filter by category to prevent mixing OT/NT
+                query = query.eq('bible_chapters.bible_books.category', selectedCategory);
             }
 
             if (selectedChapter) {
@@ -137,20 +156,15 @@ export default function BibleDataManagerPage() {
                 query = query.ilike('text', `%${searchQuery}%`);
             }
 
-            // Note: Category is implicitly handled by book selection, 
-            // but if book is NOT selected, we might want to filter by category.
-            // Complex deep filter:
-            if (!selectedBookId) {
-                query = query.eq('bible_chapters.bible_books.category', selectedCategory);
-            }
-
             const { data, error } = await query;
-            if (error) throw error;
 
-            // Map flat structure for table
+            if (error) throw error; // Throw to catch block
+
+            console.log(`Success: Fetched ${data?.length} verses`);
+
             const formatted: BibleVerse[] = (data || []).map((item: any) => ({
                 id: item.id,
-                chapter_id: item.bible_chapters?.id, // Note: ID might not be selected above, need to include if editing uses it
+                chapter_id: item.bible_chapters?.id,
                 verse_number: item.verse_number,
                 text: item.text,
                 pericope: item.pericope,
@@ -162,8 +176,14 @@ export default function BibleDataManagerPage() {
             setVerses(formatted);
 
         } catch (err: any) {
-            console.error("Fetch error:", err);
-            // showToast("Gagal memuat ayat", "error"); // Reduce noise
+            // Enhanced Error Logging
+            console.error("DEBUG FETCH ERROR:", JSON.stringify(err, null, 2));
+
+            let errMsg = "Terjadi kesalahan saat memuat data.";
+            if (err.message) errMsg += ` (${err.message})`;
+            if (err.code) errMsg += ` [Code: ${err.code}]`;
+
+            toast.error(errMsg);
         } finally {
             setLoading(false);
         }
@@ -202,23 +222,23 @@ export default function BibleDataManagerPage() {
 
         const { error } = await supabase.from('bible_verses').delete().eq('id', id);
         if (error) {
-            showToast("Gagal menghapus", "error");
+            console.error("Delete error:", JSON.stringify(error, null, 2));
+            toast.error(`Gagal menghapus: ${error.message}`);
             fetchVerses(); // Revert
         } else {
-            showToast("Ayat dihapus", "success");
+            toast.success("Ayat dihapus");
         }
     };
 
     const handleSave = async () => {
         if (!editingVerse?.book_id || !editingVerse?.chapter_number || !editingVerse?.verse_number || !editingVerse?.text) {
-            showToast("Lengkapi semua field wajib!", "error");
+            toast.error("Lengkapi semua field wajib!");
             return;
         }
 
         setSaving(true);
         try {
             // 1. Get/Create Chapter ID
-            // We need the chapter ID based on Book + Chapter Number
             let chapterId: string;
 
             const { data: chapData, error: chapErr } = await supabase
@@ -268,13 +288,13 @@ export default function BibleDataManagerPage() {
                 if (error) throw error;
             }
 
-            showToast("Data berhasil disimpan", "success");
+            toast.success("Data berhasil disimpan");
             setIsModalOpen(false);
-            fetchVerses(); // Refresh table to get proper joined data
+            fetchVerses();
 
         } catch (err: any) {
-            console.error("Save error:", err);
-            showToast(`Gagal menyimpan: ${err.message}`, "error");
+            console.error("Save error:", JSON.stringify(err, null, 2));
+            toast.error(`Gagal menyimpan: ${err.message || err.details || 'Unknown error'}`);
         } finally {
             setSaving(false);
         }

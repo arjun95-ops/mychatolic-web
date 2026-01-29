@@ -3,18 +3,17 @@
 import { useEffect, useState, useMemo } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import { Users, Map, List, Globe } from 'lucide-react';
+import { toast } from 'react-hot-toast'; // Replaced custom useToast with react-hot-toast
 import StatsCards from './StatsCards';
 import DashboardFilters from './DashboardFilters';
 import UserTable from './UserTable';
 import RegionalSummary from './RegionalSummary';
 import VerificationModal from './VerificationModal';
-import { useToast } from "@/components/ui/Toast";
 
 export default function VerificationManager() {
     // --- STATE DATA ---
     const [allUsers, setAllUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const { showToast } = useToast();
 
     // --- STATE FILTER & UI ---
     const [activeTab, setActiveTab] = useState<'users' | 'country' | 'diocese' | 'parish'>('users');
@@ -51,10 +50,6 @@ export default function VerificationManager() {
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            // Use the new API route for reliable data fetching if strictly needed, 
-            // but keeping original logic here as requested in previous turns, just fixing icons.
-            // However, to fill the stats card correctly with the new structure, we can calculate locally.
-
             const { data, error } = await supabase
                 .from('profiles')
                 .select('*')
@@ -64,17 +59,16 @@ export default function VerificationManager() {
             const users = data || [];
             setAllUsers(users);
 
-            // Update stat state locally derived from users for now
             setStats({
                 total: users.length,
                 pending: users.filter(u => u.account_status === 'pending').length,
                 verified: users.filter(u => ['verified_catholic', 'verified_pastoral', 'approved'].includes(u.account_status)).length,
-                articles: 0 // Articles not fetched here, can remain 0 or fetch separately
+                articles: 0
             });
 
         } catch (err: any) {
             console.error('Error fetching:', err);
-            showToast("Gagal memuat data: " + err.message, "error");
+            toast.error("Gagal memuat data: " + err.message);
         } finally {
             setLoading(false);
         }
@@ -112,13 +106,7 @@ export default function VerificationManager() {
         // Pindah ke tab User dan set filter otomatis
         setFilters(prev => ({ ...prev, [type]: value }));
         setActiveTab('users');
-        showToast(`Memfilter berdasarkan ${value}`, "success");
-    };
-
-    const handleStatClick = (statusFilter: string) => {
-        setFilters(prev => ({ ...prev, status: statusFilter }));
-        setActiveTab('users');
-        showToast(`Menampilkan user status: ${statusFilter}`, "success");
+        toast.success(`Memfilter berdasarkan ${value}`);
     };
 
     return (
@@ -134,17 +122,10 @@ export default function VerificationManager() {
                 </button>
             </div>
 
-            {/* STATISTIK CARDS (Clickable) */}
+            {/* STATISTIK CARDS */}
             <StatsCards
                 loading={loading}
                 stats={stats}
-            // passing legacy props to support click filtering if StatsCards component supports it
-            // Or if StatsCards was recently updated to only take stats object, we might need to adjust logic
-            // Based on previous overwrite, StatsCards takes { loading, stats }, but click handler might be missing in new version.
-            // Assuming we need to keep visual stats. The click handler might be lost in the previous StatsCard overwrite if not carefully added back.
-            // Checking previous overwrite of StatsCards: it does NOT have onStatClick prop anymore.
-            // It strictly takes { loading, stats }. So clicking won't filtered automatically unless we update StatsCards again.
-            // For now, adhering to existing component structure to avoid breaking builds.
             />
 
             {/* CONTROL BAR (FILTER & SEARCH) */}
@@ -212,6 +193,7 @@ export default function VerificationManager() {
                 user={selectedUser}
                 onSuccess={() => {
                     fetchUsers();
+                    toast.success("Data user berhasil diperbarui");
                 }}
             />
         </div>
