@@ -4,30 +4,80 @@
 
 @layer base {
   :root {
-    /* --- COLOR PALETTE --- */
-    --brand: 31 93 140;       /* #1F5D8C */
-    --action: 47 128 237;     /* #2F80ED */
-    --user-chat: 58 124 165;  /* #3A7CA5 */
-    
-    --success: 46 125 50;     /* #2E7D32 */
-    --pending: 74 144 226;    /* #4A90E2 */
-    --error: 192 57 43;       /* #C0392B */
-    --disabled: 189 189 189;  /* #BDBDBD */
+    /* Brand Colors (Hex langsung) */
+    --brand: #1F5D8C;
+    --brand-50: #E8F1F8;
+    --brand-100: #CFE0EF;
 
-    --surface-light: 255 255 255; /* #FFFFFF */
-    --surface-dark: 28 28 28;     /* #1C1C1C */
-    
-    --text-primary: 26 26 26;     /* #1A1A1A */
-    --text-secondary: 102 102 102;/* #666666 */
+    --action: #2F80ED;
+    --action-hover: #256BC9;
 
-    /* Mapping ke Variable Next.js/Shadcn (Opsional tapi recommended) */
-    --background: 249 250 251; /* Gray-50 look */
-    --foreground: var(--text-primary);
+    /* Status Colors */
+    --success: #2E7D32;
+    --success-light: #E8F5E9;
+
+    --pending: #4A90E2;
+    --pending-light: #EDF5FD;
+
+    --error: #C0392B;
+    --error-light: #F9EBEA;
+
+    /* Surfaces */
+    --surface-gray: #F3F4F6;
   }
 }
 
-/* Helper Class untuk Warna Custom */
-.bg-brand { background-color: rgb(var(--brand)); }
-.text-brand { color: rgb(var(--brand)); }
-.bg-action { background-color: rgb(var(--action)); }
-.text-action { color: rgb(var(--action)); }
+/* Utility Classes Manual (Agar Tailwind PASTI mengenalinya) */
+@layer utilities {
+  .bg-brand {
+    background-color: var(--brand);
+  }
+
+  .bg-brand-50 {
+    background-color: var(--brand-50);
+  }
+
+  .text-brand {
+    color: var(--brand);
+  }
+
+  .bg-action {
+    background-color: var(--action);
+  }
+
+  .hover\:bg-action-hover:hover {
+    background-color: var(--action-hover);
+  }
+
+  .text-action {
+    color: var(--action);
+  }
+
+  .bg-success-light {
+    background-color: var(--success-light);
+  }
+
+  .text-success {
+    color: var(--success);
+  }
+
+  .bg-pending-light {
+    background-color: var(--pending-light);
+  }
+
+  .text-pending {
+    color: var(--pending);
+  }
+
+  .bg-error-light {
+    background-color: var(--error-light);
+  }
+
+  .text-error {
+    color: var(--error);
+  }
+
+  .bg-surface-gray {
+    background-color: var(--surface-gray);
+  }
+}
