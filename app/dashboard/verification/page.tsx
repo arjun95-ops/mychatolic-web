@@ -1,18 +1,15 @@
-import { Metadata } from 'next';
-import { ToastProvider } from "@/components/ui/Toast";
-import VerificationManager from "@/components/verification/VerificationManager";
+'use client';
 
-export const metadata: Metadata = {
-    title: 'Verifikasi Pendaftaran | MyCatholic Admin',
-    description: 'Verifikasi user baru.',
-};
+import VerificationManager from '@/components/verification/VerificationManager';
 
 export default function VerificationPage() {
     return (
-        <ToastProvider>
-            <div className="w-full">
-                <VerificationManager />
-            </div>
-        </ToastProvider>
+        <div className="min-h-screen bg-gray-50/50">
+            {/* 
+        Tidak perlu header tambahan di sini karena VerificationManager
+        sudah memiliki Header "Manajemen Data User" di dalamnya.
+      */}
+            <VerificationManager />
+        </div>
     );
 }
