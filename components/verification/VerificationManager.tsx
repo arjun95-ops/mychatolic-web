@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { createBrowserClient } from "@supabase/ssr";
 import StatsCards from "./StatsCards";
 import UserTable from "./UserTable";
 import VerificationModal from "./VerificationModal";
@@ -10,6 +10,12 @@ import { useToast } from "@/components/ui/Toast";
 export default function VerificationManager() {
     const { showToast } = useToast();
 
+    // Inisialisasi Supabase Client
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
     // State
     const [stats, setStats] = useState({
         totalUmat: 0,
@@ -17,17 +23,13 @@ export default function VerificationManager() {
         totalChurches: 0,
         totalDioceses: 0
     });
-    const [users, setUsers] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [search, setSearch] = useState("");
-    const [roleFilter, setRoleFilter] = useState("umat");
+
+    // Refresh Key Trigger
+    const [refreshKey, setRefreshKey] = useState(0);
 
     // Modal State
     const [selectedUser, setSelectedUser] = useState<any>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // NOTE: isUpdating tidak lagi dibutuhkan di Parent karena loading ditangani di dalam Modal
-    // const [isUpdating, setIsUpdating] = useState(false);
 
     // Initial Stats Fetch
     const fetchStats = async () => {
@@ -51,37 +53,10 @@ export default function VerificationManager() {
         }
     };
 
-    // User Data Fetch
-    const fetchUsers = async () => {
-        setLoading(true);
-        let query = supabase
-            .from('profiles')
-            .select('*')
-            .eq('role', roleFilter)
-            .order('created_at', { ascending: false });
-
-        if (search) {
-            query = query.ilike('full_name', `%${search}%`);
-        }
-
-        const { data, error } = await query;
-        if (error) {
-            showToast("Gagal memuat data user", "error");
-        } else {
-            setUsers(data || []);
-        }
-        setLoading(false);
-    };
-
     // Effects
     useEffect(() => {
         fetchStats();
-    }, []); // Only once on mount
-
-    useEffect(() => {
-        const delay = setTimeout(fetchUsers, 500);
-        return () => clearTimeout(delay);
-    }, [search, roleFilter]);
+    }, [refreshKey]); // Update stats when refreshKey changes
 
     // Handlers
     const handleDetail = (user: any) => {
@@ -91,9 +66,8 @@ export default function VerificationManager() {
 
     // Callback ketika modal sukses melakukan update
     const handleSuccessUpdate = () => {
-        fetchUsers(); // Refresh tabel data
-        fetchStats(); // Update statistik (pending count berkurang)
-        setIsModalOpen(false); // Tutup modal (meskipun di dalam modal sudah ada, ini safety)
+        setRefreshKey(prev => prev + 1); // Trigger refresh
+        setIsModalOpen(false);
     };
 
     return (
@@ -108,14 +82,9 @@ export default function VerificationManager() {
             {/* Stats */}
             <StatsCards stats={stats} />
 
-            {/* Main Table */}
+            {/* Main Table - Menerima refreshTrigger */}
             <UserTable
-                users={users}
-                loading={loading}
-                search={search}
-                setSearch={setSearch}
-                roleFilter={roleFilter}
-                setRoleFilter={setRoleFilter}
+                refreshTrigger={refreshKey}
                 onViewDetail={handleDetail}
             />
 
@@ -124,7 +93,7 @@ export default function VerificationManager() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 user={selectedUser}
-                onSuccess={handleSuccessUpdate} // CONNECTED: Sinyal sukses memicu refresh
+                onSuccess={handleSuccessUpdate}
             />
         </div>
     );
