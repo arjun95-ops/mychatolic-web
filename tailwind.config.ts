@@ -8,8 +8,24 @@ const config: Config = {
     ],
     theme: {
         extend: {
-            // Kita kosongkan colors di sini agar tidak konflik dengan globals.css
-            // Karena kita sudah definisikan manual @layer utilities di CSS
+            colors: {
+                brand: {
+                    DEFAULT: "#1F5D8C",
+                    50: "#E8F1F8",
+                    100: "#CFE0EF",
+                },
+                action: {
+                    DEFAULT: "#2F80ED",
+                    hover: "#256BC9",
+                },
+                success: "#2E7D32",
+                pending: "#4A90E2",
+                error: "#C0392B",
+                surface: {
+                    gray: "#F3F4F6",
+                    white: "#FFFFFF",
+                },
+            },
         },
     },
     plugins: [],
