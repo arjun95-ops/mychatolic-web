@@ -1,132 +1,110 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { MoreHorizontal, ShieldCheck, User, Eye } from "lucide-react";
-import Image from "next/image";
-import { UserProfile } from "./UserDashboard";
+'use client';
 
-interface Props {
-    users: UserProfile[];
+import { Eye, Shield, CheckCircle, XCircle, Clock } from 'lucide-react';
+import Image from 'next/image';
+
+interface UserTableProps {
+    data?: any[]; // FIXED: Optional agar tidak strict
     loading: boolean;
-    onViewDetail: (user: UserProfile) => void;
+    onVerify: (user: any) => void;
 }
 
-export default function UserTable({ users, loading, onViewDetail }: Props) {
+export default function UserTable({ data = [], loading, onVerify }: UserTableProps) {
+    // SAFE GUARD: Pastikan data selalu array
+    const safeData = Array.isArray(data) ? data : [];
 
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'verified_catholic':
             case 'verified_pastoral':
             case 'approved':
-            case 'verified':
-                return (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        Terverifikasi
-                    </span>
-                );
+                return <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100"><CheckCircle size={12} /> Terverifikasi</span>;
             case 'rejected':
-                return <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">Ditolak</span>;
+                return <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100"><XCircle size={12} /> Ditolak</span>;
             case 'pending':
+                return <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-100"><Clock size={12} /> Pending</span>;
             default:
-                return <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">Menunggu</span>;
+                return <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-600 border border-gray-100"><Shield size={12} /> Belum Verifikasi</span>;
         }
+    };
+
+    const formatDate = (date: string) => {
+        if (!date) return '-';
+        return new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
     };
 
     if (loading) {
         return (
-            <div className="p-8 space-y-4">
-                {[1, 2, 3, 4, 5].map(i => (
-                    <div key={i} className="h-16 bg-gray-50 rounded-lg animate-pulse" />
-                ))}
+            <div className="p-12 text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                <p className="mt-2 text-sm text-gray-400">Memuat data user...</p>
             </div>
         );
     }
 
-    if (users.length === 0) {
+    // Gunakan safeData di sini
+    if (safeData.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 bg-white">
-                <div className="bg-gray-50 p-4 rounded-full mb-4">
-                    <User className="h-8 w-8 text-gray-400" />
-                </div>
-                <h3 className="text-lg font-medium text-gray-900">Tidak ada user ditemukan</h3>
-                <p className="text-gray-500 max-w-sm text-center mt-1">Coba sesuaikan filter pencarian atau kategori wilayah Anda.</p>
+            <div className="p-12 text-center border-t border-gray-100">
+                <p className="text-gray-400">Tidak ada user yang ditemukan dengan filter ini.</p>
             </div>
         );
     }
 
     return (
-        <div className="overflow-x-auto min-h-[400px]">
+        <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
                 <thead>
                     <tr className="bg-gray-50/50 border-b border-gray-200 text-xs uppercase text-gray-500 font-semibold tracking-wider">
                         <th className="px-6 py-4">User</th>
                         <th className="px-6 py-4">Role</th>
-                        <th className="px-6 py-4">Lokasi (Negara / Paroki)</th>
+                        <th className="px-6 py-4">Lokasi Gereja</th>
+                        <th className="px-6 py-4">Tgl Daftar</th>
                         <th className="px-6 py-4">Status</th>
                         <th className="px-6 py-4 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-100">
-                    {users.map((user) => (
-                        <tr key={user.id} className="hover:bg-blue-50/10 transition-colors group">
-                            {/* User Info */}
+                <tbody className="divide-y divide-gray-50">
+                    {/* Gunakan safeData.map */}
+                    {safeData.map((user) => (
+                        <tr key={user.id} className="hover:bg-blue-50/30 transition group">
                             <td className="px-6 py-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
+                                    <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden relative border border-gray-100 shrink-0">
                                         {user.avatar_url ? (
-                                            <Image
-                                                src={user.avatar_url}
-                                                alt={user.full_name}
-                                                fill
-                                                className="object-cover"
-                                                unoptimized
-                                            />
+                                            <Image src={user.avatar_url} alt={user.full_name} fill className="object-cover" />
                                         ) : (
-                                            <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                                <User size={20} />
-                                            </div>
+                                            <div className="w-full h-full flex items-center justify-center text-gray-400"><Shield size={14} /></div>
                                         )}
                                     </div>
-                                    <div>
-                                        <p className="font-medium text-sm text-gray-900 group-hover:text-blue-600 transition-colors">
-                                            {user.full_name || 'Tanpa Nama'}
-                                        </p>
-                                        <p className="text-xs text-gray-500 font-mono tracking-tight">{user.email || 'Email tidak tersedia'}</p>
+                                    <div className="min-w-0">
+                                        <p className="font-semibold text-gray-900 text-sm truncate max-w-[180px]">{user.full_name}</p>
+                                        <p className="text-xs text-gray-500 truncate max-w-[180px]">{user.email}</p>
                                     </div>
                                 </div>
                             </td>
-
-                            {/* Role */}
                             <td className="px-6 py-4">
-                                <div className="flex items-center gap-1.5 text-sm text-gray-700 capitalize w-max bg-gray-50 px-2 py-1 rounded border border-gray-200">
-                                    {user.role === 'pastor' || user.role === 'suster' ? (
-                                        <ShieldCheck size={14} className="text-purple-600" />
-                                    ) : null}
-                                    {user.role || 'umat'}
+                                <span className="text-sm text-gray-700 capitalize">{user.role || 'Umat'}</span>
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className="flex flex-col gap-0.5">
+                                    <span className="text-sm font-medium text-gray-900">{user.country || '-'}</span>
+                                    <span className="text-xs text-gray-500">{user.diocese || '-'}</span>
+                                    <span className="text-xs text-gray-400 truncate max-w-[150px]">{user.parish || '-'}</span>
                                 </div>
                             </td>
-
-                            {/* Lokasi */}
-                            <td className="px-6 py-4">
-                                <div className="flex flex-col text-sm">
-                                    <span className="font-medium text-gray-900">{user.country || '-'}</span>
-                                    <span className="text-gray-500 text-xs">{user.parish || 'Paroki belum diisi'}</span>
-                                </div>
+                            <td className="px-6 py-4 text-sm text-gray-600 whitespace-nowrap">
+                                {formatDate(user.created_at)}
                             </td>
-
-                            {/* Status */}
                             <td className="px-6 py-4">
-                                {getStatusBadge(user.verification_status || user.account_status)}
+                                {getStatusBadge(user.account_status || user.verification_status)}
                             </td>
-
-                            {/* Aksi */}
                             <td className="px-6 py-4 text-right">
                                 <button
-                                    onClick={() => onViewDetail(user)}
-                                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition shadow-sm"
-                                    title="Lihat Detail Verifikasi"
+                                    onClick={() => onVerify(user)}
+                                    className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition text-xs font-semibold inline-flex items-center gap-1 shadow-sm"
                                 >
-                                    <Eye size={14} />
-                                    Detail
+                                    <Eye size={14} /> Detail
                                 </button>
                             </td>
                         </tr>

@@ -1,131 +1,115 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Search, Filter, X, RotateCcw } from "lucide-react";
-import { FilterState, UserProfile } from "./UserDashboard";
-import { useMemo } from "react";
+'use client';
+
+import { Search, X } from 'lucide-react';
+import { useMemo } from 'react';
 
 interface Props {
-    filters: FilterState;
-    setFilters: (val: any) => void;
-    users: UserProfile[];
+    users: any[];
+    search: string;
+    setSearch: (v: string) => void;
+    filters: { country: string; diocese: string; parish: string; status: string };
+    setFilters: (v: any) => void;
 }
 
-export default function DashboardFilters({ filters, setFilters, users }: Props) {
+export default function DashboardFilters({ users, search, setSearch, filters, setFilters }: Props) {
 
-    // Generate Unique Options for Dropdowns
-    const countries = useMemo(() => Array.from(new Set(users.map(u => u.country).filter(Boolean))), [users]);
+    // Hitung Opsi Dropdown secara Dinamis (Cascading)
+    const options = useMemo(() => {
+        const countries = Array.from(new Set(users.map(u => u.country).filter(Boolean))).sort();
 
-    const dioceses = useMemo(() => {
-        let data = users;
-        // Filter sub-options only if parent is selected to prevent huge lists
-        if (filters.country !== 'all') {
-            data = data.filter(u => u.country === filters.country);
-        }
-        return Array.from(new Set(data.map(u => u.diocese).filter(Boolean)));
-    }, [users, filters.country]);
+        const dioceses = Array.from(new Set(
+            users
+                .filter(u => !filters.country || u.country === filters.country)
+                .map(u => u.diocese)
+                .filter(Boolean)
+        )).sort();
 
-    const parishes = useMemo(() => {
-        let data = users;
-        if (filters.diocese !== 'all') {
-            data = data.filter(u => u.diocese === filters.diocese);
-        }
-        return Array.from(new Set(data.map(u => u.parish).filter(Boolean)));
-    }, [users, filters.diocese]);
+        const parishes = Array.from(new Set(
+            users
+                .filter(u => (!filters.country || u.country === filters.country) && (!filters.diocese || u.diocese === filters.diocese))
+                .map(u => u.parish)
+                .filter(Boolean)
+        )).sort();
 
-    const handleReset = () => {
-        setFilters({
-            search: "",
-            role: "all",
-            country: "all",
-            diocese: "all",
-            parish: "all",
-            status: "all",
+        return { countries, dioceses, parishes };
+    }, [users, filters.country, filters.diocese]);
+
+    const handleChange = (key: string, value: string) => {
+        setFilters((prev: any) => {
+            const updates: any = { [key]: value };
+            if (key === 'country') { updates.diocese = ''; updates.parish = ''; }
+            if (key === 'diocese') { updates.parish = ''; }
+            return { ...prev, ...updates };
         });
     };
 
-    const hasActiveFilters = Object.values(filters).some(val => val !== 'all' && val !== '');
+    const clearFilters = () => {
+        setSearch('');
+        setFilters({ country: '', diocese: '', parish: '', status: 'all' });
+    };
 
     return (
-        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-
-            {/* SEARCH INPUT */}
-            <div className="relative w-full lg:w-96 group">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 group-focus-within:text-blue-500 transition-colors" />
+        <div className="flex flex-col xl:flex-row gap-4 justify-between">
+            {/* SEARCH BAR (Kiri) */}
+            <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input
                     type="text"
-                    placeholder="Cari user (nama, email)..."
-                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
-                    value={filters.search}
-                    onChange={(e) => setFilters((p: any) => ({ ...p, search: e.target.value }))}
+                    placeholder="Cari nama, email, atau gereja..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
                 />
             </div>
 
-            {/* DROPDOWN GROUP */}
-            <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-                <div className="flex items-center gap-2 text-gray-500 text-sm font-medium mr-2 shrink-0">
-                    <Filter className="w-4 h-4" />
-                    <span className="hidden sm:inline">Filter:</span>
-                </div>
-
-                <SelectDropdown
+            {/* DROPDOWN FILTERS (Kanan) */}
+            <div className="flex flex-wrap gap-2 items-center">
+                <select
                     value={filters.country}
-                    onChange={(val) => setFilters((p: any) => ({ ...p, country: val, diocese: 'all', parish: 'all' }))}
-                    options={countries}
-                    placeholder="Negara"
-                    maxWidth="w-32"
-                />
+                    onChange={(e) => handleChange('country', e.target.value)}
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[140px] focus:ring-2 focus:ring-blue-500/20 outline-none"
+                >
+                    <option value="">Semua Negara</option>
+                    {options.countries.map((c: any) => <option key={c} value={c}>{c}</option>)}
+                </select>
 
-                <SelectDropdown
+                <select
                     value={filters.diocese}
-                    onChange={(val) => setFilters((p: any) => ({ ...p, diocese: val, parish: 'all' }))}
-                    options={dioceses}
-                    placeholder="Keuskupan"
-                    disabled={filters.country === 'all' && dioceses.length > 100}
-                    maxWidth="w-40"
-                />
+                    onChange={(e) => handleChange('diocese', e.target.value)}
+                    disabled={!filters.country && options.dioceses.length > 50}
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[160px] focus:ring-2 focus:ring-blue-500/20 outline-none disabled:bg-gray-50 disabled:text-gray-400"
+                >
+                    <option value="">Semua Keuskupan</option>
+                    {options.dioceses.map((d: any) => <option key={d} value={d}>{d}</option>)}
+                </select>
 
-                <SelectDropdown
+                <select
                     value={filters.parish}
-                    onChange={(val) => setFilters((p: any) => ({ ...p, parish: val }))}
-                    options={parishes}
-                    placeholder="Paroki"
-                    disabled={filters.diocese === 'all'}
-                    maxWidth="w-40"
-                />
+                    onChange={(e) => handleChange('parish', e.target.value)}
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[160px] focus:ring-2 focus:ring-blue-500/20 outline-none"
+                >
+                    <option value="">Semua Paroki</option>
+                    {options.parishes.map((p: any) => <option key={p} value={p}>{p}</option>)}
+                </select>
 
-                {/* RESET BUTTON */}
-                {hasActiveFilters && (
-                    <button
-                        onClick={handleReset}
-                        className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors ml-auto lg:ml-0"
-                        title="Reset Filter"
-                    >
-                        <RotateCcw size={14} />
-                        Reset
+                <div className="h-6 w-[1px] bg-gray-300 mx-1 hidden sm:block"></div>
+                <select
+                    value={filters.status}
+                    onChange={(e) => handleChange('status', e.target.value)}
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                >
+                    <option value="all">Semua Status</option>
+                    <option value="pending">⏳ Pending</option>
+                    <option value="verified">✅ Terverifikasi</option>
+                    <option value="rejected">❌ Ditolak</option>
+                </select>
+
+                {(search || filters.country || filters.status !== 'all') && (
+                    <button onClick={clearFilters} className="p-2.5 text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition" title="Reset Filter">
+                        <X size={18} />
                     </button>
                 )}
             </div>
         </div>
-    );
-}
-
-// Sub-component for Cleaner Dropdown styling
-function SelectDropdown({ value, onChange, options, placeholder, disabled, maxWidth }: any) {
-    return (
-        <select
-            className={`
-                bg-white border border-gray-300 text-gray-700 text-sm rounded-lg 
-                focus:ring-blue-500 focus:border-blue-500 block p-2.5 
-                ${maxWidth} truncate
-                disabled:bg-gray-100 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed
-            `}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            disabled={disabled}
-        >
-            <option value="all">Semua {placeholder}</option>
-            {options.map((opt: string) => (
-                <option key={opt} value={opt}>{opt}</option>
-            ))}
-        </select>
     );
 }
