@@ -10,21 +10,43 @@ const config: Config = {
         extend: {
             colors: {
                 brand: {
-                    DEFAULT: "#1F5D8C",
+                    DEFAULT: "#1F5D8C", // Brand Primary
                     50: "#E8F1F8",
                     100: "#CFE0EF",
                 },
                 action: {
-                    DEFAULT: "#2F80ED",
+                    DEFAULT: "#2F80ED", // Action/Accent
                     hover: "#256BC9",
                 },
-                success: "#2E7D32",
-                pending: "#4A90E2",
-                error: "#C0392B",
-                surface: {
-                    gray: "#F3F4F6",
-                    white: "#FFFFFF",
+                userchat: "#3A7CA5",
+
+                // --- STATUS COLORS ---
+                success: {
+                    DEFAULT: "#2E7D32",
+                    light: "#E8F5E9",
                 },
+                pending: {
+                    DEFAULT: "#4A90E2",
+                    light: "#EDF5FD",
+                },
+                error: {
+                    DEFAULT: "#C0392B",
+                    light: "#F9EBEA",
+                },
+                disabled: "#BDBDBD",
+
+                // --- SURFACES & TEXT ---
+                surface: {
+                    light: "#FFFFFF",
+                    alt: "#EFEFEF",
+                    dark: "#1C1C1C",
+                    gray: "#F3F4F6", // Helper for background
+                },
+                text: {
+                    primary: "#1A1A1A",
+                    secondary: "#666666",
+                    white: "#FFFFFF",
+                }
             },
         },
     },
