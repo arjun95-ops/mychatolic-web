@@ -1,29 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { Users, Map, Globe, Church } from "lucide-react";
+import { Users, Map, Globe, Church, LucideIcon } from "lucide-react";
 import DashboardStats from "./DashboardStats";
 import DashboardFilters from "./DashboardFilters";
 import UserTable from "./UserTable";
 import RegionalSummary from "./RegionalSummary";
 import VerificationModal from "./VerificationModal";
 import { Toaster } from "react-hot-toast";
+import {
+    getUserStatus,
+    isVerifiedStatus,
+    normalizeProfileLocation,
+    VerificationUserLike,
+} from "@/lib/verification-status";
 
 // --- TYPES ---
-export interface UserProfile {
+export type DashboardTab = "users" | "country" | "diocese" | "parish";
+
+export interface UserProfile extends VerificationUserLike {
     id: string;
-    full_name: string;
-    email: string;
-    role: string;
-    country: string;
-    diocese: string;
-    parish: string;
-    account_status: string;
-    verification_status: string;
-    created_at: string;
-    avatar_url?: string;
+    full_name?: string | null;
+    email?: string | null;
+    role?: string | null;
+    country?: string | null;
+    diocese?: string | null;
+    parish?: string | null;
+    account_status?: string | null;
+    verification_status?: string | null;
+    created_at?: string | null;
+    avatar_url?: string | null;
 }
 
 export type FilterState = {
@@ -39,7 +46,7 @@ export type FilterState = {
 export default function UserDashboard() {
     const [loading, setLoading] = useState(true);
     const [allUsers, setAllUsers] = useState<UserProfile[]>([]);
-    const [activeTab, setActiveTab] = useState<"users" | "country" | "diocese" | "parish">("users");
+    const [activeTab, setActiveTab] = useState<DashboardTab>("users");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
 
@@ -47,9 +54,9 @@ export default function UserDashboard() {
     const [filters, setFilters] = useState<FilterState>({
         search: "",
         role: "all",
-        country: "all",
-        diocese: "all",
-        parish: "all",
+        country: "",
+        diocese: "",
+        parish: "",
         status: "all",
     });
 
@@ -68,7 +75,7 @@ export default function UserDashboard() {
                 .order("created_at", { ascending: false });
 
             if (error) throw error;
-            setAllUsers(data || []);
+            setAllUsers(((data || []) as UserProfile[]).map(normalizeProfileLocation));
         } catch (err) {
             console.error("Fetch error:", err);
         } finally {
@@ -78,6 +85,7 @@ export default function UserDashboard() {
 
     useEffect(() => {
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // 2. FILTER LOGIC
@@ -92,16 +100,17 @@ export default function UserDashboard() {
             const roleMatch = filters.role === "all" || user.role === filters.role;
 
             // Status
-            const userStatus = user.verification_status || user.account_status;
-            const statusMatch = filters.status === "all" || userStatus && (
-                filters.status === 'verified_catholic' ? ['verified_catholic', 'verified_pastoral', 'approved', 'verified'].includes(userStatus) :
-                    userStatus === filters.status
-            );
+            const userStatus = getUserStatus(user);
+            const statusMatch =
+                filters.status === "all" ||
+                (filters.status === 'verified'
+                    ? isVerifiedStatus(userStatus)
+                    : userStatus === filters.status);
 
             // Location
-            const countryMatch = filters.country === "all" || user.country === filters.country;
-            const dioceseMatch = filters.diocese === "all" || user.diocese === filters.diocese;
-            const parishMatch = filters.parish === "all" || user.parish === filters.parish;
+            const countryMatch = !filters.country || user.country === filters.country;
+            const dioceseMatch = !filters.diocese || user.diocese === filters.diocese;
+            const parishMatch = !filters.parish || user.parish === filters.parish;
 
             return searchMatch && roleMatch && statusMatch && countryMatch && dioceseMatch && parishMatch;
         });
@@ -112,13 +121,13 @@ export default function UserDashboard() {
         setFilters(prev => ({ ...prev, status: statusType }));
     };
 
-    const handleDrillDown = (type: "country" | "diocese" | "parish", value: string) => {
+    const handleDrillDown = (type: Exclude<DashboardTab, "users">, value: string) => {
         setFilters(prev => ({
             ...prev,
             [type]: value,
             // Reset sub-levels if going up
-            ...(type === 'country' ? { diocese: 'all', parish: 'all' } : {}),
-            ...(type === 'diocese' ? { parish: 'all' } : {})
+            ...(type === 'country' ? { diocese: '', parish: '' } : {}),
+            ...(type === 'diocese' ? { parish: '' } : {})
         }));
         setActiveTab("users");
     };
@@ -133,7 +142,7 @@ export default function UserDashboard() {
         setIsModalOpen(false);
     };
 
-    const tabs = [
+    const tabs: Array<{ id: DashboardTab; label: string; icon: LucideIcon }> = [
         { id: "users", label: "Daftar User", icon: Users },
         { id: "country", label: "Negara", icon: Globe },
         { id: "diocese", label: "Keuskupan", icon: Map },
@@ -154,7 +163,7 @@ export default function UserDashboard() {
                     onClick={fetchData}
                     className="px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition shadow-sm"
                 >
-                    Refresh Data
+                    Muat Ulang Data
                 </button>
             </div>
 
@@ -174,7 +183,7 @@ export default function UserDashboard() {
                         {tabs.map(tab => (
                             <button
                                 key={tab.id}
-                                onClick={() => setActiveTab(tab.id as any)}
+                                onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap outline-none ${activeTab === tab.id
                                         ? "border-blue-600 text-blue-600 bg-blue-50/30"
                                         : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
@@ -208,9 +217,9 @@ export default function UserDashboard() {
 
                     {activeTab !== "users" && (
                         <RegionalSummary
-                            type={activeTab as any}
-                            data={allUsers} // Pass ALL data, filtering happens inside
-                            onDrillDown={(val) => handleDrillDown(activeTab as any, val)}
+                            type={activeTab}
+                            users={allUsers} // Pass ALL data, filtering happens inside
+                            onDrillDown={handleDrillDown}
                         />
                     )}
                 </div>

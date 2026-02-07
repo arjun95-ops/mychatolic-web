@@ -1,13 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import Image from 'next/image';
-import { X, Check, Calendar, User, MapPin, Heart, Shield } from 'lucide-react';
-import { createBrowserClient } from '@supabase/ssr';
+import {
+    X,
+    Check,
+    Calendar,
+    User,
+    MapPin,
+    Heart,
+    Shield,
+    LucideIcon,
+} from 'lucide-react';
 import toast from 'react-hot-toast';
+import {
+    approvedStatusForUser,
+    getUserStatus,
+    getVerificationDocuments,
+    isCatechumenUser,
+    isClergyRole,
+    statusCategory,
+    VerificationUserLike,
+} from '@/lib/verification-status';
 
-// Helper untuk format tanggal
-const formatDate = (dateString: string) => {
+const formatDate = (dateString?: string | null) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleDateString('id-ID', {
         day: 'numeric',
@@ -16,47 +31,78 @@ const formatDate = (dateString: string) => {
     });
 };
 
+const formatDateTime = (dateString?: string | null) => {
+    if (!dateString) return null;
+    return new Date(dateString).toLocaleString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+};
+
+const statusLabel = (status: string) => {
+    const category = statusCategory(status);
+    if (category === 'verified') return 'Terverifikasi';
+    if (category === 'pending') return 'Pending';
+    if (category === 'rejected') return 'Ditolak';
+    if (category === 'banned') return 'Ditangguhkan';
+    return 'Belum Verifikasi';
+};
+
 interface VerificationModalProps {
     isOpen: boolean;
     onClose: () => void;
-    user: any;
-    onSuccess?: () => void; // FIXED: Dibuat Optional agar tidak crash jika kosong
+    user: VerificationModalUser | null;
+    onSuccess?: () => void;
 }
 
-export default function VerificationModal({ isOpen, onClose, user, onSuccess }: VerificationModalProps) {
+interface VerificationModalUser extends VerificationUserLike {
+    id: string;
+    full_name?: string | null;
+    baptism_name?: string | null;
+    marital_status?: string | null;
+    gender?: string | null;
+    birth_date?: string | null;
+}
+
+interface InfoRowProps {
+    icon: LucideIcon;
+    label: string;
+    value?: string | null;
+}
+
+export default function VerificationModal({
+    isOpen,
+    onClose,
+    user,
+    onSuccess,
+}: VerificationModalProps) {
     const [loading, setLoading] = useState(false);
     const [rejectReason, setRejectReason] = useState('');
     const [showRejectInput, setShowRejectInput] = useState(false);
-
-    const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const docs = useMemo(() => getVerificationDocuments(user), [user]);
 
     if (!user) return null;
 
-    // 1. DETEKSI ROLE & LOGIC DOKUMEN
-    const isClergy = ['pastor', 'suster', 'bruder', 'frater'].includes(user.role?.toLowerCase());
-    const isCatechumen = user.is_catechumen || user.faith_status === 'catechumen';
+    const isClergy = isClergyRole(user.role);
+    const isCatechumen = isCatechumenUser(user);
     const isUmat = !isClergy && !isCatechumen;
+    const currentStatus = getUserStatus(user);
+    const consentAtLabel = formatDateTime(user.faith_verification_consent_at);
 
-    // Handler Action
-    const handleAction = async (status: 'verified_catholic' | 'verified_pastoral' | 'rejected') => {
-        if (status === 'rejected' && !rejectReason.trim()) {
+    const handleAction = async (action: 'approve' | 'reject') => {
+        if (action === 'reject' && !rejectReason.trim()) {
             toast.error('Wajib isi alasan penolakan');
             return;
         }
 
         setLoading(true);
         try {
-            // 1. Tentukan status akhir
-            let finalStatus = status;
-            if (status !== 'rejected') {
-                if (isClergy) finalStatus = 'verified_pastoral';
-                else finalStatus = 'verified_catholic';
-            }
+            const finalStatus =
+                action === 'reject' ? 'rejected' : approvedStatusForUser(user);
 
-            // 2. Panggil API Route (Backend) 
             const response = await fetch('/api/admin/verify-user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -65,50 +111,61 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
                     updates: {
                         account_status: finalStatus,
                         verification_status: finalStatus,
-                        rejection_reason: status === 'rejected' ? rejectReason : null,
-                        verified_at: status !== 'rejected' ? new Date().toISOString() : null,
-                    }
+                        rejection_reason: action === 'reject' ? rejectReason.trim() : null,
+                        verified_at:
+                            action === 'approve' ? new Date().toISOString() : null,
+                    },
                 }),
             });
 
             const result = await response.json();
-
             if (!response.ok) {
                 throw new Error(result.error || 'Gagal menghubungi server');
             }
 
-            // 3. Sukses
-            toast.success(status === 'rejected' ? 'Verifikasi ditolak' : 'Verifikasi berhasil disetujui');
+            toast.success(
+                action === 'reject'
+                    ? 'Verifikasi ditolak'
+                    : 'Verifikasi berhasil disetujui',
+            );
 
-            // FIXED: Safe Call (Cek dulu sebelum panggil)
-            if (onSuccess) {
-                onSuccess();
-            }
-
+            onSuccess?.();
             onClose();
-
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'Unknown error';
             console.error('Error updating status:', error);
-            toast.error('Gagal memproses: ' + error.message);
+            toast.error(`Gagal memproses: ${message}`);
         } finally {
             setLoading(false);
         }
     };
 
-    // Helper component untuk baris data
-    const InfoRow = ({ icon: Icon, label, value, isNew = false }: any) => (
+    const InfoRow = ({ icon: Icon, label, value }: InfoRowProps) => (
         <div className="flex items-start gap-3 py-2 border-b border-gray-100 last:border-0">
             <div className="mt-1 p-1.5 bg-blue-50 rounded-lg text-blue-600">
                 <Icon size={16} />
             </div>
             <div className="flex-1">
                 <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
-                    {label} {isNew && <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full ml-1">BARU</span>}
+                    {label}
                 </p>
-                <p className="text-sm font-semibold text-gray-900 mt-0.5">{value || '-'}</p>
+                <p className="text-sm font-semibold text-gray-900 mt-0.5">
+                    {value || '-'}
+                </p>
             </div>
         </div>
     );
+
+    const hasDocuments = Boolean(
+        docs.selfie || docs.identity || docs.baptism || docs.chrism || docs.assignment,
+    );
+
+    const genderLabel =
+        user.gender === 'male'
+            ? 'Pria'
+            : user.gender === 'female'
+                ? 'Wanita'
+                : '-';
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
@@ -124,38 +181,90 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
                 >
                     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4">
                         <Dialog.Panel className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-
-                            {/* HEADER */}
                             <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                                 <div>
                                     <Dialog.Title className="text-lg font-bold text-gray-900">
                                         Verifikasi Pengguna
                                     </Dialog.Title>
-                                    <p className="text-sm text-gray-500">Tinjau data diri dan dokumen sakramen</p>
+                                    <p className="text-sm text-gray-500">
+                                        Tinjau data diri dan dokumen pendukung
+                                    </p>
                                 </div>
-                                <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full transition">
+                                <button
+                                    onClick={onClose}
+                                    className="p-2 hover:bg-gray-200 rounded-full transition"
+                                >
                                     <X size={20} className="text-gray-500" />
                                 </button>
                             </div>
 
-                            {/* CONTENT SCROLLABLE */}
                             <div className="flex-1 overflow-y-auto p-6">
                                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-
-                                    {/* KOLOM KIRI: DATA DIRI */}
                                     <div className="md:col-span-5 space-y-6">
                                         <div>
                                             <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">
                                                 IDENTITAS PRIBADI
                                             </h3>
                                             <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-1">
-                                                <InfoRow icon={User} label="Nama Lengkap" value={user.full_name} />
-                                                <InfoRow icon={Shield} label="Peran (Role)" value={user.role} />
-                                                <InfoRow icon={Shield} label="Status Iman" value={isCatechumen ? 'Katekumen' : 'Baptis Katolik'} isNew />
-                                                <InfoRow icon={Heart} label="Nama Baptis" value={user.baptism_name} isNew />
-                                                <InfoRow icon={Heart} label="Status Pernikahan" value={user.marital_status === 'single' ? 'Belum Menikah' : user.marital_status === 'widowed' ? 'Cerai Mati' : user.marital_status} isNew />
-                                                <InfoRow icon={User} label="Jenis Kelamin" value={user.gender === 'male' ? 'Pria' : 'Wanita'} isNew />
-                                                <InfoRow icon={Calendar} label="Tanggal Lahir" value={formatDate(user.birth_date)} />
+                                                <InfoRow
+                                                    icon={User}
+                                                    label="Nama Lengkap"
+                                                    value={user.full_name}
+                                                />
+                                                <InfoRow
+                                                    icon={Heart}
+                                                    label="Nama Baptis"
+                                                    value={user.baptism_name}
+                                                />
+                                                <InfoRow
+                                                    icon={Shield}
+                                                    label="Peran (Role)"
+                                                    value={user.role}
+                                                />
+                                                <InfoRow
+                                                    icon={Shield}
+                                                    label="Status Iman"
+                                                    value={
+                                                        isCatechumen
+                                                            ? 'Katekumen'
+                                                            : 'Baptis Katolik'
+                                                    }
+                                                />
+                                                <InfoRow
+                                                    icon={Shield}
+                                                    label="Status Verifikasi"
+                                                    value={statusLabel(currentStatus)}
+                                                />
+                                                <InfoRow
+                                                    icon={Shield}
+                                                    label="Persetujuan Verifikasi Dokumen"
+                                                    value={
+                                                        consentAtLabel
+                                                            ? `Disetujui pada ${consentAtLabel}`
+                                                            : 'Belum disetujui'
+                                                    }
+                                                />
+                                                <InfoRow
+                                                    icon={Heart}
+                                                    label="Status Pernikahan"
+                                                    value={
+                                                        user.marital_status === 'single'
+                                                            ? 'Belum Menikah'
+                                                            : user.marital_status === 'widowed'
+                                                                ? 'Cerai Mati'
+                                                                : user.marital_status
+                                                    }
+                                                />
+                                                <InfoRow
+                                                    icon={User}
+                                                    label="Jenis Kelamin"
+                                                    value={genderLabel}
+                                                />
+                                                <InfoRow
+                                                    icon={Calendar}
+                                                    label="Tanggal Lahir"
+                                                    value={formatDate(user.birth_date)}
+                                                />
                                             </div>
                                         </div>
 
@@ -164,69 +273,88 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
                                                 LOKASI GEREJA
                                             </h3>
                                             <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-1">
-                                                <InfoRow icon={MapPin} label="Negara" value={user.country || user.countries?.name} />
-                                                <InfoRow icon={MapPin} label="Keuskupan" value={user.diocese || user.dioceses?.name} />
-                                                <InfoRow icon={MapPin} label="Paroki" value={user.parish || user.churches?.name} />
+                                                <InfoRow
+                                                    icon={MapPin}
+                                                    label="Negara"
+                                                    value={user.country || user.countries?.name}
+                                                />
+                                                <InfoRow
+                                                    icon={MapPin}
+                                                    label="Keuskupan"
+                                                    value={user.diocese || user.dioceses?.name}
+                                                />
+                                                <InfoRow
+                                                    icon={MapPin}
+                                                    label="Paroki"
+                                                    value={user.parish || user.churches?.name}
+                                                />
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* KOLOM KANAN: DOKUMEN */}
                                     <div className="md:col-span-7">
                                         <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-green-600 pl-3">
                                             DOKUMEN PENDUKUNG
                                         </h3>
 
                                         <div className="grid grid-cols-1 gap-6">
-                                            {/* 1. SELFIE (SEMUA WAJIB) */}
-                                            <DocumentCard
-                                                title="Foto Selfie"
-                                                url={user.selfie_url}
-                                                bucket="verification_docs"
-                                                isRequired
-                                            />
+                                            {docs.selfie && (
+                                                <DocumentCard
+                                                    title="Foto Selfie"
+                                                    url={docs.selfie}
+                                                    bucket="verification_docs"
+                                                    isRequired={false}
+                                                />
+                                            )}
 
-                                            {/* 2. KTP (HANYA UMAT) */}
-                                            {isUmat && (
+                                            {docs.identity && (
                                                 <DocumentCard
                                                     title="KTP / Identitas"
-                                                    url={user.ktp_url}
+                                                    url={docs.identity}
                                                     bucket="verification_docs"
-                                                    isRequired
+                                                    isRequired={isUmat}
                                                 />
                                             )}
 
-                                            {/* 3. SURAT BAPTIS (HANYA UMAT) */}
-                                            {isUmat && (
+                                            {isUmat && docs.baptism && (
                                                 <DocumentCard
                                                     title="Surat Baptis"
-                                                    url={user.baptism_cert_url}
+                                                    url={docs.baptism}
                                                     bucket="verification_docs"
                                                     isRequired
                                                 />
                                             )}
 
-                                            {/* 4. SURAT TUGAS (HANYA CLERGY) */}
-                                            {isClergy && (
+                                            {isUmat && docs.chrism && (
+                                                <DocumentCard
+                                                    title="Surat Krisma"
+                                                    url={docs.chrism}
+                                                    bucket="verification_docs"
+                                                    isRequired={false}
+                                                />
+                                            )}
+
+                                            {isClergy && docs.assignment && (
                                                 <DocumentCard
                                                     title="Surat Tugas / Tahbisan"
-                                                    url={user.assignment_letter_url}
+                                                    url={docs.assignment}
                                                     bucket="verification_docs"
                                                     isRequired
                                                 />
                                             )}
 
-                                            {/* 5. PESAN KATEKUMEN */}
                                             {isCatechumen && (
                                                 <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-yellow-800 text-sm">
-                                                    <span className="font-bold">Info:</span> User ini adalah Katekumen. Tidak diperlukan dokumen sakramen (Baptis/Krisma). Cukup verifikasi data diri dan niat belajar.
+                                                    <span className="font-bold">Info:</span> User ini adalah
+                                                    Katekumen. Dokumen sakramen tidak wajib.
                                                 </div>
                                             )}
 
-                                            {/* JIKA KOSONG */}
-                                            {!user.selfie_url && !user.ktp_url && !user.baptism_cert_url && !user.assignment_letter_url && (
+                                            {!hasDocuments && (
                                                 <div className="p-8 text-center border-2 border-dashed border-gray-200 rounded-xl">
-                                                    <p className="text-gray-400">Belum ada dokumen yang diunggah.</p>
+                                                    <p className="text-gray-400">
+                                                        Belum ada dokumen yang diunggah.
+                                                    </p>
                                                 </div>
                                             )}
                                         </div>
@@ -234,7 +362,6 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
                                 </div>
                             </div>
 
-                            {/* FOOTER ACTIONS */}
                             <div className="p-6 bg-gray-50 border-t border-gray-100">
                                 {!showRejectInput ? (
                                     <div className="flex justify-end gap-3">
@@ -246,11 +373,13 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
                                             Tolak
                                         </button>
                                         <button
-                                            onClick={() => handleAction('verified_catholic')}
+                                            onClick={() => handleAction('approve')}
                                             disabled={loading}
                                             className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:shadow-lg hover:scale-[1.02] transition flex items-center gap-2"
                                         >
-                                            {loading ? 'Memproses...' : (
+                                            {loading ? (
+                                                'Memproses...'
+                                            ) : (
                                                 <>
                                                     <Check size={18} />
                                                     Setujui Verifikasi
@@ -276,7 +405,7 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
                                                 Batal
                                             </button>
                                             <button
-                                                onClick={() => handleAction('rejected')}
+                                                onClick={() => handleAction('reject')}
                                                 disabled={loading}
                                                 className="px-6 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition text-sm"
                                             >
@@ -286,7 +415,6 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
                                     </div>
                                 )}
                             </div>
-
                         </Dialog.Panel>
                     </div>
                 </Transition.Child>
@@ -295,11 +423,19 @@ export default function VerificationModal({ isOpen, onClose, user, onSuccess }: 
     );
 }
 
-// Sub-component untuk Dokumen Image
-function DocumentCard({ title, url, bucket, isRequired }: any) {
+function DocumentCard({
+    title,
+    url,
+    bucket,
+    isRequired,
+}: {
+    title: string;
+    url: string;
+    bucket: string;
+    isRequired: boolean;
+}) {
     if (!url) return null;
 
-    // Gunakan env var untuk base URL Supabase jika url relative
     const baseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const finalUrl = url.startsWith('http')
         ? url
@@ -309,16 +445,14 @@ function DocumentCard({ title, url, bucket, isRequired }: any) {
         <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition bg-white">
             <div className="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
                 <span className="font-semibold text-gray-700 text-sm">{title}</span>
-                {isRequired && <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">WAJIB</span>}
+                {isRequired && (
+                    <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">
+                        WAJIB
+                    </span>
+                )}
             </div>
             <div className="relative aspect-video bg-gray-100 group cursor-pointer">
-                <Image
-                    src={finalUrl}
-                    alt={title}
-                    fill
-                    className="object-contain"
-                    unoptimized
-                />
+                <Image src={finalUrl} alt={title} fill className="object-contain" unoptimized />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <a
                         href={finalUrl}
@@ -326,7 +460,7 @@ function DocumentCard({ title, url, bucket, isRequired }: any) {
                         rel="noreferrer"
                         className="bg-white/90 text-gray-900 px-4 py-2 rounded-full text-sm font-bold shadow-lg"
                     >
-                        Lihat Full Size
+                        Lihat Ukuran Penuh
                     </a>
                 </div>
             </div>

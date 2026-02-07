@@ -1,5 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import {
+    getUserStatus,
+    isVerifiedStatus,
+    VerificationUserLike,
+} from '@/lib/verification-status';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,15 +23,17 @@ export async function GET() {
         // 1. Users Stats
         const { data: users, error: userError } = await supabase
             .from('profiles')
-            .select('account_status');
+            .select('account_status, verification_status');
 
         if (userError) throw userError;
 
+        const rows = (users || []) as VerificationUserLike[];
+
         const userStats = {
-            total: users?.length || 0,
-            pending: users?.filter(u => u.account_status === 'pending').length || 0,
-            verified: users?.filter(u => ['verified_catholic', 'verified_pastoral', 'approved'].includes(u.account_status)).length || 0,
-            rejected: users?.filter(u => u.account_status === 'rejected').length || 0,
+            total: rows.length,
+            pending: rows.filter((u) => getUserStatus(u) === 'pending').length,
+            verified: rows.filter((u) => isVerifiedStatus(getUserStatus(u))).length,
+            rejected: rows.filter((u) => getUserStatus(u) === 'rejected').length,
         };
 
         // 2. Churches Count (Assuming table 'churches' exists based on prompt, otherwise handle gracefull)
@@ -34,11 +41,17 @@ export async function GET() {
         const { count: churchCount, error: churchError } = await supabase
             .from('churches')
             .select('*', { count: 'exact', head: true });
+        if (churchError) {
+            console.error('Failed to count churches:', churchError.message);
+        }
 
         // 3. Articles Count
         const { count: articleCount, error: articleError } = await supabase
             .from('articles')
             .select('*', { count: 'exact', head: true });
+        if (articleError) {
+            console.error('Failed to count articles:', articleError.message);
+        }
 
         return NextResponse.json({
             users: userStats,
@@ -46,8 +59,9 @@ export async function GET() {
             articles: articleCount || 0,
         });
 
-    } catch (err: any) {
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
         console.error("Stats API Error:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

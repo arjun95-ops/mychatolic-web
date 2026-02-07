@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Users, Clock, CheckCircle2, XCircle } from "lucide-react";
 import { UserProfile } from "./UserDashboard";
+import { getUserStatus, isVerifiedStatus } from "@/lib/verification-status";
 
 interface Props {
     users: UserProfile[];
@@ -12,13 +12,13 @@ export default function DashboardStats({ users, onStatClick, currentFilter }: Pr
 
     // Calculate stats in real-time based on ALL users (not filtered)
     const total = users.length;
-    const pending = users.filter(u => ['pending'].includes(u.verification_status || u.account_status)).length;
-    const verified = users.filter(u => ['verified_catholic', 'verified_pastoral', 'approved', 'verified'].includes(u.verification_status || u.account_status)).length;
-    const rejected = users.filter(u => ['rejected'].includes(u.verification_status || u.account_status)).length;
+    const pending = users.filter((u) => getUserStatus(u) === 'pending').length;
+    const verified = users.filter((u) => isVerifiedStatus(getUserStatus(u))).length;
+    const rejected = users.filter((u) => getUserStatus(u) === 'rejected').length;
 
     const cards = [
         {
-            label: "Total User",
+            label: "Total Pengguna",
             value: total,
             icon: Users,
             color: "text-blue-600",
@@ -42,7 +42,7 @@ export default function DashboardStats({ users, onStatClick, currentFilter }: Pr
             color: "text-emerald-600",
             bg: "bg-emerald-50",
             borderColor: "border-emerald-200",
-            filterKey: "verified_catholic"
+            filterKey: "verified"
         },
         {
             label: "Ditolak",

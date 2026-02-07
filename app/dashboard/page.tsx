@@ -7,6 +7,7 @@ import StatsCards from '@/components/verification/StatsCards';
 import { UserCheck, PenTool } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
+import { getUserStatus, isVerifiedStatus } from '@/lib/verification-status';
 
 export default function DashboardOverview() {
     const [stats, setStats] = useState({
@@ -34,16 +35,15 @@ export default function DashboardOverview() {
                     .select('*', { count: 'exact', head: true });
 
                 // 2. Pending Verification
-                const { count: pendingUsers } = await supabase
+                const { data: statuses, error: statusesError } = await supabase
                     .from('profiles')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('account_status', 'pending');
+                    .select('account_status, verification_status');
+                if (statusesError) throw statusesError;
 
-                // 3. Verified Users
-                const { count: verifiedUsers } = await supabase
-                    .from('profiles')
-                    .select('*', { count: 'exact', head: true })
-                    .in('account_status', ['verified_catholic', 'verified_pastoral', 'approved']);
+                const pendingUsers =
+                    statuses?.filter((u) => getUserStatus(u) === 'pending').length || 0;
+                const verifiedUsers =
+                    statuses?.filter((u) => isVerifiedStatus(getUserStatus(u))).length || 0;
 
                 // 4. Articles
                 const { count: totalArticles } = await supabase
@@ -74,7 +74,7 @@ export default function DashboardOverview() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-text-primary tracking-tight">
-                        Dashboard Overview
+                        Ringkasan Dashboard
                     </h1>
                     <p className="text-text-secondary mt-1 text-sm font-medium">
                         {today}

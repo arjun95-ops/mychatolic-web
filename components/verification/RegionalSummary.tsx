@@ -3,9 +3,15 @@
 import { ChevronRight } from 'lucide-react';
 import { useMemo } from 'react';
 
+interface RegionalUser {
+    country?: string | null;
+    diocese?: string | null;
+    parish?: string | null;
+}
+
 interface Props {
     type: 'country' | 'diocese' | 'parish';
-    users: any[];
+    users: RegionalUser[];
     onDrillDown: (type: 'country' | 'diocese' | 'parish', value: string) => void;
 }
 

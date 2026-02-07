@@ -1,0 +1,3 @@
+name,diocese_id,address,image_url,google_maps_url,latitude,longitude
+Paroki Katedral Santa Maria,REPLACE_DIOCESE_UUID,"Jl. Katedral No. 7, Jakarta",https://example.com/katedral.jpg,"https://maps.google.com/?q=-6.1692,106.8326",-6.1692,106.8326
+Paroki Santo Laurentius,REPLACE_DIOCESE_UUID,"Jl. Sutami No. 34, Bandung",https://example.com/laurentius.jpg,"https://maps.google.com/?q=-6.9025,107.6187",-6.9025,107.6187
