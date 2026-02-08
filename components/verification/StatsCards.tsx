@@ -15,9 +15,9 @@ interface StatsProps {
 export default function StatsCards({ loading, stats }: StatsProps) {
 
     const Card = ({ title, count, icon: Icon, colorClass, iconBg }: any) => (
-        <div className="bg-surface-primary p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between transition-all hover:shadow-md hover:-translate-y-1">
+        <div className="bg-surface-primary dark:bg-surface-inverse p-6 rounded-2xl border border-surface-secondary dark:border-surface-secondary/20 shadow-sm flex items-center justify-between transition-all hover:shadow-md hover:-translate-y-1">
             <div>
-                <p className="text-xs font-bold text-text-secondary uppercase tracking-widest mb-2">{title}</p>
+                <p className="text-xs font-bold text-text-secondary dark:text-text-secondary/80 uppercase tracking-widest mb-2">{title}</p>
                 {loading ? (
                     <div className="h-8 w-24 bg-surface-secondary dark:bg-surface-secondary/20 animate-pulse rounded"></div>
                 ) : (
@@ -31,7 +31,7 @@ export default function StatsCards({ loading, stats }: StatsProps) {
     );
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <>
             <Card
                 title="Total User"
                 count={stats.total}
@@ -60,6 +60,6 @@ export default function StatsCards({ loading, stats }: StatsProps) {
                 colorClass="text-action"
                 iconBg="bg-action/10"
             />
-        </div>
+        </>
     );
 }
