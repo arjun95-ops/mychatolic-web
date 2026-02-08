@@ -3,16 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { createBrowserClient } from '@supabase/ssr';
+import { supabase } from '@/lib/supabaseClient';
 import {
     LayoutDashboard,
     UserCheck,
-    Book,
-    Calendar,
-    Settings,
     Database,
-    ChevronDown,
-    ChevronRight,
     LogOut,
     Menu,
     X
@@ -20,37 +15,33 @@ import {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
-        'alkitab': false,
-        'settings': false,
-        'system': false
-    });
     const pathname = usePathname();
     const router = useRouter();
     const [loading, setLoading] = useState(true);
 
-    // Supabase Client
-    const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-
     // Session Check
     useEffect(() => {
         const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                router.push('/'); // Redirect to home/login if no session
-            } else {
-                setLoading(false);
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                if (error) throw error;
+
+                if (!session) {
+                    console.log("No session found, redirecting to login...");
+                    router.push('/');
+                } else {
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error("Session check failed:", error);
+                // In case of error, you might want to redirect or let them reload
+                // For now, let's stop loading so they see *something* (or a blank screen is better than infinite load?)
+                // authenticating failed usually means we should redirect.
+                router.push('/');
             }
         };
         checkSession();
-    }, [router, supabase]);
-
-    const toggleGroup = (key: string) => {
-        setOpenGroups(prev => ({ ...prev, [key]: !prev[key] }));
-    };
+    }, [router]);
 
     const handleLogout = async () => {
         try {
@@ -69,51 +60,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Link
                 href={href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                        ? 'bg-action text-white shadow-lg shadow-blue-900/20 font-semibold'
-                        : 'text-white/70 hover:bg-white/10 hover:text-white'
+                    ? 'bg-action text-white shadow-lg shadow-blue-900/20 font-semibold'
+                    : 'text-white/70 hover:bg-white/10 hover:text-white'
                     }`}
             >
                 <Icon size={20} className={isActive ? 'text-white' : 'text-white/70 group-hover:text-white'} />
                 <span>{label}</span>
             </Link>
-        );
-    };
-
-    const NavGroup = ({ label, icon: Icon, groupKey, items }: any) => {
-        const isOpen = openGroups[groupKey];
-        const isChildActive = items.some((i: any) => pathname.startsWith(i.href));
-
-        return (
-            <div className="space-y-1">
-                <button
-                    onClick={() => toggleGroup(groupKey)}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors duration-200 text-left ${isOpen || isChildActive ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
-                        }`}
-                >
-                    <div className="flex items-center gap-3">
-                        <Icon size={20} className={isOpen || isChildActive ? 'text-white' : 'text-white/70'} />
-                        <span className="font-medium">{label}</span>
-                    </div>
-                    {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-                </button>
-
-                {isOpen && (
-                    <div className="ml-4 pl-4 border-l border-white/10 space-y-1 mt-1">
-                        {items.map((item: any) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={`block px-4 py-2 text-sm rounded-lg transition-colors ${pathname === item.href
-                                        ? 'text-white bg-white/10 font-medium'
-                                        : 'text-white/60 hover:text-white hover:bg-white/5'
-                                    }`}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
-                    </div>
-                )}
-            </div>
         );
     };
 
@@ -152,40 +105,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                     <NavItem href="/dashboard" icon={LayoutDashboard} label="Dashboard" exact />
                     <NavItem href="/dashboard/verification" icon={UserCheck} label="Verifikasi User" />
-                    <NavItem href="/dashboard/liturgy" icon={Calendar} label="Kalender Liturgi" />
-
-                    <div className="text-xs font-bold text-white/40 uppercase tracking-wider px-4 mb-2 mt-6">Data & Content</div>
-
-                    <NavGroup
-                        label="Data Alkitab"
-                        icon={Book}
-                        groupKey="alkitab"
-                        items={[
-                            { label: 'Kitab & Pasal', href: '/dashboard/bible' },
-                            { label: 'Input Manual', href: '/dashboard/bible/create' },
-                            { label: 'Import Excel', href: '/dashboard/bible/import' },
-                        ]}
-                    />
-
-                    <NavGroup
-                        label="Pengaturan App"
-                        icon={Settings}
-                        groupKey="settings"
-                        items={[
-                            { label: 'Homepage Settings', href: '/dashboard/content/home' },
-                            { label: 'CMS Artikel', href: '/dashboard/content/articles' },
-                        ]}
-                    />
-
-                    <NavGroup
-                        label="System"
-                        icon={Database}
-                        groupKey="system"
-                        items={[
-                            { label: 'Users & Roles', href: '/dashboard/system/users' },
-                            { label: 'Audit Logs', href: '/dashboard/system/logs' },
-                        ]}
-                    />
+                    <NavItem href="/dashboard/master-data" icon={Database} label="Master Data Gereja" />
                 </nav>
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-brand-primary">

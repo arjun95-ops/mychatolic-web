@@ -67,8 +67,13 @@ export default function CountryTab() {
     const handleDelete = async (id: string) => {
         if (!confirm("Hapus negara ini?")) return;
         const { error } = await supabase.from('countries').delete().eq('id', id);
-        if (error) showToast("Gagal hapus", "error");
-        else {
+        if (error) {
+            if (error.code === '23503') { // Foreign Key Violation
+                showToast("Tidak bisa menghapus karena masih dipakai oleh Keuskupan.", "error");
+            } else {
+                showToast("Gagal hapus: " + error.message, "error");
+            }
+        } else {
             showToast("Berhasil hapus", "success");
             fetchCountries();
         }
@@ -162,7 +167,7 @@ export default function CountryTab() {
                         <div>
                             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">ISO Code (2 Huruf)</label>
                             <input
-                                value={formData.iso_code}
+                                value={formData.iso_code || ""}
                                 maxLength={2}
                                 onChange={e => setFormData({ ...formData, iso_code: e.target.value.toUpperCase() })}
                                 className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white uppercase"
@@ -172,7 +177,7 @@ export default function CountryTab() {
                         <div>
                             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Bendera (Emoji)</label>
                             <input
-                                value={formData.flag_emoji}
+                                value={formData.flag_emoji || ""}
                                 onChange={e => setFormData({ ...formData, flag_emoji: e.target.value })}
                                 className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
                                 placeholder="🇮🇩"

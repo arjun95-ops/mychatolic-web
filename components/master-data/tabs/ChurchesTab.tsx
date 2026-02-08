@@ -157,10 +157,10 @@ export default function ChurchesTab() {
         : null;
       const mappedCountry: Country | undefined = sanitizedCountry
         ? {
-            id: String(sanitizedCountry.id || ""),
-            name: String(sanitizedCountry.name || ""),
-            flag_emoji: String(sanitizedCountry.flag_emoji || ""),
-          }
+          id: String(sanitizedCountry.id || ""),
+          name: String(sanitizedCountry.name || ""),
+          flag_emoji: String(sanitizedCountry.flag_emoji || ""),
+        }
         : undefined;
       return {
         id: String(item.id),
@@ -173,9 +173,9 @@ export default function ChurchesTab() {
         longitude: parseFloatOrNull(item.longitude),
         dioceses: sanitizedDiocese
           ? {
-              name: String(sanitizedDiocese.name || ""),
-              countries: mappedCountry,
-            }
+            name: String(sanitizedDiocese.name || ""),
+            countries: mappedCountry,
+          }
           : undefined,
       };
     });
@@ -398,7 +398,11 @@ export default function ChurchesTab() {
     if (!confirm("Hapus paroki ini?")) return;
     const { error } = await supabase.from("churches").delete().eq("id", id);
     if (error) {
-      showToast("Gagal menghapus data", "error");
+      if (error.code === '23503') {
+        showToast("Tidak bisa menghapus karena masih dipakai oleh Jadwal Misa.", "error");
+      } else {
+        showToast("Gagal menghapus data: " + error.message, "error");
+      }
       return;
     }
     showToast("Paroki dihapus", "success");
@@ -679,22 +683,40 @@ export default function ChurchesTab() {
         title={editingItem ? "Edit Paroki" : "Tambah Paroki"}
       >
         <form onSubmit={handleSave} className="space-y-4">
-          <div className="flex justify-center mb-4">
-            <div className="relative w-32 h-32 bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-purple-500 transition-colors group">
-              {previewUrl ? (
-                <Image src={previewUrl} alt="Preview" fill className="object-cover" />
-              ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
-                  <Upload className="w-8 h-8 mb-2" />
-                  <span className="text-xs">Upload Foto</span>
-                </div>
-              )}
-              <input
-                type="file"
-                onChange={handleImageChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-                accept="image/*"
-              />
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Foto Gereja (URL)
+            </label>
+            <div className="flex gap-4 items-start">
+              <div className="relative w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0">
+                {(formData.image_url || previewUrl) ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={previewUrl || formData.image_url}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                    onError={(e) => (e.currentTarget.style.display = 'none')}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-slate-400">
+                    <MapPin className="w-8 h-8 opacity-20" />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1">
+                <input
+                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+                  value={formData.image_url}
+                  onChange={(e) => {
+                    setFormData({ ...formData, image_url: e.target.value });
+                    setPreviewUrl(null);
+                  }}
+                  placeholder="https://example.com/gereja.jpg"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Masukkan link gambar langsung (public URL).
+                </p>
+              </div>
             </div>
           </div>
 

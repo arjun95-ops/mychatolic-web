@@ -11,7 +11,7 @@ import { Plus, Edit2, Trash2, Loader2, Save, Calendar, Clock, Languages, Tag, Ma
 interface Schedule {
     id: string;
     church_id: string;
-    day_of_week: number;
+    day: number;
     time_start: string;
     language: string;
     label: string | null;
@@ -85,7 +85,7 @@ export default function SchedulesTab() {
     const [editingItem, setEditingItem] = useState<Schedule | null>(null);
 
     const [formData, setFormData] = useState({
-        day_of_week: 0,
+        day: 0,
         time_start: "08:00",
         language: "Bahasa Indonesia",
         label: "Misa Mingguan"
@@ -146,7 +146,7 @@ export default function SchedulesTab() {
                     .from('mass_schedules')
                     .select('*')
                     .eq('church_id', selectedChurch)
-                    .order('day_of_week', { ascending: true })
+                    .order('day', { ascending: true })
                     .order('time_start', { ascending: true });
 
                 if (error) {
@@ -169,7 +169,7 @@ export default function SchedulesTab() {
         }
         setEditingItem(null);
         setFormData({
-            day_of_week: 0,
+            day: 0,
             time_start: "08:00",
             language: "Bahasa Indonesia",
             label: "Misa Mingguan"
@@ -180,7 +180,7 @@ export default function SchedulesTab() {
     const handleOpenEdit = (item: Schedule) => {
         setEditingItem(item);
         setFormData({
-            day_of_week: item.day_of_week,
+            day: item.day,
             time_start: item.time_start.substring(0, 5), // Ensure HH:MM
             language: item.language || "",
             label: item.label || ""
@@ -193,11 +193,11 @@ export default function SchedulesTab() {
 
         const { error } = await supabase.from('mass_schedules').delete().eq('id', id);
         if (error) {
-            showToast("Gagal menghapus data", "error");
+            showToast("Gagal menghapus data: " + error.message, "error");
         } else {
             showToast("Jadwal berhasil dihapus", "success");
             // Refresh list
-            const { data } = await supabase.from('mass_schedules').select('*').eq('church_id', selectedChurch).order('day_of_week').order('time_start');
+            const { data } = await supabase.from('mass_schedules').select('*').eq('church_id', selectedChurch).order('day').order('time_start');
             setSchedules(data || []);
         }
     };
@@ -210,7 +210,7 @@ export default function SchedulesTab() {
         try {
             const payload = {
                 church_id: selectedChurch,
-                day_of_week: Number(formData.day_of_week),
+                day: Number(formData.day),
                 time_start: formData.time_start,
                 language: formData.language,
                 label: formData.label
@@ -227,7 +227,7 @@ export default function SchedulesTab() {
             }
 
             // Refresh list manually to avoid complex dep arrays or full page reload
-            const { data } = await supabase.from('mass_schedules').select('*').eq('church_id', selectedChurch).order('day_of_week').order('time_start');
+            const { data } = await supabase.from('mass_schedules').select('*').eq('church_id', selectedChurch).order('day').order('time_start');
             setSchedules(data || []);
             setIsModalOpen(false);
 
@@ -323,7 +323,7 @@ export default function SchedulesTab() {
                                         <div className="flex justify-between items-start mb-3">
                                             <div className="flex items-center gap-2">
                                                 <div className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase">
-                                                    {DAYS.find(d => d.value === schedule.day_of_week)?.label}
+                                                    {DAYS.find(d => d.value === schedule.day)?.label}
                                                 </div>
                                                 <div className="px-2.5 py-1 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 text-xs font-bold font-mono">
                                                     {schedule.time_start.slice(0, 5)}
@@ -362,8 +362,8 @@ export default function SchedulesTab() {
                             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Hari</label>
                             <select
                                 className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 text-slate-900 dark:text-white"
-                                value={formData.day_of_week}
-                                onChange={e => setFormData({ ...formData, day_of_week: Number(e.target.value) })}
+                                value={formData.day}
+                                onChange={e => setFormData({ ...formData, day: Number(e.target.value) })}
                             >
                                 {DAYS.map(d => <option key={d.value} value={d.value}>{d.label}</option>)}
                             </select>
@@ -382,24 +382,24 @@ export default function SchedulesTab() {
 
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Kegiatan (Label)</label>
-                        <select
+                        <input
+                            type="text"
                             className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 text-slate-900 dark:text-white"
-                            value={formData.label || "Misa"} /* FORCE NOT NULL */
+                            value={formData.label || ""} /* FORCE NOT NULL */
                             onChange={e => setFormData({ ...formData, label: e.target.value })}
-                        >
-                            {LABEL_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                        </select>
+                            placeholder="Contoh: Misa Mingguan"
+                        />
                     </div>
 
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Bahasa / Keterangan</label>
-                        <select
+                        <input
+                            type="text"
                             className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 text-slate-900 dark:text-white"
-                            value={formData.language || "Bahasa Indonesia"} /* FORCE NOT NULL */
+                            value={formData.language || ""} /* FORCE NOT NULL */
                             onChange={e => setFormData({ ...formData, language: e.target.value })}
-                        >
-                            {LANGUAGE_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                        </select>
+                            placeholder="Contoh: Bahasa Indonesia"
+                        />
                     </div>
 
                     <div className="flex gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">

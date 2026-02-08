@@ -117,8 +117,13 @@ export default function DioceseTab() {
     const handleDelete = async (id: string) => {
         if (!window.confirm("Hapus keuskupan ini?")) return;
         const { error } = await supabase.from('dioceses').delete().eq('id', id);
-        if (error) showToast(error.message, "error");
-        else {
+        if (error) {
+            if (error.code === '23503') {
+                showToast("Tidak bisa menghapus karena masih dipakai oleh Paroki.", "error");
+            } else {
+                showToast(error.message, "error");
+            }
+        } else {
             showToast("Keuskupan dihapus", "success");
             fetchData();
         }
