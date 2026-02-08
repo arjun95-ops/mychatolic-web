@@ -12,23 +12,25 @@ const config: Config = {
         extend: {
             colors: {
                 brand: {
-                    primary: "var(--brand-primary)",
+                    primary: "rgb(var(--brand-primary) / <alpha-value>)",
                 },
-                action: "var(--action)",
-                "user-chat": "var(--user-chat)",
+                action: "rgb(var(--action) / <alpha-value>)",
+                "user-chat": "rgb(var(--user-chat) / <alpha-value>)",
                 surface: {
-                    primary: "var(--surface-primary)",
-                    secondary: "var(--surface-secondary)",
+                    primary: "rgb(var(--surface-primary) / <alpha-value>)",
+                    secondary: "rgb(var(--surface-secondary) / <alpha-value>)",
+                    inverse: "rgb(var(--surface-inverse) / <alpha-value>)",
                 },
                 text: {
-                    primary: "var(--text-primary)",
-                    secondary: "var(--text-secondary)",
+                    primary: "rgb(var(--text-primary) / <alpha-value>)",
+                    secondary: "rgb(var(--text-secondary) / <alpha-value>)",
+                    inverse: "rgb(var(--text-inverse) / <alpha-value>)",
                 },
                 status: {
-                    success: "var(--status-success)",
-                    pending: "var(--status-pending)",
-                    error: "var(--status-error)",
-                    disabled: "var(--status-disabled)",
+                    success: "rgb(var(--status-success) / <alpha-value>)",
+                    pending: "rgb(var(--status-pending) / <alpha-value>)",
+                    error: "rgb(var(--status-error) / <alpha-value>)",
+                    disabled: "rgb(var(--status-disabled) / <alpha-value>)",
                 },
             },
         },

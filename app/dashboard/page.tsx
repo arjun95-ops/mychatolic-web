@@ -84,14 +84,14 @@ export default function DashboardOverview() {
                 <div className="flex gap-3">
                     <Link
                         href="/dashboard/verification"
-                        className="flex items-center gap-2 bg-brand-primary text-white px-5 py-2.5 rounded-lg hover:bg-brand-primary/90 transition shadow-sm font-medium text-sm"
+                        className="flex items-center gap-2 bg-action text-text-inverse px-5 py-2.5 rounded-lg hover:bg-action/90 transition shadow-sm font-medium text-sm"
                     >
                         <UserCheck size={18} />
                         Verifikasi User
                     </Link>
                     {/* Fallback button if articles page not exists yet, keeps layout intact */}
                     <button
-                        className="flex items-center gap-2 bg-surface-primary text-text-primary border border-gray-200 px-5 py-2.5 rounded-lg hover:bg-gray-50 transition shadow-sm font-medium text-sm opacity-50 cursor-not-allowed"
+                        className="flex items-center gap-2 bg-surface-primary text-text-primary border border-text-secondary/20 px-5 py-2.5 rounded-lg hover:bg-surface-secondary transition shadow-sm font-medium text-sm opacity-50 cursor-not-allowed"
                         title="Fitur belum tersedia"
                     >
                         <PenTool size={18} />
@@ -114,7 +114,7 @@ export default function DashboardOverview() {
             </section>
 
             {/* ADDITIONAL INFO / EMPTY STATE */}
-            <section className="bg-surface-primary border border-gray-100 rounded-xl p-8 text-center">
+            <section className="bg-surface-primary border border-text-secondary/10 rounded-xl p-8 text-center">
                 <div className="max-w-md mx-auto">
                     <h3 className="text-lg font-semibold text-text-primary mb-2">Aktivitas Terbaru</h3>
                     <p className="text-text-secondary text-sm">

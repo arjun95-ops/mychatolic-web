@@ -44,9 +44,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                         onClick={() => removeToast(toast.id)}
                         className={`
                             px-4 py-3 rounded-lg shadow-lg text-white text-sm font-medium flex items-center gap-3 min-w-[300px] cursor-pointer animate-in slide-in-from-right-full fade-in duration-300
-                            ${toast.type === 'success' ? 'bg-emerald-600' : ''}
-                            ${toast.type === 'error' ? 'bg-red-600' : ''}
-                            ${toast.type === 'info' ? 'bg-blue-600' : ''}
+                            ${toast.type === 'success' ? 'bg-status-success text-text-inverse' : ''}
+                            ${toast.type === 'error' ? 'bg-status-error text-text-inverse' : ''}
+                            ${toast.type === 'info' ? 'bg-status-pending text-text-inverse' : ''}
                         `}
                     >
                         {toast.type === 'success' && (

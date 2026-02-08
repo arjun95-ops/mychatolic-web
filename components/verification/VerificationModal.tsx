@@ -141,15 +141,15 @@ export default function VerificationModal({
     };
 
     const InfoRow = ({ icon: Icon, label, value }: InfoRowProps) => (
-        <div className="flex items-start gap-3 py-2 border-b border-gray-100 last:border-0">
+        <div className="flex items-start gap-3 py-2 border-b border-surface-secondary dark:border-surface-secondary/20 last:border-0">
             <div className="mt-1 p-1.5 bg-brand-primary/10 text-brand-primary">
                 <Icon size={16} />
             </div>
             <div className="flex-1">
-                <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+                <p className="text-xs text-text-secondary dark:text-text-secondary/80 font-medium uppercase tracking-wide">
                     {label}
                 </p>
-                <p className="text-sm font-semibold text-gray-900 mt-0.5">
+                <p className="text-sm font-semibold text-text-primary dark:text-text-inverse mt-0.5">
                     {value || '-'}
                 </p>
             </div>
@@ -181,12 +181,12 @@ export default function VerificationModal({
                 >
                     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4">
                         <Dialog.Panel className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-                            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                            <div className="px-6 py-4 border-b border-surface-secondary flex justify-between items-center bg-surface-secondary/50 dark:bg-surface-inverse/50">
                                 <div>
-                                    <Dialog.Title className="text-lg font-bold text-gray-900">
+                                    <Dialog.Title className="text-lg font-bold text-text-primary dark:text-text-inverse">
                                         Verifikasi Pengguna
                                     </Dialog.Title>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-text-secondary">
                                         Tinjau data diri dan dokumen pendukung
                                     </p>
                                 </div>
@@ -202,10 +202,10 @@ export default function VerificationModal({
                                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
                                     <div className="md:col-span-5 space-y-6">
                                         <div>
-                                            <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-brand-primary pl-3">
+                                            <h3 className="text-sm font-bold text-text-primary dark:text-text-inverse mb-4 border-l-4 border-brand-primary pl-3">
                                                 IDENTITAS PRIBADI
                                             </h3>
-                                            <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-1">
+                                            <div className="bg-surface-primary dark:bg-surface-inverse rounded-xl border border-surface-secondary dark:border-surface-secondary/20 p-4 shadow-sm space-y-1">
                                                 <InfoRow
                                                     icon={User}
                                                     label="Nama Lengkap"
@@ -269,10 +269,10 @@ export default function VerificationModal({
                                         </div>
 
                                         <div>
-                                            <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-brand-primary pl-3">
+                                            <h3 className="text-sm font-bold text-text-primary dark:text-text-inverse mb-4 border-l-4 border-brand-primary pl-3">
                                                 LOKASI GEREJA
                                             </h3>
-                                            <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-1">
+                                            <div className="bg-surface-primary dark:bg-surface-inverse rounded-xl border border-surface-secondary dark:border-surface-secondary/20 p-4 shadow-sm space-y-1">
                                                 <InfoRow
                                                     icon={MapPin}
                                                     label="Negara"
@@ -293,7 +293,7 @@ export default function VerificationModal({
                                     </div>
 
                                     <div className="md:col-span-7">
-                                        <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-green-600 pl-3">
+                                        <h3 className="text-sm font-bold text-text-primary dark:text-text-inverse mb-4 border-l-4 border-status-success pl-3">
                                             DOKUMEN PENDUKUNG
                                         </h3>
 
@@ -368,14 +368,14 @@ export default function VerificationModal({
                                         <button
                                             onClick={() => setShowRejectInput(true)}
                                             disabled={loading}
-                                            className="px-6 py-2.5 rounded-xl border border-red-200 text-red-600 font-semibold hover:bg-red-50 transition"
+                                            className="px-6 py-2.5 rounded-xl border border-status-error/30 text-status-error font-semibold hover:bg-status-error/10 transition"
                                         >
                                             Tolak
                                         </button>
                                         <button
                                             onClick={() => handleAction('approve')}
                                             disabled={loading}
-                                            className="px-6 py-2.5 rounded-xl bg-brand-primary hover:opacity-90 text-white font-semibold shadow-lg shadow-brand-primary/20 transition flex items-center gap-2"
+                                            className="px-6 py-2.5 rounded-xl bg-action hover:bg-action/90 text-text-inverse font-semibold shadow-lg shadow-action/20 transition flex items-center gap-2"
                                         >
                                             {loading ? (
                                                 'Memproses...'
@@ -407,7 +407,7 @@ export default function VerificationModal({
                                             <button
                                                 onClick={() => handleAction('reject')}
                                                 disabled={loading}
-                                                className="px-6 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition text-sm"
+                                                className="px-6 py-2 rounded-xl bg-status-error text-text-inverse font-semibold hover:bg-status-error/90 transition text-sm"
                                             >
                                                 {loading ? 'Memproses...' : 'Konfirmasi Penolakan'}
                                             </button>

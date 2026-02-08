@@ -125,10 +125,10 @@ export default function MitraManager() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <StatCard title="Total Mitra" value={stats.total} icon={Users} color="bg-blue-500" />
-                <StatCard title="Perlu Verifikasi" value={stats.pending} icon={Clock} color="bg-amber-500" />
+                <StatCard title="Total Mitra" value={stats.total} icon={Users} color="bg-brand-primary" />
+                <StatCard title="Perlu Verifikasi" value={stats.pending} icon={Clock} color="bg-status-pending" />
                 <StatCard title="Pastor" value={stats.pastors} icon={UserCheck} color="bg-brand-primary" />
-                <StatCard title="Suster" value={stats.sisters} icon={UserCheck} color="bg-user-chat" />
+                <StatCard title="Suster" value={stats.sisters} icon={UserCheck} color="bg-action" />
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
@@ -139,8 +139,8 @@ export default function MitraManager() {
                                 key={role}
                                 onClick={() => setRoleFilter(role)}
                                 className={`px-4 py-2 text-sm font-semibold rounded-lg capitalize transition-all ${roleFilter === role
-                                    ? 'bg-brand-primary text-white shadow-md'
-                                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+                                    ? 'bg-action text-text-inverse shadow-md shadow-action/20'
+                                    : 'text-text-secondary hover:text-text-primary dark:text-text-inverse/70 dark:hover:text-text-inverse'
                                     }`}
                             >
                                 {role === 'all' ? 'Semua' : role}
@@ -154,7 +154,7 @@ export default function MitraManager() {
                             placeholder="Cari Nama..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="pl-4 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-brand-primary w-full md:w-64"
+                            className="pl-4 pr-4 py-2 bg-surface-secondary dark:bg-surface-inverse border-none rounded-xl focus:ring-2 focus:ring-action w-full md:w-64 text-text-primary dark:text-text-inverse"
                         />
                     </div>
                 </div>
@@ -193,7 +193,7 @@ export default function MitraManager() {
                                     <td className="p-4 text-center">
                                         <button
                                             onClick={() => handleDetail(user)}
-                                            className="text-brand-primary hover:text-brand-primary font-bold text-xs border border-brand-primary/20 rounded-lg px-3 py-1.5 hover:bg-slate-50 transition-all"
+                                            className="text-action hover:text-action-focus font-bold text-xs border border-action/20 rounded-lg px-3 py-1.5 hover:bg-action/5 transition-all"
                                         >
                                             Review
                                         </button>
@@ -246,27 +246,27 @@ function StatusBadge({ status }: { status: string }) {
 
     if (category === 'verified') {
         return (
-            <span className="text-green-600 bg-green-50 px-2 py-1 rounded-full text-xs font-bold">
+            <span className="text-status-success bg-status-success/10 px-2 py-1 rounded-full text-xs font-bold">
                 Terverifikasi
             </span>
         );
     }
     if (category === 'rejected') {
         return (
-            <span className="text-red-600 bg-red-50 px-2 py-1 rounded-full text-xs font-bold">
+            <span className="text-status-error bg-status-error/10 px-2 py-1 rounded-full text-xs font-bold">
                 Ditolak
             </span>
         );
     }
     if (category === 'pending') {
         return (
-            <span className="text-amber-600 bg-amber-50 px-2 py-1 rounded-full text-xs font-bold">
+            <span className="text-status-pending bg-status-pending/10 px-2 py-1 rounded-full text-xs font-bold">
                 Pending
             </span>
         );
     }
     return (
-        <span className="text-slate-600 bg-slate-100 px-2 py-1 rounded-full text-xs font-bold">
+        <span className="text-status-disabled bg-status-disabled/20 px-2 py-1 rounded-full text-xs font-bold">
             Belum Verifikasi
         </span>
     );

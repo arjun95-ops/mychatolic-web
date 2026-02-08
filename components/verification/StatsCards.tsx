@@ -19,7 +19,7 @@ export default function StatsCards({ loading, stats }: StatsProps) {
             <div>
                 <p className="text-xs font-bold text-text-secondary uppercase tracking-widest mb-2">{title}</p>
                 {loading ? (
-                    <div className="h-8 w-24 bg-gray-100 animate-pulse rounded"></div>
+                    <div className="h-8 w-24 bg-surface-secondary dark:bg-surface-secondary/20 animate-pulse rounded"></div>
                 ) : (
                     <h3 className={`text-3xl font-extrabold tracking-tight ${colorClass}`}>{count}</h3>
                 )}
@@ -37,28 +37,28 @@ export default function StatsCards({ loading, stats }: StatsProps) {
                 count={stats.total}
                 icon={Users}
                 colorClass="text-brand-primary"
-                iconBg="bg-blue-50"
+                iconBg="bg-brand-primary/10"
             />
             <Card
                 title="Menunggu Verifikasi"
                 count={stats.pending}
                 icon={Clock}
                 colorClass="text-status-pending"
-                iconBg="bg-blue-50/50"
+                iconBg="bg-status-pending/10"
             />
             <Card
                 title="User Terverifikasi"
                 count={stats.verified}
                 icon={CheckCircle}
                 colorClass="text-status-success"
-                iconBg="bg-green-50"
+                iconBg="bg-status-success/10"
             />
             <Card
                 title="Total Artikel"
                 count={stats.articles}
                 icon={FileText}
                 colorClass="text-action"
-                iconBg="bg-gray-50"
+                iconBg="bg-action/10"
             />
         </div>
     );

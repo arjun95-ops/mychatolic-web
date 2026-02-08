@@ -60,28 +60,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Link
                 href={href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                    ? 'bg-action text-white shadow-lg shadow-blue-900/20 font-semibold'
-                    : 'text-white/70 hover:bg-white/10 hover:text-white'
+                    ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                    : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
                     }`}
             >
-                <Icon size={20} className={isActive ? 'text-white' : 'text-white/70 group-hover:text-white'} />
+                <Icon size={20} className={isActive ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
                 <span>{label}</span>
             </Link>
         );
     };
 
     if (loading) {
-        return <div className="min-h-screen flex items-center justify-center bg-surface-secondary text-brand-primary">Loading secure workspace...</div>;
+        return <div className="min-h-screen flex items-center justify-center bg-surface-secondary dark:bg-surface-primary text-brand-primary">Loading secure workspace...</div>;
     }
 
     return (
-        <div className="min-h-screen bg-surface-secondary flex">
+        <div className="min-h-screen bg-surface-secondary dark:bg-surface-primary flex">
             {/* MOBILE HEADER */}
             <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-brand-primary z-50 flex items-center justify-between px-4 shadow-md">
-                <div className="font-bold text-white text-lg flex items-center gap-2">
+                <div className="font-bold text-text-inverse text-lg flex items-center gap-2">
                     🔥 MyCatholic
                 </div>
-                <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white p-2">
+                <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-text-inverse p-2">
                     {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </div>
@@ -89,26 +89,57 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* SIDEBAR */}
             <aside
                 className={`
-          fixed top-0 bottom-0 left-0 z-40 w-64 bg-brand-primary text-white shadow-2xl transform transition-transform duration-300 ease-in-out
+          fixed top-0 bottom-0 left-0 z-40 w-64 bg-brand-primary text-text-inverse shadow-2xl transform transition-transform duration-300 ease-in-out
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0 lg:block
         `}
             >
-                <div className="h-16 flex items-center px-6 border-b border-white/10">
-                    <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
+                <div className="h-16 flex items-center px-6 border-b border-text-inverse/10">
+                    <h1 className="text-xl font-bold tracking-tight flex items-center gap-2 text-text-inverse">
                         🔥 MyCatholic
                     </h1>
                 </div>
 
                 <nav className="p-4 space-y-2 overflow-y-auto h-[calc(100vh-8rem)]">
-                    <div className="text-xs font-bold text-white/40 uppercase tracking-wider px-4 mb-2 mt-2">Main Menu</div>
+                    <div className="text-xs font-bold text-text-inverse/40 uppercase tracking-wider px-4 mb-2 mt-2">Main Menu</div>
 
-                    <NavItem href="/dashboard" icon={LayoutDashboard} label="Dashboard" exact />
-                    <NavItem href="/dashboard/verification" icon={UserCheck} label="Verifikasi User" />
-                    <NavItem href="/dashboard/master-data" icon={Database} label="Master Data Gereja" />
+                    <div onClick={() => NavItem} className="grid gap-2">
+                        <Link
+                            href="/dashboard"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname === '/dashboard'
+                                ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                }`}
+                        >
+                            <LayoutDashboard size={20} className={pathname === '/dashboard' ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                            <span>Dashboard</span>
+                        </Link>
+
+                        <Link
+                            href="/dashboard/verification"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/verification')
+                                ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                }`}
+                        >
+                            <UserCheck size={20} className={pathname.startsWith('/dashboard/verification') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                            <span>Verifikasi User</span>
+                        </Link>
+
+                        <Link
+                            href="/dashboard/master-data"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/master-data')
+                                ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                }`}
+                        >
+                            <Database size={20} className={pathname.startsWith('/dashboard/master-data') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                            <span>Master Data Gereja</span>
+                        </Link>
+                    </div>
                 </nav>
 
-                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-brand-primary">
+                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-text-inverse/10 bg-brand-primary">
                     <button
                         onClick={handleLogout}
                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-200 hover:bg-red-500/20 hover:text-red-100 transition-colors"
