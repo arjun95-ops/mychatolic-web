@@ -97,6 +97,33 @@ const isMissingColumnError = (error: unknown, column: string) => {
   return raw.includes(column.toLowerCase()) && raw.includes("does not exist");
 };
 
+// --- Image Validation Helpers ---
+const getImageDimensionsFromFile = (file: File): Promise<{ w: number; h: number }> => {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = document.createElement("img"); // Use element for raw loading
+    img.onload = () => {
+      resolve({ w: img.naturalWidth, h: img.naturalHeight });
+      URL.revokeObjectURL(url);
+    };
+    img.onerror = (e) => {
+      reject(e);
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  });
+};
+
+const getImageDimensionsFromUrl = (url: string): Promise<{ w: number; h: number }> => {
+  return new Promise((resolve, reject) => {
+    const img = document.createElement("img");
+    img.crossOrigin = "Anonymous"; // Try CORS
+    img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+    img.onerror = (e) => reject(e);
+    img.src = url;
+  });
+};
+
 export default function ChurchesTab() {
   const { showToast } = useToast();
   const importInputRef = useRef<HTMLInputElement | null>(null);
@@ -683,39 +710,116 @@ export default function ChurchesTab() {
         title={editingItem ? "Edit Paroki" : "Tambah Paroki"}
       >
         <form onSubmit={handleSave} className="space-y-4">
+          {/* Image Upload / URL Section */}
           <div>
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
-              Foto Gereja (URL)
+              Foto Gereja (Wajib 1080x1350 Portrait 4:5)
             </label>
             <div className="flex gap-4 items-start">
-              <div className="relative w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0">
-                {(formData.image_url || previewUrl) ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={previewUrl || formData.image_url}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                    onError={(e) => (e.currentTarget.style.display = 'none')}
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full text-slate-400">
-                    <MapPin className="w-8 h-8 opacity-20" />
-                  </div>
-                )}
+              {/* Preview Box - Portrait Aspect Ratio 4:5 */}
+              {/* w-24 (96px) -> h should be 120px */}
+              <div className="relative w-24 h-[120px] bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 shadow-sm group">
+                <div className="relative w-full h-full bg-slate-200">
+                  {(previewUrl || formData.image_url) ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={previewUrl || formData.image_url}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center w-full h-full text-slate-400">
+                      <MapPin className="w-6 h-6 opacity-20" />
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="flex-1">
-                <input
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
-                  value={formData.image_url}
-                  onChange={(e) => {
-                    setFormData({ ...formData, image_url: e.target.value });
-                    setPreviewUrl(null);
-                  }}
-                  placeholder="https://example.com/gereja.jpg"
-                />
-                <p className="text-xs text-slate-500 mt-1">
-                  Masukkan link gambar langsung (public URL).
-                </p>
+
+              {/* Inputs */}
+              <div className="flex-1 space-y-3">
+                {/* File Upload Button */}
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept="image/*" // Restrict to images
+                    className="hidden"
+                    id="church-image-upload"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+
+                      // Validate Dimensions
+                      try {
+                        const dims = await getImageDimensionsFromFile(file);
+                        // CHANGED: 1080x1350
+                        if (dims.w !== 1080 || dims.h !== 1350) {
+                          showToast(`Dimensi gambar salah: ${dims.w}x${dims.h}. Wajib 1080x1350 px (Portrait 4:5).`, "error");
+                          e.target.value = ""; // Reset
+                          return; // Reject
+                        }
+                        // Valid
+                        setImageFile(file);
+                        setPreviewUrl(URL.createObjectURL(file));
+                        setFormData({ ...formData, image_url: "" });
+                      } catch (err) {
+                        showToast("Gagal membaca gambar.", "error");
+                      }
+                    }}
+                  />
+                  <label
+                    htmlFor="church-image-upload"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors shadow-sm"
+                  >
+                    <Upload className="w-4 h-4 text-purple-600" />
+                    Upload File (1080x1350)
+                  </label>
+                  {imageFile && <span className="text-xs text-green-600 ml-2 font-medium">File terpilih: {imageFile.name}</span>}
+                </div>
+
+                {/* OR divider */}
+                <div className="flex items-center gap-3">
+                  <div className="h-px bg-slate-200 dark:bg-slate-700 flex-1"></div>
+                  <span className="text-xs text-slate-400 font-medium">ATAU LINK URL</span>
+                  <div className="h-px bg-slate-200 dark:bg-slate-700 flex-1"></div>
+                </div>
+
+                {/* URL Input */}
+                <div>
+                  <input
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white text-sm"
+                    value={formData.image_url}
+                    onChange={(e) => {
+                      setFormData({ ...formData, image_url: e.target.value });
+                      // If user types URL, clear file upload state
+                      if (e.target.value) {
+                        setImageFile(null);
+                        setPreviewUrl(null);
+                      }
+                    }}
+                    onBlur={async (e) => {
+                      const val = e.target.value;
+                      if (!val) return;
+                      try {
+                        const dims = await getImageDimensionsFromUrl(val);
+                        // CHANGED: 1080x1350
+                        if (dims.w !== 1080 || dims.h !== 1350) {
+                          showToast(`URL Gambar dimensi salah: ${dims.w}x${dims.h}. Wajib 1080x1350 px.`, "error");
+                          // Optionally clear it or let user fix it. Let's warn only.
+                        } else {
+                          setPreviewUrl(val);
+                        }
+                      } catch (err) {
+                        // maybe invalid url or cors
+                        setPreviewUrl(val); // Try anyway
+                      }
+                    }}
+                    placeholder="https://example.com/poster-misa.jpg"
+                  />
+                  <p className="text-[10px] text-slate-500 mt-1">
+                    Pastikan link akses publik dan gambar berukuran 1080x1350 pixel (Portrait).
+                  </p>
+                </div>
               </div>
             </div>
           </div>
