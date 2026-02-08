@@ -6,6 +6,8 @@ import Modal from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
 import { Search, Plus, Edit2, Trash2, Loader2, Save, Map, Upload, X, ExternalLink, User } from "lucide-react";
 
+const BISHOP_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BISHOP_BUCKET || "bishop_images";
+
 // --- Interfaces ---
 interface Country {
     id: string;
@@ -205,14 +207,17 @@ export default function DioceseTab() {
         const filePath = `bishops/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
-            .from('images')
+            .from(BISHOP_BUCKET)
             .upload(filePath, file);
 
         if (uploadError) {
+            if (uploadError.message.includes("Bucket not found")) {
+                showToast(`Bucket ${BISHOP_BUCKET} tidak ditemukan. Buat bucket tersebut di Supabase Storage.`, "error");
+            }
             throw uploadError;
         }
 
-        const { data } = supabase.storage.from('images').getPublicUrl(filePath);
+        const { data } = supabase.storage.from(BISHOP_BUCKET).getPublicUrl(filePath);
         return data.publicUrl;
     };
 

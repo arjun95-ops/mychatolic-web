@@ -17,6 +17,8 @@ import {
   Upload,
 } from "lucide-react";
 
+const CHURCH_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_CHURCH_BUCKET || "church_images";
+
 interface Country {
   id: string;
   name: string;
@@ -318,9 +320,14 @@ export default function ChurchesTab() {
       const fileExt = imageFile.name.split(".").pop();
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `churches/${fileName}`;
-      const { error } = await supabase.storage.from("images").upload(filePath, imageFile);
-      if (error) throw error;
-      const { data } = supabase.storage.from("images").getPublicUrl(filePath);
+      const { error } = await supabase.storage.from(CHURCH_BUCKET).upload(filePath, imageFile);
+      if (error) {
+        if (error.message.includes("Bucket not found")) {
+          showToast(`Bucket ${CHURCH_BUCKET} tidak ditemukan. Buat bucket tersebut di Supabase Storage.`, "error");
+        }
+        throw error;
+      }
+      const { data } = supabase.storage.from(CHURCH_BUCKET).getPublicUrl(filePath);
       return data.publicUrl;
     } finally {
       setUploading(false);
