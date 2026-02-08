@@ -33,6 +33,10 @@ export async function GET(req: NextRequest) {
         role: adminRow?.role || null,
         status: adminRow?.status || null,
         full_name: profile?.full_name || user.user_metadata?.full_name || user.email || 'Admin',
+        // Debug safe fields
+        user_id: user.id,
+        user_email: user.email,
+        admin_auth_user_id: adminRow?.auth_user_id || null,
     }
 
     return NextResponse.json(responseData)

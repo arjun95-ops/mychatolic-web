@@ -117,6 +117,10 @@ export async function getAdminContext(
         .eq('auth_user_id', user.id)
         .single()
 
+    if (adminError) {
+        console.error('getAdminContext: Error fetching admin_users row:', adminError);
+    }
+
     // Note: We don't error here if adminRow is missing, 
     // because getAdminContext just builds context. 
     // requireApprovedAdmin will enforce presence.

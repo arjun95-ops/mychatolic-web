@@ -22,8 +22,12 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
     >(null);
 
     useEffect(() => {
-        // Skip guard for pending-approval pages to avoid loops
-        if (pathname === '/dashboard/pending-approval') {
+        // Skip guard for login, register, pending-approval to avoid loops
+        if (
+            pathname === '/dashboard/login' ||
+            pathname === '/dashboard/register' ||
+            pathname === '/dashboard/pending-approval'
+        ) {
             setLoading(false);
             return;
         }
@@ -35,7 +39,7 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
                 if (res.status === 401) {
                     // Not authenticated at all
                     setErrorState('unauthorized');
-                    router.push('/login');
+                    router.push('/dashboard/login');
                     return;
                 }
 
@@ -44,9 +48,10 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
                 // 1. Check Authentication logic (handled by 401 above usually, but double check)
                 if (!data.isAuthenticated) {
                     setErrorState('unauthorized');
-                    router.push('/login');
+                    router.push('/dashboard/login');
                     return;
                 }
+
 
 
                 // 2. Check Email Verification
