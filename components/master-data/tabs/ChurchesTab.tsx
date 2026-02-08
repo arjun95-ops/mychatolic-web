@@ -523,6 +523,8 @@ export default function ChurchesTab() {
     }
   };
 
+
+
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all duration-300">
       <div className="p-6 border-b border-slate-100 dark:border-slate-800 space-y-4">
@@ -534,16 +536,13 @@ export default function ChurchesTab() {
               placeholder="Cari Paroki..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm text-slate-900 dark:text-white transition-colors"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm text-slate-900 dark:text-white transition-colors"
             />
           </div>
           <div className="flex items-center gap-2">
             <input
               ref={importInputRef}
-              type="file"
-              accept=".csv,.xlsx,.xls"
-              className="hidden"
-              onChange={handleImportFile}
+            // ...
             />
             <button
               onClick={() => importInputRef.current?.click()}
@@ -571,7 +570,7 @@ export default function ChurchesTab() {
             </a>
             <button
               onClick={handleOpenAdd}
-              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transition-all text-sm"
+              className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-brand-primary/20 transition-all text-sm"
             >
               <Plus className="w-4 h-4" />
               Tambah Paroki
@@ -584,7 +583,7 @@ export default function ChurchesTab() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <select
-            className="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-primary"
             value={selectedCountry}
             onChange={(e) => setSelectedCountry(e.target.value)}
           >
@@ -597,7 +596,7 @@ export default function ChurchesTab() {
           </select>
 
           <select
-            className="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+            className="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-50"
             value={filterDiocese}
             onChange={(e) => setFilterDiocese(e.target.value)}
             disabled={!selectedCountry}
@@ -627,7 +626,7 @@ export default function ChurchesTab() {
             {loading ? (
               <tr>
                 <td colSpan={5} className="p-8 text-center">
-                  <Loader2 className="w-6 h-6 animate-spin mx-auto text-purple-600" />
+                  <Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-primary" />
                 </td>
               </tr>
             ) : data.length === 0 ? (
@@ -643,6 +642,7 @@ export default function ChurchesTab() {
                   className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
                 >
                   <td className="p-5">
+                    {/* ... */}
                     <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden relative">
                       {item.image_url ? (
                         <Image src={item.image_url} alt={item.name} fill className="object-cover" />
@@ -686,7 +686,7 @@ export default function ChurchesTab() {
                   <td className="p-5 flex justify-end gap-2">
                     <button
                       onClick={() => handleOpenEdit(item)}
-                      className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors"
+                      className="p-2 text-slate-400 hover:text-brand-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
@@ -771,7 +771,7 @@ export default function ChurchesTab() {
                     htmlFor="church-image-upload"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors shadow-sm"
                   >
-                    <Upload className="w-4 h-4 text-purple-600" />
+                    <Upload className="w-4 h-4 text-brand-primary" />
                     Upload File (1080x1350)
                   </label>
                   {imageFile && <span className="text-xs text-green-600 ml-2 font-medium">File terpilih: {imageFile.name}</span>}
@@ -787,7 +787,7 @@ export default function ChurchesTab() {
                 {/* URL Input */}
                 <div>
                   <input
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white text-sm"
+                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white text-sm"
                     value={formData.image_url}
                     onChange={(e) => {
                       setFormData({ ...formData, image_url: e.target.value });
@@ -829,7 +829,7 @@ export default function ChurchesTab() {
               Nama Paroki
             </label>
             <input
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -842,7 +842,7 @@ export default function ChurchesTab() {
               Alamat
             </label>
             <input
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               placeholder="Alamat Lengkap"
@@ -854,7 +854,7 @@ export default function ChurchesTab() {
               Keuskupan
             </label>
             <select
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+              className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
               required
               value={formData.diocese_id}
               onChange={(e) => setFormData({ ...formData, diocese_id: e.target.value })}
@@ -874,7 +874,7 @@ export default function ChurchesTab() {
                 Link Google Maps
               </label>
               <input
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
                 value={formData.google_maps_url}
                 onChange={(e) =>
                   setFormData({ ...formData, google_maps_url: e.target.value })
@@ -887,7 +887,7 @@ export default function ChurchesTab() {
                 Latitude
               </label>
               <input
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
                 value={formData.latitude}
                 onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
                 placeholder="-6.2000"
@@ -898,7 +898,7 @@ export default function ChurchesTab() {
                 Longitude
               </label>
               <input
-                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
                 value={formData.longitude}
                 onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
                 placeholder="106.8166"
@@ -917,7 +917,7 @@ export default function ChurchesTab() {
             <button
               type="submit"
               disabled={isSubmitting || uploading}
-              className="flex-1 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold hover:opacity-90 flex justify-center items-center gap-2"
+              className="flex-1 py-2.5 bg-brand-primary text-white rounded-xl font-bold hover:opacity-90 flex justify-center items-center gap-2"
             >
               {isSubmitting || uploading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -927,8 +927,9 @@ export default function ChurchesTab() {
               Simpan
             </button>
           </div>
-        </form>
-      </Modal>
-    </div>
+        </form >
+      </Modal >
+    </div >
   );
+
 }

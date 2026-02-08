@@ -123,7 +123,7 @@ export default function ManualEntryPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
             </div>
         );
     }
@@ -148,13 +148,13 @@ export default function ManualEntryPage() {
                     {/* Book Selection */}
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                            <BookOpen className="w-4 h-4 text-purple-600" />
+                            <BookOpen className="w-4 h-4 text-brand-primary" />
                             Kitab
                         </label>
                         <select
                             value={selectedBookId}
                             onChange={(e) => setSelectedBookId(e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 transition-all cursor-pointer appearance-none"
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all cursor-pointer appearance-none"
                             required
                         >
                             <option value="" disabled>Pilih Kitab...</option>
@@ -170,14 +170,14 @@ export default function ManualEntryPage() {
                         {/* Chapter Input */}
                         <div className="space-y-2">
                             <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                                <Hash className="w-4 h-4 text-purple-600" />
+                                <Hash className="w-4 h-4 text-brand-primary" />
                                 Pasal (Chapter)
                             </label>
                             <input
                                 type="number"
                                 value={chapter}
                                 onChange={(e) => setChapter(e.target.value)}
-                                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 transition-all placeholder:text-slate-400"
+                                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all placeholder:text-slate-400"
                                 placeholder="1"
                                 min="1"
                                 required
@@ -226,7 +226,7 @@ export default function ManualEntryPage() {
                         <textarea
                             value={verseText}
                             onChange={(e) => setVerseText(e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 transition-all placeholder:text-slate-400 min-h-[120px] resize-y leading-relaxed"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all placeholder:text-slate-400 min-h-[120px] resize-y leading-relaxed"
                             placeholder="Tuliskan isi ayat di sini..."
                             required
                         />
@@ -236,7 +236,7 @@ export default function ManualEntryPage() {
                         <button
                             type="submit"
                             disabled={saving}
-                            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transform transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full bg-gradient-to-r from-brand-primary to-action hover:from-brand-primary/90 hover:to-action/90 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-brand-primary/20 dark:shadow-purple-900/20 transform transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {saving ? (
                                 <>

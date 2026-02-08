@@ -201,7 +201,7 @@ export default function SchedulesPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <Calendar className="w-8 h-8 text-purple-600" />
+                        <Calendar className="w-8 h-8 text-brand-primary" />
                         Manajemen Jadwal Misa
                     </h1>
                     <p className="text-slate-500 dark:text-slate-400">
@@ -210,7 +210,7 @@ export default function SchedulesPage() {
                 </div>
                 <button
                     onClick={() => handleOpenModal()}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transition-all transform hover:-translate-y-0.5"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-brand-primary/20 dark:shadow-brand-primary/20 transition-all transform hover:-translate-y-0.5"
                 >
                     <Plus className="w-5 h-5" />
                     Tambah Jadwal
@@ -226,7 +226,7 @@ export default function SchedulesPage() {
                         placeholder="Cari berdasarkan nama gereja atau kegiatan..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
                     />
                 </div>
             </div>
@@ -262,8 +262,8 @@ export default function SchedulesPage() {
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-2">
                                                 <span className={`px-2 py-1 rounded text-xs font-bold w-16 text-center ${schedule.day_of_week === 7 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' :
-                                                        schedule.day_of_week === 6 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300' :
-                                                            'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                                                    schedule.day_of_week === 6 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300' :
+                                                        'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
                                                     }`}>
                                                     {getDayLabel(schedule.day_of_week)}
                                                 </span>
@@ -279,7 +279,7 @@ export default function SchedulesPage() {
                                         <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                                             <div className="space-y-1">
                                                 {schedule.category && (
-                                                    <div className="text-xs bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded inline-block">
+                                                    <div className="text-xs bg-brand-primary/10 dark:bg-brand-primary/10 text-brand-primary dark:text-brand-primary px-2 py-0.5 rounded inline-block">
                                                         {schedule.category}
                                                     </div>
                                                 )}
@@ -418,7 +418,7 @@ export default function SchedulesPage() {
                                 <button
                                     type="submit"
                                     disabled={saving}
-                                    className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-bold shadow-md flex items-center gap-2"
+                                    className="px-6 py-2 bg-brand-primary hover:opacity-90 text-white rounded-lg text-sm font-bold shadow-md flex items-center gap-2"
                                 >
                                     {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                     Simpan

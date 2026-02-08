@@ -279,13 +279,13 @@ export default function DioceseTab() {
                             placeholder="Cari Keuskupan..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm text-slate-900 dark:text-white transition-colors"
+                            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm text-slate-900 dark:text-white transition-colors"
                         />
                     </div>
                     {/* Filter Country */}
                     <div className="relative min-w-[200px]">
                         <select
-                            className="w-full pl-3 pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm text-slate-900 dark:text-white appearance-none"
+                            className="w-full pl-3 pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm text-slate-900 dark:text-white appearance-none"
                             value={selectedCountryFilter}
                             onChange={(e) => setSelectedCountryFilter(e.target.value)}
                         >
@@ -310,7 +310,7 @@ export default function DioceseTab() {
 
                 <button
                     onClick={handleOpenAdd}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transition-all text-sm whitespace-nowrap"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-brand-primary/20 transition-all text-sm whitespace-nowrap"
                 >
                     <Plus className="w-4 h-4" />
                     Tambah Keuskupan
@@ -331,7 +331,7 @@ export default function DioceseTab() {
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                         {loading ? (
-                            <tr><td colSpan={5} className="p-8 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-purple-600" /></td></tr>
+                            <tr><td colSpan={5} className="p-8 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-primary" /></td></tr>
                         ) : data.length === 0 ? (
                             <tr><td colSpan={5} className="p-8 text-center text-slate-400">Data tidak ditemukan.</td></tr>
                         ) : (
@@ -339,7 +339,7 @@ export default function DioceseTab() {
                                 <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
                                     <td className="p-5 font-semibold text-slate-900 dark:text-white">
                                         <div className="flex items-center gap-3">
-                                            <div className="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg text-indigo-600 dark:text-indigo-400 shrink-0">
+                                            <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-brand-primary shrink-0">
                                                 <Map className="w-4 h-4" />
                                             </div>
                                             <div>
@@ -392,7 +392,7 @@ export default function DioceseTab() {
                                         )}
                                     </td>
                                     <td className="p-5 flex justify-end gap-2">
-                                        <button onClick={() => handleOpenEdit(item)} className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors"><Edit2 className="w-4 h-4" /></button>
+                                        <button onClick={() => handleOpenEdit(item)} className="p-2 text-slate-400 hover:text-brand-primary hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"><Edit2 className="w-4 h-4" /></button>
                                         <button onClick={() => handleDelete(item.id)} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"><Trash2 className="w-4 h-4" /></button>
                                     </td>
                                 </tr>
@@ -409,7 +409,7 @@ export default function DioceseTab() {
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Keuskupan</label>
                         <input
-                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
                             required
                             value={formData.name}
                             onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -419,7 +419,7 @@ export default function DioceseTab() {
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Negara</label>
                         <select
-                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
                             required
                             value={formData.country_id}
                             onChange={e => setFormData({ ...formData, country_id: e.target.value })}
@@ -433,7 +433,7 @@ export default function DioceseTab() {
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Alamat Kantor</label>
                         <textarea
-                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white min-h-[80px]"
+                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white min-h-[80px]"
                             value={formData.address}
                             onChange={e => setFormData({ ...formData, address: e.target.value })}
                             placeholder="Alamat lengkap keuskupan..."
@@ -442,7 +442,7 @@ export default function DioceseTab() {
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Link Google Maps</label>
                         <input
-                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
                             value={formData.google_maps_url}
                             onChange={e => setFormData({ ...formData, google_maps_url: e.target.value })}
                             placeholder="https://maps.google.com/..."
@@ -457,7 +457,7 @@ export default function DioceseTab() {
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Uskup</label>
                                 <input
-                                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white"
+                                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
                                     value={formData.bishop_name}
                                     onChange={e => setFormData({ ...formData, bishop_name: e.target.value })}
                                     placeholder="Contoh: Ignatius Kardinal Suharyo"
@@ -519,7 +519,7 @@ export default function DioceseTab() {
                                                 }}
                                             />
                                             <label htmlFor="bishop-upload" className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors shadow-sm">
-                                                <Upload className="w-4 h-4 text-purple-600" />
+                                                <Upload className="w-4 h-4 text-brand-primary" />
                                                 Upload Foto (1080x1350)
                                             </label>
                                             {bishopFile && <span className="text-xs text-green-600 block mt-1 font-medium">{bishopFile.name}</span>}
@@ -533,7 +533,7 @@ export default function DioceseTab() {
 
                                         {/* URL Input */}
                                         <input
-                                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-slate-900 dark:text-white text-sm"
+                                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white text-sm"
                                             placeholder="https://example.com/foto-uskup.jpg"
                                             value={formData.bishop_image_url}
                                             onChange={(e) => {
@@ -578,7 +578,7 @@ export default function DioceseTab() {
                         <button
                             type="submit"
                             disabled={isSubmitting || !isValidBishopImage}
-                            className={`flex-1 py-2.5 text-white rounded-xl font-bold flex justify-center items-center gap-2 ${isSubmitting || !isValidBishopImage ? 'bg-slate-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90'}`}
+                            className={`flex-1 py-2.5 text-white rounded-xl font-bold flex justify-center items-center gap-2 ${isSubmitting || !isValidBishopImage ? 'bg-slate-400 cursor-not-allowed' : 'bg-brand-primary hover:opacity-90'}`}
                         >
                             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                             Simpan

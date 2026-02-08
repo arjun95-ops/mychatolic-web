@@ -15,6 +15,7 @@ const config: Config = {
                     primary: "var(--brand-primary)",
                 },
                 action: "var(--action)",
+                "user-chat": "var(--user-chat)",
                 surface: {
                     primary: "var(--surface-primary)",
                     secondary: "var(--surface-secondary)",

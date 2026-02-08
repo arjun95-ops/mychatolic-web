@@ -118,8 +118,8 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
                                 type="button"
                                 onClick={() => setFormData({ ...formData, target_audience: 'nasional' })}
                                 className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${formData.target_audience === 'nasional'
-                                        ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
-                                        : 'border-slate-200 hover:border-blue-200 dark:border-slate-700'
+                                    ? 'border-action bg-action/10 text-action dark:bg-action/20 dark:text-action'
+                                    : 'border-slate-200 hover:border-action/30 dark:border-slate-700'
                                     }`}
                             >
                                 <Globe className="w-5 h-5 mb-1" />
@@ -129,8 +129,8 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
                                 type="button"
                                 onClick={() => setFormData({ ...formData, target_audience: 'keuskupan' })}
                                 className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${formData.target_audience === 'keuskupan'
-                                        ? 'border-purple-600 bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400'
-                                        : 'border-slate-200 hover:border-purple-200 dark:border-slate-700'
+                                    ? 'border-brand-primary bg-brand-primary/10 text-brand-primary dark:bg-brand-primary/20 dark:text-brand-primary'
+                                    : 'border-slate-200 hover:border-brand-primary/30 dark:border-slate-700'
                                     }`}
                             >
                                 <Church className="w-5 h-5 mb-1" />
@@ -140,8 +140,8 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
                                 type="button"
                                 onClick={() => setFormData({ ...formData, target_audience: 'paroki' })}
                                 className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${formData.target_audience === 'paroki'
-                                        ? 'border-green-600 bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                                        : 'border-slate-200 hover:border-green-200 dark:border-slate-700'
+                                    ? 'border-green-600 bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                                    : 'border-slate-200 hover:border-green-200 dark:border-slate-700'
                                     }`}
                             >
                                 <MapPin className="w-5 h-5 mb-1" />
@@ -158,7 +158,7 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
                                 required
                                 value={formData.target_id || ""}
                                 onChange={(e) => setFormData({ ...formData, target_id: e.target.value })}
-                                className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-brand-primary"
                             >
                                 <option value="">-- Pilih Keuskupan --</option>
                                 {dioceses.map(d => (
@@ -193,7 +193,7 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
                             required
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-action"
                             placeholder="Judul singkat & jelas..."
                         />
                     </div>
@@ -206,7 +206,7 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
                             rows={5}
                             value={formData.content}
                             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-action"
                             placeholder="Detail lengkap pengumuman..."
                         ></textarea>
                     </div>
@@ -218,7 +218,7 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
                                 type="checkbox"
                                 checked={formData.is_active}
                                 onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                                className="w-4 h-4 text-action rounded focus:ring-action"
                             />
                             <span className="text-sm font-medium">Status Aktif</span>
                         </label>
@@ -234,7 +234,7 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
+                                className="px-6 py-2 bg-gradient-to-r from-action to-cyan-500 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-action/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
                             >
                                 {loading ? (
                                     <>

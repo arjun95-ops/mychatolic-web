@@ -71,9 +71,9 @@ export default function AnnouncementsTab() {
     const getAudienceIcon = (audience: string) => {
         switch (audience) {
             case 'nasional':
-                return <Globe className="w-4 h-4 text-blue-500" />;
+                return <Globe className="w-4 h-4 text-action" />;
             case 'keuskupan':
-                return <MapPin className="w-4 h-4 text-purple-500" />;
+                return <MapPin className="w-4 h-4 text-brand-primary" />;
             case 'paroki':
                 return <MapPin className="w-4 h-4 text-green-500" />;
             default:
@@ -99,12 +99,12 @@ export default function AnnouncementsTab() {
                         placeholder="Cari pengumuman..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-action"
                     />
                 </div>
                 <button
                     onClick={handleAdd}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium shadow-lg shadow-blue-600/20"
+                    className="flex items-center gap-2 px-4 py-2 bg-action hover:opacity-90 text-white rounded-lg transition-colors font-medium shadow-lg shadow-action/20"
                 >
                     <Plus className="w-4 h-4" />
                     Buat Pengumuman
@@ -113,13 +113,13 @@ export default function AnnouncementsTab() {
 
             {loading ? (
                 <div className="text-center py-10">
-                    <div className="animate-spin w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full mx-auto mb-2"></div>
+                    <div className="animate-spin w-8 h-8 border-2 border-action border-t-transparent rounded-full mx-auto mb-2"></div>
                     <p className="text-slate-500">Memuat pengumuman...</p>
                 </div>
             ) : announcements.length === 0 ? (
                 <div className="text-center py-12 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl">
-                    <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <Megaphone className="w-6 h-6 text-blue-400" />
+                    <div className="w-12 h-12 bg-action/10 dark:bg-blue-900/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <Megaphone className="w-6 h-6 text-action" />
                     </div>
                     <p className="text-slate-500 font-medium">Belum ada pengumuman</p>
                     <p className="text-slate-400 text-sm mt-1">Buat pengumuman baru untuk umat.</p>
@@ -130,9 +130,9 @@ export default function AnnouncementsTab() {
                         <div key={item.id} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 hover:shadow-md transition-all group relative">
                             <div className="flex items-start justify-between">
                                 <div className="flex items-start gap-4">
-                                    <div className={`p-3 rounded-full shrink-0 ${item.target_audience === 'nasional' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' :
-                                            item.target_audience === 'keuskupan' ? 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400' :
-                                                'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
+                                    <div className={`p-3 rounded-full shrink-0 ${item.target_audience === 'nasional' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-action' :
+                                        item.target_audience === 'keuskupan' ? 'bg-brand-primary/10 text-brand-primary dark:bg-brand-primary/20 dark:text-brand-primary' :
+                                            'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
                                         }`}>
                                         <Megaphone className="w-5 h-5" />
                                     </div>
@@ -164,7 +164,7 @@ export default function AnnouncementsTab() {
                                 <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
                                         onClick={() => handleEdit(item)}
-                                        className="p-2 bg-slate-50 hover:bg-blue-50 text-slate-500 hover:text-blue-600 rounded-lg transition-colors border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"
+                                        className="p-2 bg-slate-50 hover:bg-action/10 text-slate-500 hover:text-action rounded-lg transition-colors border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"
                                     >
                                         <Edit2 className="w-4 h-4" />
                                     </button>

@@ -142,7 +142,7 @@ export default function VerificationModal({
 
     const InfoRow = ({ icon: Icon, label, value }: InfoRowProps) => (
         <div className="flex items-start gap-3 py-2 border-b border-gray-100 last:border-0">
-            <div className="mt-1 p-1.5 bg-blue-50 rounded-lg text-blue-600">
+            <div className="mt-1 p-1.5 bg-brand-primary/10 text-brand-primary">
                 <Icon size={16} />
             </div>
             <div className="flex-1">
@@ -202,7 +202,7 @@ export default function VerificationModal({
                                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
                                     <div className="md:col-span-5 space-y-6">
                                         <div>
-                                            <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">
+                                            <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-brand-primary pl-3">
                                                 IDENTITAS PRIBADI
                                             </h3>
                                             <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-1">
@@ -269,7 +269,7 @@ export default function VerificationModal({
                                         </div>
 
                                         <div>
-                                            <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-purple-600 pl-3">
+                                            <h3 className="text-sm font-bold text-gray-900 mb-4 border-l-4 border-brand-primary pl-3">
                                                 LOKASI GEREJA
                                             </h3>
                                             <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-1">
@@ -375,7 +375,7 @@ export default function VerificationModal({
                                         <button
                                             onClick={() => handleAction('approve')}
                                             disabled={loading}
-                                            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:shadow-lg hover:scale-[1.02] transition flex items-center gap-2"
+                                            className="px-6 py-2.5 rounded-xl bg-brand-primary hover:opacity-90 text-white font-semibold shadow-lg shadow-brand-primary/20 transition flex items-center gap-2"
                                         >
                                             {loading ? (
                                                 'Memproses...'

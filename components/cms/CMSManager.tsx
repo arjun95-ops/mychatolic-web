@@ -12,7 +12,7 @@ export default function CMSManager() {
         <div className="space-y-6">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 tracking-tight">Content Management</h1>
+                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-action dark:from-brand-primary dark:to-action tracking-tight">Content Management</h1>
                 <p className="text-slate-500 dark:text-slate-400 mt-1">Kelola artikel berita dan pengumuman aplikasi.</p>
             </div>
 
@@ -21,8 +21,8 @@ export default function CMSManager() {
                 <button
                     onClick={() => setActiveTab('articles')}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'articles'
-                            ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 shadow-sm'
-                            : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+                        ? 'bg-brand-primary/10 text-brand-primary dark:bg-brand-primary/20 dark:text-brand-primary shadow-sm'
+                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
                         }`}
                 >
                     <Newspaper className="w-4 h-4" />
@@ -31,8 +31,8 @@ export default function CMSManager() {
                 <button
                     onClick={() => setActiveTab('announcements')}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'announcements'
-                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 shadow-sm'
-                            : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+                        ? 'bg-action/10 text-action dark:bg-action/20 dark:text-action shadow-sm'
+                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
                         }`}
                 >
                     <Bell className="w-4 h-4" />

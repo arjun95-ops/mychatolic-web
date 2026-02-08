@@ -72,7 +72,7 @@ export default function UserTable({
     if (loading) {
         return (
             <div className="p-12 text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary mx-auto"></div>
                 <p className="mt-2 text-sm text-gray-400">Memuat data user...</p>
             </div>
         );
@@ -102,7 +102,7 @@ export default function UserTable({
                 </thead>
                 <tbody className="divide-y divide-gray-50">
                     {rows.map((user) => (
-                        <tr key={user?.id} className="hover:bg-blue-50/30 transition group">
+                        <tr key={user?.id} className="hover:bg-slate-50 transition group">
                             <td className="px-6 py-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden relative border border-gray-100 shrink-0">
@@ -151,7 +151,7 @@ export default function UserTable({
                             <td className="px-6 py-4 text-right">
                                 <button
                                     onClick={() => onDetail(user)}
-                                    className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition text-xs font-semibold inline-flex items-center gap-1 shadow-sm"
+                                    className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:text-brand-primary hover:border-brand-primary hover:bg-slate-50 transition text-xs font-semibold inline-flex items-center gap-1 shadow-sm"
                                 >
                                     <Eye size={14} /> Detail
                                 </button>

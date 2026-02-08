@@ -11,11 +11,11 @@
 
         /* Surfaces */
         --surface-primary: #FFFFFF;
-        --surface-secondary: #F8FAFC;
+        --surface-secondary: #EFEFEF;
 
         /* Text */
         --text-primary: #1A1A1A;
-        --text-secondary: #64748B;
+        --text-secondary: #666666;
 
         /* Status */
         --status-success: #2E7D32;
@@ -27,13 +27,16 @@
     .dark {
         /* Brand Palette - Dark Mode adjustments */
         --brand-primary: #1F5D8C;
+        --action: #2F80ED;
+        --user-chat: #3A7CA5;
 
         /* Surfaces - Dark */
-        --surface-primary: #0A0A0A;
-        --surface-secondary: #1C1C1C;
-
+        /* Assuming #1C1C1C is the primary dark surface based on request list */
+        --surface-primary: #1C1C1C; 
+        --surface-secondary: #2C2C2C; /* Slightly lighter for secondary if primary is 1C1C1C */
+        
         /* Text - Dark */
-        --text-primary: #EDEDED;
-        --text-secondary: #94A3B8;
+        --text-primary: #FFFFFF;
+        --text-secondary: #A0A0A0; /* Fallback for secondary text in dark mode */
     }
 }

@@ -175,7 +175,7 @@ export default function BiblePreviewPage() {
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-3 py-1.5 text-xs font-semibold rounded-lg whitespace-nowrap transition-colors border ${selectedCategory === cat
-                                ? "bg-purple-50 border-purple-200 text-purple-700 dark:bg-purple-900/30 dark:border-purple-800 dark:text-purple-300"
+                                ? "bg-brand-primary/10 border-brand-primary/20 text-brand-primary dark:bg-brand-primary/30 dark:border-brand-primary/30 dark:text-brand-primary"
                                 : "bg-transparent border-transparent text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
                                 }`}
                         >
@@ -198,7 +198,7 @@ export default function BiblePreviewPage() {
                         </div>
                     ) : loadingBooks ? (
                         <div className="p-8 flex justify-center">
-                            <div className="w-6 h-6 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+                            <div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
                         </div>
                     ) : (
                         <div className="p-2 space-y-1">
@@ -208,7 +208,7 @@ export default function BiblePreviewPage() {
                                     key={book.id}
                                     onClick={() => setSelectedBook(book)}
                                     className={`w-full text-left px-4 py-3 rounded-lg flex items-center justify-between group transition-all text-sm ${selectedBook?.id === book.id
-                                        ? "bg-purple-600 text-white shadow-md shadow-purple-200 dark:shadow-purple-900/20"
+                                        ? "bg-brand-primary text-white shadow-md shadow-brand-primary/20 dark:shadow-brand-primary/20"
                                         : "text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm"
                                         }`}
                                 >
@@ -237,8 +237,8 @@ export default function BiblePreviewPage() {
                                             key={num}
                                             onClick={() => setSelectedChapter(num)}
                                             className={`h-8 rounded-lg text-xs font-bold flex items-center justify-center transition-all border ${selectedChapter === num
-                                                ? "bg-purple-600 text-white border-purple-600 shadow-sm"
-                                                : "bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-purple-300 dark:hover:border-purple-700 hover:text-purple-600"
+                                                ? "bg-purple-600 text-white border-brand-primary shadow-sm"
+                                                : "bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-brand-primary/30 dark:hover:border-brand-primary/30 hover:text-brand-primary"
                                                 }`}
                                         >
                                             {num}
@@ -299,7 +299,7 @@ export default function BiblePreviewPage() {
                                         {/* Pericope Section Header - Breaks the inline flow */}
                                         {verse.pericope && (
                                             <span className="block mt-8 mb-4">
-                                                <h3 className="text-lg md:text-xl font-sans font-bold text-slate-900 dark:text-white tracking-tight border-l-4 border-purple-600 pl-4 py-1">
+                                                <h3 className="text-lg md:text-xl font-sans font-bold text-slate-900 dark:text-white tracking-tight border-l-4 border-brand-primary pl-4 py-1">
                                                     {verse.pericope}
                                                 </h3>
                                             </span>
@@ -307,7 +307,7 @@ export default function BiblePreviewPage() {
 
                                         {/* Verse Number & Text */}
                                         <span className="group">
-                                            <sup className="text-[10px] md:text-xs font-sans font-bold text-purple-600 dark:text-purple-400 select-none mr-1 opacity-70 group-hover:opacity-100">
+                                            <sup className="text-[10px] md:text-xs font-sans font-bold text-brand-primary dark:text-brand-primary select-none mr-1 opacity-70 group-hover:opacity-100">
                                                 {verse.verse_number}
                                             </sup>
                                             <span className={idx === verses.length - 1 ? "" : "mr-1"}>
@@ -324,7 +324,7 @@ export default function BiblePreviewPage() {
                             <button
                                 onClick={handlePrevChapter}
                                 disabled={chapters.indexOf(selectedChapter) === 0}
-                                className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                                className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-primary disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                             >
                                 <ChevronLeft className="w-4 h-4" />
                                 <div className="text-left">
@@ -336,7 +336,7 @@ export default function BiblePreviewPage() {
                             <button
                                 onClick={handleNextChapter}
                                 disabled={chapters.indexOf(selectedChapter) === chapters.length - 1}
-                                className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-right"
+                                className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-lg text-slate-600 dark:text-slate-400 hover:text-brand-primary dark:hover:text-brand-primary disabled:opacity-30 disabled:cursor-not-allowed transition-all text-right"
                             >
                                 <div className="text-right">
                                     <div className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Selanjutnya</div>

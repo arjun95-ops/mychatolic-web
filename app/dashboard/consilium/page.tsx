@@ -277,7 +277,7 @@ export default function ConsiliumPage() {
             {/* Header & Stats */}
             <div className="space-y-6">
                 <div>
-                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 tracking-tight">
+                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-action dark:from-brand-primary dark:to-action tracking-tight">
                         Consilium Management
                     </h1>
                     <p className="text-slate-500 dark:text-slate-400 mt-1">
@@ -316,7 +316,7 @@ export default function ConsiliumPage() {
                             <button
                                 key={f}
                                 onClick={() => setStatusFilter(f as any)}
-                                className={`pb-3 px-2 text-sm font-medium transition-all relative capitalize whitespace-nowrap ${statusFilter === f ? 'text-purple-600 dark:text-purple-400 font-bold' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+                                className={`pb-3 px-2 text-sm font-medium transition-all relative capitalize whitespace-nowrap ${statusFilter === f ? 'text-brand-primary dark:text-purple-400 font-bold' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
                             >
                                 {f}
                                 {statusFilter === f && <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-600 to-blue-600" />}
@@ -327,14 +327,14 @@ export default function ConsiliumPage() {
                     {/* Scrollable List */}
                     <div className="flex-1 overflow-y-auto">
                         {loading ? (
-                            <div className="flex justify-center py-12"><div className="w-6 h-6 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div></div>
+                            <div className="flex justify-center py-12"><div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin"></div></div>
                         ) : (
                             <div className="divide-y divide-slate-100 dark:divide-slate-800">
                                 {filteredRequests.map(req => (
                                     <div
                                         key={req.id}
                                         onClick={() => setSelectedRequest(req)}
-                                        className={`p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors border-l-4 ${selectedRequest?.id === req.id ? 'bg-purple-50/50 dark:bg-purple-900/10 border-purple-500' : 'border-transparent'}`}
+                                        className={`p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors border-l-4 ${selectedRequest?.id === req.id ? 'bg-brand-primary/10/50 dark:bg-purple-900/10 border-purple-500' : 'border-transparent'}`}
                                     >
                                         <div className="flex justify-between items-start mb-2">
                                             <div className="flex items-center gap-2">
@@ -359,7 +359,7 @@ export default function ConsiliumPage() {
                                             {req.status === 'pending' && (
                                                 <button
                                                     onClick={(e) => openAssignModal(req, e)}
-                                                    className="px-3 py-1 text-xs font-semibold text-white bg-purple-600 hover:bg-purple-700 rounded-lg shadow-sm"
+                                                    className="px-3 py-1 text-xs font-semibold text-white bg-brand-primary hover:bg-purple-700 rounded-lg shadow-sm"
                                                 >
                                                     Atur Konselor
                                                 </button>
@@ -392,8 +392,8 @@ export default function ConsiliumPage() {
                         {/* Messages Area */}
                         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-slate-950/30">
                             {/* Request Detail Card Inside Chat */}
-                            <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-xl border border-purple-100 dark:border-purple-800/30 mb-6 text-sm">
-                                <p className="font-semibold text-purple-800 dark:text-purple-300 mb-1">Detail Masalah:</p>
+                            <div className="bg-brand-primary/10 dark:bg-purple-900/20 p-3 rounded-xl border border-purple-100 dark:border-purple-800/30 mb-6 text-sm">
+                                <p className="font-semibold text-brand-primary dark:text-brand-primary mb-1">Detail Masalah:</p>
                                 <p className="text-slate-700 dark:text-slate-300 italic">"{selectedRequest.description}"</p>
                             </div>
 
@@ -412,8 +412,8 @@ export default function ConsiliumPage() {
                                                 </span>
                                             </div>
                                             <div className={`px-4 py-2.5 max-w-[85%] rounded-2xl text-sm leading-relaxed ${isMe
-                                                    ? 'bg-blue-600 text-white rounded-br-none shadow-md shadow-blue-500/20'
-                                                    : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-bl-none shadow-sm'
+                                                ? 'bg-blue-600 text-white rounded-br-none shadow-md shadow-blue-500/20'
+                                                : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-bl-none shadow-sm'
                                                 }`}>
                                                 {msg.content}
                                             </div>
@@ -441,7 +441,7 @@ export default function ConsiliumPage() {
                 {!selectedRequest && (
                     <div className="hidden lg:flex col-span-5 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 items-center justify-center text-slate-400 flex-col gap-3">
                         <div className="p-4 bg-white dark:bg-slate-800 rounded-full shadow-sm mb-2">
-                            <MessageSquare size={32} className="text-purple-200 dark:text-purple-900" />
+                            <MessageSquare size={32} className="text-brand-primary/30 dark:text-brand-primary/30" />
                         </div>
                         <p className="text-sm font-medium">Pilih permintaan konseling untuk melihat riwayat chat</p>
                     </div>
@@ -461,15 +461,15 @@ export default function ConsiliumPage() {
                     <div className="space-y-3 max-h-[250px] overflow-y-auto">
                         <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Pilih:</label>
                         {loadingCounselors ? <div className="text-xs">Loading...</div> : counselors.map(c => (
-                            <div key={c.id} onClick={() => setSelectedCounselorId(c.id)} className={`p-3 rounded-xl border cursor-pointer flex items-center justify-between ${selectedCounselorId === c.id ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-200 dark:border-slate-700'}`}>
+                            <div key={c.id} onClick={() => setSelectedCounselorId(c.id)} className={`p-3 rounded-xl border cursor-pointer flex items-center justify-between ${selectedCounselorId === c.id ? 'border-brand-primary bg-brand-primary/10 dark:bg-purple-900/20' : 'border-slate-200 dark:border-slate-700'}`}>
                                 <span>{c.full_name} <span className="text-xs text-slate-400">({c.role})</span></span>
-                                {selectedCounselorId === c.id && <CheckCircle2 size={16} className="text-purple-600" />}
+                                {selectedCounselorId === c.id && <CheckCircle2 size={16} className="text-brand-primary" />}
                             </div>
                         ))}
                     </div>
                     <div className="flex gap-3 pt-4">
                         <button onClick={() => setIsAssignModalOpen(false)} className="flex-1 px-4 py-2 bg-slate-100 rounded-xl text-slate-600 text-sm font-bold">Batal</button>
-                        <button onClick={handleAssign} disabled={isAssigning || !selectedCounselorId} className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-purple-200">Tugaskan</button>
+                        <button onClick={handleAssign} disabled={isAssigning || !selectedCounselorId} className="flex-1 px-4 py-2 bg-brand-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-primary/20">Tugaskan</button>
                     </div>
                 </div>
             </Modal>

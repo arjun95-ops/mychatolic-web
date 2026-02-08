@@ -313,7 +313,7 @@ export default function SchedulesTab() {
 
     // Constants for styles
     const labelStyle = "block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1";
-    const inputStyle = "w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 text-slate-900 dark:text-white transition-all";
+    const inputStyle = "w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-brand-primary text-slate-900 dark:text-white transition-all";
 
     // Sub-component: Time Row
     const renderTimeRow = (s: AnySchedule) => (
@@ -382,7 +382,7 @@ export default function SchedulesTab() {
 
                         return (
                             <div key={dKey}>
-                                <h4 className="font-bold text-purple-600 dark:text-purple-400 mb-4 uppercase text-sm flex items-center gap-2">
+                                <h4 className="font-bold text-brand-primary dark:text-brand-primary mb-4 uppercase text-sm flex items-center gap-2">
                                     <Calendar className="w-4 h-4" /> {DAYS_MAP[dKey]}
                                 </h4>
                                 <div className="space-y-1">
@@ -414,7 +414,7 @@ export default function SchedulesTab() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
                     <div>
-                        <h4 className="font-bold text-blue-600 dark:text-blue-400 mb-4 uppercase text-sm flex items-center gap-2">
+                        <h4 className="font-bold text-action dark:text-action mb-4 uppercase text-sm flex items-center gap-2">
                             <Calendar className="w-4 h-4" /> Senin - Jum&apos;at
                         </h4>
                         <div className="space-y-1">
@@ -423,7 +423,7 @@ export default function SchedulesTab() {
                     </div>
                     {saturdayItems.length > 0 && (
                         <div>
-                            <h4 className="font-bold text-blue-600 dark:text-blue-400 mb-4 uppercase text-sm flex items-center gap-2">
+                            <h4 className="font-bold text-action dark:text-action mb-4 uppercase text-sm flex items-center gap-2">
                                 <Calendar className="w-4 h-4" /> Sabtu
                             </h4>
                             <div className="space-y-1">
@@ -449,7 +449,7 @@ export default function SchedulesTab() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
                     <div>
-                        <h4 className="font-bold text-pink-600 dark:text-pink-400 mb-4 uppercase text-sm flex items-center gap-2">
+                        <h4 className="font-bold text-user-chat dark:text-user-chat mb-4 uppercase text-sm flex items-center gap-2">
                             <Calendar className="w-4 h-4" /> Jumat
                         </h4>
                         <div className="space-y-1">
@@ -466,7 +466,7 @@ export default function SchedulesTab() {
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all duration-300">
             {/* Header: Locations */}
             <div className="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
-                <div className="flex items-center gap-2 mb-4 text-purple-600 dark:text-purple-400 font-bold uppercase text-xs tracking-wider">
+                <div className="flex items-center gap-2 mb-4 text-brand-primary dark:text-brand-primary font-bold uppercase text-xs tracking-wider">
                     <MapPin className="w-4 h-4" /> Filter Lokasi Gereja
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -505,7 +505,7 @@ export default function SchedulesTab() {
                         <p className="max-w-xs text-center mt-2 text-sm">Pilih lokasi gereja di menu filter atas untuk menampilkan tabel jadwal misa.</p>
                     </div>
                 ) : loading ? (
-                    <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-purple-600" /></div>
+                    <div className="flex justify-center py-32"><Loader2 className="w-10 h-10 animate-spin text-brand-primary" /></div>
                 ) : (
                     <>
                         <div className="flex justify-between items-center mb-10 pb-6 border-b border-slate-200 dark:border-slate-800">
@@ -517,7 +517,7 @@ export default function SchedulesTab() {
                             </div>
                             <button
                                 onClick={handleOpenAdd}
-                                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-xl font-bold text-sm shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transition-all hover:-translate-y-0.5"
+                                className="flex items-center gap-2 px-6 py-3 bg-brand-primary hover:opacity-90 text-white rounded-xl font-bold text-sm shadow-lg shadow-brand-primary/20 dark:shadow-brand-primary/20 transition-all hover:-translate-y-0.5"
                             >
                                 <Plus className="w-4 h-4" /> Tambah Jadwal
                             </button>
@@ -526,7 +526,7 @@ export default function SchedulesTab() {
                         {rawSchedules.length === 0 ? (
                             <div className="text-center py-20 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm text-slate-500">
                                 <p className="font-medium">Belum ada data jadwal misa untuk paroki ini.</p>
-                                <button onClick={handleOpenAdd} className="text-purple-600 font-bold mt-2 hover:underline">Tambah Sekarang</button>
+                                <button onClick={handleOpenAdd} className="text-brand-primary font-bold mt-2 hover:underline">Tambah Sekarang</button>
                             </div>
                         ) : (
                             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -612,7 +612,7 @@ export default function SchedulesTab() {
                         <button type="button" onClick={() => setIsModalOpen(false)} className="py-2.5 px-4 flex-1 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                             Batal
                         </button>
-                        <button type="submit" disabled={isSubmitting} className="py-2.5 px-4 flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-bold hover:opacity-90 transition-opacity flex justify-center items-center gap-2 shadow-lg shadow-purple-200 dark:shadow-purple-900/20">
+                        <button type="submit" disabled={isSubmitting} className="py-2.5 px-4 flex-1 bg-gradient-to-r from-brand-primary to-action text-white rounded-xl font-bold hover:opacity-90 transition-opacity flex justify-center items-center gap-2 shadow-lg shadow-brand-primary/20 dark:shadow-brand-primary/20">
                             {isSubmitting && <Loader2 className="animate-spin w-4 h-4" />} Simpan
                         </button>
                     </div>

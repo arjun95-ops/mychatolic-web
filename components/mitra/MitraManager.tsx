@@ -116,7 +116,7 @@ export default function MitraManager() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 tracking-tight">
+                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-action dark:from-brand-primary dark:to-action tracking-tight">
                     Mitra Pastoral
                 </h1>
                 <p className="text-slate-500 dark:text-slate-400 mt-1">
@@ -127,8 +127,8 @@ export default function MitraManager() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <StatCard title="Total Mitra" value={stats.total} icon={Users} color="bg-blue-500" />
                 <StatCard title="Perlu Verifikasi" value={stats.pending} icon={Clock} color="bg-amber-500" />
-                <StatCard title="Pastor" value={stats.pastors} icon={UserCheck} color="bg-purple-500" />
-                <StatCard title="Suster" value={stats.sisters} icon={UserCheck} color="bg-pink-500" />
+                <StatCard title="Pastor" value={stats.pastors} icon={UserCheck} color="bg-brand-primary" />
+                <StatCard title="Suster" value={stats.sisters} icon={UserCheck} color="bg-user-chat" />
             </div>
 
             <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
@@ -139,8 +139,8 @@ export default function MitraManager() {
                                 key={role}
                                 onClick={() => setRoleFilter(role)}
                                 className={`px-4 py-2 text-sm font-semibold rounded-lg capitalize transition-all ${roleFilter === role
-                                        ? 'bg-purple-600 text-white shadow-md'
-                                        : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+                                    ? 'bg-brand-primary text-white shadow-md'
+                                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
                                     }`}
                             >
                                 {role === 'all' ? 'Semua' : role}
@@ -154,7 +154,7 @@ export default function MitraManager() {
                             placeholder="Cari Nama..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="pl-4 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-purple-500 w-full md:w-64"
+                            className="pl-4 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-brand-primary w-full md:w-64"
                         />
                     </div>
                 </div>
@@ -193,7 +193,7 @@ export default function MitraManager() {
                                     <td className="p-4 text-center">
                                         <button
                                             onClick={() => handleDetail(user)}
-                                            className="text-purple-600 hover:text-purple-700 font-bold text-xs border border-purple-200 rounded-lg px-3 py-1.5 hover:bg-purple-50 transition-all"
+                                            className="text-brand-primary hover:text-brand-primary font-bold text-xs border border-brand-primary/20 rounded-lg px-3 py-1.5 hover:bg-slate-50 transition-all"
                                         >
                                             Review
                                         </button>
@@ -230,7 +230,7 @@ export default function MitraManager() {
 function StatCard({ title, value, icon: Icon, color }: StatCardProps) {
     return (
         <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4">
-            <div className={`p-3 rounded-xl ${color} text-white shadow-lg shadow-purple-900/10`}>
+            <div className={`p-3 rounded-xl ${color} text-white shadow-lg shadow-brand-primary/10`}>
                 <Icon className="w-6 h-6" />
             </div>
             <div>

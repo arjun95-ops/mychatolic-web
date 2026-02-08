@@ -21,16 +21,16 @@ export default function DashboardStats({ users, onStatClick, currentFilter }: Pr
             label: "Total Pengguna",
             value: total,
             icon: Users,
-            color: "text-blue-600",
-            bg: "bg-blue-50",
-            borderColor: "border-blue-200",
+            color: "text-brand-primary",
+            bg: "bg-slate-50",
+            borderColor: "border-slate-200",
             filterKey: "all"
         },
         {
             label: "Menunggu Verifikasi",
             value: pending,
             icon: Clock,
-            color: "text-amber-600",
+            color: "text-status-pending",
             bg: "bg-amber-50",
             borderColor: "border-amber-200",
             filterKey: "pending"
@@ -39,7 +39,7 @@ export default function DashboardStats({ users, onStatClick, currentFilter }: Pr
             label: "Terverifikasi",
             value: verified,
             icon: CheckCircle2,
-            color: "text-emerald-600",
+            color: "text-status-success",
             bg: "bg-emerald-50",
             borderColor: "border-emerald-200",
             filterKey: "verified"
@@ -48,7 +48,7 @@ export default function DashboardStats({ users, onStatClick, currentFilter }: Pr
             label: "Ditolak",
             value: rejected,
             icon: XCircle,
-            color: "text-red-600",
+            color: "text-status-error",
             bg: "bg-red-50",
             borderColor: "border-red-200",
             filterKey: "rejected"

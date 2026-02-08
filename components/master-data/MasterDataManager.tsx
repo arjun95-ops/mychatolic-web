@@ -24,7 +24,7 @@ export default function MasterDataManager() {
             {/* Header Area */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 tracking-tight">Master Data Management</h1>
+                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-primary to-action tracking-tight">Master Data Management</h1>
                     <p className="text-slate-500 mt-1">Pusat pengelolaan master data global (Negara, Keuskupan, Paroki).</p>
                 </div>
                 <BulkImportExport />
@@ -37,13 +37,13 @@ export default function MasterDataManager() {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`pb-3 text-sm font-medium transition-all whitespace-nowrap px-1 relative ${activeTab === tab.id
-                            ? 'text-purple-600 font-bold'
+                            ? 'text-brand-primary font-bold'
                             : 'text-slate-500 hover:text-slate-700'
                             }`}
                     >
                         {tab.label}
                         {activeTab === tab.id && (
-                            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-purple-600 to-blue-600 rounded-t-full" />
+                            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-brand-primary to-action rounded-t-full" />
                         )}
                     </button>
                 ))}

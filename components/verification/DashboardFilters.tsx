@@ -101,7 +101,7 @@ export default function DashboardFilters<T extends BaseFilters>({
                     placeholder="Cari nama, email, atau gereja..."
                     value={resolvedSearch}
                     onChange={(e) => updateSearch(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition"
                 />
             </div>
 
@@ -110,7 +110,7 @@ export default function DashboardFilters<T extends BaseFilters>({
                 <select
                     value={filters.country}
                     onChange={(e) => handleChange('country', e.target.value)}
-                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[140px] focus:ring-2 focus:ring-blue-500/20 outline-none"
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[140px] focus:ring-2 focus:ring-brand-primary outline-none"
                 >
                     <option value="">Semua Negara</option>
                     {options.countries.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -120,7 +120,7 @@ export default function DashboardFilters<T extends BaseFilters>({
                     value={filters.diocese}
                     onChange={(e) => handleChange('diocese', e.target.value)}
                     disabled={!filters.country && options.dioceses.length > 50}
-                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[160px] focus:ring-2 focus:ring-blue-500/20 outline-none disabled:bg-gray-50 disabled:text-gray-400"
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[160px] focus:ring-2 focus:ring-brand-primary outline-none disabled:bg-gray-50 disabled:text-gray-400"
                 >
                     <option value="">Semua Keuskupan</option>
                     {options.dioceses.map((d) => <option key={d} value={d}>{d}</option>)}
@@ -129,7 +129,7 @@ export default function DashboardFilters<T extends BaseFilters>({
                 <select
                     value={filters.parish}
                     onChange={(e) => handleChange('parish', e.target.value)}
-                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[160px] focus:ring-2 focus:ring-blue-500/20 outline-none"
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[160px] focus:ring-2 focus:ring-brand-primary outline-none"
                 >
                     <option value="">Semua Paroki</option>
                     {options.parishes.map((p) => <option key={p} value={p}>{p}</option>)}
@@ -139,7 +139,7 @@ export default function DashboardFilters<T extends BaseFilters>({
                 <select
                     value={filters.status}
                     onChange={(e) => handleChange('status', e.target.value)}
-                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 focus:ring-2 focus:ring-brand-primary outline-none"
                 >
                     <option value="all">Semua Status</option>
                     <option value="pending">⏳ Pending</option>

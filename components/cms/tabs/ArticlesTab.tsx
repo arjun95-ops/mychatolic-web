@@ -85,12 +85,12 @@ export default function ArticlesTab() {
                         placeholder="Cari artikel..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-primary"
                     />
                 </div>
                 <button
                     onClick={handleAdd}
-                    className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors font-medium shadow-lg shadow-purple-600/20"
+                    className="flex items-center gap-2 px-4 py-2 bg-brand-primary hover:opacity-90 text-white rounded-lg transition-colors font-medium shadow-lg shadow-brand-primary/20"
                 >
                     <Plus className="w-4 h-4" />
                     Tambah Artikel
@@ -99,7 +99,7 @@ export default function ArticlesTab() {
 
             {loading ? (
                 <div className="text-center py-10">
-                    <div className="animate-spin w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full mx-auto mb-2"></div>
+                    <div className="animate-spin w-8 h-8 border-2 border-brand-primary border-t-transparent rounded-full mx-auto mb-2"></div>
                     <p className="text-slate-500">Memuat artikel...</p>
                 </div>
             ) : articles.length === 0 ? (
@@ -125,7 +125,7 @@ export default function ArticlesTab() {
                                 <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
                                         onClick={() => handleEdit(article)}
-                                        className="p-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-lg hover:text-purple-600 shadow-sm"
+                                        className="p-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-lg hover:text-brand-primary shadow-sm"
                                     >
                                         <Edit2 className="w-4 h-4" />
                                     </button>

@@ -306,7 +306,7 @@ export default function BibleDataManagerPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <Book className="w-8 h-8 text-purple-600" />
+                        <Book className="w-8 h-8 text-brand-primary" />
                         Manajemen Data Alkitab
                     </h1>
                     <p className="text-slate-500 dark:text-slate-400">
@@ -315,7 +315,7 @@ export default function BibleDataManagerPage() {
                 </div>
                 <button
                     onClick={handleAdd}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transition-all transform hover:-translate-y-0.5"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:opacity-90 text-white roundedbg-brand-primary hover:opacity-90 shadow-lg shadow-brand-primary/20 dark:shadow-brand-primary/20 transition-all transform hover:-translate-y-0.5"
                 >
                     <Plus className="w-5 h-5" />
                     Tambah Ayat Manual
@@ -328,7 +328,7 @@ export default function BibleDataManagerPage() {
                 <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-medium focus:ring-2 focus:ring-purple-500"
+                    className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-medium focus:ring-2 focus:ring-brand-primary"
                 >
                     {categories.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
@@ -337,7 +337,7 @@ export default function BibleDataManagerPage() {
                 <select
                     value={selectedBookId}
                     onChange={(e) => setSelectedBookId(e.target.value)}
-                    className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-medium focus:ring-2 focus:ring-purple-500 max-w-xs"
+                    className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-medium focus:ring-2 focus:ring-brand-primary max-w-xs"
                 >
                     <option value="">-- Semua Kitab --</option>
                     {books.map(b => (
@@ -350,7 +350,7 @@ export default function BibleDataManagerPage() {
                     value={selectedChapter}
                     onChange={(e) => setSelectedChapter(e.target.value)}
                     disabled={!selectedBookId}
-                    className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-medium focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
+                    className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-medium focus:ring-2 focus:ring-brand-primary disabled:opacity-50"
                 >
                     <option value="">-- Semua Bab --</option>
                     {chapters.map(c => (
@@ -366,7 +366,7 @@ export default function BibleDataManagerPage() {
                         placeholder="Cari isi ayat..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
                     />
                 </div>
             </div>
@@ -397,12 +397,12 @@ export default function BibleDataManagerPage() {
                         <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                             {verses.map(verse => (
                                 <tr key={verse.id} className="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                                    <td className="px-6 py-4 align-top font-medium text-purple-600 dark:text-purple-400 whitespace-nowrap">
+                                    <td className="px-6 py-4 align-top font-medium text-brand-primary dark:text-purple-400 whitespace-nowrap">
                                         {verse.book_name} {verse.chapter_number}:{verse.verse_number}
                                     </td>
                                     <td className="px-6 py-4 align-top">
                                         {verse.pericope ? (
-                                            <span className="inline-block px-2 py-1 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded text-xs font-bold border border-purple-100 dark:border-purple-800">
+                                            <span className="inline-block px-2 py-1 bg-brand-primary/10 dark:bg-brand-primary/10 text-brand-primary dark:text-brand-primary border-brand-primary/20 dark:border-brand-primary/20 dark:border-purple-800">
                                                 {verse.pericope}
                                             </span>
                                         ) : (
@@ -486,7 +486,7 @@ export default function BibleDataManagerPage() {
                                         type="number"
                                         value={editingVerse.verse_number}
                                         onChange={(e) => setEditingVerse({ ...editingVerse, verse_number: parseInt(e.target.value) })}
-                                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-bold text-purple-600"
+                                        className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-bold text-brand-primary"
                                         min="1"
                                     />
                                 </div>
@@ -526,7 +526,7 @@ export default function BibleDataManagerPage() {
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-bold shadow-md transition-all flex items-center gap-2"
+                                className="px-6 py-2 bg-brand-primary hover:opacity-90 text-white rounded-lg text-sm font-bold shadow-md transition-all flex items-center gap-2"
                             >
                                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                 Simpan

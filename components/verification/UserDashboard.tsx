@@ -185,8 +185,8 @@ export default function UserDashboard() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap outline-none ${activeTab === tab.id
-                                        ? "border-blue-600 text-blue-600 bg-blue-50/30"
-                                        : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                                    ? "border-brand-primary text-brand-primary bg-slate-50/30"
+                                    : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
                                     }`}
                             >
                                 <tab.icon size={16} />

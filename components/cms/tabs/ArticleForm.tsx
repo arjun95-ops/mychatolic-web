@@ -145,7 +145,7 @@ export default function ArticleForm({ isOpen, onClose, article, onSuccess }: Art
                                 </div>
                             ) : (
                                 <div className="py-8">
-                                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <div className="w-12 h-12 bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-3">
                                         <ImageIcon className="w-6 h-6" />
                                     </div>
                                     <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Klik untuk upload gambar</p>
@@ -163,7 +163,7 @@ export default function ArticleForm({ isOpen, onClose, article, onSuccess }: Art
                             required
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-brand-primary"
                             placeholder="Masukkan judul menarik..."
                         />
                     </div>
@@ -176,7 +176,7 @@ export default function ArticleForm({ isOpen, onClose, article, onSuccess }: Art
                             rows={8}
                             value={formData.content}
                             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 font-sans leading-relaxed"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-brand-primary font-sans leading-relaxed"
                             placeholder="Tulis artikel anda disini..."
                         ></textarea>
                     </div>
@@ -188,7 +188,7 @@ export default function ArticleForm({ isOpen, onClose, article, onSuccess }: Art
                                 type="checkbox"
                                 checked={formData.is_published}
                                 onChange={(e) => setFormData({ ...formData, is_published: e.target.checked })}
-                                className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                                className="w-4 h-4 text-brand-primary rounded focus:ring-brand-primary"
                             />
                             <span className="text-sm font-medium">Publish langsung?</span>
                         </label>
@@ -204,7 +204,7 @@ export default function ArticleForm({ isOpen, onClose, article, onSuccess }: Art
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-lg hover:shadow-lg hover:shadow-purple-500/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
+                                className="px-6 py-2 bg-gradient-to-r from-brand-primary to-action text-white font-medium rounded-lg hover:shadow-lg hover:shadow-brand-primary/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
                             >
                                 {loading ? (
                                     <>
