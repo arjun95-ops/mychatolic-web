@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // --- Types ---
 
-export type AdminRole = 'admin' | 'super_admin'
+export type AdminRole = 'admin_ops' | 'super_admin'
 export type AdminStatus = 'pending_approval' | 'approved' | 'suspended'
 
 export interface AdminUserRow {
@@ -60,6 +60,19 @@ export async function getAdminContext(
     req: NextRequest
 ): Promise<AdminContextResult | NextResponse> {
     const cookieStore = req.cookies
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+    // 0. Validate Server Configuration
+    if (!supabaseUrl || !serviceRoleKey) {
+        return NextResponse.json(
+            {
+                error: 'ServerMisconfigured',
+                message: 'Missing SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_URL'
+            },
+            { status: 500 }
+        )
+    }
 
     // Track cookies to set on the response (for session refresh)
     const cookiesToSet: { name: string; value: string; options: CookieOptions }[] = []
@@ -115,11 +128,22 @@ export async function getAdminContext(
         .from('admin_users')
         .select('*')
         .eq('auth_user_id', user.id)
-        .single()
+        .maybeSingle()
 
     if (adminError) {
         console.error('getAdminContext: Error fetching admin_users row:', adminError);
+        return NextResponse.json(
+            {
+                error: 'AdminUsersQueryFailed',
+                code: adminError.code,
+                message: adminError.message,
+                details: adminError.details
+            },
+            { status: 500 }
+        )
     }
+
+
 
     // Note: We don't error here if adminRow is missing, 
     // because getAdminContext just builds context. 
