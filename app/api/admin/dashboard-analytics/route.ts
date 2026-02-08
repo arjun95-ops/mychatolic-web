@@ -179,15 +179,14 @@ export async function GET() {
 
         const countryList = (cData || []).map(c => ({
             ...c, count: countryMap[c.id] || 0
-        })).filter(c => c.count > 0).sort((a, b) => b.count - a.count);
+        })).sort((a, b) => b.count - a.count);
 
         const dioceseList = (dData || []).map(d => ({
             ...d, count: dioceseMap[d.id] || 0
-        })).filter(d => d.count > 0).sort((a, b) => b.count - a.count);
+        })).sort((a, b) => b.count - a.count);
 
         const churchList = (chData || [])
             .map(c => ({ ...c, count: churchMap[c.id] || 0 }))
-            .filter(c => c.count > 0)
             .sort((a, b) => b.count - a.count);
 
         return NextResponse.json({
