@@ -37,25 +37,27 @@ export async function middleware(request: NextRequest) {
     // 2. Refresh Session (CRITICAL)
     // This call is required to refresh the auth cookie.
     // We do NOT act on the result (user null or not) in this Debug Mode.
-    await supabase.auth.getUser();
-
-    // 3. DEBUG MODE: PASS-THROUGH
-    // All redirect logic is disabled to allow direct access.
-    /*
+    // 3. Protected Routes
     const {
-      data: { user },
+        data: { user },
     } = await supabase.auth.getUser();
-  
-    if (request.nextUrl.pathname.startsWith("/dashboard")) {
-      if (!user) {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
-      const userRole = user.user_metadata?.role;
-      if (userRole !== 'admin') {
-         return NextResponse.redirect(new URL("/", request.url));
-      }
+
+    const path = request.nextUrl.pathname;
+
+    // Protect /dashboard/* routes
+    if (path.startsWith("/dashboard")) {
+        // Allow access to login page without auth
+        if (path === "/dashboard/login") {
+            // Optional: Redirect to dashboard if already logged in?
+            // Keeping it simple as requested: just protect other routes.
+            return response;
+        }
+
+        if (!user) {
+            // Redirect to login if not authenticated
+            return NextResponse.redirect(new URL("/dashboard/login", request.url));
+        }
     }
-    */
 
     return response;
 }

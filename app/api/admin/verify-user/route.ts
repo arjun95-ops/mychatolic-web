@@ -1,33 +1,20 @@
-import { createClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
+// import { createClient } from '@supabase/supabase-js'; 
+import { NextResponse, type NextRequest } from 'next/server';
+import { requireApprovedAdmin } from '@/lib/admin-guard';
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
+    // 1. Guard: Authentication & Authorization
+    const ctx = await requireApprovedAdmin(req);
+
+    if (ctx instanceof NextResponse) {
+        return ctx;
+    }
+
+    const { supabaseAdminClient, setCookiesToResponse } = ctx;
+
     try {
-        // 1. Validasi Service Role Key
-        const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-        if (!serviceRoleKey) {
-            console.error('SERVER ERROR: SUPABASE_SERVICE_ROLE_KEY is missing in .env.local');
-            return NextResponse.json(
-                { error: 'Server misconfiguration: Service Role Key missing' },
-                { status: 500 }
-            );
-        }
-
-        // 2. Init Admin Client (Bypass RLS)
-        const supabaseAdmin = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            serviceRoleKey,
-            {
-                auth: {
-                    autoRefreshToken: false,
-                    persistSession: false,
-                },
-            }
-        );
-
-        // 3. Parse Body
-        const body = await request.json();
+        // 2. Parse Body
+        const body = await req.json();
         const { userId, updates } = body;
 
         if (!userId || !updates) {
@@ -37,8 +24,8 @@ export async function POST(request: Request) {
             );
         }
 
-        // 4. Update Profile via Admin Client
-        const { data, error } = await supabaseAdmin
+        // 3. Update Profile via Admin Client
+        const { data, error } = await supabaseAdminClient
             .from('profiles')
             .update(updates)
             .eq('id', userId)
@@ -50,7 +37,9 @@ export async function POST(request: Request) {
             throw error;
         }
 
-        return NextResponse.json({ success: true, data });
+        const response = NextResponse.json({ success: true, data });
+        setCookiesToResponse(response);
+        return response;
 
     } catch (error: any) {
         console.error('API Error:', error);

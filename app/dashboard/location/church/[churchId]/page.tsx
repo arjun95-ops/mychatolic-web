@@ -43,9 +43,9 @@ interface UserItem {
 
 export default function ChurchUsersPage({ params }: { params: Promise<{ churchId: string }> }) {
     const { churchId } = use(params);
-    const [users, setUsers] = useState<UserItem[]>([]);
+    const [items, setItems] = useState<UserItem[]>([]);
     const [loading, setLoading] = useState(true);
-    const [meta, setMeta] = useState({ page: 1, limit: 25, total: 0 });
+    const [meta, setMeta] = useState({ page: 1, pageSize: 25, total: 0 });
     const [locationNames, setLocationNames] = useState<any>({});
 
     // Filters
@@ -64,6 +64,7 @@ export default function ChurchUsersPage({ params }: { params: Promise<{ churchId
     }, [query]);
 
     // Fetch Data
+    // Fetch Data
     useEffect(() => {
         async function fetchUsers() {
             setLoading(true);
@@ -73,26 +74,43 @@ export default function ChurchUsersPage({ params }: { params: Promise<{ churchId
                     scope: 'church',
                     id: churchId,
                     page: meta.page.toString(),
-                    limit: meta.limit.toString(),
+                    pageSize: meta.pageSize.toString(),
                     q: debouncedQuery,
                 });
-                if (statusFilter) searchParams.set('status', statusFilter);
-                if (roleFilter) searchParams.set('role', roleFilter);
+
+                // Only send filters if not default/empty
+                if (statusFilter && statusFilter !== 'Semua Status') searchParams.set('status', statusFilter);
+                if (roleFilter && roleFilter !== 'Semua Role') searchParams.set('role', roleFilter);
 
                 const res = await fetch(`/api/admin/location-explorer?${searchParams}`);
                 const data = await res.json();
 
-                if (data.users) {
-                    setUsers(data.users);
-                    setMeta(data.pagination);
+                if (data.items) {
+                    setItems(data.items);
+                    setMeta({
+                        page: data.page || meta.page,
+                        pageSize: data.pageSize || meta.pageSize,
+                        total: data.total || 0
+                    });
                     setLocationNames(data.location_names || {});
+                } else {
+                    setItems([]);
+                    setMeta(m => ({ ...m, total: 0 }));
                 }
+            } catch (err) {
+                console.error("Failed to fetch users", err);
+                // Optionally setError(err.message)
             } finally {
                 setLoading(false);
             }
         }
         fetchUsers();
     }, [churchId, meta.page, debouncedQuery, statusFilter, roleFilter]);
+
+    // Reset page on filter change
+    useEffect(() => {
+        setMeta(p => ({ ...p, page: 1 }));
+    }, [debouncedQuery, statusFilter, roleFilter]);
 
     // Helper for status badge
     const getStatusBadge = (user: UserItem) => {
@@ -145,7 +163,9 @@ export default function ChurchUsersPage({ params }: { params: Promise<{ churchId
             <div className="bg-surface-primary border border-surface-secondary dark:border-surface-secondary/20 rounded-xl p-6 shadow-sm space-y-6">
                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-text-primary">{locationNames.church || 'Memuat...'}</h1>
+                        <h1 className="text-2xl font-bold text-text-primary">
+                            {locationNames.church || (loading ? 'Memuat...' : 'Detail Gereja')}
+                        </h1>
                         <p className="text-text-secondary text-sm">Daftar User Terdaftar</p>
                     </div>
                 </div>
@@ -216,7 +236,7 @@ export default function ChurchUsersPage({ params }: { params: Promise<{ churchId
                                         <td className="px-6 py-4 text-right"><div className="h-8 bg-surface-secondary rounded w-16 ml-auto"></div></td>
                                     </tr>
                                 ))
-                            ) : users.length === 0 ? (
+                            ) : items.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-16 text-center text-text-secondary flex flex-col items-center justify-center">
                                         <UserIcon size={48} className="opacity-20 mb-4" />
@@ -225,7 +245,7 @@ export default function ChurchUsersPage({ params }: { params: Promise<{ churchId
                                     </td>
                                 </tr>
                             ) : (
-                                users.map((user) => (
+                                items.map((user) => (
                                     <tr key={user.id} className="group hover:bg-surface-secondary/5 dark:hover:bg-surface-secondary/5 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
@@ -273,18 +293,22 @@ export default function ChurchUsersPage({ params }: { params: Promise<{ churchId
                 {/* Pagination */}
                 <div className="px-6 py-4 border-t border-surface-secondary dark:border-surface-secondary/20 flex items-center justify-between">
                     <p className="text-sm text-text-secondary">
-                        Menampilkan <span className="font-bold text-text-primary">{Math.min((meta.page - 1) * meta.limit + 1, meta.total)}</span> - <span className="font-bold text-text-primary">{Math.min(meta.page * meta.limit, meta.total)}</span> dari <span className="font-bold text-text-primary">{meta.total}</span> user
+                        Menampilkan <span className="font-bold text-text-primary">
+                            {meta.total === 0 ? 0 : (meta.page - 1) * meta.pageSize + 1}
+                        </span> - <span className="font-bold text-text-primary">
+                            {Math.min(meta.page * meta.pageSize, meta.total)}
+                        </span> dari <span className="font-bold text-text-primary">{meta.total}</span> user
                     </p>
                     <div className="flex gap-2">
                         <button
-                            disabled={meta.page === 1}
-                            onClick={() => setMeta(p => ({ ...p, page: p.page - 1 }))}
+                            disabled={meta.page <= 1}
+                            onClick={() => setMeta(p => ({ ...p, page: Math.max(1, p.page - 1) }))}
                             className="px-3 py-1.5 border border-surface-secondary dark:border-surface-secondary/20 rounded-lg text-sm disabled:opacity-50 hover:bg-surface-secondary transition disabled:cursor-not-allowed"
                         >
                             Sebelumnya
                         </button>
                         <button
-                            disabled={(meta.page * meta.limit) >= meta.total}
+                            disabled={meta.page * meta.pageSize >= meta.total}
                             onClick={() => setMeta(p => ({ ...p, page: p.page + 1 }))}
                             className="px-3 py-1.5 border border-surface-secondary dark:border-surface-secondary/20 rounded-lg text-sm disabled:opacity-50 hover:bg-surface-secondary transition disabled:cursor-not-allowed"
                         >

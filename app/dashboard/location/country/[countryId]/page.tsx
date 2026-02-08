@@ -2,8 +2,7 @@
 
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { ChevronRight, ArrowRight, Loader2 } from 'lucide-react';
+import { ChevronRight, ArrowRight, Search, X } from 'lucide-react';
 
 interface DioceseItem {
     id: string;
@@ -18,11 +17,28 @@ export default function DioceseExplorerPage({ params }: { params: Promise<{ coun
     const [dioceses, setDioceses] = useState<DioceseItem[]>([]);
     const [parent, setParent] = useState<{ id: string; name: string } | null>(null);
     const [loading, setLoading] = useState(true);
+    const [searchInput, setSearchInput] = useState('');
+    const [search, setSearch] = useState('');
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setSearch(searchInput.trim());
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [searchInput]);
 
     useEffect(() => {
         async function fetchDioceses() {
             try {
-                const res = await fetch(`/api/admin/location-explorer?level=dioceses&id=${countryId}`);
+                setLoading(true);
+                const params = new URLSearchParams({
+                    level: 'dioceses',
+                    id: countryId,
+                });
+                if (search) params.set('q', search);
+
+                const res = await fetch(`/api/admin/location-explorer?${params.toString()}`);
                 const data = await res.json();
                 if (data.items) {
                     setDioceses(data.items);
@@ -33,7 +49,7 @@ export default function DioceseExplorerPage({ params }: { params: Promise<{ coun
             }
         }
         fetchDioceses();
-    }, [countryId]);
+    }, [countryId, search]);
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
@@ -54,6 +70,30 @@ export default function DioceseExplorerPage({ params }: { params: Promise<{ coun
                     <span className="text-xs bg-brand-primary/10 text-brand-primary px-3 py-1.5 rounded-full font-bold">
                         {dioceses.length} Keuskupan
                     </span>
+                </div>
+
+                <div className="px-6 py-4 border-b border-surface-secondary dark:border-surface-secondary/20 bg-surface-secondary/5">
+                    <label className="block text-xs font-semibold text-text-secondary mb-2">Cari Keuskupan</label>
+                    <div className="relative max-w-md">
+                        <Search className="w-4 h-4 text-text-secondary absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                            type="text"
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            placeholder="Ketik nama keuskupan..."
+                            className="w-full pl-9 pr-10 py-2.5 rounded-lg border border-surface-secondary dark:border-surface-secondary/20 bg-surface-primary text-sm outline-none focus:ring-2 focus:ring-action/20"
+                        />
+                        {searchInput && (
+                            <button
+                                onClick={() => setSearchInput('')}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded text-text-secondary hover:text-text-primary hover:bg-surface-secondary transition"
+                                aria-label="Hapus pencarian keuskupan"
+                                title="Hapus pencarian"
+                            >
+                                <X size={14} />
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 <div className="overflow-x-auto">
