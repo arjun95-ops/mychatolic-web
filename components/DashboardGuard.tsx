@@ -22,8 +22,8 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
     >(null);
 
     useEffect(() => {
-        // Skip guard for login and pending-approval pages to avoid loops
-        if (pathname === '/dashboard/login' || pathname === '/dashboard/pending-approval') {
+        // Skip guard for pending-approval pages to avoid loops
+        if (pathname === '/dashboard/pending-approval') {
             setLoading(false);
             return;
         }
@@ -35,7 +35,7 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
                 if (res.status === 401) {
                     // Not authenticated at all
                     setErrorState('unauthorized');
-                    router.push('/dashboard/login');
+                    router.push('/login');
                     return;
                 }
 
@@ -44,9 +44,10 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
                 // 1. Check Authentication logic (handled by 401 above usually, but double check)
                 if (!data.isAuthenticated) {
                     setErrorState('unauthorized');
-                    router.push('/dashboard/login');
+                    router.push('/login');
                     return;
                 }
+
 
                 // 2. Check Email Verification
                 if (!data.emailVerified) {
@@ -130,7 +131,7 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
                 <p className="mt-2 text-gray-600 dark:text-gray-300">
                     Akun Anda terdaftar, tetapi tidak memiliki akses Admin Dashboard.
                 </p>
-                <button onClick={async () => { await supabase.auth.signOut(); router.push('/dashboard/login'); }}
+                <button onClick={async () => { await supabase.auth.signOut(); router.push('/login'); }}
                     className="mt-4 text-sm text-red-600 underline">
                     Logout
                 </button>
@@ -145,7 +146,7 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
                 <p className="mt-2 text-gray-600 dark:text-gray-300">
                     Akun admin Anda telah ditangguhkan. Silakan hubungi Super Admin.
                 </p>
-                <button onClick={async () => { await supabase.auth.signOut(); router.push('/dashboard/login'); }}
+                <button onClick={async () => { await supabase.auth.signOut(); router.push('/login'); }}
                     className="mt-4 text-sm text-red-600 underline">
                     Logout
                 </button>

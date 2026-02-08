@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const handleLogout = async () => {
         try {
             await supabase.auth.signOut();
-            router.push('/'); // Redirect to login page
+            router.push('/login'); // Redirect to login page
             router.refresh(); // Refresh to clear state
         } catch (error) {
             console.error('Error logging out:', error);

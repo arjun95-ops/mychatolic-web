@@ -46,16 +46,9 @@ export async function middleware(request: NextRequest) {
 
     // Protect /dashboard/* routes
     if (path.startsWith("/dashboard")) {
-        // Allow access to login page without auth
-        if (path === "/dashboard/login") {
-            // Optional: Redirect to dashboard if already logged in?
-            // Keeping it simple as requested: just protect other routes.
-            return response;
-        }
-
         if (!user) {
             // Redirect to login if not authenticated
-            return NextResponse.redirect(new URL("/dashboard/login", request.url));
+            return NextResponse.redirect(new URL("/login", request.url));
         }
     }
 
