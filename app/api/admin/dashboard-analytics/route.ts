@@ -9,7 +9,7 @@ export async function GET() {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-        return NextResponse.json({ error: 'Supabase credentials missing' }, { status: 500 });
+        return NextResponse.json({ error: 'Missing Supabase credentials. Check NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.' }, { status: 500 });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -110,7 +110,6 @@ export async function GET() {
             .order('activity_date', { ascending: true });
 
         if (dauError) {
-            // Table might not exist yet, fallback gracefully
             console.error("Scale DAU Error (table missing?):", dauError);
         }
 

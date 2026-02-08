@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import StatsCards from '@/components/verification/StatsCards';
-import { UserCheck, PenTool, LayoutDashboard, Globe, MapPin, Home, TrendingUp, AlertCircle, FileText, CheckCircle2 } from 'lucide-react';
+import { UserCheck, PenTool, LayoutDashboard, Globe, MapPin, Home, TrendingUp, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
@@ -53,7 +53,7 @@ export default function DashboardOverview() {
             try {
                 setLoading(true);
                 setError(null);
-                const res = await fetch('/api/admin/dashboard-analytics');
+                const res = await fetch('/api/admin/dashboard-analytics', { cache: 'no-store' });
                 if (!res.ok) {
                     const txt = await res.text();
                     throw new Error(`API Error ${res.status}: ${txt}`);
@@ -130,14 +130,14 @@ export default function DashboardOverview() {
     if (error) {
         return (
             <div className="p-8 max-w-4xl mx-auto mt-8">
-                <div className="bg-status-error/10 border border-status-error/30 text-status-error p-6 rounded-xl flex items-start gap-4">
+                <div className="bg-status-error/10 border border-status-error/30 text-status-error p-6 rounded-xl flex items-start gap-4 animate-in fade-in slide-in-from-top-4">
                     <AlertCircle className="w-6 h-6 shrink-0 mt-0.5" />
                     <div>
                         <h3 className="text-lg font-bold mb-1">Gagal Memuat Analytics</h3>
                         <p className="text-sm opacity-90 font-mono mb-4">{error}</p>
                         <button
                             onClick={() => window.location.reload()}
-                            className="px-4 py-2 bg-status-error text-text-inverse rounded-lg text-sm font-bold hover:bg-status-error/90 transition"
+                            className="px-4 py-2 bg-status-error text-text-inverse rounded-lg text-sm font-bold hover:bg-status-error/90 transition shadow-lg shadow-status-error/20"
                         >
                             Coba Lagi
                         </button>
