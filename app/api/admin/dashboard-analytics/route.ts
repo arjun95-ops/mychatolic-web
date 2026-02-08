@@ -17,6 +17,24 @@ export async function GET() {
     const formatDateKey = (date: Date) => format(date, 'yyyy-MM-dd');
     const formatMonthKey = (date: Date) => format(date, 'yyyy-MM');
 
+    function normalizeDayKey(v: any): string {
+        if (!v) return "";
+        if (typeof v === "string") {
+            // handle "YYYY-MM-DD" or "YYYY-MM-DDTHH:mm:ss..."
+            return v.slice(0, 10);
+        }
+        try {
+            const d = new Date(v);
+            if (isNaN(d.getTime())) return "";
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, "0");
+            const dd = String(d.getDate()).padStart(2, "0");
+            return `${yyyy}-${mm}-${dd}`;
+        } catch {
+            return "";
+        }
+    }
+
     // Helper to fill zero data series
     const fillSeries = (data: any[], interval: { start: Date, end: Date }, type: 'day' | 'month', dateKey: string) => {
         const steps = type === 'day'
@@ -103,24 +121,33 @@ export async function GET() {
             .sort((a, b) => b.count - a.count);
 
         // 3. DAU
-        const { data: dauData, error: dauError } = await supabase
-            .from('user_daily_activity')
-            .select('activity_date')
-            .gte('activity_date', format(subMonths(today, 12), 'yyyy-MM-dd'))
-            .order('activity_date', { ascending: true });
-
-        if (dauError) {
-            console.error("Scale DAU Error (table missing?):", dauError);
-        }
-
+        // NOTE: normalizeDayKey() is required so timestamp strings don't break chart keys.
         const dauMap: Record<string, number> = {};
         let dau_today = 0;
-        const todayKey = formatDateKey(today);
 
-        (dauData || []).forEach((row: any) => {
-            dauMap[row.activity_date] = (dauMap[row.activity_date] || 0) + 1;
-            if (row.activity_date === todayKey) dau_today++;
-        });
+        try {
+            const { data: dauData, error: dauError } = await supabase
+                .from('user_daily_activity')
+                .select('activity_date')
+                .gte('activity_date', format(subMonths(today, 12), 'yyyy-MM-dd'))
+                .order('activity_date', { ascending: true });
+
+            if (dauError) {
+                console.error("Scale DAU Error (table missing?):", dauError);
+            } else {
+                const todayKey = format(today, "yyyy-MM-dd");
+
+                for (const row of dauData ?? []) {
+                    const key = normalizeDayKey((row as any).activity_date);
+                    if (!key) continue;
+                    dauMap[key] = (dauMap[key] || 0) + 1;
+                }
+
+                dau_today = dauMap[todayKey] || 0;
+            }
+        } catch (e) {
+            console.warn("[dashboard-analytics] DAU block failed:", e);
+        }
 
         const dauCounts = Object.entries(dauMap).map(([date, count]) => ({ date, count }));
         const dauWeek = fillSeries(dauCounts, { start: subDays(today, 6), end: today }, 'day', 'date');
