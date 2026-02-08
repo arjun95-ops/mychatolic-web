@@ -18,6 +18,28 @@ import {
 } from "lucide-react";
 
 const CHURCH_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_CHURCH_BUCKET || "church_images";
+const REQUIRED_W = 1080;
+const REQUIRED_H = 1350;
+
+function getErrorMessage(err: any): string {
+  if (!err) return "Unknown error";
+  if (err instanceof Error) return err.message;
+  if (typeof err === "string") return err;
+  if (typeof err.message === "string") return err.message;
+  if (typeof err.error === "string") return err.error;
+  if (typeof err.error_description === "string") return err.error_description;
+  try { return JSON.stringify(err); } catch { return "Unknown error"; }
+}
+
+function isValidHttpUrl(string: string) {
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}
 
 interface Country {
   id: string;
@@ -94,8 +116,10 @@ const parseFloatOrNull = (value: unknown): number | null => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
-const isMissingColumnError = (error: unknown, column: string) => {
-  const raw = String(error ?? "").toLowerCase();
+const isMissingColumnError = (error: any, column: string) => {
+  if (!error) return false;
+  // Check typical Supabase/Postgres error fields
+  const raw = (error.message || error.details || error.hint || String(error)).toLowerCase();
   return raw.includes(column.toLowerCase()) && raw.includes("does not exist");
 };
 
@@ -306,29 +330,37 @@ export default function ChurchesTab() {
     loadModalDioceses();
   }, [isModalOpen, selectedCountry]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
-  };
-
   const uploadImage = async () => {
     if (!imageFile) return formData.image_url;
     setUploading(true);
     try {
-      const fileExt = imageFile.name.split(".").pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      const filePath = `churches/${fileName}`;
-      const { error } = await supabase.storage.from(CHURCH_BUCKET).upload(filePath, imageFile);
+      const { data: userRes } = await supabase.auth.getUser();
+      const userId = userRes?.user?.id;
+
+      const safeName = imageFile.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const filePath = `${userId || "public"}/churches/${Date.now()}_${safeName}`;
+
+      const { error } = await supabase.storage
+        .from(CHURCH_BUCKET)
+        .upload(filePath, imageFile, { upsert: true, contentType: imageFile.type });
+
       if (error) {
-        if (error.message.includes("Bucket not found")) {
-          showToast(`Bucket ${CHURCH_BUCKET} tidak ditemukan. Buat bucket tersebut di Supabase Storage.`, "error");
-        }
+        console.error("Upload error:", error);
         throw error;
       }
+
       const { data } = supabase.storage.from(CHURCH_BUCKET).getPublicUrl(filePath);
+      if (!data?.publicUrl) throw new Error("Gagal mengambil public URL.");
+
       return data.publicUrl;
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      // Log the full error for debugging
+      console.error("Upload failed:", err);
+      // We throw a new Error with the clean message so handleSave catches a readable error
+      // and we avoid showing double toasts if handleSave also toasts.
+      // But handleSave expects to toast. Let's just throw the clean message in an Error.
+      throw new Error(`Upload gagal: ${msg}`);
     } finally {
       setUploading(false);
     }
@@ -420,9 +452,15 @@ export default function ChurchesTab() {
       showToast(editingItem ? "Paroki diperbarui" : "Paroki ditambahkan", "success");
       setIsModalOpen(false);
       await fetchChurches();
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      showToast(message, "error");
+    } catch (error: any) {
+      console.error("Save error object:", JSON.stringify(error, null, 2));
+      const msg = getErrorMessage(error);
+
+      if (msg.toLowerCase().includes("permission denied")) {
+        showToast("Izin ditolak: Anda tidak memiliki akses untuk mengubah data Paroki.", "error");
+      } else {
+        showToast(msg, "error");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -668,7 +706,7 @@ export default function ChurchesTab() {
                     {item.dioceses?.countries?.flag_emoji} {item.dioceses?.name}
                   </td>
                   <td className="p-5 text-slate-500">
-                    {item.google_maps_url ? (
+                    {item.google_maps_url && isValidHttpUrl(item.google_maps_url) ? (
                       <a
                         href={item.google_maps_url}
                         target="_blank"
@@ -676,15 +714,6 @@ export default function ChurchesTab() {
                         className="text-blue-600 hover:underline"
                       >
                         Buka Maps
-                      </a>
-                    ) : item.latitude != null && item.longitude != null ? (
-                      <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${item.latitude},${item.longitude}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Koordinat
                       </a>
                     ) : (
                       "-"
@@ -759,9 +788,9 @@ export default function ChurchesTab() {
                       // Validate Dimensions
                       try {
                         const dims = await getImageDimensionsFromFile(file);
-                        // CHANGED: 1080x1350
-                        if (dims.w !== 1080 || dims.h !== 1350) {
-                          showToast(`Dimensi gambar salah: ${dims.w}x${dims.h}. Wajib 1080x1350 px (Portrait 4:5).`, "error");
+                        // CHANGED: 1080x1920
+                        if (dims.w !== REQUIRED_W || dims.h !== REQUIRED_H) {
+                          showToast(`Dimensi gambar salah: ${dims.w}x${dims.h}. Wajib ${REQUIRED_W}x${REQUIRED_H} px (Portrait 4:5).`, "error");
                           e.target.value = ""; // Reset
                           return; // Reject
                         }
@@ -810,8 +839,8 @@ export default function ChurchesTab() {
                       try {
                         const dims = await getImageDimensionsFromUrl(val);
                         // CHANGED: 1080x1350
-                        if (dims.w !== 1080 || dims.h !== 1350) {
-                          showToast(`URL Gambar dimensi salah: ${dims.w}x${dims.h}. Wajib 1080x1350 px.`, "error");
+                        if (dims.w !== REQUIRED_W || dims.h !== REQUIRED_H) {
+                          showToast(`URL Gambar dimensi salah: ${dims.w}x${dims.h}. Wajib ${REQUIRED_W}x${REQUIRED_H} px (Portrait 4:5).`, "error");
                           // Optionally clear it or let user fix it. Let's warn only.
                         } else {
                           setPreviewUrl(val);
@@ -824,7 +853,7 @@ export default function ChurchesTab() {
                     placeholder="https://example.com/poster-misa.jpg"
                   />
                   <p className="text-[10px] text-slate-500 mt-1">
-                    Pastikan link akses publik dan gambar berukuran 1080x1350 pixel (Portrait).
+                    Pastikan link akses publik dan gambar berukuran 1080x1350 pixel (Portrait 4:5).
                   </p>
                 </div>
               </div>
