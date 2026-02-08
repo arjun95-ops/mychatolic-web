@@ -1,40 +1,42 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-import { format, subDays, startOfWeek, startOfMonth, subMonths, eachDayOfInterval, eachMonthOfInterval, isSameDay, isSameMonth } from "date-fns";
+import { format, subDays, startOfMonth, subMonths, eachDayOfInterval, eachMonthOfInterval } from "date-fns";
 
 export const dynamic = 'force-dynamic';
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
-const formatDateKey = (date: Date) => format(date, 'yyyy-MM-dd');
-const formatMonthKey = (date: Date) => format(date, 'yyyy-MM');
-
-// Helper to fill zero data series
-const fillSeries = (data: any[], interval: { start: Date, end: Date }, type: 'day' | 'month', dateKey: string) => {
-    const steps = type === 'day'
-        ? eachDayOfInterval(interval)
-        : eachMonthOfInterval(interval);
-
-    return steps.map(step => {
-        const key = type === 'day' ? formatDateKey(step) : formatMonthKey(step);
-        // Find matching records in data
-        // dateKey matches the column name or property
-        const match = data.find(d => {
-            if (type === 'day') return d[dateKey] === key;
-            return d[dateKey].substring(0, 7) === key;
-        });
-        return {
-            date: key,
-            label: type === 'day' ? format(step, 'dd MMM') : format(step, 'MMM yy'),
-            count: match ? match.count : 0
-        };
-    });
-};
-
 export async function GET() {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+        return NextResponse.json({ error: 'Supabase credentials missing' }, { status: 500 });
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const formatDateKey = (date: Date) => format(date, 'yyyy-MM-dd');
+    const formatMonthKey = (date: Date) => format(date, 'yyyy-MM');
+
+    // Helper to fill zero data series
+    const fillSeries = (data: any[], interval: { start: Date, end: Date }, type: 'day' | 'month', dateKey: string) => {
+        const steps = type === 'day'
+            ? eachDayOfInterval(interval)
+            : eachMonthOfInterval(interval);
+
+        return steps.map(step => {
+            const key = type === 'day' ? formatDateKey(step) : formatMonthKey(step);
+            const match = data.find(d => {
+                if (type === 'day') return d[dateKey] === key;
+                return d[dateKey].substring(0, 7) === key;
+            });
+            return {
+                date: key,
+                label: type === 'day' ? format(step, 'dd MMM') : format(step, 'MMM yy'),
+                count: match ? match.count : 0
+            };
+        });
+    };
+
     try {
         const today = new Date();
 
@@ -56,8 +58,6 @@ export async function GET() {
         ]);
 
         // 2. User Stats & Roles
-        // We fetch basic profile info to aggregate in memory (or minimal select)
-        // For large scale, we should use SQL views or aggregated counters. keeping simple here.
         const { data: profiles, error: profilesError } = await supabase
             .from('profiles')
             .select('id, role, is_catechumen, account_status, verification_status, country_id, diocese_id, church_id');
@@ -77,7 +77,7 @@ export async function GET() {
         profiles.forEach(u => {
             // Status calc
             let status = 'unverified';
-            if (u.account_status === 'banned') status = 'banned'; // minimal overlap with others
+            if (u.account_status === 'banned') status = 'banned';
             else if (u.account_status === 'rejected' || u.verification_status === 'rejected') status = 'rejected';
             else if (u.verification_status === 'verified_catholic' || u.verification_status === 'verified_pastoral' || u.account_status === 'verified') status = 'verified';
             else if (u.verification_status === 'pending' || u.account_status === 'pending') status = 'pending';
@@ -103,42 +103,42 @@ export async function GET() {
             .sort((a, b) => b.count - a.count);
 
         // 3. DAU
-        // Daily Activity (last 365 days mostly needed for month view)
         const { data: dauData, error: dauError } = await supabase
             .from('user_daily_activity')
             .select('activity_date')
             .gte('activity_date', format(subMonths(today, 12), 'yyyy-MM-dd'))
             .order('activity_date', { ascending: true });
 
-        if (dauError) throw dauError;
+        if (dauError) {
+            // Table might not exist yet, fallback gracefully
+            console.error("Scale DAU Error (table missing?):", dauError);
+        }
 
         const dauMap: Record<string, number> = {};
         let dau_today = 0;
         const todayKey = formatDateKey(today);
 
-        dauData.forEach((row: any) => {
+        (dauData || []).forEach((row: any) => {
             dauMap[row.activity_date] = (dauMap[row.activity_date] || 0) + 1;
             if (row.activity_date === todayKey) dau_today++;
         });
 
-        // Transform map to array for filling
         const dauCounts = Object.entries(dauMap).map(([date, count]) => ({ date, count }));
-
         const dauWeek = fillSeries(dauCounts, { start: subDays(today, 6), end: today }, 'day', 'date');
         const dauMonth = fillSeries(dauCounts, { start: subDays(today, 29), end: today }, 'day', 'date');
         const dauYear = fillSeries(dauCounts, { start: subMonths(today, 11), end: today }, 'month', 'date');
 
-        // 4. Reports Trends (last 7 days)
+        // 4. Reports Trends
         const { data: reportsTrendData, error: rptError } = await supabase
             .from('reports')
             .select('created_at')
             .gte('created_at', format(subDays(today, 7), 'yyyy-MM-dd'))
             .order('created_at');
 
-        if (rptError) throw rptError;
+        if (rptError && rptError.code !== '42P01') console.error("Reports Error:", rptError);
 
         const rptMap: Record<string, number> = {};
-        reportsTrendData.forEach((r: any) => {
+        (reportsTrendData || []).forEach((r: any) => {
             const d = formatDateKey(new Date(r.created_at));
             rptMap[d] = (rptMap[d] || 0) + 1;
         });
@@ -146,22 +146,19 @@ export async function GET() {
         const rptCounts = Object.entries(rptMap).map(([date, count]) => ({ date, count }));
         const rptWeek = fillSeries(rptCounts, { start: subDays(today, 6), end: today }, 'day', 'date');
 
-        // 5. Locations Metadata (to map IDs to Names)
-        // For optimal perf, only fetch used IDs or fetch all if table small.
-        // Assuming master data tables are relatively small (< 10k rows usually fits mem, but limit 1000 for safety)
+        // 5. Locations Metadata
         const { data: cData } = await supabase.from('countries').select('id, name');
         const { data: dData } = await supabase.from('dioceses').select('id, name, country_id');
-        const { data: chData } = await supabase.from('churches').select('id, name, diocese_id'); // Might be large
+        const { data: chData } = await supabase.from('churches').select('id, name, diocese_id');
 
         const countryList = (cData || []).map(c => ({
             ...c, count: countryMap[c.id] || 0
-        })).sort((a, b) => b.count - a.count);
+        })).filter(c => c.count > 0).sort((a, b) => b.count - a.count);
 
         const dioceseList = (dData || []).map(d => ({
             ...d, count: dioceseMap[d.id] || 0
-        })).sort((a, b) => b.count - a.count);
+        })).filter(d => d.count > 0).sort((a, b) => b.count - a.count);
 
-        // Filter churches with users only to save bandwidth if list large
         const churchList = (chData || [])
             .map(c => ({ ...c, count: churchMap[c.id] || 0 }))
             .filter(c => c.count > 0)
@@ -193,7 +190,7 @@ export async function GET() {
         });
 
     } catch (error: any) {
-        console.error('Analytics Error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        console.error('Analytics Fatal Error:', error);
+        return NextResponse.json({ error: error.message || 'Server Error' }, { status: 500 });
     }
 }
