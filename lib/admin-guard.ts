@@ -17,6 +17,14 @@ export interface AdminUserRow {
     // Add other fields if necessary based on your schema
 }
 
+export interface AuthContextResult {
+    isAuthenticated: boolean
+    emailVerified: boolean
+    user: any | null
+    supabase: any
+    setCookiesToResponse: (res: NextResponse) => void
+}
+
 export interface AdminContextResult {
     user: any // Typed as User later
     adminRow: AdminUserRow | null
@@ -27,38 +35,49 @@ export interface AdminContextResult {
 export interface ApprovedAdminResult {
     user: any
     adminRow: AdminUserRow
-    supabaseAdminClient: typeof supabaseAdminClient
+    supabaseAdminClient: any // Typed loosely or as ReturnType<typeof createClient>
     setCookiesToResponse: (res: NextResponse) => void
 }
 
 // --- Clients ---
 
-// Service Role Client (Bypass RLS) - Singleton
-// Used for internal admin operations where user context is already validated
-export const supabaseAdminClient = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-        auth: {
-            persistSession: false,
-            autoRefreshToken: false,
-        },
+// Factory for Service Role Client with Audit Context
+// Injects 'x-admin-actor-id' header for DB triggers to capture the actor
+export function createSupabaseAdminClient(actorId?: string) {
+    const headers: Record<string, string> = {}
+    if (actorId) {
+        headers['x-admin-actor-id'] = actorId
     }
-)
+
+    return createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        {
+            auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+            },
+            global: {
+                headers,
+            }
+        }
+    )
+}
+
+// Backward compatibility (deprecated) - preferably use createSupabaseAdminClient or get it from context
+export const supabaseAdminClient = createSupabaseAdminClient()
 
 // --- Functions ---
 
 /**
- * Validates the current request for admin access.
- * Checks: Login, Email Verification.
- * Fetches: Admin User Row.
- * 
- * @param req NextRequest
- * @returns AdminContextResult or NextResponse (401)
+ * Basic Auth Context.
+ * Checks: Login ONLY.
+ * Returns: User, Email Verified Status, Supabase Client.
+ * Does NOT throw 401 if unverified.
  */
-export async function getAdminContext(
+export async function getAuthContext(
     req: NextRequest
-): Promise<AdminContextResult | NextResponse> {
+): Promise<AuthContextResult | NextResponse> {
     const cookieStore = req.cookies
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -94,6 +113,13 @@ export async function getAdminContext(
         }
     )
 
+    // Helper to apply cookies
+    const setCookiesToResponse = (res: NextResponse) => {
+        cookiesToSet.forEach(({ name, value, options }) => {
+            res.cookies.set(name, value, options)
+        })
+    }
+
     // 1. Get User
     const {
         data: { user },
@@ -101,30 +127,68 @@ export async function getAdminContext(
     } = await supabase.auth.getUser()
 
     if (userError || !user) {
+        // Return context with false flags instead of 401
+        return {
+            isAuthenticated: false,
+            emailVerified: false,
+            user: null,
+            supabase,
+            setCookiesToResponse
+        }
+    }
+
+    // 2. Check Verification
+    const isVerified = !!(user.email_confirmed_at || user.confirmed_at)
+
+    return {
+        isAuthenticated: true,
+        emailVerified: isVerified,
+        user,
+        supabase,
+        setCookiesToResponse
+    }
+}
+
+/**
+ * Validates the current request for admin access.
+ * Checks: Login, Email Verification.
+ * Fetches: Admin User Row.
+ * 
+ * @param req NextRequest
+ * @returns AdminContextResult or NextResponse (401)
+ */
+export async function getAdminContext(
+    req: NextRequest
+): Promise<AdminContextResult | NextResponse> {
+
+    const authRes = await getAuthContext(req)
+
+    // If getAuthContext returned NextResponse (e.g. 500 config), forward it
+    if (authRes instanceof NextResponse) {
+        return authRes
+    }
+
+    const { isAuthenticated, emailVerified, user, supabase, setCookiesToResponse } = authRes
+
+    if (!isAuthenticated || !user) {
         return NextResponse.json(
             { error: 'Unauthorized', message: 'Silakan login terlebih dahulu' },
             { status: 401 }
         )
     }
 
-    // 2. Validate Email Verified
-    // supabase.auth.getUser() returns a User object with email_confirmed_at
-    // confirmed_at is sometimes used in older schemas or different auth providers, 
-    // checking both covers bases or sticking to standard property.
-    // Standard Supabase Auth user has email_confirmed_at.
-    // The 'user' object might have 'confirmed_at' if it's the specific columns returned, 
-    // but usually it's compliant with the User interface.
-    const isVerified = user.email_confirmed_at || user.confirmed_at
-
-    if (!isVerified) {
+    if (!emailVerified) {
         return NextResponse.json(
             { error: 'Unauthorized', message: 'Email belum diverifikasi' },
             { status: 401 }
         )
     }
 
-    // 3. Fetch Admin Row
-    const { data: adminRow, error: adminError } = await supabaseAdminClient
+    // 3. Fetch Admin Row using dynamic client with actor
+    // Even for reading admin row, it's good practice to use actor context if available, though not strictly required for read audit unless configured.
+    const adminClient = createSupabaseAdminClient(user.id)
+
+    const { data: adminRow, error: adminError } = await adminClient
         .from('admin_users')
         .select('*')
         .eq('auth_user_id', user.id)
@@ -141,19 +205,6 @@ export async function getAdminContext(
             },
             { status: 500 }
         )
-    }
-
-
-
-    // Note: We don't error here if adminRow is missing, 
-    // because getAdminContext just builds context. 
-    // requireApprovedAdmin will enforce presence.
-
-    // Helper to apply cookies
-    const setCookiesToResponse = (res: NextResponse) => {
-        cookiesToSet.forEach(({ name, value, options }) => {
-            res.cookies.set(name, value, options)
-        })
     }
 
     return {
@@ -227,11 +278,14 @@ export async function requireApprovedAdmin(
         }
     }
 
-    // 5. Return Success
+    // 5. Return Success with Actor-Injected Client
+    // This ensures any DB operation done via this passed client has the actor header
+    const injectedAdminClient = createSupabaseAdminClient(user.id)
+
     return {
         user,
         adminRow,
-        supabaseAdminClient, // The service role client
+        supabaseAdminClient: injectedAdminClient, // Override/Provide the injected one
         setCookiesToResponse,
     }
 }

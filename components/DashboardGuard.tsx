@@ -65,8 +65,8 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
 
                 // 3. Check Admin Existence
                 if (!data.adminExists) {
-                    setErrorState('not_admin');
-                    setLoading(false); // Render "Not admin" UI
+                    // Not an admin row yet -> Redirect to registration
+                    router.replace('/dashboard/register');
                     return;
                 }
 

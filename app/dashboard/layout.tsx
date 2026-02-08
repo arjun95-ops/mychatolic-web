@@ -22,13 +22,65 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const pathname = usePathname();
     const router = useRouter();
 
+    useEffect(() => {
+        const startSession = async () => {
+            // Avoid starting session if already started in this browser session
+            // But requirement says: "Di DashboardLayout (client component) saat mount: panggil /api/admin/sessions/start"
+            // Re-starting session on refresh/reload is fine depending on requirement. 
+            // "simpan session_id di sessionStorage". 
+            // If sessionStorage has ID, maybe we can skip or create new one? 
+            // Usually session corresponds to a "visit". Let's simply create new one or check existing?
+            // "Saat mount: panggil ... simpan session_id". This implies a new session per load/refresh?
+            // Or only if not exists?
+            // Let's check if we have one. If we have one, we can reuse or just ignore.
+            // But if user refreshed, the server might consider it same session if cookie persists.
+            // However, "admin_sessions" table likely tracks "browser tab/window interactions".
+            // Let's just follow instructions: Call start on mount. 
+            // Wait, if every refresh creates a new session, that's a lot of rows.
+            // But sessionStorage persists across reload.
+            // Let's check `sessionStorage.getItem('admin_session_id')`.
+            // If it exists, we might want to keep it? Or requirement implies "start session when dashboard accessed".
+            // If I close tab and reopen, sessionStorage is gone -> new session. Correct.
+            // If I reload, sessionStorage stays -> effectively same session.
+            // So: if (!sessionStorage.getItem('admin_session_id')) { startSession() }
+
+            const existingId = sessionStorage.getItem('admin_session_id');
+            if (existingId) return; // Already tracking this tab session
+
+            try {
+                const res = await fetch('/api/admin/sessions/start', { method: 'POST' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.session_id) {
+                        sessionStorage.setItem('admin_session_id', data.session_id);
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to start session:', err);
+            }
+        };
+
+        startSession();
+    }, []);
+
     const handleLogout = async () => {
         try {
+            const sessionId = sessionStorage.getItem('admin_session_id');
+            if (sessionId) {
+                await fetch('/api/admin/sessions/end', {
+                    method: 'POST',
+                    body: JSON.stringify({ session_id: sessionId }),
+                });
+                sessionStorage.removeItem('admin_session_id');
+            }
+
             await supabase.auth.signOut();
-            router.push('/login'); // Redirect to login page
-            router.refresh(); // Refresh to clear state
+            router.push('/login');
+            router.refresh();
         } catch (error) {
             console.error('Error logging out:', error);
+            // Force redirect event if error
+            router.push('/login');
         }
     };
     // Removed manual session check, using DashboardGuard now

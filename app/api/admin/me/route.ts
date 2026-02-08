@@ -1,34 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAdminContext, supabaseAdminClient } from '@/lib/admin-guard'
+import { getAuthContext, createSupabaseAdminClient } from '@/lib/admin-guard'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
-    // 1. Get Admin Context
-    // This validates session existence and email verification.
-    // Returns 401 if not logged in or email not verified.
-    const ctx = await getAdminContext(req)
+    // 1. Get Auth Context (Permissive: allows unverified email)
+    const ctx = await getAuthContext(req)
 
     if (ctx instanceof NextResponse) {
         return ctx
     }
 
-    const { user, adminRow } = ctx
+    const { isAuthenticated, emailVerified, user } = ctx
 
-    // 2. Fetch User Profile for Full Name
-    // We use supabaseAdminClient to ensure we get the name even if RLS is tricky,
-    // though typically users can read their own profile.
-    const { data: profile } = await supabaseAdminClient
+    if (!isAuthenticated || !user) {
+        return NextResponse.json(
+            { error: 'Unauthorized', message: 'Silakan login terlebih dahulu' },
+            { status: 401 }
+        )
+    }
+
+    // Initialize Admin Client with Actor
+    const adminClient = createSupabaseAdminClient(user.id);
+
+    // 2. Fetch Admin Row (if user exists, regardless of email verification)
+    const { data: adminRow } = await adminClient
+        .from('admin_users')
+        .select('*')
+        .eq('auth_user_id', user.id)
+        .maybeSingle()
+
+    // 3. Fetch User Profile for Full Name
+    const { data: profile } = await adminClient
         .from('profiles')
         .select('full_name')
         .eq('id', user.id)
         .single()
 
-    // 3. Construct Response
-    // Note: getAdminContext guarantees email is verified if it returns success.
+    // 4. Construct Response
+    // We return 200 OK even if emailVerified is false, so Frontend can handle it.
     const responseData = {
         isAuthenticated: true,
-        emailVerified: true, // getAdminContext blocks if false
+        emailVerified: emailVerified,
         adminExists: !!adminRow,
         role: adminRow?.role || null,
         status: adminRow?.status || null,
