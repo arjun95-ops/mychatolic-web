@@ -81,15 +81,15 @@ export default function DashboardOverview() {
             // Show Churches in Diocese
             return data.location.churches
                 .filter(c => c.diocese_id === selectedDiocese)
-                .map(c => ({ name: c.name, count: c.count, type: 'Paroki' }));
+                .map(c => ({ name: c.name, count: c.count, type: 'Paroki', link: `/dashboard/location/church/${c.id}` }));
         } else if (selectedCountry) {
             // Show Dioceses in Country
             return data.location.dioceses
                 .filter(d => d.country_id === selectedCountry)
-                .map(d => ({ name: d.name, count: d.count, type: 'Keuskupan' }));
+                .map(d => ({ name: d.name, count: d.count, type: 'Keuskupan', link: `/dashboard/location/diocese/${d.id}` }));
         } else {
             // Show Countries
-            return data.location.countries.map(c => ({ name: c.name, count: c.count, type: 'Negara' }));
+            return data.location.countries.map(c => ({ name: c.name, count: c.count, type: 'Negara', link: `/dashboard/location/country/${c.id}` }));
         }
     }, [data, selectedCountry, selectedDiocese]);
 
@@ -216,8 +216,8 @@ export default function DashboardOverview() {
                                         key={t}
                                         onClick={() => setDauTab(t)}
                                         className={`px-3 py-1 text-xs font-semibold rounded-md transition-all capitalize ${dauTab === t
-                                                ? 'bg-surface-primary dark:bg-surface-secondary shadow text-action'
-                                                : 'text-text-secondary hover:text-text-primary'
+                                            ? 'bg-surface-primary dark:bg-surface-secondary shadow text-action'
+                                            : 'text-text-secondary hover:text-text-primary'
                                             }`}
                                     >
                                         {t === 'year' ? 'Tahun' : t === 'month' ? 'Bulan' : 'Minggu'}
@@ -315,10 +315,15 @@ export default function DashboardOverview() {
 
                     {/* Location Drilldown */}
                     <div className="bg-surface-primary rounded-xl border border-surface-secondary dark:border-surface-secondary/20 p-6 shadow-sm h-fit">
-                        <h3 className="text-lg font-bold text-text-primary dark:text-text-inverse mb-4 flex items-center gap-2">
-                            <MapPin className="w-5 h-5 text-action" />
-                            Distribusi Lokasi
-                        </h3>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg font-bold text-text-primary dark:text-text-inverse flex items-center gap-2">
+                                <MapPin className="w-5 h-5 text-action" />
+                                Distribusi Lokasi
+                            </h3>
+                            <Link href="/dashboard/location" className="text-xs font-bold text-action hover:underline">
+                                Buka Eksplor Lokasi
+                            </Link>
+                        </div>
 
                         <div className="space-y-3 mb-4">
                             <select
@@ -363,10 +368,16 @@ export default function DashboardOverview() {
                                         displayedLocationData.slice(0, 50).map((item, idx) => (
                                             <tr key={idx} className="group hover:bg-surface-secondary dark:hover:bg-surface-inverse/50 transition-colors">
                                                 <td className="p-2 text-text-primary dark:text-text-inverse truncate max-w-[150px]">
-                                                    <div className="font-medium truncate" title={item.name}>{item.name}</div>
-                                                    <div className="text-[10px] text-text-secondary">{item.type}</div>
+                                                    <Link href={item.link} className="block group-hover:text-action transition-colors">
+                                                        <div className="font-medium truncate" title={item.name}>{item.name}</div>
+                                                        <div className="text-[10px] text-text-secondary">{item.type}</div>
+                                                    </Link>
                                                 </td>
-                                                <td className="p-2 text-right font-bold text-text-primary dark:text-text-inverse">{item.count}</td>
+                                                <td className="p-2 text-right font-bold text-text-primary dark:text-text-inverse">
+                                                    <Link href={item.link} className="block">
+                                                        {item.count}
+                                                    </Link>
+                                                </td>
                                             </tr>
                                         ))
                                     ) : (
