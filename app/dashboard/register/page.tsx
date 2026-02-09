@@ -141,6 +141,9 @@ export default function RegisterAdminPage() {
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                         Dengan mendaftar, akun Anda akan berstatus <strong>Pending Approval</strong> sampai disetujui oleh Super Admin.
                     </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Daftar seluruh akun admin hanya bisa diakses oleh <strong>Super Admin</strong> melalui menu Manajemen Admin.
+                    </p>
 
                     <button
                         type="submit"

@@ -83,7 +83,7 @@ export default function AdminOpsPage() {
     const [error, setError] = useState<string | null>(null);
     const [notice, setNotice] = useState<Notice>(null);
     const [admins, setAdmins] = useState<AdminRow[]>([]);
-    const [statusFilter, setStatusFilter] = useState<AdminStatus | 'all'>('pending_approval');
+    const [statusFilter, setStatusFilter] = useState<AdminStatus | 'all'>('all');
     const [roleFilter, setRoleFilter] = useState<AdminRole | 'all'>('all');
     const [query, setQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -407,7 +407,7 @@ export default function AdminOpsPage() {
                         onClick={() => {
                             setQuery('');
                             setDebouncedQuery('');
-                            setStatusFilter('pending_approval');
+                            setStatusFilter('all');
                             setRoleFilter('all');
                         }}
                         className="rounded-lg border border-surface-secondary px-3 py-1.5 text-xs font-semibold text-text-primary transition hover:bg-surface-secondary/20"
