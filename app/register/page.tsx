@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Toaster, toast } from 'react-hot-toast';
 
 type DesiredRole = 'admin_ops' | 'super_admin';
@@ -14,16 +14,19 @@ function resolveDesiredRole(raw: string | null): DesiredRole {
 
 export default function RegisterPage() {
     const router = useRouter();
-    const searchParams = useSearchParams();
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [submitted, setSubmitted] = useState<{ email: string; desiredRole: DesiredRole } | null>(null);
-    const [desiredRole, setDesiredRole] = useState<DesiredRole>(() =>
-        resolveDesiredRole(searchParams.get('role'))
-    );
+    const [desiredRole, setDesiredRole] = useState<DesiredRole>('admin_ops');
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        setDesiredRole(resolveDesiredRole(params.get('role')));
+    }, []);
 
     const roleHelperText = useMemo(() => {
         if (desiredRole === 'super_admin') {
