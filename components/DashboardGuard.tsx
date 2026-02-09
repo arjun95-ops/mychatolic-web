@@ -16,34 +16,48 @@ interface AdminMeStatus {
 export default function DashboardGuard({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
+    const isBypassPath =
+        pathname === '/dashboard/login' ||
+        pathname === '/dashboard/register' ||
+        pathname === '/dashboard/pending-approval';
+    const isSuperAdminRoute = pathname.startsWith('/dashboard/super-admin');
     const [loading, setLoading] = useState(true);
     const [errorState, setErrorState] = useState<
         'unauthorized' | 'unverified' | 'not_admin' | 'suspended' | null
     >(null);
 
     useEffect(() => {
-        // Skip guard for login, register, pending-approval to avoid loops
-        if (
-            pathname === '/dashboard/login' ||
-            pathname === '/dashboard/register' ||
-            pathname === '/dashboard/pending-approval'
-        ) {
-            setLoading(false);
-            return;
-        }
+        // Skip guard for login/register/pending pages to avoid loops
+        if (isBypassPath) return;
+
+        let isMounted = true;
+        let retryTimer: ReturnType<typeof setTimeout> | null = null;
 
         const checkAdminStatus = async () => {
             try {
-                const res = await fetch('/api/admin/me');
+                const res = await fetch('/api/admin/me', {
+                    method: 'GET',
+                    cache: 'no-store',
+                    credentials: 'same-origin',
+                    headers: {
+                        accept: 'application/json',
+                    },
+                });
 
                 if (res.status === 401) {
                     // Not authenticated at all
+                    if (!isMounted) return;
                     setErrorState('unauthorized');
                     router.push('/dashboard/login');
                     return;
                 }
 
+                if (!res.ok) {
+                    throw new Error(`Admin status request failed (${res.status})`);
+                }
+
                 const data: AdminMeStatus = await res.json();
+                if (!isMounted) return;
 
                 // 1. Check Authentication logic (handled by 401 above usually, but double check)
                 if (!data.isAuthenticated) {
@@ -66,7 +80,13 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
                 // 3. Check Admin Existence
                 if (!data.adminExists) {
                     // Not an admin row yet -> Redirect to registration
+                    setErrorState('not_admin');
                     router.replace('/dashboard/register');
+                    return;
+                }
+
+                if (isSuperAdminRoute && data.role !== 'super_admin') {
+                    router.replace('/dashboard');
                     return;
                 }
 
@@ -94,14 +114,46 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
 
             } catch (err) {
                 console.error('Admin Guard Error:', err);
-                // Fallback to login on error? Or show generic error?
-                // Let's assume unauthorized for safety
-                router.push('/dashboard/login');
+                if (!isMounted) return;
+
+                // Fallback: if local Supabase session is gone, redirect to login.
+                // If session still exists, keep current page and retry shortly.
+                try {
+                    const { data } = await supabase.auth.getSession();
+                    const hasSession = Boolean(data?.session);
+                    if (!hasSession) {
+                        setErrorState('unauthorized');
+                        router.replace('/dashboard/login');
+                        return;
+                    }
+                } catch {
+                    setErrorState('unauthorized');
+                    router.replace('/dashboard/login');
+                    return;
+                }
+
+                setLoading(false);
+                retryTimer = setTimeout(() => {
+                    if (isMounted) checkAdminStatus();
+                }, 3000);
             }
         };
 
         checkAdminStatus();
-    }, [pathname, router]);
+        const interval = setInterval(checkAdminStatus, 60 * 1000);
+
+        return () => {
+            isMounted = false;
+            if (retryTimer) {
+                clearTimeout(retryTimer);
+            }
+            clearInterval(interval);
+        };
+    }, [isBypassPath, isSuperAdminRoute, router]);
+
+    if (isBypassPath) {
+        return <>{children}</>;
+    }
 
     if (loading) {
         return (

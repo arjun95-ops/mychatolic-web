@@ -1,22 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "@/components/ui/Toast";
 import { Edit2, Trash2, Plus, Bell, Megaphone, MapPin, Globe } from "lucide-react";
 import AnnouncementForm from "@/components/cms/tabs/AnnouncementForm";
 
+type AnnouncementItem = {
+    id: string;
+    title: string;
+    content: string;
+    target_audience: string;
+    is_active: boolean;
+    created_at: string;
+    target_id: string | null;
+};
+
 export default function AnnouncementsTab() {
     const { showToast } = useToast();
-    const [announcements, setAnnouncements] = useState<any[]>([]);
+    const [announcements, setAnnouncements] = useState<AnnouncementItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
 
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingAnnouncement, setEditingAnnouncement] = useState<any>(null);
+    const [editingAnnouncement, setEditingAnnouncement] = useState<AnnouncementItem | null>(null);
 
-    const fetchAnnouncements = async () => {
+    const fetchAnnouncements = useCallback(async () => {
         setLoading(true);
         let query = supabase
             .from('announcements')
@@ -31,14 +41,23 @@ export default function AnnouncementsTab() {
         if (error) {
             showToast("Gagal memuat pengumuman: " + error.message, "error");
         } else {
-            setAnnouncements(data || []);
+            const items = ((data || []) as Partial<AnnouncementItem>[]).map((item) => ({
+                id: String(item.id || ""),
+                title: String(item.title || ""),
+                content: String(item.content || ""),
+                target_audience: String(item.target_audience || ""),
+                is_active: Boolean(item.is_active),
+                created_at: String(item.created_at || ""),
+                target_id: typeof item.target_id === "string" ? item.target_id : null,
+            }));
+            setAnnouncements(items);
         }
         setLoading(false);
-    };
+    }, [search, showToast]);
 
     useEffect(() => {
         fetchAnnouncements();
-    }, [search]);
+    }, [fetchAnnouncements]);
 
     const handleDelete = async (id: string) => {
         if (!confirm("Apakah Anda yakin ingin menghapus pengumuman ini?")) return;
@@ -48,12 +67,13 @@ export default function AnnouncementsTab() {
             if (error) throw error;
             showToast("Pengumuman berhasil dihapus", "success");
             fetchAnnouncements();
-        } catch (e: any) {
-            showToast("Gagal menghapus: " + e.message, "error");
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : 'Unknown error';
+            showToast("Gagal menghapus: " + message, "error");
         }
     };
 
-    const handleEdit = (announcement: any) => {
+    const handleEdit = (announcement: AnnouncementItem) => {
         setEditingAnnouncement(announcement);
         setIsModalOpen(true);
     };
@@ -184,7 +204,7 @@ export default function AnnouncementsTab() {
             <AnnouncementForm
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                announcement={editingAnnouncement}
+                announcement={editingAnnouncement ?? undefined}
                 onSuccess={handleSave}
             />
         </div>

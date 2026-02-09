@@ -10,6 +10,11 @@ import {
     BarChart3,
     UserCheck,
     Database,
+    UserCircle2,
+    Shield,
+    Clock3,
+    ScrollText,
+    Archive,
     LogOut,
     Menu,
     X
@@ -19,8 +24,52 @@ import DashboardGuard from '@/components/DashboardGuard';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [adminMeta, setAdminMeta] = useState<{
+        role: string | null;
+        isSuperAdmin: boolean;
+        backupReminderUnread: number;
+        fullName: string;
+        email: string;
+        avatarUrl: string | null;
+    }>({
+        role: null,
+        isSuperAdmin: false,
+        backupReminderUnread: 0,
+        fullName: 'Admin',
+        email: '',
+        avatarUrl: null,
+    });
     const pathname = usePathname();
     const router = useRouter();
+
+    useEffect(() => {
+        let mounted = true;
+        const loadAdminMeta = async () => {
+            try {
+                const res = await fetch('/api/admin/me', { cache: 'no-store' });
+                if (!res.ok) return;
+                const json = await res.json();
+                if (!mounted) return;
+                setAdminMeta({
+                    role: json.role || null,
+                    isSuperAdmin: Boolean(json.is_super_admin),
+                    backupReminderUnread: Number(json.backup_reminder_unread || 0),
+                    fullName: String(json.full_name || 'Admin'),
+                    email: String(json.email || ''),
+                    avatarUrl: json.avatar_url ? String(json.avatar_url) : null,
+                });
+            } catch {
+                // ignore
+            }
+        };
+
+        loadAdminMeta();
+        const interval = setInterval(loadAdminMeta, 60 * 1000);
+        return () => {
+            mounted = false;
+            clearInterval(interval);
+        };
+    }, []);
 
     useEffect(() => {
         const startSession = async () => {
@@ -62,6 +111,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         startSession();
     }, []);
+
+    useEffect(() => {
+        if (!adminMeta.isSuperAdmin) return;
+
+        const runScheduleProcessor = async () => {
+            try {
+                await fetch('/api/admin/super-admin/backups/process', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ source: 'layout_poll' }),
+                });
+            } catch {
+                // ignore background failures
+            }
+        };
+
+        runScheduleProcessor();
+        const interval = setInterval(runScheduleProcessor, 5 * 60 * 1000);
+        return () => clearInterval(interval);
+    }, [adminMeta.isSuperAdmin]);
 
     const handleLogout = async () => {
         try {
@@ -165,10 +234,99 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                                 <Database size={20} className={pathname.startsWith('/dashboard/master-data') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
                                 <span>Master Data Gereja</span>
                             </Link>
+
+                            <Link
+                                href="/dashboard/account"
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/account')
+                                    ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                    : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                    }`}
+                            >
+                                <UserCircle2 size={20} className={pathname.startsWith('/dashboard/account') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                                <span>Akun Saya</span>
+                            </Link>
                         </div>
+
+                        {adminMeta.isSuperAdmin && (
+                            <div className="mt-6">
+                                <div className="text-xs font-bold text-text-inverse/40 uppercase tracking-wider px-4 mb-2">
+                                    Super Admin
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Link
+                                        href="/dashboard/super-admin/admin-ops"
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/super-admin/admin-ops')
+                                            ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                            : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                            }`}
+                                    >
+                                        <Shield size={20} className={pathname.startsWith('/dashboard/super-admin/admin-ops') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                                        <span>Manajemen Admin</span>
+                                    </Link>
+
+                                    <Link
+                                        href="/dashboard/super-admin/sessions"
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/super-admin/sessions')
+                                            ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                            : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                            }`}
+                                    >
+                                        <Clock3 size={20} className={pathname.startsWith('/dashboard/super-admin/sessions') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                                        <span>Admin Sessions</span>
+                                    </Link>
+
+                                    <Link
+                                        href="/dashboard/super-admin/audit-logs"
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/super-admin/audit-logs')
+                                            ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                            : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                            }`}
+                                    >
+                                        <ScrollText size={20} className={pathname.startsWith('/dashboard/super-admin/audit-logs') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                                        <span>Audit Logs</span>
+                                    </Link>
+
+                                    <Link
+                                        href="/dashboard/super-admin/backups"
+                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/super-admin/backups')
+                                            ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                            : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                            }`}
+                                    >
+                                        <Archive size={20} className={pathname.startsWith('/dashboard/super-admin/backups') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                                        <span className="flex items-center gap-2">
+                                            Backup & Retensi
+                                            {adminMeta.backupReminderUnread > 0 && (
+                                                <span className="inline-flex min-w-[20px] justify-center rounded-full bg-status-error px-1.5 py-0.5 text-[10px] font-bold text-text-inverse">
+                                                    {adminMeta.backupReminderUnread}
+                                                </span>
+                                            )}
+                                        </span>
+                                    </Link>
+                                </div>
+                            </div>
+                        )}
                     </nav>
 
                     <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-text-inverse/10 bg-brand-primary">
+                        <div className="mb-3 rounded-xl border border-text-inverse/10 bg-surface-inverse/10 px-3 py-2">
+                            <div className="flex items-center gap-2">
+                                <div className="h-8 w-8 rounded-full bg-surface-inverse/20 overflow-hidden flex items-center justify-center text-xs font-bold">
+                                    {adminMeta.avatarUrl ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img src={adminMeta.avatarUrl} alt={adminMeta.fullName} className="h-full w-full object-cover" />
+                                    ) : (
+                                        (adminMeta.fullName || 'A').charAt(0).toUpperCase()
+                                    )}
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-xs font-semibold text-text-inverse truncate">{adminMeta.fullName || 'Admin'}</p>
+                                    <p className="text-[11px] text-text-inverse/70 truncate">{adminMeta.email || '-'}</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <button
                             onClick={handleLogout}
                             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-200 hover:bg-red-500/20 hover:text-red-100 transition-colors"

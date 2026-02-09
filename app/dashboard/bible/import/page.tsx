@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "@/components/ui/Toast";
-import { Upload, FileSpreadsheet, AlertTriangle, CheckCircle, ArrowRight, Loader2, ArrowLeft } from "lucide-react";
+import { Upload, FileSpreadsheet, AlertTriangle, ArrowRight, Loader2, ArrowLeft } from "lucide-react";
 import * as XLSX from "xlsx";
 import Link from "next/link";
 
@@ -14,6 +14,21 @@ interface BibleRow {
     verse: number;
     text: string;
     pericope?: string;
+}
+
+type RawBibleExcelRow = Record<string, unknown>;
+
+function toBibleRows(rawData: RawBibleExcelRow[]): BibleRow[] {
+    return rawData
+        .map((row) => ({
+            category: String(row['category'] || row['Category'] || "Perjanjian Baru"),
+            book_name: String(row['book_name'] || row['Book Name'] || row['Book'] || ''),
+            chapter: parseInt(String(row['chapter'] || row['Chapter'] || '0'), 10),
+            verse: parseInt(String(row['verse'] || row['Verse'] || '0'), 10),
+            text: String(row['text'] || row['Text'] || row['Isi Ayat'] || ''),
+            pericope: String(row['pericope'] || row['Pericope'] || row['Judul Perikop'] || ''),
+        }))
+        .filter((r) => r.book_name && r.chapter && r.verse && r.text);
 }
 
 export default function BibleImportPage() {
@@ -41,17 +56,8 @@ export default function BibleImportPage() {
             const workbook = XLSX.read(data, { type: "binary" });
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(sheet) as any[];
-
-            // Map and Validate standard columns
-            const parsedRows: BibleRow[] = jsonData.map((row: any) => ({
-                category: row['category'] || row['Category'] || "Perjanjian Baru", // Default fallback if missing
-                book_name: row['book_name'] || row['Book Name'] || row['Book'],
-                chapter: parseInt(row['chapter'] || row['Chapter']),
-                verse: parseInt(row['verse'] || row['Verse']),
-                text: row['text'] || row['Text'] || row['Isi Ayat'],
-                pericope: row['pericope'] || row['Pericope'] || row['Judul Perikop'] || null
-            })).filter(r => r.book_name && r.chapter && r.verse && r.text); // Basic validation
+            const jsonData = XLSX.utils.sheet_to_json<RawBibleExcelRow>(sheet);
+            const parsedRows = toBibleRows(jsonData);
 
             setPreviewData(parsedRows.slice(0, 5));
             setTotalRows(parsedRows.length);
@@ -81,27 +87,19 @@ export default function BibleImportPage() {
             const binData = e.target?.result;
             const workbook = XLSX.read(binData, { type: "binary" });
             const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(sheet) as any[];
+            const jsonData = XLSX.utils.sheet_to_json<RawBibleExcelRow>(sheet);
 
             await executeBatchImport(jsonData);
         };
         reader.readAsBinaryString(file);
     };
 
-    const executeBatchImport = async (rawData: any[]) => {
+    const executeBatchImport = async (rawData: RawBibleExcelRow[]) => {
         setIsProcessing(true);
         setProgress(0);
         setCurrentStatus("Initializing...");
 
-        // Map data again
-        const rows: BibleRow[] = rawData.map((row: any) => ({
-            category: row['category'] || row['Category'] || "Perjanjian Baru",
-            book_name: row['book_name'] || row['Book Name'] || row['Book'],
-            chapter: parseInt(row['chapter'] || row['Chapter']),
-            verse: parseInt(row['verse'] || row['Verse']),
-            text: row['text'] || row['Text'] || row['Isi Ayat'],
-            pericope: row['pericope'] || row['Pericope'] || row['Judul Perikop'] || null
-        })).filter(r => r.book_name && r.chapter && r.verse && r.text);
+        const rows = toBibleRows(rawData);
 
         try {
             // Cache for IDs to reduce DB calls
@@ -237,10 +235,11 @@ export default function BibleImportPage() {
             setCurrentStatus("Import Completed Successfully!");
             showToast(`Berhasil mengimport ${processedCount} ayat!`, "success");
 
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'Unknown error';
             console.error("Bulk Import Error:", error);
             showToast("Terjadi kesalahan sistem saat import", "error");
-            setCurrentStatus(`Error: ${error.message}`);
+            setCurrentStatus(`Error: ${message}`);
         } finally {
             setIsProcessing(false);
         }

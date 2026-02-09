@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronRight, ArrowRight, Loader2 } from 'lucide-react';
+import { ChevronRight, ArrowRight } from 'lucide-react';
 
 interface CountryItem {
     id: string;

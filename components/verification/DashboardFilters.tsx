@@ -18,12 +18,29 @@ type BaseFilters = {
     status: string;
 };
 
+type LocationCatalog = {
+    countries: Array<{ name: string }>;
+    dioceses: Array<{ name: string; country?: string }>;
+    parishes: Array<{ name: string; country?: string; diocese?: string }>;
+};
+
+function isNonEmptyString(value: string | null | undefined): value is string {
+    return Boolean(value);
+}
+
+function uniqueSorted(values: string[]): string[] {
+    return Array.from(new Set(values.map((value) => value.trim()).filter(Boolean))).sort((a, b) =>
+        a.localeCompare(b, 'id-ID', { sensitivity: 'base' })
+    );
+}
+
 interface Props<T extends BaseFilters> {
     users: FilterableUser[];
     search?: string;
     setSearch?: (v: string) => void;
     filters: T;
     setFilters: Dispatch<SetStateAction<T>>;
+    locationCatalog?: LocationCatalog;
 }
 
 export default function DashboardFilters<T extends BaseFilters>({
@@ -32,9 +49,8 @@ export default function DashboardFilters<T extends BaseFilters>({
     setSearch,
     filters,
     setFilters,
+    locationCatalog,
 }: Props<T>) {
-    const nonEmptyString = (value: string | null | undefined): value is string => Boolean(value);
-
     const resolvedSearch = search ?? filters.search ?? '';
     const updateSearch = (value: string) => {
         if (setSearch) {
@@ -46,24 +62,44 @@ export default function DashboardFilters<T extends BaseFilters>({
 
     // Hitung Opsi Dropdown secara Dinamis (Cascading)
     const options = useMemo(() => {
-        const countries = Array.from(new Set(users.map((u) => u.country).filter(nonEmptyString))).sort();
+        if (locationCatalog) {
+            const countries = uniqueSorted(locationCatalog.countries.map((item) => item.name));
+            const dioceses = uniqueSorted(
+                locationCatalog.dioceses
+                    .filter((item) => !filters.country || item.country === filters.country)
+                    .map((item) => item.name)
+            );
+            const parishes = uniqueSorted(
+                locationCatalog.parishes
+                    .filter(
+                        (item) =>
+                            (!filters.country || item.country === filters.country) &&
+                            (!filters.diocese || item.diocese === filters.diocese)
+                    )
+                    .map((item) => item.name)
+            );
+
+            return { countries, dioceses, parishes };
+        }
+
+        const countries = Array.from(new Set(users.map((u) => u.country).filter(isNonEmptyString))).sort();
 
         const dioceses = Array.from(new Set(
             users
                 .filter(u => !filters.country || u.country === filters.country)
                 .map(u => u.diocese)
-                .filter(nonEmptyString)
+                .filter(isNonEmptyString)
         )).sort();
 
         const parishes = Array.from(new Set(
             users
                 .filter(u => (!filters.country || u.country === filters.country) && (!filters.diocese || u.diocese === filters.diocese))
                 .map(u => u.parish)
-                .filter(nonEmptyString)
+                .filter(isNonEmptyString)
         )).sort();
 
         return { countries, dioceses, parishes };
-    }, [users, filters.country, filters.diocese]);
+    }, [users, filters.country, filters.diocese, locationCatalog]);
 
     const handleChange = (key: keyof Pick<BaseFilters, 'country' | 'diocese' | 'parish' | 'status'>, value: string) => {
         setFilters((prev) => {
@@ -119,8 +155,7 @@ export default function DashboardFilters<T extends BaseFilters>({
                 <select
                     value={filters.diocese}
                     onChange={(e) => handleChange('diocese', e.target.value)}
-                    disabled={!filters.country && options.dioceses.length > 50}
-                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[160px] focus:ring-2 focus:ring-brand-primary outline-none disabled:bg-gray-50 disabled:text-gray-400"
+                    className="px-3 py-2.5 bg-white border border-gray-200 rounded-lg text-sm min-w-[160px] focus:ring-2 focus:ring-brand-primary outline-none"
                 >
                     <option value="">Semua Keuskupan</option>
                     {options.dioceses.map((d) => <option key={d} value={d}>{d}</option>)}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 interface ModalProps {
     isOpen: boolean;
@@ -10,8 +10,6 @@ interface ModalProps {
 }
 
 export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
-    const overlayRef = useRef<HTMLDivElement>(null);
-
     // Close on ESC
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthContext, createSupabaseAdminClient } from '@/lib/admin-guard'
+import { normalizeLower } from '@/lib/admin-constants'
+import { logAdminAudit } from '@/lib/admin-audit'
 
 export async function POST(req: NextRequest) {
     // 1. Validate Auth & Email Verification
@@ -29,13 +31,14 @@ export async function POST(req: NextRequest) {
     let body;
     try {
         body = await req.json();
-    } catch (e) {
+    } catch {
         return NextResponse.json({ error: 'BadRequest', message: 'Invalid JSON' }, { status: 400 });
     }
 
-    const { full_name } = body;
+    const fullNameInput = body?.full_name;
+    const full_name = typeof fullNameInput === 'string' ? fullNameInput.trim() : '';
 
-    if (!full_name || typeof full_name !== 'string' || full_name.trim().length === 0) {
+    if (!full_name) {
         return NextResponse.json(
             { error: 'ValidationError', message: 'full_name wajib diisi' },
             { status: 400 }
@@ -44,12 +47,47 @@ export async function POST(req: NextRequest) {
 
     // Initialize Admin Client with Actor (User) Context for Audit
     const adminClient = createSupabaseAdminClient(user.id);
+    const normalizedEmail = normalizeLower(user.email || '');
 
-    // 3. Upsert to admin_users
+    // 3. Email allowlist check
+    const { data: allowlistedEmail, error: allowlistError } = await adminClient
+        .from('admin_email_allowlist')
+        .select('email')
+        .eq('email', normalizedEmail)
+        .maybeSingle();
+
+    if (allowlistError) {
+        if (allowlistError.code === '42P01') {
+            return NextResponse.json(
+                {
+                    error: 'SchemaError',
+                    message:
+                        'Tabel admin_email_allowlist belum tersedia. Jalankan migration RBAC terlebih dahulu.',
+                },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { error: 'DatabaseError', message: allowlistError.message },
+            { status: 500 }
+        );
+    }
+
+    if (!allowlistedEmail) {
+        return NextResponse.json(
+            {
+                error: 'Forbidden',
+                message: 'Email Anda belum masuk daftar allowlist admin. Hubungi Super Admin.',
+            },
+            { status: 403 }
+        );
+    }
+
+    // 4. Upsert to admin_users
     // We check if the user is already a super_admin to prevent accidental overwrite/downgrade via this endpoint.
     const { data: existingAdmin, error: fetchError } = await adminClient
         .from('admin_users')
-        .select('role')
+        .select('auth_user_id, role, status')
         .eq('auth_user_id', user.id)
         .maybeSingle();
 
@@ -68,23 +106,40 @@ export async function POST(req: NextRequest) {
                 { status: 403 }
             );
         }
-        // If they are admin_ops or other status, update is generally okay here (e.g. re-apply after suspension?)
-        // Or if they are pending, update name? Allowed.
+
+        if (existingAdmin.status === 'suspended') {
+            return NextResponse.json(
+                {
+                    error: 'Forbidden',
+                    message: 'Akun admin Anda sedang suspended. Hanya Super Admin yang bisa mengaktifkan kembali.',
+                },
+                { status: 403 }
+            );
+        }
+
+        if (existingAdmin.status === 'approved') {
+            return NextResponse.json(
+                { error: 'Forbidden', message: 'Akun Anda sudah aktif sebagai admin.' },
+                { status: 403 }
+            );
+        }
     }
 
-    // Perform Upsert
+    const upsertPayload = {
+        auth_user_id: user.id,
+        email: normalizedEmail,
+        full_name,
+        role: 'admin_ops',
+        status: 'pending_approval',
+        approved_at: null,
+        approved_by: null,
+        updated_at: new Date().toISOString(),
+    };
+
+    // 5. Perform Upsert
     const { error } = await adminClient
         .from('admin_users')
-        .upsert({
-            auth_user_id: user.id,
-            email: user.email,
-            full_name: full_name,
-            role: 'admin_ops',
-            status: 'pending_approval',
-            approved_at: null,
-            approved_by: null,
-            created_at: new Date().toISOString(), // Ensure created_at is set for new rows? Upsert might use default if omitted on insert, but explicit is fine.
-        }, { onConflict: 'auth_user_id' })
+        .upsert(upsertPayload, { onConflict: 'auth_user_id' })
 
     if (error) {
         console.error('Register Admin Error:', error);
@@ -93,6 +148,18 @@ export async function POST(req: NextRequest) {
             { status: 500 }
         );
     }
+
+    await logAdminAudit({
+        supabaseAdminClient: adminClient,
+        actorAuthUserId: user.id,
+        action: 'REGISTER_ADMIN_REQUEST',
+        tableName: 'admin_users',
+        recordId: user.id,
+        oldData: existingAdmin || null,
+        newData: upsertPayload,
+        request: req,
+        extra: { source: 'self_register' },
+    });
 
     return NextResponse.json({ success: true });
 }

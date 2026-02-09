@@ -1,15 +1,60 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Modal from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
 import { Search, Plus, Edit2, Trash2, Loader2, ChevronLeft, ChevronRight, Save, Home } from "lucide-react";
 
+type RawChurch = {
+    nama_paroki?: unknown;
+};
+
+type RawWilayah = {
+    id?: unknown;
+    name?: unknown;
+    churches?: RawChurch | RawChurch[] | null;
+};
+
+type RawLingkungan = {
+    id?: unknown;
+    name?: unknown;
+    wilayah_id?: unknown;
+    wilayah?: RawWilayah | RawWilayah[] | null;
+};
+
+type LingkunganItem = {
+    id: number;
+    name: string;
+    wilayah_id: number;
+    wilayah?: {
+        name: string;
+        churches?: {
+            nama_paroki: string;
+        };
+    };
+};
+
+type WilayahOption = {
+    id: number;
+    name: string;
+};
+
+const sanitizeOneToOne = <T,>(value: T | T[] | null | undefined): T | null => {
+    if (Array.isArray(value)) return value.length > 0 ? value[0] : null;
+    return value ?? null;
+};
+
+const toErrorMessage = (error: unknown) => {
+    if (error instanceof Error) return error.message;
+    if (typeof error === "string") return error;
+    return "Terjadi kesalahan";
+};
+
 export default function LingkunganTab() {
     const { showToast } = useToast();
-    const [data, setData] = useState<any[]>([]);
-    const [wilayahs, setWilayahs] = useState<any[]>([]);
+    const [data, setData] = useState<LingkunganItem[]>([]);
+    const [wilayahs, setWilayahs] = useState<WilayahOption[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
@@ -18,13 +63,13 @@ export default function LingkunganTab() {
     // Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [editingItem, setEditingItem] = useState<any>(null);
+    const [editingItem, setEditingItem] = useState<LingkunganItem | null>(null);
     const [formData, setFormData] = useState({
         name: "",
         wilayah_id: ""
     });
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         setLoading(true);
         let query = supabase
             .from('lingkungan')
@@ -44,26 +89,43 @@ export default function LingkunganTab() {
             console.error(error);
             showToast("Gagal memuat data lingkungan", "error");
         } else {
-            setData(res || []);
+            const mapped = ((res || []) as RawLingkungan[]).map((item) => {
+                const wilayah = sanitizeOneToOne<RawWilayah>(item.wilayah);
+                const church = wilayah ? sanitizeOneToOne<RawChurch>(wilayah.churches) : null;
+                return {
+                    id: Number(item.id ?? 0),
+                    name: String(item.name ?? ""),
+                    wilayah_id: Number(item.wilayah_id ?? 0),
+                    wilayah: wilayah ? {
+                        name: String(wilayah.name ?? ""),
+                        churches: church ? { nama_paroki: String(church.nama_paroki ?? "") } : undefined,
+                    } : undefined,
+                };
+            });
+            setData(mapped);
         }
         setLoading(false);
-    };
+    }, [page, search, showToast]);
 
-    const fetchWilayahs = async () => {
+    const fetchWilayahs = useCallback(async () => {
         // Fetch all wilayah, ideally we should filter or paginate if too many
         // For now, let's fetch first 100 or all
         const { data } = await supabase.from('wilayah').select('id, name').order('name');
-        setWilayahs(data || []);
-    };
+        const mapped = ((data || []) as RawWilayah[]).map((item) => ({
+            id: Number(item.id ?? 0),
+            name: String(item.name ?? ""),
+        }));
+        setWilayahs(mapped);
+    }, []);
 
     useEffect(() => {
         fetchWilayahs();
-    }, []);
+    }, [fetchWilayahs]);
 
     useEffect(() => {
         const delay = setTimeout(fetchData, 500);
         return () => clearTimeout(delay);
-    }, [search, page]);
+    }, [fetchData]);
 
     // Handlers
     const handleOpenAdd = () => {
@@ -72,11 +134,11 @@ export default function LingkunganTab() {
         setIsModalOpen(true);
     };
 
-    const handleOpenEdit = (item: any) => {
+    const handleOpenEdit = (item: LingkunganItem) => {
         setEditingItem(item);
         setFormData({
             name: item.name,
-            wilayah_id: item.wilayah_id
+            wilayah_id: String(item.wilayah_id)
         });
         setIsModalOpen(true);
     };
@@ -118,8 +180,8 @@ export default function LingkunganTab() {
             }
             setIsModalOpen(false);
             fetchData();
-        } catch (e: any) {
-            showToast(e.message, "error");
+        } catch (error: unknown) {
+            showToast(toErrorMessage(error), "error");
         } finally {
             setIsSubmitting(false);
         }

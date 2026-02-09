@@ -74,8 +74,9 @@ export default function RegisterAdminPage() {
 
             // Redirect to pending approval after success
             router.push('/dashboard/pending-approval');
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Gagal registrasi';
+            setError(message);
             setSubmitting(false);
         }
     };

@@ -1,22 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "@/components/ui/Toast";
-import { Edit2, Trash2, Plus, Image as ImageIcon, ExternalLink } from "lucide-react";
+import { Edit2, Trash2, Plus, Image as ImageIcon } from "lucide-react";
 import ArticleForm from "@/components/cms/tabs/ArticleForm";
+
+type ArticleItem = {
+    id: string;
+    title: string;
+    content: string;
+    created_at: string;
+    image_url?: string | null;
+    is_published: boolean;
+};
 
 export default function ArticlesTab() {
     const { showToast } = useToast();
-    const [articles, setArticles] = useState<any[]>([]);
+    const [articles, setArticles] = useState<ArticleItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
 
     // Modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingArticle, setEditingArticle] = useState<any>(null);
+    const [editingArticle, setEditingArticle] = useState<ArticleItem | null>(null);
 
-    const fetchArticles = async () => {
+    const fetchArticles = useCallback(async () => {
         setLoading(true);
         let query = supabase
             .from('articles')
@@ -31,16 +40,16 @@ export default function ArticlesTab() {
         if (error) {
             showToast("Gagal memuat artikel: " + error.message, "error");
         } else {
-            setArticles(data || []);
+            setArticles((data || []) as ArticleItem[]);
         }
         setLoading(false);
-    };
+    }, [search, showToast]);
 
     useEffect(() => {
         fetchArticles();
-    }, [search]);
+    }, [fetchArticles]);
 
-    const handleDelete = async (id: string, imageUrl?: string) => {
+    const handleDelete = async (id: string, imageUrl?: string | null) => {
         if (!confirm("Apakah Anda yakin ingin menghapus artikel ini?")) return;
 
         try {
@@ -56,12 +65,13 @@ export default function ArticlesTab() {
             if (error) throw error;
             showToast("Artikel berhasil dihapus", "success");
             fetchArticles();
-        } catch (e: any) {
-            showToast("Gagal menghapus: " + e.message, "error");
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : 'Unknown error';
+            showToast("Gagal menghapus: " + message, "error");
         }
     };
 
-    const handleEdit = (article: any) => {
+    const handleEdit = (article: ArticleItem) => {
         setEditingArticle(article);
         setIsModalOpen(true);
     };
@@ -116,6 +126,7 @@ export default function ArticlesTab() {
                         <div key={article.id} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden hover:shadow-md transition-all group">
                             <div className="h-48 bg-slate-100 dark:bg-slate-900 relative overflow-hidden">
                                 {article.image_url ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
                                     <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="flex items-center justify-center h-full text-slate-400">
@@ -157,14 +168,14 @@ export default function ArticlesTab() {
             <ArticleForm
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                article={editingArticle}
+                article={editingArticle ?? undefined}
                 onSuccess={handleSave}
             />
         </div>
     );
 }
 
-function Newspaper(props: any) {
+function Newspaper(props: React.SVGProps<SVGSVGElement>) {
     return (
         <svg
             {...props}

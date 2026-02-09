@@ -5,10 +5,18 @@ import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "@/components/ui/Toast";
 import { X, Upload, Image as ImageIcon } from "lucide-react";
 
+type ArticleItem = {
+    id: string;
+    title: string;
+    content: string;
+    image_url?: string | null;
+    is_published: boolean;
+};
+
 interface ArticleFormProps {
     isOpen: boolean;
     onClose: () => void;
-    article?: any;
+    article?: ArticleItem;
     onSuccess: () => void;
 }
 
@@ -30,7 +38,7 @@ export default function ArticleForm({ isOpen, onClose, article, onSuccess }: Art
                 content: article.content,
                 is_published: article.is_published
             });
-            setPreviewUrl(article.image_url);
+            setPreviewUrl(article.image_url || null);
         } else {
             setFormData({
                 title: "",
@@ -104,8 +112,9 @@ export default function ArticleForm({ isOpen, onClose, article, onSuccess }: Art
 
             showToast(`Artikel berhasil ${article ? 'diperbarui' : 'dibuat'}`, "success");
             onSuccess();
-        } catch (e: any) {
-            showToast("Gagal menyimpan: " + e.message, "error");
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : 'Unknown error';
+            showToast("Gagal menyimpan: " + message, "error");
         } finally {
             setLoading(false);
         }
@@ -136,6 +145,7 @@ export default function ArticleForm({ isOpen, onClose, article, onSuccess }: Art
                             />
                             {previewUrl ? (
                                 <div className="relative h-48 w-full rounded-lg overflow-hidden">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
                                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                         <p className="text-white font-medium flex items-center gap-2">

@@ -2,12 +2,11 @@
 
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { ChevronRight, Search, Filter, X, User as UserIcon, Calendar, CheckCircle, Clock, AlertCircle, Eye, FileText } from 'lucide-react';
+import { ChevronRight, Search, User as UserIcon, Calendar, CheckCircle, Clock, Eye, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
 import Modal from '@/components/ui/Modal';
-import { getUserStatus, isVerifiedStatus } from '@/lib/verification-status';
+import { isVerifiedStatus } from '@/lib/verification-status';
 
 interface UserItem {
     id: string;
@@ -41,12 +40,18 @@ interface UserItem {
     baptism_document_url?: string;
 }
 
+type LocationNames = {
+    country?: string;
+    diocese?: string;
+    church?: string;
+};
+
 export default function ChurchUsersPage({ params }: { params: Promise<{ churchId: string }> }) {
     const { churchId } = use(params);
     const [items, setItems] = useState<UserItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [meta, setMeta] = useState({ page: 1, pageSize: 25, total: 0 });
-    const [locationNames, setLocationNames] = useState<any>({});
+    const [locationNames, setLocationNames] = useState<LocationNames>({});
 
     // Filters
     const [query, setQuery] = useState('');
@@ -105,7 +110,7 @@ export default function ChurchUsersPage({ params }: { params: Promise<{ churchId
             }
         }
         fetchUsers();
-    }, [churchId, meta.page, debouncedQuery, statusFilter, roleFilter]);
+    }, [churchId, meta.page, meta.pageSize, debouncedQuery, statusFilter, roleFilter]);
 
     // Reset page on filter change
     useEffect(() => {
@@ -114,7 +119,6 @@ export default function ChurchUsersPage({ params }: { params: Promise<{ churchId
 
     // Helper for status badge
     const getStatusBadge = (user: UserItem) => {
-        const s = getUserStatus(user); // Reuse existing lib logic if imported, or replicate
         // Simple replicate for display:
         let label = 'Belum Verifikasi';
         let color = 'bg-surface-secondary text-text-secondary';

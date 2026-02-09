@@ -58,6 +58,20 @@ function normalize(value: unknown): string {
   return String(value).trim().toLowerCase();
 }
 
+function looksLikeUuid(value: string): boolean {
+  const v = value.trim();
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
+}
+
+function normalizeLocationName(value: unknown): string {
+  if (value == null) return '';
+  const raw = String(value).trim();
+  if (!raw) return '';
+  if (looksLikeUuid(raw)) return '';
+  if (raw.toLowerCase() === 'null' || raw.toLowerCase() === 'undefined') return '';
+  return raw;
+}
+
 export function getUserStatus(user?: VerificationUserLike | null): string {
   return (
     normalize(user?.account_status) ||
@@ -96,11 +110,18 @@ export function normalizeProfileLocation<T extends VerificationUserLike>(user: T
   diocese: string;
   parish: string;
 } {
+  const joinedCountry = normalizeLocationName(user.countries?.name);
+  const joinedDiocese = normalizeLocationName(user.dioceses?.name);
+  const joinedParish = normalizeLocationName(user.churches?.name);
+  const legacyCountry = normalizeLocationName(user.country);
+  const legacyDiocese = normalizeLocationName(user.diocese);
+  const legacyParish = normalizeLocationName(user.parish);
+
   return {
     ...user,
-    country: user.country || user.countries?.name || '',
-    diocese: user.diocese || user.dioceses?.name || '',
-    parish: user.parish || user.churches?.name || '',
+    country: joinedCountry || legacyCountry || '',
+    diocese: joinedDiocese || legacyDiocese || '',
+    parish: joinedParish || legacyParish || '',
   };
 }
 

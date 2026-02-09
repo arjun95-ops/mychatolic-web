@@ -4,6 +4,11 @@ import { requireApprovedAdmin } from "@/lib/admin-guard"; // Added guard
 
 export const dynamic = 'force-dynamic';
 
+type ApiResponseBody = Record<string, unknown>;
+type CountryRow = { id: string; name: string };
+type DioceseRow = { id: string; name: string; country_id: string };
+type ChurchRow = { id: string; name: string; diocese_id: string };
+
 export async function GET(req: NextRequest) {
     // 1. Guard: Authentication & Authorization
     const ctx = await requireApprovedAdmin(req);
@@ -25,7 +30,7 @@ export async function GET(req: NextRequest) {
     const role = searchParams.get('role');
 
     // Helper to reply with cookie update
-    const reply = (body: any, init?: any) => {
+    const reply = (body: ApiResponseBody, init?: ResponseInit) => {
         const res = NextResponse.json(body, init);
         setCookiesToResponse(res);
         return res;
@@ -55,7 +60,8 @@ export async function GET(req: NextRequest) {
             // Here we will do parallel counts for UX simplicity, assuming < 200 countries.
             // Fetch dioceses count, churches count, users count per country
 
-            const items = await Promise.all(countries.map(async (c) => {
+            const countryRows = (countries || []) as CountryRow[];
+            const items = await Promise.all(countryRows.map(async (c: CountryRow) => {
                 const { count: dCount } = await supabase.from('dioceses').select('*', { count: 'exact', head: true }).eq('country_id', c.id);
                 const { count: uCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('country_id', c.id);
 
@@ -63,7 +69,7 @@ export async function GET(req: NextRequest) {
                 // For distinct churches count in country:
                 // We can query dioceses in this country first.
                 const { data: diocesesInCountry } = await supabase.from('dioceses').select('id').eq('country_id', c.id);
-                const dioceseIds = diocesesInCountry?.map(d => d.id) || [];
+                const dioceseIds = (diocesesInCountry || []).map((d: { id: string }) => d.id);
                 let totalChurches = 0;
                 if (dioceseIds.length > 0) {
                     const { count } = await supabase.from('churches').select('*', { count: 'exact', head: true }).in('diocese_id', dioceseIds);
@@ -100,7 +106,8 @@ export async function GET(req: NextRequest) {
 
             if (error) throw error;
 
-            const items = await Promise.all(dioceses.map(async (d) => {
+            const dioceseRows = (dioceses || []) as DioceseRow[];
+            const items = await Promise.all(dioceseRows.map(async (d: DioceseRow) => {
                 const { count: chCount } = await supabase.from('churches').select('*', { count: 'exact', head: true }).eq('diocese_id', d.id);
                 const { count: uCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('diocese_id', d.id);
 
@@ -144,7 +151,8 @@ export async function GET(req: NextRequest) {
 
             if (error) throw error;
 
-            const items = await Promise.all(churches.map(async (c) => {
+            const churchRows = (churches || []) as ChurchRow[];
+            const items = await Promise.all(churchRows.map(async (c: ChurchRow) => {
                 const { count: uCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('church_id', c.id);
                 return {
                     id: c.id,

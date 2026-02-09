@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireApprovedAdmin } from '@/lib/admin-guard'
+import { logAdminAudit } from '@/lib/admin-audit'
 
 export async function POST(req: NextRequest) {
     // 1. Auth Check
@@ -33,10 +34,11 @@ export async function POST(req: NextRequest) {
 
     // 3. Update Session Logout Time
     // Only update if it belongs to this user
+    const logoutAt = new Date().toISOString()
     const { error } = await supabaseAdminClient
         .from('admin_sessions')
         .update({
-            logout_at: new Date().toISOString()
+            logout_at: logoutAt
         })
         .eq('id', session_id)
         .eq('admin_auth_user_id', user.id)
@@ -48,6 +50,20 @@ export async function POST(req: NextRequest) {
             { status: 500 }
         )
     }
+
+    await logAdminAudit({
+        supabaseAdminClient,
+        actorAuthUserId: user.id,
+        action: 'ADMIN_LOGOUT',
+        tableName: 'admin_sessions',
+        recordId: session_id,
+        oldData: null,
+        newData: {
+            id: session_id,
+            logout_at: logoutAt,
+        },
+        request: req,
+    })
 
     return NextResponse.json({ success: true })
 }

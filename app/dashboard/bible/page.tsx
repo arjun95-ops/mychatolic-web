@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { createBrowserClient } from '@supabase/ssr'; // Switched to local creation for reliability
 import { toast } from "react-hot-toast";
 import {
@@ -9,11 +9,9 @@ import {
     Search,
     Edit2,
     Trash2,
-    Eye,
     Plus,
     Save,
     X,
-    Hash,
     Loader2
 } from "lucide-react";
 
@@ -34,6 +32,22 @@ interface BibleVerse {
     chapter_number?: number;
     book_id?: string;
 }
+
+type VerseQueryRow = {
+    id: string;
+    verse_number: number;
+    text: string;
+    pericope?: string | null;
+    bible_chapters?: {
+        id?: string;
+        chapter_number?: number;
+        bible_books?: {
+            id?: string;
+            name?: string;
+            category?: string;
+        } | null;
+    } | null;
+};
 
 export default function BibleDataManagerPage() {
     // Supabase Client Initialization
@@ -162,9 +176,10 @@ export default function BibleDataManagerPage() {
 
             console.log(`Success: Fetched ${data?.length} verses`);
 
-            const formatted: BibleVerse[] = (data || []).map((item: any) => ({
+            const rows = (data || []) as VerseQueryRow[];
+            const formatted: BibleVerse[] = rows.map((item) => ({
                 id: item.id,
-                chapter_id: item.bible_chapters?.id,
+                chapter_id: String(item.bible_chapters?.id || ""),
                 verse_number: item.verse_number,
                 text: item.text,
                 pericope: item.pericope,
@@ -175,13 +190,15 @@ export default function BibleDataManagerPage() {
 
             setVerses(formatted);
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             // Enhanced Error Logging
             console.error("DEBUG FETCH ERROR:", JSON.stringify(err, null, 2));
 
             let errMsg = "Terjadi kesalahan saat memuat data.";
-            if (err.message) errMsg += ` (${err.message})`;
-            if (err.code) errMsg += ` [Code: ${err.code}]`;
+            if (err instanceof Error && err.message) errMsg += ` (${err.message})`;
+            if (err && typeof err === 'object' && 'code' in err) {
+                errMsg += ` [Code: ${String((err as { code?: unknown }).code || '')}]`;
+            }
 
             toast.error(errMsg);
         } finally {
@@ -241,7 +258,7 @@ export default function BibleDataManagerPage() {
             // 1. Get/Create Chapter ID
             let chapterId: string;
 
-            const { data: chapData, error: chapErr } = await supabase
+            const { data: chapData } = await supabase
                 .from('bible_chapters')
                 .select('id')
                 .eq('book_id', editingVerse.book_id)
@@ -292,9 +309,15 @@ export default function BibleDataManagerPage() {
             setIsModalOpen(false);
             fetchVerses();
 
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error
+                    ? err.message
+                    : (err && typeof err === 'object' && 'details' in err
+                        ? String((err as { details?: unknown }).details || 'Unknown error')
+                        : 'Unknown error');
             console.error("Save error:", JSON.stringify(err, null, 2));
-            toast.error(`Gagal menyimpan: ${err.message || err.details || 'Unknown error'}`);
+            toast.error(`Gagal menyimpan: ${message}`);
         } finally {
             setSaving(false);
         }

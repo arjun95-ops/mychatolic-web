@@ -34,12 +34,40 @@ type TrendPoint = {
   count: number;
 };
 
+type LocationInsightItem = {
+  id: string;
+  name: string;
+  parent_id?: string;
+  parent_name?: string;
+  total_count: number;
+  active_count: number;
+  filtered_count: number;
+  count: number;
+  male: number;
+  female: number;
+  unknown_gender: number;
+  under_18: number;
+  age_18_24: number;
+  age_25_34: number;
+  age_35_44: number;
+  age_45_54: number;
+  age_55_plus: number;
+  age_unknown: number;
+  link: string;
+};
+
 type AnalyticsResponse = {
   timezone: string;
   filters: {
     range: string;
     from: string;
     to: string;
+    demography: {
+      gender: 'all' | 'male' | 'female' | 'unknown';
+      age_min: number | null;
+      age_max: number | null;
+      enabled: boolean;
+    };
     mode: LocationMode;
     location_metric: LocationMetric;
     location_scope: LocationScope;
@@ -53,6 +81,10 @@ type AnalyticsResponse = {
     churches: number;
     articles: number;
     users_total: number;
+    users_male: number;
+    users_female: number;
+    users_gender_unknown: number;
+    users_demography_filtered: number;
     users_online_now: number;
     users_active_today: number;
     users_active_period: number;
@@ -77,6 +109,8 @@ type AnalyticsResponse = {
     };
   };
   roles: { role: string; count: number }[];
+  gender_distribution: { gender: string; count: number }[];
+  age_distribution: { range: string; count: number }[];
   pastoral_roles_detail: {
     role: string;
     count: number;
@@ -100,20 +134,16 @@ type AnalyticsResponse = {
     total_items: number;
     total_pages: number;
     selected_parent: { id: string; name: string; type: string } | null;
-    items: {
-      id: string;
-      name: string;
-      parent_id?: string;
-      parent_name?: string;
-      total_count: number;
-      active_count: number;
-      count: number;
-      link: string;
-    }[];
+    items: LocationInsightItem[];
     options: {
       countries: { id: string; name: string }[];
       dioceses: { id: string; name: string; country_id: string }[];
     };
+  };
+  location_insights: {
+    countries: LocationInsightItem[];
+    dioceses: LocationInsightItem[];
+    churches: LocationInsightItem[];
   };
 };
 
@@ -222,6 +252,36 @@ function HorizontalBars({
   );
 }
 
+function ClickableInsightCard({
+  label,
+  value,
+  onClick,
+  active = false,
+  disabled = false,
+}: {
+  label: string;
+  value: number;
+  onClick: () => void;
+  active?: boolean;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      className={`text-left rounded-lg border px-3 py-3 transition ${
+        active
+          ? 'border-action bg-action/10'
+          : 'border-surface-secondary bg-surface-primary hover:bg-surface-secondary'
+      } ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`}
+    >
+      <p className="text-[11px] uppercase tracking-wide font-semibold text-text-secondary">{label}</p>
+      <p className="text-xl font-extrabold text-text-primary mt-1">{value}</p>
+    </button>
+  );
+}
+
 export default function DashboardAnalyticsDetailPage() {
   const [data, setData] = useState<AnalyticsResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -237,6 +297,14 @@ export default function DashboardAnalyticsDetailPage() {
 
   const [scope, setScope] = useState<LocationScope>('country');
   const [locationParentId, setLocationParentId] = useState('');
+  const [insightScope, setInsightScope] = useState<LocationScope>('diocese');
+  const [insightLocationSearch, setInsightLocationSearch] = useState('');
+  const [insightLocationId, setInsightLocationId] = useState('');
+  const [insightCountryId, setInsightCountryId] = useState('');
+  const [insightDioceseId, setInsightDioceseId] = useState('');
+  const [demographyGender, setDemographyGender] = useState<'all' | 'male' | 'female' | 'unknown'>('all');
+  const [ageMin, setAgeMin] = useState('');
+  const [ageMax, setAgeMax] = useState('');
   const [locationSearchInput, setLocationSearchInput] = useState('');
   const [locationSearch, setLocationSearch] = useState('');
   const [globalSearchInput, setGlobalSearchInput] = useState('');
@@ -285,6 +353,7 @@ export default function DashboardAnalyticsDetailPage() {
           tz: timezone,
           location_scope: scope,
           location_metric: locationMetric,
+          demography_gender: demographyGender,
           mode,
           limit: String(limit),
           page: String(mode === 'all' ? page : 1),
@@ -296,6 +365,14 @@ export default function DashboardAnalyticsDetailPage() {
 
         if (locationSearch) {
           params.set('location_q', locationSearch);
+        }
+
+        if (ageMin) {
+          params.set('age_min', ageMin);
+        }
+
+        if (ageMax) {
+          params.set('age_max', ageMax);
         }
 
         if (range === 'custom') {
@@ -324,7 +401,22 @@ export default function DashboardAnalyticsDetailPage() {
     }
 
     fetchAnalytics();
-  }, [range, timezone, customFrom, customTo, scope, locationParentId, locationSearch, locationMetric, mode, limit, page]);
+  }, [
+    range,
+    timezone,
+    customFrom,
+    customTo,
+    scope,
+    locationParentId,
+    locationSearch,
+    locationMetric,
+    demographyGender,
+    ageMin,
+    ageMax,
+    mode,
+    limit,
+    page,
+  ]);
 
   const parentOptions = useMemo(() => {
     if (!data) return [];
@@ -360,11 +452,174 @@ export default function DashboardAnalyticsDetailPage() {
     if (!globalSearchTargets.location) return source;
 
     return source.filter((item) =>
-      `${item.name} ${item.parent_name || ''} ${item.total_count} ${item.active_count}`
+      `${item.name} ${item.parent_name || ''} ${item.total_count} ${item.active_count} ${item.filtered_count} ${item.male} ${item.female} ${item.under_18}`
         .toLowerCase()
         .includes(globalSearch)
     );
   }, [data, globalSearchTargets.location, globalSearch]);
+
+  const under18Count = useMemo(
+    () => data?.age_distribution?.find((item) => item.range === 'under_18')?.count || 0,
+    [data]
+  );
+
+  const demographyFilterEnabled = Boolean(data?.filters.demography?.enabled);
+
+  const insightCountries = useMemo(() => data?.location.options.countries || [], [data]);
+  const insightDioceses = useMemo(() => data?.location.options.dioceses || [], [data]);
+
+  const insightCountryNameById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const country of insightCountries) {
+      map.set(country.id, country.name);
+    }
+    return map;
+  }, [insightCountries]);
+
+  const insightDioceseCountryById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const diocese of insightDioceses) {
+      map.set(diocese.id, diocese.country_id || '');
+    }
+    return map;
+  }, [insightDioceses]);
+
+  const filteredInsightDioceseOptions = useMemo(() => {
+    if (!insightCountryId) return insightDioceses;
+    return insightDioceses.filter((item) => item.country_id === insightCountryId);
+  }, [insightDioceses, insightCountryId]);
+
+  useEffect(() => {
+    if (insightScope === 'country') {
+      if (insightCountryId) setInsightCountryId('');
+      if (insightDioceseId) setInsightDioceseId('');
+      return;
+    }
+
+    if (insightScope === 'diocese') {
+      if (insightDioceseId) setInsightDioceseId('');
+      return;
+    }
+
+    if (insightDioceseId && !filteredInsightDioceseOptions.some((item) => item.id === insightDioceseId)) {
+      setInsightDioceseId('');
+    }
+  }, [insightScope, insightCountryId, insightDioceseId, filteredInsightDioceseOptions]);
+
+  const insightSourceItems = useMemo<LocationInsightItem[]>(() => {
+    if (!data) return [];
+
+    if (insightScope === 'country') {
+      return data.location_insights?.countries || [];
+    }
+
+    if (insightScope === 'diocese') {
+      const source = data.location_insights?.dioceses || [];
+      if (!insightCountryId) return source;
+      return source.filter((item) => item.parent_id === insightCountryId);
+    }
+
+    const source = data.location_insights?.churches || [];
+
+    if (insightDioceseId) {
+      return source.filter((item) => item.parent_id === insightDioceseId);
+    }
+
+    if (!insightCountryId) return source;
+
+    return source.filter((item) => {
+      const dioceseId = item.parent_id || '';
+      return insightDioceseCountryById.get(dioceseId) === insightCountryId;
+    });
+  }, [data, insightScope, insightCountryId, insightDioceseId, insightDioceseCountryById]);
+
+  const filteredInsightOptions = useMemo(() => {
+    const q = insightLocationSearch.trim().toLowerCase();
+    if (!q) return insightSourceItems;
+
+    return insightSourceItems.filter((item) => {
+      const dioceseCountryName =
+        insightScope === 'church'
+          ? insightCountryNameById.get(insightDioceseCountryById.get(item.parent_id || '') || '') || ''
+          : '';
+      return `${item.name} ${item.parent_name || ''} ${dioceseCountryName}`.toLowerCase().includes(q);
+    });
+  }, [insightSourceItems, insightLocationSearch, insightScope, insightCountryNameById, insightDioceseCountryById]);
+
+  useEffect(() => {
+    if (filteredInsightOptions.length === 0) {
+      setInsightLocationId('');
+      return;
+    }
+    if (!filteredInsightOptions.some((item) => item.id === insightLocationId)) {
+      setInsightLocationId(filteredInsightOptions[0].id);
+    }
+  }, [filteredInsightOptions, insightLocationId]);
+
+  const selectedInsightItem = useMemo(
+    () => filteredInsightOptions.find((item) => item.id === insightLocationId) || null,
+    [filteredInsightOptions, insightLocationId]
+  );
+
+  const selectedInsightPathLabel = useMemo(() => {
+    if (!selectedInsightItem) return '';
+    if (insightScope === 'country') return selectedInsightItem.name;
+    if (insightScope === 'diocese') {
+      return selectedInsightItem.parent_name
+        ? `${selectedInsightItem.name} - ${selectedInsightItem.parent_name}`
+        : selectedInsightItem.name;
+    }
+
+    const dioceseName = selectedInsightItem.parent_name || '';
+    const countryId = selectedInsightItem.parent_id
+      ? insightDioceseCountryById.get(selectedInsightItem.parent_id) || ''
+      : '';
+    const countryName = countryId ? insightCountryNameById.get(countryId) || '' : '';
+
+    if (dioceseName && countryName) return `${selectedInsightItem.name} - ${dioceseName} - ${countryName}`;
+    if (dioceseName) return `${selectedInsightItem.name} - ${dioceseName}`;
+    return selectedInsightItem.name;
+  }, [selectedInsightItem, insightScope, insightDioceseCountryById, insightCountryNameById]);
+
+  const formatInsightOptionLabel = (item: LocationInsightItem): string => {
+    if (insightScope === 'country') return item.name;
+    if (insightScope === 'diocese') {
+      return item.parent_name ? `${item.name} - ${item.parent_name}` : item.name;
+    }
+
+    const countryId = item.parent_id ? insightDioceseCountryById.get(item.parent_id) || '' : '';
+    const countryName = countryId ? insightCountryNameById.get(countryId) || '' : '';
+    if (countryName) return `${item.name} - ${item.parent_name || '-'} (${countryName})`;
+    return `${item.name} - ${item.parent_name || '-'}`;
+  };
+
+  const focusTableToSelectedInsight = () => {
+    if (!selectedInsightItem) return;
+    setScope(insightScope);
+    setMode('all');
+    setLocationParentId(insightScope === 'country' ? '' : selectedInsightItem.parent_id || '');
+    setLocationSearchInput(selectedInsightItem.name);
+    setLocationSearch(selectedInsightItem.name.trim());
+    setPage(1);
+  };
+
+  const applyGenderQuickFilter = (gender: 'all' | 'male' | 'female' | 'unknown') => {
+    setDemographyGender(gender);
+    focusTableToSelectedInsight();
+  };
+
+  const applyAgeQuickFilter = (min: string, max: string) => {
+    setAgeMin(min);
+    setAgeMax(max);
+    focusTableToSelectedInsight();
+  };
+
+  const resetDemographyFilters = () => {
+    setDemographyGender('all');
+    setAgeMin('');
+    setAgeMax('');
+    setPage(1);
+  };
 
   const filteredPastoralRoles = useMemo(() => {
     const source = data?.pastoral_roles_detail || [];
@@ -650,6 +905,225 @@ export default function DashboardAnalyticsDetailPage() {
         </div>
       </section>
 
+      <section className="bg-surface-primary rounded-xl border border-surface-secondary dark:border-surface-secondary/20 p-5 shadow-sm space-y-4">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2 text-text-primary font-bold text-sm">
+            <Users size={16} />
+            Kartu Demografi Interaktif
+          </div>
+          <button
+            type="button"
+            onClick={resetDemographyFilters}
+            className="h-[34px] px-3 rounded-lg border border-surface-secondary bg-surface-primary text-xs font-semibold text-text-primary hover:bg-surface-secondary transition"
+          >
+            Reset Filter Demografi
+          </button>
+        </div>
+        <p className="text-xs text-text-secondary">
+          Pilih lokasi lalu klik kartu (gender/umur) untuk langsung terapkan filter dan fokus ke tabel lokasi.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-3 items-end">
+          <div>
+            <label className="block text-xs font-semibold text-text-secondary mb-2">Level Lokasi</label>
+            <select
+              value={insightScope}
+              onChange={(e) => {
+                const nextScope = e.target.value as LocationScope;
+                setInsightScope(nextScope);
+                setInsightLocationSearch('');
+                setInsightLocationId('');
+                setInsightCountryId('');
+                setInsightDioceseId('');
+              }}
+              className="w-full rounded-lg border border-surface-secondary bg-surface-primary px-3 py-2 text-sm text-text-primary"
+            >
+              <option value="country">Negara</option>
+              <option value="diocese">Keuskupan</option>
+              <option value="church">Paroki</option>
+            </select>
+          </div>
+
+          {insightScope !== 'country' && (
+            <div>
+              <label className="block text-xs font-semibold text-text-secondary mb-2">Dari Negara</label>
+              <select
+                value={insightCountryId}
+                onChange={(e) => {
+                  setInsightCountryId(e.target.value);
+                  setInsightDioceseId('');
+                  setInsightLocationSearch('');
+                  setInsightLocationId('');
+                }}
+                className="w-full rounded-lg border border-surface-secondary bg-surface-primary px-3 py-2 text-sm text-text-primary"
+              >
+                <option value="">Semua Negara</option>
+                {insightCountries.map((country) => (
+                  <option key={country.id} value={country.id}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {insightScope === 'church' && (
+            <div>
+              <label className="block text-xs font-semibold text-text-secondary mb-2">Dari Keuskupan</label>
+              <select
+                value={insightDioceseId}
+                onChange={(e) => {
+                  setInsightDioceseId(e.target.value);
+                  setInsightLocationSearch('');
+                  setInsightLocationId('');
+                }}
+                className="w-full rounded-lg border border-surface-secondary bg-surface-primary px-3 py-2 text-sm text-text-primary"
+              >
+                <option value="">Semua Keuskupan</option>
+                {filteredInsightDioceseOptions.map((diocese) => (
+                  <option key={diocese.id} value={diocese.id}>
+                    {diocese.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div>
+            <label className="block text-xs font-semibold text-text-secondary mb-2">Cari Lokasi</label>
+            <input
+              type="text"
+              value={insightLocationSearch}
+              onChange={(e) => setInsightLocationSearch(e.target.value)}
+              placeholder={
+                insightScope === 'country'
+                  ? 'Ketik nama negara...'
+                  : insightScope === 'diocese'
+                    ? 'Ketik nama keuskupan...'
+                    : 'Ketik nama paroki...'
+              }
+              className="w-full rounded-lg border border-surface-secondary bg-surface-primary px-3 py-2 text-sm text-text-primary"
+            />
+          </div>
+
+          <div className="xl:col-span-2">
+            <label className="block text-xs font-semibold text-text-secondary mb-2">Pilih Lokasi</label>
+            <select
+              value={insightLocationId}
+              onChange={(e) => setInsightLocationId(e.target.value)}
+              className="w-full rounded-lg border border-surface-secondary bg-surface-primary px-3 py-2 text-sm text-text-primary"
+            >
+              {filteredInsightOptions.length > 0 ? (
+                filteredInsightOptions.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {formatInsightOptionLabel(item)}
+                  </option>
+                ))
+              ) : (
+                <option value="">Tidak ada lokasi</option>
+              )}
+            </select>
+          </div>
+
+          <button
+            type="button"
+            onClick={focusTableToSelectedInsight}
+            disabled={!selectedInsightItem}
+            className="h-[38px] px-4 rounded-lg bg-action text-text-inverse text-sm font-semibold hover:bg-action/90 transition disabled:opacity-60 xl:col-span-1"
+          >
+            Fokus ke Tabel Lokasi
+          </button>
+        </div>
+
+        {selectedInsightItem ? (
+          <>
+            <div className="text-xs text-text-secondary bg-surface-secondary dark:bg-surface-inverse rounded-lg p-2.5">
+              Lokasi aktif: <span className="font-semibold text-text-primary">{selectedInsightPathLabel}</span>
+            </div>
+
+            <div>
+              <p className="text-xs font-semibold text-text-secondary mb-2 uppercase tracking-wide">Gender (Klik untuk filter)</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <ClickableInsightCard
+                  label="Semua Gender"
+                  value={selectedInsightItem.total_count}
+                  onClick={() => applyGenderQuickFilter('all')}
+                  active={demographyGender === 'all'}
+                />
+                <ClickableInsightCard
+                  label="Pria"
+                  value={selectedInsightItem.male}
+                  onClick={() => applyGenderQuickFilter('male')}
+                  active={demographyGender === 'male'}
+                />
+                <ClickableInsightCard
+                  label="Wanita"
+                  value={selectedInsightItem.female}
+                  onClick={() => applyGenderQuickFilter('female')}
+                  active={demographyGender === 'female'}
+                />
+                <ClickableInsightCard
+                  label="Gender Tidak Diisi"
+                  value={selectedInsightItem.unknown_gender}
+                  onClick={() => applyGenderQuickFilter('unknown')}
+                  active={demographyGender === 'unknown'}
+                />
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-semibold text-text-secondary mb-2 uppercase tracking-wide">Rentang Umur (Klik untuk filter)</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3">
+                <ClickableInsightCard
+                  label="< 18 Tahun"
+                  value={selectedInsightItem.under_18}
+                  onClick={() => applyAgeQuickFilter('0', '17')}
+                  active={ageMin === '0' && ageMax === '17'}
+                />
+                <ClickableInsightCard
+                  label="18 - 24"
+                  value={selectedInsightItem.age_18_24}
+                  onClick={() => applyAgeQuickFilter('18', '24')}
+                  active={ageMin === '18' && ageMax === '24'}
+                />
+                <ClickableInsightCard
+                  label="25 - 34"
+                  value={selectedInsightItem.age_25_34}
+                  onClick={() => applyAgeQuickFilter('25', '34')}
+                  active={ageMin === '25' && ageMax === '34'}
+                />
+                <ClickableInsightCard
+                  label="35 - 44"
+                  value={selectedInsightItem.age_35_44}
+                  onClick={() => applyAgeQuickFilter('35', '44')}
+                  active={ageMin === '35' && ageMax === '44'}
+                />
+                <ClickableInsightCard
+                  label="45 - 54"
+                  value={selectedInsightItem.age_45_54}
+                  onClick={() => applyAgeQuickFilter('45', '54')}
+                  active={ageMin === '45' && ageMax === '54'}
+                />
+                <ClickableInsightCard
+                  label="55+"
+                  value={selectedInsightItem.age_55_plus}
+                  onClick={() => applyAgeQuickFilter('55', '')}
+                  active={ageMin === '55' && ageMax === ''}
+                />
+                <ClickableInsightCard
+                  label="Umur Tidak Diisi"
+                  value={selectedInsightItem.age_unknown}
+                  onClick={() => {}}
+                  disabled
+                />
+              </div>
+            </div>
+          </>
+        ) : (
+          <p className="text-sm text-text-secondary">Tidak ada data lokasi untuk pilihan saat ini.</p>
+        )}
+      </section>
+
       <section className="bg-surface-primary rounded-xl border border-surface-secondary dark:border-surface-secondary/20 p-5 shadow-sm space-y-3">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
           <div className="lg:col-span-3">
@@ -725,6 +1199,19 @@ export default function DashboardAnalyticsDetailPage() {
             <MetricCard title="Aktif Hari Ini" value={data?.kpis.users_active_today || 0} icon={Activity} color="text-action" />
             <MetricCard title="Aktif Dalam Periode" value={data?.kpis.users_active_period || 0} icon={TrendingUp} color="text-status-success" />
             <MetricCard title="Online Saat Ini" value={data?.kpis.users_online_now || 0} icon={Globe} color="text-status-success" />
+          </section>
+
+          <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+            <MetricCard
+              title="Sesuai Filter Demografi"
+              value={data?.kpis.users_demography_filtered || 0}
+              icon={Filter}
+              color="text-action"
+            />
+            <MetricCard title="User Pria" value={data?.kpis.users_male || 0} icon={Users} color="text-brand-primary" />
+            <MetricCard title="User Wanita" value={data?.kpis.users_female || 0} icon={Users} color="text-status-success" />
+            <MetricCard title="Gender Belum Diisi" value={data?.kpis.users_gender_unknown || 0} icon={Users} color="text-text-secondary" />
+            <MetricCard title="User < 18 Tahun" value={under18Count} icon={Clock3} color="text-status-pending" />
           </section>
 
           <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
@@ -933,7 +1420,11 @@ export default function DashboardAnalyticsDetailPage() {
             <p className="mb-4 text-xs text-text-secondary">
               Diurutkan berdasarkan:{' '}
               <span className="font-semibold text-text-primary">
-                {data?.location.metric === 'active' ? 'User Aktif pada Periode' : 'Total User Terdaftar'}
+                {demographyFilterEnabled
+                  ? 'Jumlah User Sesuai Filter Demografi'
+                  : data?.location.metric === 'active'
+                    ? 'User Aktif pada Periode'
+                    : 'Total User Terdaftar'}
               </span>
             </p>
 
@@ -983,6 +1474,10 @@ export default function DashboardAnalyticsDetailPage() {
                     <th className="p-3 text-left">Parent</th>
                     <th className="p-3 text-right">Total User</th>
                     <th className="p-3 text-right">User Aktif</th>
+                    <th className="p-3 text-right">Sesuai Filter</th>
+                    <th className="p-3 text-right">Pria</th>
+                    <th className="p-3 text-right">Wanita</th>
+                    <th className="p-3 text-right">&lt; 18</th>
                     <th className="p-3 text-right">Aksi</th>
                   </tr>
                 </thead>
@@ -994,6 +1489,10 @@ export default function DashboardAnalyticsDetailPage() {
                         <td className="p-3 text-text-secondary">{item.parent_name || '-'}</td>
                         <td className="p-3 text-right font-semibold text-text-primary">{item.total_count}</td>
                         <td className="p-3 text-right font-bold text-action">{item.active_count}</td>
+                        <td className="p-3 text-right font-bold text-status-pending">{item.filtered_count}</td>
+                        <td className="p-3 text-right font-semibold text-text-primary">{item.male}</td>
+                        <td className="p-3 text-right font-semibold text-text-primary">{item.female}</td>
+                        <td className="p-3 text-right font-semibold text-text-primary">{item.under_18}</td>
                         <td className="p-3 text-right">
                           <Link href={item.link} className="text-action text-xs font-semibold hover:underline">
                             Buka
@@ -1003,7 +1502,7 @@ export default function DashboardAnalyticsDetailPage() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={5} className="p-8 text-center text-text-secondary">
+                      <td colSpan={9} className="p-8 text-center text-text-secondary">
                         {globalSearchTargets.location
                           ? 'Tidak ada data lokasi yang cocok dengan global search.'
                           : 'Tidak ada data lokasi untuk filter saat ini.'}

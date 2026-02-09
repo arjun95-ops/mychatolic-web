@@ -1,11 +1,5 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import VerificationManager from '@/components/verification/VerificationManager';
-
-export default function VerifikasiPage() {
-  return (
-    <div className="min-h-screen bg-gray-50/50">
-      <VerificationManager />
-    </div>
-  );
+export default function LegacyAdminVerifikasiPage() {
+  redirect('/dashboard');
 }

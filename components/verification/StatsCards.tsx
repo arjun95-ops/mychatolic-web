@@ -1,6 +1,7 @@
 'use client';
 
 import { Users, Clock, CheckCircle, FileText } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface StatsProps {
     loading: boolean;
@@ -12,9 +13,17 @@ interface StatsProps {
     };
 }
 
-export default function StatsCards({ loading, stats }: StatsProps) {
+type StatsCardProps = {
+    title: string;
+    count: number;
+    icon: LucideIcon;
+    colorClass: string;
+    iconBg: string;
+    loading: boolean;
+};
 
-    const Card = ({ title, count, icon: Icon, colorClass, iconBg }: any) => (
+function StatsCard({ title, count, icon: Icon, colorClass, iconBg, loading }: StatsCardProps) {
+    return (
         <div className="bg-surface-primary dark:bg-surface-inverse p-6 rounded-2xl border border-surface-secondary dark:border-surface-secondary/20 shadow-sm flex items-center justify-between transition-all hover:shadow-md hover:-translate-y-1">
             <div>
                 <p className="text-xs font-bold text-text-secondary dark:text-text-secondary/80 uppercase tracking-widest mb-2">{title}</p>
@@ -29,36 +38,43 @@ export default function StatsCards({ loading, stats }: StatsProps) {
             </div>
         </div>
     );
+}
+
+export default function StatsCards({ loading, stats }: StatsProps) {
 
     return (
         <>
-            <Card
+            <StatsCard
                 title="Total User"
                 count={stats.total}
                 icon={Users}
                 colorClass="text-brand-primary"
                 iconBg="bg-brand-primary/10"
+                loading={loading}
             />
-            <Card
+            <StatsCard
                 title="Menunggu Verifikasi"
                 count={stats.pending}
                 icon={Clock}
                 colorClass="text-status-pending"
                 iconBg="bg-status-pending/10"
+                loading={loading}
             />
-            <Card
+            <StatsCard
                 title="User Terverifikasi"
                 count={stats.verified}
                 icon={CheckCircle}
                 colorClass="text-status-success"
                 iconBg="bg-status-success/10"
+                loading={loading}
             />
-            <Card
+            <StatsCard
                 title="Total Artikel"
                 count={stats.articles}
                 icon={FileText}
                 colorClass="text-action"
                 iconBg="bg-action/10"
+                loading={loading}
             />
         </>
     );

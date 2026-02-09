@@ -5,10 +5,24 @@ import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "@/components/ui/Toast";
 import { X, Globe, MapPin, Church } from "lucide-react";
 
+type Announcement = {
+    id: string;
+    title: string;
+    content: string;
+    target_audience: string;
+    target_id: string | null;
+    is_active: boolean;
+};
+
+type SimpleOption = {
+    id: string;
+    name: string;
+};
+
 interface AnnouncementFormProps {
     isOpen: boolean;
     onClose: () => void;
-    announcement?: any;
+    announcement?: Announcement;
     onSuccess: () => void;
 }
 
@@ -24,8 +38,8 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
     });
 
     // Reference data
-    const [dioceses, setDioceses] = useState<any[]>([]);
-    const [churches, setChurches] = useState<any[]>([]);
+    const [dioceses, setDioceses] = useState<SimpleOption[]>([]);
+    const [churches, setChurches] = useState<SimpleOption[]>([]);
 
     useEffect(() => {
         if (announcement) {
@@ -59,7 +73,7 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
             }
         };
         fetchData();
-    }, [formData.target_audience]);
+    }, [formData.target_audience, dioceses.length, churches.length]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -90,8 +104,9 @@ export default function AnnouncementForm({ isOpen, onClose, announcement, onSucc
 
             showToast(`Pengumuman berhasil ${announcement ? 'diperbarui' : 'dibuat'}`, "success");
             onSuccess();
-        } catch (e: any) {
-            showToast("Gagal menyimpan: " + e.message, "error");
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : 'Unknown error';
+            showToast("Gagal menyimpan: " + message, "error");
         } finally {
             setLoading(false);
         }

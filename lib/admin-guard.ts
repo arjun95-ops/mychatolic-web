@@ -1,41 +1,43 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
+import type { AdminRole, AdminStatus } from '@/lib/admin-constants'
 
 // --- Types ---
 
-export type AdminRole = 'admin_ops' | 'super_admin'
-export type AdminStatus = 'pending_approval' | 'approved' | 'suspended'
-
 export interface AdminUserRow {
-    id: string
     auth_user_id: string
-    email: string
+    email?: string | null
+    full_name?: string | null
     role: AdminRole
     status: AdminStatus
     created_at: string
+    approved_at?: string | null
+    approved_by?: string | null
+    updated_at?: string | null
     // Add other fields if necessary based on your schema
 }
 
 export interface AuthContextResult {
     isAuthenticated: boolean
     emailVerified: boolean
-    user: any | null
-    supabase: any
+    user: User | null
+    supabase: SupabaseClient
     setCookiesToResponse: (res: NextResponse) => void
 }
 
 export interface AdminContextResult {
-    user: any // Typed as User later
+    user: User
     adminRow: AdminUserRow | null
     setCookiesToResponse: (res: NextResponse) => void
-    supabase: any // The client used to fetch user (helpful if needed)
+    supabase: SupabaseClient
 }
 
 export interface ApprovedAdminResult {
-    user: any
+    user: User
     adminRow: AdminUserRow
-    supabaseAdminClient: any // Typed loosely or as ReturnType<typeof createClient>
+    supabaseAdminClient: SupabaseClient
+    supabase: SupabaseClient
     setCookiesToResponse: (res: NextResponse) => void
 }
 
@@ -235,7 +237,7 @@ export async function requireApprovedAdmin(
         return ctx
     }
 
-    const { user, adminRow, setCookiesToResponse } = ctx
+    const { user, adminRow, setCookiesToResponse, supabase } = ctx
 
     // 2. Check Admin Row Existence
     if (!adminRow) {
@@ -286,6 +288,7 @@ export async function requireApprovedAdmin(
         user,
         adminRow,
         supabaseAdminClient: injectedAdminClient, // Override/Provide the injected one
+        supabase,
         setCookiesToResponse,
     }
 }

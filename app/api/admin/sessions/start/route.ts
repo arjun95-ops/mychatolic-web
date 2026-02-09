@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireApprovedAdmin } from '@/lib/admin-guard'
+import { logAdminAudit } from '@/lib/admin-audit'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,32 +14,73 @@ export async function POST(req: NextRequest) {
 
     const { user, supabaseAdminClient } = ctx
 
-    // 2. Capture Headers
-    const requestHeaders: Record<string, string> = {}
-    req.headers.forEach((value, key) => {
-        // Filter out sensitive headers if necessary, but capturing all is useful for audit
-        requestHeaders[key] = value
-    })
+    // 2. Capture Metadata
+    const ip =
+        req.headers.get('x-real-ip') ||
+        req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+        ''
+    const userAgent = req.headers.get('user-agent') || ''
+    const requestHeaders = {
+        ip,
+        user_agent: userAgent,
+        referer: req.headers.get('referer') || '',
+        origin: req.headers.get('origin') || '',
+    }
 
-    // 3. Insert Session
-    const { data, error } = await supabaseAdminClient
+    const loginAt = new Date().toISOString()
+
+    // 3. Insert Session with compatibility fallback
+    let sessionId = ''
+    const modernInsert = await supabaseAdminClient
         .from('admin_sessions')
         .insert({
             admin_auth_user_id: user.id,
+            login_at: loginAt,
+            ip,
+            user_agent: userAgent,
             request_headers: requestHeaders,
-            // created_at is usually default now()
-            // logout_at is null
         })
         .select('id')
         .single()
 
-    if (error) {
-        console.error('Session Start Error:', error)
-        return NextResponse.json(
-            { error: 'DatabaseError', message: 'Gagal memulai sesi' },
-            { status: 500 }
-        )
+    if (!modernInsert.error && modernInsert.data?.id) {
+        sessionId = modernInsert.data.id
+    } else {
+        const legacyInsert = await supabaseAdminClient
+            .from('admin_sessions')
+            .insert({
+                admin_auth_user_id: user.id,
+                login_at: loginAt,
+                request_headers: requestHeaders,
+            })
+            .select('id')
+            .single()
+
+        if (legacyInsert.error || !legacyInsert.data?.id) {
+            console.error('Session Start Error:', modernInsert.error || legacyInsert.error)
+            return NextResponse.json(
+                { error: 'DatabaseError', message: 'Gagal memulai sesi' },
+                { status: 500 }
+            )
+        }
+        sessionId = legacyInsert.data.id
     }
 
-    return NextResponse.json({ session_id: data.id })
+    await logAdminAudit({
+        supabaseAdminClient,
+        actorAuthUserId: user.id,
+        action: 'ADMIN_LOGIN',
+        tableName: 'admin_sessions',
+        recordId: sessionId,
+        oldData: null,
+        newData: {
+            admin_auth_user_id: user.id,
+            login_at: loginAt,
+            ip,
+            user_agent: userAgent,
+        },
+        request: req,
+    })
+
+    return NextResponse.json({ session_id: sessionId })
 }

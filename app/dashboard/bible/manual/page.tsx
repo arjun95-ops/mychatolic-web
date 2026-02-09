@@ -36,7 +36,7 @@ export default function ManualEntryPage() {
 
                 if (error) throw error;
                 setBooks(data || []);
-            } catch (err: any) {
+            } catch (err: unknown) {
                 console.error("Error fetching books:", err);
                 showToast("Gagal mengambil data kitab", "error");
             } finally {
@@ -112,9 +112,10 @@ export default function ManualEntryPage() {
             setPericope(""); // Clear pericope too
             setVerseNumber((prev) => (parseInt(prev) + 1).toString());
 
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'Unknown error';
             console.error("Error saving verse:", err);
-            showToast(`Gagal menyimpan: ${err.message}`, "error");
+            showToast(`Gagal menyimpan: ${message}`, "error");
         } finally {
             setSaving(false);
         }

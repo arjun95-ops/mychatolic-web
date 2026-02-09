@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChurchDetailPage extends StatelessWidget {
@@ -197,14 +198,6 @@ class _ActionButton extends StatelessWidget {
 
 // --- SCHEDULE SECTION WITH FETCH LOGIC ---
 
-// Note: You need Supabase client initialized in your app. 
-// Assuming there's a global `supabase` client or similar service.
-// Since I don't see the Flutter Supabase setup, I will assume `Supabase.instance.client` 
-// or a global variable. I will use `Supabase.instance.client` as standard.
-
-import 'package:supabase_flutter/supabase_flutter.dart'; 
-// Make sure to import supabase_flutter
-
 class _ScheduleSection extends StatelessWidget {
   final dynamic churchId;
 
@@ -216,7 +209,8 @@ class _ScheduleSection extends StatelessWidget {
           .from('mass_schedules')
           .select()
           .eq('church_id', churchId)
-          .order('start_time'); // Initial sort by time
+          .order('day_number')
+          .order('start_time');
 
       final List<dynamic> data = response as List<dynamic>;
       
@@ -227,8 +221,11 @@ class _ScheduleSection extends StatelessWidget {
       final daily = <Map<String, dynamic>>[];
 
       for (var s in schedules) {
-        final day = (s['day_of_week'] as String).toLowerCase();
-        if (day == 'sabtu' || day == 'minggu') {
+        final rawDay = s['day_number'];
+        final day = rawDay is num
+            ? rawDay.toInt()
+            : int.tryParse(rawDay?.toString() ?? '') ?? 7;
+        if (day == 6 || day == 7) {
           weekly.add(s);
         } else {
           daily.add(s);
@@ -332,6 +329,29 @@ class _ScheduleSection extends StatelessWidget {
     );
   }
 
+  String _dayLabelFromNumber(dynamic rawDay) {
+    final day = rawDay is num
+        ? rawDay.toInt()
+        : int.tryParse(rawDay?.toString() ?? '') ?? 7;
+
+    switch (day) {
+      case 1:
+        return 'Senin';
+      case 2:
+        return 'Selasa';
+      case 3:
+        return 'Rabu';
+      case 4:
+        return 'Kamis';
+      case 5:
+        return 'Jumat';
+      case 6:
+        return 'Sabtu';
+      default:
+        return 'Minggu';
+    }
+  }
+
   Widget _buildScheduleRow(Map<String, dynamic> schedule) {
     // Format Time: 06:00:00 -> 06:00
     String time = schedule['start_time'].toString();
@@ -355,7 +375,7 @@ class _ScheduleSection extends StatelessWidget {
               ),
               const SizedBox(width: 12),
                Text(
-                schedule['day_of_week'],
+                _dayLabelFromNumber(schedule['day_number']),
                 style: const TextStyle(fontSize: 14, color: Colors.black87),
               ),
             ],

@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import { supabase } from "../../../lib/supabaseClient";
 import Modal from "../../ui/Modal";
 import { useToast } from "../../ui/Toast";
 import Image from "next/image";
 import {
+  ChevronDown,
   Edit2,
   Loader2,
   MapPin,
@@ -21,13 +22,24 @@ const CHURCH_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_CHURCH_BUCKET || "church_
 const REQUIRED_W = 1080;
 const REQUIRED_H = 1350;
 
-function getErrorMessage(err: any): string {
+type ErrorLike = {
+  message?: unknown;
+  error?: unknown;
+  error_description?: unknown;
+  details?: unknown;
+  hint?: unknown;
+};
+
+function getErrorMessage(err: unknown): string {
   if (!err) return "Unknown error";
   if (err instanceof Error) return err.message;
   if (typeof err === "string") return err;
-  if (typeof err.message === "string") return err.message;
-  if (typeof err.error === "string") return err.error;
-  if (typeof err.error_description === "string") return err.error_description;
+  if (typeof err === "object") {
+    const shaped = err as ErrorLike;
+    if (typeof shaped.message === "string") return shaped.message;
+    if (typeof shaped.error === "string") return shaped.error;
+    if (typeof shaped.error_description === "string") return shaped.error_description;
+  }
   try { return JSON.stringify(err); } catch { return "Unknown error"; }
 }
 
@@ -35,7 +47,7 @@ function isValidHttpUrl(string: string) {
   let url;
   try {
     url = new URL(string);
-  } catch (_) {
+  } catch {
     return false;
   }
   return url.protocol === "http:" || url.protocol === "https:";
@@ -68,6 +80,21 @@ interface Church {
     countries?: Country;
   };
 }
+
+type ChurchDuplicateRow = {
+  id: string;
+  name: string | null;
+};
+
+type DownloadChurchRow = {
+  name?: unknown;
+  diocese_id?: unknown;
+  address?: unknown;
+  image_url?: unknown;
+  google_maps_url?: unknown;
+  latitude?: unknown;
+  longitude?: unknown;
+};
 
 type RawCountry = {
   id?: unknown;
@@ -116,10 +143,65 @@ const parseFloatOrNull = (value: unknown): number | null => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
-const isMissingColumnError = (error: any, column: string) => {
+const normalizeFlagEmoji = (value: unknown): string => {
+  if (typeof value !== "string") return "";
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  const lowered = trimmed.toLowerCase();
+  if (lowered === "null" || lowered === "undefined") return "";
+  return trimmed;
+};
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const DIOCESE_PLACEHOLDERS = new Set([
+  "REPLACE_DIOCESE_UUID",
+  "REPLACE_DIOCESE_ID",
+  "DIOCESE_UUID",
+  "DIOCESE_ID",
+  "ISI_DENGAN_DIOCESE_ID",
+]);
+
+const isUuid = (value: string) => UUID_REGEX.test(value.trim());
+
+const normalizeLookupText = (value: string) =>
+  value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const buildChurchDuplicateKey = (name: string, dioceseId: string) =>
+  `${dioceseId}::${normalizeLookupText(name)}`;
+
+const isTemplateDiocesePlaceholder = (value: string) => {
+  const normalized = value.trim();
+  if (!normalized) return true;
+  return DIOCESE_PLACEHOLDERS.has(normalized.toUpperCase());
+};
+
+const buildImportErrorMessage = (errors: string[]) => {
+  if (errors.length === 0) return "";
+  const preview = errors.slice(0, 5).join(" | ");
+  if (errors.length > 5) {
+    return `${preview} | (+${errors.length - 5} error lainnya)`;
+  }
+  return preview;
+};
+
+const isMissingColumnError = (error: unknown, column: string) => {
   if (!error) return false;
   // Check typical Supabase/Postgres error fields
-  const raw = (error.message || error.details || error.hint || String(error)).toLowerCase();
+  const shaped = (typeof error === "object" ? error : {}) as ErrorLike;
+  const message =
+    (typeof shaped.message === "string" && shaped.message) ||
+    (typeof shaped.details === "string" && shaped.details) ||
+    (typeof shaped.hint === "string" && shaped.hint) ||
+    String(error);
+  const raw = message.toLowerCase();
   return raw.includes(column.toLowerCase()) && raw.includes("does not exist");
 };
 
@@ -150,7 +232,139 @@ const getImageDimensionsFromUrl = (url: string): Promise<{ w: number; h: number 
   });
 };
 
-export default function ChurchesTab() {
+type ChurchesTabProps = {
+  onDataChanged?: () => void;
+};
+
+type SearchableOption = {
+  value: string;
+  label: string;
+  searchText?: string;
+};
+
+type SearchableSelectProps = {
+  value: string;
+  options: SearchableOption[];
+  allLabel: string;
+  searchPlaceholder: string;
+  emptyLabel: string;
+  disabled?: boolean;
+  onChange: (value: string) => void;
+};
+
+function SearchableSelect({
+  value,
+  options,
+  allLabel,
+  searchPlaceholder,
+  emptyLabel,
+  disabled,
+  onChange,
+}: SearchableSelectProps) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const selectedLabel = useMemo(() => {
+    if (!value) return allLabel;
+    return options.find((item) => item.value === value)?.label || allLabel;
+  }, [allLabel, options, value]);
+
+  const visibleOptions = useMemo(() => {
+    const merged: SearchableOption[] = [{ value: "", label: allLabel }, ...options];
+    const normalizedQuery = query.trim().toLowerCase();
+    if (!normalizedQuery) return merged;
+    return merged.filter((item) => {
+      const haystack = (item.searchText || item.label).toLowerCase();
+      return haystack.includes(normalizedQuery);
+    });
+  }, [allLabel, options, query]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: MouseEvent) => {
+      if (!rootRef.current) return;
+      if (!rootRef.current.contains(event.target as Node)) {
+        setOpen(false);
+        setQuery("");
+      }
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(() => inputRef.current?.focus(), 0);
+    return () => clearTimeout(timer);
+  }, [open]);
+
+  const handleSelect = (nextValue: string) => {
+    onChange(nextValue);
+    setOpen(false);
+    setQuery("");
+  };
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => setOpen((prev) => !prev)}
+        className="w-full p-2.5 bg-surface-primary dark:bg-surface-inverse border border-surface-secondary dark:border-surface-secondary/20 rounded-xl text-sm outline-none focus:ring-2 focus:ring-action/20 focus:border-action disabled:opacity-50 flex items-center justify-between gap-2"
+      >
+        <span className="truncate text-left">{selectedLabel}</span>
+        <ChevronDown className="w-4 h-4 shrink-0 text-slate-500" />
+      </button>
+
+      {open && !disabled ? (
+        <div className="absolute z-40 mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl">
+          <div className="p-2 border-b border-slate-100 dark:border-slate-800">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={searchPlaceholder}
+                className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-action/20 focus:border-action text-slate-900 dark:text-white"
+              />
+            </div>
+          </div>
+
+          <div className="max-h-60 overflow-auto py-1">
+            {visibleOptions.length === 0 ? (
+              <div className="px-3 py-2 text-sm text-slate-500">{emptyLabel}</div>
+            ) : (
+              visibleOptions.map((item) => {
+                const isSelected = value === item.value;
+                return (
+                  <button
+                    key={item.value || "__all__"}
+                    type="button"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => handleSelect(item.value)}
+                    className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+                      isSelected
+                        ? "bg-action/10 text-action font-semibold"
+                        : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })
+            )}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
   const { showToast } = useToast();
   const importInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -166,9 +380,48 @@ export default function ChurchesTab() {
   const [countries, setCountries] = useState<Country[]>([]);
   const [dioceses, setDioceses] = useState<Diocese[]>([]);
 
+  const duplicateChurchKeySet = useMemo(() => {
+    const counts = new Map<string, number>();
+    data.forEach((item) => {
+      const key = buildChurchDuplicateKey(item.name || "", item.diocese_id || "");
+      if (!normalizeLookupText(item.name || "")) return;
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    const duplicates = new Set<string>();
+    counts.forEach((count, key) => {
+      if (count > 1) duplicates.add(key);
+    });
+    return duplicates;
+  }, [data]);
+  const duplicateChurchCount = duplicateChurchKeySet.size;
+
+  const countryOptions = useMemo<SearchableOption[]>(
+    () =>
+      countries.map((country) => {
+        const label = [country.flag_emoji, country.name].filter(Boolean).join(" ");
+        return {
+          value: country.id,
+          label,
+          searchText: label,
+        };
+      }),
+    [countries],
+  );
+
+  const dioceseOptions = useMemo<SearchableOption[]>(
+    () =>
+      dioceses.map((diocese) => ({
+        value: diocese.id,
+        label: diocese.name,
+        searchText: diocese.name,
+      })),
+    [dioceses],
+  );
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingItem, setEditingItem] = useState<Church | null>(null);
+  const [downloadingTemplate, setDownloadingTemplate] = useState<"csv" | "xlsx" | null>(null);
 
   const [formData, setFormData] = useState<ChurchForm>({
     name: "",
@@ -212,7 +465,7 @@ export default function ChurchesTab() {
         ? {
           id: String(sanitizedCountry.id || ""),
           name: String(sanitizedCountry.name || ""),
-          flag_emoji: String(sanitizedCountry.flag_emoji || ""),
+          flag_emoji: normalizeFlagEmoji(sanitizedCountry.flag_emoji),
         }
         : undefined;
       return {
@@ -289,7 +542,12 @@ export default function ChurchesTab() {
         .from("countries")
         .select("id, name, flag_emoji")
         .order("name");
-      setCountries(data || []);
+      const normalizedCountries: Country[] = (data || []).map((country) => ({
+        id: String(country.id || ""),
+        name: String(country.name || ""),
+        flag_emoji: normalizeFlagEmoji(country.flag_emoji),
+      }));
+      setCountries(normalizedCountries);
     };
     fetchCountries();
   }, []);
@@ -413,31 +671,6 @@ export default function ChurchesTab() {
     return payload;
   };
 
-  const saveWithFallback = async (payload: Record<string, unknown>, id?: string) => {
-    const query = id
-      ? supabase.from("churches").update(payload).eq("id", id)
-      : supabase.from("churches").insert(payload);
-    const result = await query;
-    if (!result.error) return;
-    if (
-      !isMissingColumnError(result.error, "google_maps_url") &&
-      !isMissingColumnError(result.error, "latitude") &&
-      !isMissingColumnError(result.error, "longitude")
-    ) {
-      throw result.error;
-    }
-    setHasMapColumns(false);
-    const fallbackPayload = { ...payload };
-    delete fallbackPayload.google_maps_url;
-    delete fallbackPayload.latitude;
-    delete fallbackPayload.longitude;
-    const fallbackQuery = id
-      ? supabase.from("churches").update(fallbackPayload).eq("id", id)
-      : supabase.from("churches").insert(fallbackPayload);
-    const fallbackResult = await fallbackQuery;
-    if (fallbackResult.error) throw fallbackResult.error;
-  };
-
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.diocese_id || !formData.name.trim()) {
@@ -446,13 +679,60 @@ export default function ChurchesTab() {
     }
     setIsSubmitting(true);
     try {
+      const normalizedNewName = normalizeLookupText(formData.name);
+      const { data: sameDioceseRows, error: duplicateCheckError } = await supabase
+        .from("churches")
+        .select("id, name")
+        .eq("diocese_id", formData.diocese_id);
+
+      if (duplicateCheckError) {
+        throw duplicateCheckError;
+      }
+
+      const duplicateExists = (sameDioceseRows as ChurchDuplicateRow[] | null | undefined)
+        ?.some((row) => {
+          if (!row?.id) return false;
+          if (editingItem?.id && row.id === editingItem.id) return false;
+          return normalizeLookupText(row.name || "") === normalizedNewName;
+        });
+
+      if (duplicateExists) {
+        showToast("Nama paroki sudah ada di keuskupan ini. Gunakan nama lain.", "error");
+        return;
+      }
+
       const imageUrl = await uploadImage();
       const payload = buildPayload(imageUrl);
-      await saveWithFallback(payload, editingItem?.id);
-      showToast(editingItem ? "Paroki diperbarui" : "Paroki ditambahkan", "success");
+      const response = await fetch("/api/admin/master-data/churches/upsert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: editingItem?.id,
+          ...payload,
+        }),
+      });
+
+      const result = (await response.json().catch(() => ({}))) as {
+        message?: string;
+        map_columns_available?: boolean;
+      };
+
+      if (!response.ok) {
+        throw new Error(result.message || "Gagal menyimpan paroki.");
+      }
+
+      if (result.map_columns_available === false) {
+        setHasMapColumns(false);
+      }
+
+      showToast(
+        result.message || (editingItem ? "Paroki diperbarui" : "Paroki ditambahkan"),
+        "success",
+      );
       setIsModalOpen(false);
       await fetchChurches();
-    } catch (error: any) {
+      onDataChanged?.();
+    } catch (error: unknown) {
       console.error("Save error object:", JSON.stringify(error, null, 2));
       const msg = getErrorMessage(error);
 
@@ -468,17 +748,44 @@ export default function ChurchesTab() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Hapus paroki ini?")) return;
-    const { error } = await supabase.from("churches").delete().eq("id", id);
-    if (error) {
-      if (error.code === '23503') {
-        showToast("Tidak bisa menghapus karena masih dipakai oleh Jadwal Misa.", "error");
-      } else {
-        showToast("Gagal menghapus data: " + error.message, "error");
+    try {
+      const response = await fetch("/api/admin/master-data/churches/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      const result = (await response.json().catch(() => ({}))) as {
+        message?: string;
+        references?: Array<{ label?: string; table?: string; count?: number }>;
+      };
+
+      if (!response.ok) {
+        const references = Array.isArray(result.references) ? result.references : [];
+        if (references.length > 0) {
+          const referenceText = references
+            .map((item) => {
+              const label = String(item.label || item.table || "Relasi");
+              const count = Number(item.count || 0);
+              return `${label} (${count})`;
+            })
+            .join(", ");
+          showToast(
+            `${result.message || "Gagal menghapus data."} Dipakai oleh: ${referenceText}.`,
+            "error",
+          );
+        } else {
+          showToast(result.message || "Gagal menghapus data.", "error");
+        }
+        return;
       }
-      return;
+
+      showToast("Paroki dihapus", "success");
+      await fetchChurches();
+      onDataChanged?.();
+    } catch {
+      showToast("Gagal menghapus data (network error).", "error");
     }
-    showToast("Paroki dihapus", "success");
-    await fetchChurches();
   };
 
   const handleImportFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -503,68 +810,290 @@ export default function ChurchesTab() {
         return normalized;
       });
 
-      const payload = rows
-        .map((row) => {
-          const name = String(row.name || row.nama || "").trim();
-          const dioceseId = String(
-            row.diocese_id || row.keuskupan_id || row.diocese || "",
-          ).trim();
-          if (!name || !dioceseId) return null;
-          const item: Record<string, unknown> = {
-            name,
-            diocese_id: dioceseId,
-            address: String(row.address || row.alamat || "").trim() || null,
-            image_url: String(row.image_url || row.foto || "").trim() || null,
-          };
-          if (hasMapColumns) {
-            item.google_maps_url =
-              String(row.google_maps_url || row.maps_url || row.map_url || "").trim() ||
-              null;
-            item.latitude = parseFloatOrNull(row.latitude || row.lat);
-            item.longitude = parseFloatOrNull(row.longitude || row.lng);
-          }
-          return item;
-        })
-        .filter((item): item is NonNullable<typeof item> => item !== null);
-
-      if (payload.length === 0) {
-        throw new Error("Tidak ada baris valid (wajib ada name dan diocese_id).");
+      if (rows.length === 0) {
+        throw new Error("File kosong. Isi minimal 1 baris data.");
       }
 
-      const insertChunk = async (chunk: Record<string, unknown>[]) => {
-        const { error } = await supabase.from("churches").insert(chunk);
-        if (!error) return;
-        if (
-          !isMissingColumnError(error, "google_maps_url") &&
-          !isMissingColumnError(error, "latitude") &&
-          !isMissingColumnError(error, "longitude")
-        ) {
-          throw error;
+      const { data: allDioceses, error: allDiocesesError } = await supabase
+        .from("dioceses")
+        .select("id, name");
+      if (allDiocesesError) {
+        throw new Error(`Gagal membaca daftar keuskupan: ${allDiocesesError.message}`);
+      }
+
+      const dioceseIdSet = new Set((allDioceses || []).map((item) => String(item.id || "")));
+      const dioceseNameToId = new Map<string, string>();
+      const ambiguousDioceseNameSet = new Set<string>();
+      for (const item of allDioceses || []) {
+        const id = String(item.id || "").trim();
+        const name = String(item.name || "").trim();
+        if (!id || !name) continue;
+        const key = normalizeLookupText(name);
+        if (!key) continue;
+        if (dioceseNameToId.has(key) && dioceseNameToId.get(key) !== id) {
+          ambiguousDioceseNameSet.add(key);
+          continue;
         }
-        setHasMapColumns(false);
-        const fallback = chunk.map((row) => {
-          const copy = { ...row };
-          delete copy.google_maps_url;
-          delete copy.latitude;
-          delete copy.longitude;
-          return copy;
-        });
-        const { error: fallbackError } = await supabase.from("churches").insert(fallback);
-        if (fallbackError) throw fallbackError;
+        dioceseNameToId.set(key, id);
+      }
+
+      const rowErrors: string[] = [];
+      const preparedRows: Array<{ rowNumber: number; data: Record<string, unknown> }> = [];
+
+      rows.forEach((row, index) => {
+        const rowNumber = index + 2;
+        const name = String(row.name || row.nama || "").trim();
+        if (!name) {
+          rowErrors.push(`Baris ${rowNumber}: kolom name wajib diisi.`);
+          return;
+        }
+
+        const rawDioceseValue = String(
+          row.diocese_id || row.keuskupan_id || row.diocese || row.diocese_name || row.keuskupan || "",
+        ).trim();
+
+        let resolvedDioceseId = rawDioceseValue;
+        if (isTemplateDiocesePlaceholder(resolvedDioceseId)) {
+          resolvedDioceseId = filterDiocese || "";
+        }
+
+        if (!resolvedDioceseId) {
+          rowErrors.push(
+            `Baris ${rowNumber}: diocese_id kosong. Pilih keuskupan filter aktif atau isi diocese_id UUID.`,
+          );
+          return;
+        }
+
+        if (!isUuid(resolvedDioceseId)) {
+          const lookupKey = normalizeLookupText(resolvedDioceseId);
+          if (ambiguousDioceseNameSet.has(lookupKey)) {
+            rowErrors.push(
+              `Baris ${rowNumber}: nama keuskupan "${resolvedDioceseId}" ambigu. Gunakan diocese_id UUID.`,
+            );
+            return;
+          }
+          resolvedDioceseId = dioceseNameToId.get(lookupKey) || resolvedDioceseId;
+        }
+
+        if (!isUuid(resolvedDioceseId)) {
+          rowErrors.push(
+            `Baris ${rowNumber}: diocese_id "${rawDioceseValue}" tidak valid (harus UUID).`,
+          );
+          return;
+        }
+
+        if (!dioceseIdSet.has(resolvedDioceseId)) {
+          rowErrors.push(
+            `Baris ${rowNumber}: diocese_id "${resolvedDioceseId}" tidak ditemukan di database.`,
+          );
+          return;
+        }
+
+        const imageUrl = String(row.image_url || row.foto || "").trim();
+        if (imageUrl && !isValidHttpUrl(imageUrl)) {
+          rowErrors.push(`Baris ${rowNumber}: image_url tidak valid (harus http/https).`);
+          return;
+        }
+
+        const mapsUrl = String(row.google_maps_url || row.maps_url || row.map_url || "").trim();
+        if (mapsUrl && !isValidHttpUrl(mapsUrl)) {
+          rowErrors.push(`Baris ${rowNumber}: google_maps_url tidak valid (harus http/https).`);
+          return;
+        }
+
+        const lat = parseFloatOrNull(row.latitude ?? row.lat);
+        if (lat != null && (lat < -90 || lat > 90)) {
+          rowErrors.push(`Baris ${rowNumber}: latitude harus antara -90 sampai 90.`);
+          return;
+        }
+
+        const lng = parseFloatOrNull(row.longitude ?? row.lng);
+        if (lng != null && (lng < -180 || lng > 180)) {
+          rowErrors.push(`Baris ${rowNumber}: longitude harus antara -180 sampai 180.`);
+          return;
+        }
+
+        const item: Record<string, unknown> = {
+          name,
+          diocese_id: resolvedDioceseId,
+          address: String(row.address || row.alamat || "").trim() || null,
+          image_url: imageUrl || null,
+        };
+        if (hasMapColumns) {
+          item.google_maps_url = mapsUrl || null;
+          item.latitude = lat;
+          item.longitude = lng;
+        }
+        preparedRows.push({ rowNumber, data: item });
+      });
+
+      if (rowErrors.length > 0) {
+        throw new Error(buildImportErrorMessage(rowErrors));
+      }
+
+      if (preparedRows.length === 0) {
+        throw new Error("Tidak ada baris yang siap diimpor.");
+      }
+
+      const response = await fetch("/api/admin/master-data/churches/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          rows: preparedRows.map((item) => ({ rowNumber: item.rowNumber, data: item.data })),
+        }),
+      });
+
+      const result = (await response.json().catch(() => ({}))) as {
+        message?: string;
+        successCount?: number;
+        failedRows?: string[];
       };
 
-      const chunkSize = 200;
-      for (let i = 0; i < payload.length; i += chunkSize) {
-        await insertChunk(payload.slice(i, i + chunkSize));
+      if (!response.ok) {
+        const message = result.message || "Gagal import paroki.";
+        const failedRows = Array.isArray(result.failedRows) ? result.failedRows : [];
+        throw new Error(
+          failedRows.length > 0
+            ? `${message} ${buildImportErrorMessage(failedRows)}`
+            : message,
+        );
       }
 
-      showToast(`Import berhasil: ${payload.length} gereja`, "success");
+      const successCount = Number(result.successCount || 0);
+      const failedRows = Array.isArray(result.failedRows) ? result.failedRows : [];
+
+      if (failedRows.length > 0) {
+        throw new Error(buildImportErrorMessage(failedRows));
+      }
+
+      if (successCount <= 0) {
+        throw new Error("Tidak ada data yang diimpor.");
+      }
+
+      showToast(`Import berhasil: ${successCount} paroki`, "success");
       await fetchChurches();
+      onDataChanged?.();
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Unknown error";
+      if (message.toLowerCase().includes("google_maps_url")) {
+        setHasMapColumns(false);
+      }
       showToast(`Import gagal: ${message}`, "error");
     } finally {
       setImporting(false);
+    }
+  };
+
+  const toSafeFilePart = (value: string) => {
+    const normalized = value
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    return normalized || "keuskupan";
+  };
+
+  const handleDownloadTemplate = async (ext: "csv" | "xlsx") => {
+    const selectedDioceseName = dioceses.find((item) => item.id === filterDiocese)?.name || "";
+    if (!selectedDioceseName) {
+      showToast("Pilih negara dan keuskupan terlebih dahulu.", "error");
+      return;
+    }
+
+    setDownloadingTemplate(ext);
+    try {
+      let rows: DownloadChurchRow[] = [];
+      if (hasMapColumns) {
+        const fullRes = await supabase
+          .from("churches")
+          .select("name, diocese_id, address, image_url, google_maps_url, latitude, longitude")
+          .eq("diocese_id", filterDiocese)
+          .order("name");
+        if (fullRes.error) {
+          if (
+            isMissingColumnError(fullRes.error, "google_maps_url") ||
+            isMissingColumnError(fullRes.error, "latitude") ||
+            isMissingColumnError(fullRes.error, "longitude")
+          ) {
+            setHasMapColumns(false);
+          } else {
+            throw fullRes.error;
+          }
+        } else {
+          rows = (fullRes.data || []) as DownloadChurchRow[];
+        }
+      }
+
+      if (!hasMapColumns || rows.length === 0) {
+        const basicRes = await supabase
+          .from("churches")
+          .select("name, diocese_id, address, image_url")
+          .eq("diocese_id", filterDiocese)
+          .order("name");
+        if (basicRes.error) throw basicRes.error;
+        rows = (basicRes.data || []).map((row) => ({
+          ...row,
+          google_maps_url: "",
+          latitude: "",
+          longitude: "",
+        })) as DownloadChurchRow[];
+      }
+
+      const header = [
+        "name",
+        "diocese_id",
+        "address",
+        "image_url",
+        "google_maps_url",
+        "latitude",
+        "longitude",
+      ];
+
+      const exportRows = rows.map((row) => [
+        String(row.name || ""),
+        String(row.diocese_id || filterDiocese),
+        String(row.address || ""),
+        String(row.image_url || ""),
+        String(row.google_maps_url || ""),
+        row.latitude == null ? "" : String(row.latitude),
+        row.longitude == null ? "" : String(row.longitude),
+      ]);
+
+      if (exportRows.length === 0) {
+        exportRows.push(["", filterDiocese, "", "", "", "", ""]);
+      }
+
+      const sheet = XLSX.utils.aoa_to_sheet([header, ...exportRows]);
+
+      let blob: Blob;
+      if (ext === "csv") {
+        const csv = XLSX.utils.sheet_to_csv(sheet);
+        blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
+      } else {
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, sheet, "Gereja");
+        const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        blob = new Blob([buffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+      }
+
+      const filename = `template_paroki_${toSafeFilePart(selectedDioceseName)}.${ext}`;
+      const blobUrl = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (error: unknown) {
+      showToast(`Gagal download template: ${getErrorMessage(error)}`, "error");
+    } finally {
+      setDownloadingTemplate(null);
     }
   };
 
@@ -587,7 +1116,10 @@ export default function ChurchesTab() {
           <div className="flex items-center gap-2">
             <input
               ref={importInputRef}
-            // ...
+              type="file"
+              accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              className="hidden"
+              onChange={handleImportFile}
             />
             <button
               onClick={() => importInputRef.current?.click()}
@@ -597,22 +1129,24 @@ export default function ChurchesTab() {
               <Upload className="w-4 h-4" />
               {importing ? "Mengimpor..." : "Import CSV/Excel"}
             </button>
-            <a
-              href="/templates/gereja_import_template.csv"
-              download
-              className="flex items-center gap-2 px-4 py-2.5 border border-action/20 bg-action/5 hover:bg-action/10 rounded-xl text-action font-semibold transition-colors"
+            <button
+              type="button"
+              onClick={() => handleDownloadTemplate("csv")}
+              disabled={!filterDiocese || downloadingTemplate !== null}
+              className="flex items-center gap-2 px-4 py-2.5 border border-action/20 bg-action/5 hover:bg-action/10 rounded-xl text-action font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Upload className="w-4 h-4" />
-              Template CSV
-            </a>
-            <a
-              href="/templates/gereja_import_template.xlsx"
-              download
-              className="flex items-center gap-2 px-4 py-2.5 border border-action/20 bg-action/5 hover:bg-action/10 rounded-xl text-action font-semibold transition-colors"
+              {downloadingTemplate === "csv" ? "Menyiapkan..." : "Template CSV"}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDownloadTemplate("xlsx")}
+              disabled={!filterDiocese || downloadingTemplate !== null}
+              className="flex items-center gap-2 px-4 py-2.5 border border-action/20 bg-action/5 hover:bg-action/10 rounded-xl text-action font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Upload className="w-4 h-4" />
-              Template Excel
-            </a>
+              {downloadingTemplate === "xlsx" ? "Menyiapkan..." : "Template Excel"}
+            </button>
             <button
               onClick={handleOpenAdd}
               className="flex items-center gap-2 px-5 py-2.5 bg-action hover:bg-action/90 text-text-inverse rounded-xl font-bold shadow-lg shadow-action/20 transition-all text-sm"
@@ -627,39 +1161,41 @@ export default function ChurchesTab() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <select
-            className="w-full p-2.5 bg-surface-primary dark:bg-surface-inverse border border-surface-secondary dark:border-surface-secondary/20 rounded-xl text-sm outline-none focus:ring-2 focus:ring-action/20 focus:border-action"
-            value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
-          >
-            <option value="">-- Semua Negara --</option>
-            {countries.map((country) => (
-              <option key={country.id} value={country.id}>
-                {country.flag_emoji} {country.name}
-              </option>
-            ))}
-          </select>
+          <div>
+            <SearchableSelect
+              value={selectedCountry}
+              options={countryOptions}
+              allLabel="-- Semua Negara --"
+              searchPlaceholder="Cari negara..."
+              emptyLabel="Tidak ada negara ditemukan"
+              onChange={setSelectedCountry}
+            />
+          </div>
 
-          <select
-            className="w-full p-2.5 bg-surface-primary dark:bg-surface-inverse border border-surface-secondary dark:border-surface-secondary/20 rounded-xl text-sm outline-none focus:ring-2 focus:ring-action/20 focus:border-action disabled:opacity-50"
-            value={filterDiocese}
-            onChange={(e) => setFilterDiocese(e.target.value)}
-            disabled={!selectedCountry}
-          >
-            <option value="">-- Semua Keuskupan --</option>
-            {dioceses.map((diocese) => (
-              <option key={diocese.id} value={diocese.id}>
-                {diocese.name}
-              </option>
-            ))}
-          </select>
+          <div>
+            <SearchableSelect
+              value={filterDiocese}
+              options={dioceseOptions}
+              allLabel="-- Semua Keuskupan --"
+              searchPlaceholder={selectedCountry ? "Cari keuskupan..." : "Pilih negara dulu"}
+              emptyLabel="Tidak ada keuskupan ditemukan"
+              disabled={!selectedCountry}
+              onChange={setFilterDiocese}
+            />
+          </div>
         </div>
+        {duplicateChurchCount > 0 ? (
+          <div className="text-xs text-red-600 dark:text-red-300 bg-red-50/70 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-xl px-3 py-2">
+            Ditemukan {duplicateChurchCount} nama paroki duplikat di keuskupan yang sama. Baris merah perlu dibersihkan.
+          </div>
+        ) : null}
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
           <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-400 font-bold border-b border-slate-200 dark:border-slate-800 uppercase text-xs">
             <tr>
+              <th className="p-5 w-16 text-center">No</th>
               <th className="p-5">Foto</th>
               <th className="p-5">Paroki</th>
               <th className="p-5">Keuskupan</th>
@@ -670,22 +1206,31 @@ export default function ChurchesTab() {
           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
             {loading ? (
               <tr>
-                <td colSpan={5} className="p-8 text-center">
+                <td colSpan={6} className="p-8 text-center">
                   <Loader2 className="w-6 h-6 animate-spin mx-auto text-action" />
                 </td>
               </tr>
             ) : data.length === 0 ? (
               <tr>
-                <td colSpan={5} className="p-8 text-center text-slate-400">
+                <td colSpan={6} className="p-8 text-center text-slate-400">
                   Data tidak ditemukan.
                 </td>
               </tr>
             ) : (
-              data.map((item) => (
+              data.map((item, index) => (
                 <tr
                   key={item.id}
-                  className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
+                  className={`transition-colors group ${
+                    duplicateChurchKeySet.has(
+                      buildChurchDuplicateKey(item.name || "", item.diocese_id || ""),
+                    )
+                      ? "bg-red-50/80 hover:bg-red-50 dark:bg-red-900/10 dark:hover:bg-red-900/20"
+                      : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                  }`}
                 >
+                  <td className="p-5 text-center font-semibold text-slate-500 dark:text-slate-400">
+                    {index + 1}
+                  </td>
                   <td className="p-5">
                     {/* ... */}
                     <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden relative">
@@ -699,7 +1244,16 @@ export default function ChurchesTab() {
                     </div>
                   </td>
                   <td className="p-5 font-semibold text-slate-900 dark:text-white">
-                    {item.name}
+                    <div className="flex items-center gap-2">
+                      <span>{item.name}</span>
+                      {duplicateChurchKeySet.has(
+                        buildChurchDuplicateKey(item.name || "", item.diocese_id || ""),
+                      ) && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800">
+                          Duplikat
+                        </span>
+                      )}
+                    </div>
                     <div className="text-xs text-slate-400 font-normal mt-1">{item.address || "-"}</div>
                   </td>
                   <td className="p-5 text-slate-500">
@@ -798,7 +1352,7 @@ export default function ChurchesTab() {
                         setImageFile(file);
                         setPreviewUrl(URL.createObjectURL(file));
                         setFormData({ ...formData, image_url: "" });
-                      } catch (err) {
+                      } catch {
                         showToast("Gagal membaca gambar.", "error");
                       }
                     }}
@@ -845,7 +1399,7 @@ export default function ChurchesTab() {
                         } else {
                           setPreviewUrl(val);
                         }
-                      } catch (err) {
+                      } catch {
                         // maybe invalid url or cors
                         setPreviewUrl(val); // Try anyway
                       }

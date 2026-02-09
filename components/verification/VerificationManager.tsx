@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
-import { Users, Map, List, Globe, LucideIcon } from 'lucide-react';
+import { Users, Map as MapIcon, List, Globe, LucideIcon } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import StatsCards from './StatsCards';
 import DashboardFilters from './DashboardFilters';
@@ -25,13 +25,58 @@ interface VerificationUser extends VerificationUserLike {
   parish?: string | null;
   country?: string | null;
   diocese?: string | null;
+  country_id?: string | null;
+  diocese_id?: string | null;
+  church_id?: string | null;
   role?: string | null;
   created_at?: string | null;
+}
+
+type CountryRow = {
+  id: string;
+  name: string;
+};
+
+type DioceseRow = {
+  id: string;
+  name: string;
+  country_id: string;
+};
+
+type ChurchRow = {
+  id: string;
+  name: string;
+  diocese_id: string;
+};
+
+type LocationCatalog = {
+  countries: Array<{ name: string }>;
+  dioceses: Array<{ name: string; country?: string }>;
+  parishes: Array<{ name: string; country?: string; diocese?: string }>;
+};
+
+function normalizeId(value: unknown): string {
+  if (value == null) return '';
+  return String(value).trim();
+}
+
+function safeName(value: unknown): string {
+  if (value == null) return '';
+  const text = String(value).trim();
+  if (!text) return '';
+  const lowered = text.toLowerCase();
+  if (lowered === 'null' || lowered === 'undefined') return '';
+  return text;
 }
 
 export default function VerificationManager() {
   const [allUsers, setAllUsers] = useState<VerificationUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [locationCatalog, setLocationCatalog] = useState<LocationCatalog>({
+    countries: [],
+    dioceses: [],
+    parishes: [],
+  });
 
   const [activeTab, setActiveTab] = useState<VerificationTab>('users');
   const [search, setSearch] = useState('');
@@ -60,22 +105,97 @@ export default function VerificationManager() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select(
-          '*, countries:country_id(name), dioceses:diocese_id(name), churches:church_id(name)',
-        )
-        .order('created_at', { ascending: false });
+      const [profilesRes, countriesRes, diocesesRes, churchesRes] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select(
+            '*, countries:country_id(name), dioceses:diocese_id(name), churches:church_id(name)',
+          )
+          .order('created_at', { ascending: false }),
+        supabase.from('countries').select('id, name').order('name'),
+        supabase.from('dioceses').select('id, name, country_id').order('name'),
+        supabase.from('churches').select('id, name, diocese_id').order('name'),
+      ]);
 
-      if (error) throw error;
+      if (profilesRes.error) throw profilesRes.error;
+      if (countriesRes.error) throw countriesRes.error;
+      if (diocesesRes.error) throw diocesesRes.error;
+      if (churchesRes.error) throw churchesRes.error;
 
-      const users = ((data || []) as VerificationUser[]).map(normalizeProfileLocation);
+      const countries = (countriesRes.data || []) as CountryRow[];
+      const dioceses = (diocesesRes.data || []) as DioceseRow[];
+      const churches = (churchesRes.data || []) as ChurchRow[];
+
+      const countryNameById = new Map(
+        countries.map((country) => [String(country.id), safeName(country.name)]),
+      );
+      const dioceseNameById = new Map(
+        dioceses.map((diocese) => [String(diocese.id), safeName(diocese.name)]),
+      );
+      const churchNameById = new Map(
+        churches.map((church) => [String(church.id), safeName(church.name)]),
+      );
+      const dioceseCountryIdById = new Map(
+        dioceses.map((diocese) => [String(diocese.id), normalizeId(diocese.country_id)]),
+      );
+      const churchDioceseIdById = new Map(
+        churches.map((church) => [String(church.id), normalizeId(church.diocese_id)]),
+      );
+
+      const users = ((profilesRes.data || []) as VerificationUser[]).map((rawUser) => {
+        const normalized = normalizeProfileLocation(rawUser);
+        const countryId = normalizeId(rawUser.country_id);
+        const directDioceseId = normalizeId(rawUser.diocese_id);
+        const churchId = normalizeId(rawUser.church_id);
+        const resolvedDioceseId =
+          directDioceseId || (churchId ? churchDioceseIdById.get(churchId) || '' : '');
+        const resolvedCountryId =
+          countryId || (resolvedDioceseId ? dioceseCountryIdById.get(resolvedDioceseId) || '' : '');
+
+        return {
+          ...normalized,
+          country:
+            safeName(normalized.country) ||
+            (resolvedCountryId ? countryNameById.get(resolvedCountryId) || '' : ''),
+          diocese:
+            safeName(normalized.diocese) ||
+            (resolvedDioceseId ? dioceseNameById.get(resolvedDioceseId) || '' : ''),
+          parish:
+            safeName(normalized.parish) ||
+            (churchId ? churchNameById.get(churchId) || '' : ''),
+        };
+      });
+
+      const nextCatalog: LocationCatalog = {
+        countries: countries
+          .map((country) => ({ name: safeName(country.name) }))
+          .filter((country) => country.name),
+        dioceses: dioceses
+          .map((diocese) => ({
+            name: safeName(diocese.name),
+            country: safeName(countryNameById.get(String(diocese.country_id)) || ''),
+          }))
+          .filter((diocese) => diocese.name),
+        parishes: churches
+          .map((church) => {
+            const dioceseId = normalizeId(church.diocese_id);
+            const countryId = dioceseCountryIdById.get(dioceseId) || '';
+            return {
+              name: safeName(church.name),
+              diocese: safeName(dioceseNameById.get(dioceseId) || ''),
+              country: safeName(countryNameById.get(countryId) || ''),
+            };
+          })
+          .filter((parish) => parish.name),
+      };
+
       const pendingCount = users.filter((u) => getUserStatus(u) === 'pending').length;
       const verifiedCount = users.filter((u) =>
         isVerifiedStatus(getUserStatus(u)),
       ).length;
 
       setAllUsers(users);
+      setLocationCatalog(nextCatalog);
       setStats({
         total: users.length,
         pending: pendingCount,
@@ -135,7 +255,7 @@ export default function VerificationManager() {
   const tabs: Array<{ id: VerificationTab; label: string; icon: LucideIcon }> = [
     { id: 'users', label: 'Daftar User', icon: Users },
     { id: 'country', label: 'Ringkasan Negara', icon: Globe },
-    { id: 'diocese', label: 'Ringkasan Keuskupan', icon: Map },
+    { id: 'diocese', label: 'Ringkasan Keuskupan', icon: MapIcon },
     { id: 'parish', label: 'Ringkasan Paroki', icon: List },
   ];
 
@@ -167,6 +287,7 @@ export default function VerificationManager() {
           setSearch={setSearch}
           filters={filters}
           setFilters={setFilters}
+          locationCatalog={locationCatalog}
         />
       </div>
 

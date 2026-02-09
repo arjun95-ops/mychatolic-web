@@ -1,15 +1,52 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Modal from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
 import { Search, Plus, Edit2, Trash2, Loader2, ChevronLeft, ChevronRight, Save, MapPin } from "lucide-react";
 
+type RawChurch = {
+    id?: unknown;
+    nama_paroki?: unknown;
+};
+
+type RawWilayah = {
+    id?: unknown;
+    name?: unknown;
+    church_id?: unknown;
+    churches?: RawChurch | RawChurch[] | null;
+};
+
+type WilayahItem = {
+    id: number;
+    name: string;
+    church_id: number;
+    churches?: {
+        nama_paroki: string;
+    };
+};
+
+type ChurchOption = {
+    id: number;
+    nama_paroki: string;
+};
+
+const sanitizeOneToOne = <T,>(value: T | T[] | null | undefined): T | null => {
+    if (Array.isArray(value)) return value.length > 0 ? value[0] : null;
+    return value ?? null;
+};
+
+const toErrorMessage = (error: unknown) => {
+    if (error instanceof Error) return error.message;
+    if (typeof error === "string") return error;
+    return "Terjadi kesalahan";
+};
+
 export default function WilayahTab() {
     const { showToast } = useToast();
-    const [data, setData] = useState<any[]>([]);
-    const [churches, setChurches] = useState<any[]>([]);
+    const [data, setData] = useState<WilayahItem[]>([]);
+    const [churches, setChurches] = useState<ChurchOption[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
@@ -18,13 +55,13 @@ export default function WilayahTab() {
     // Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [editingItem, setEditingItem] = useState<any>(null);
+    const [editingItem, setEditingItem] = useState<WilayahItem | null>(null);
     const [formData, setFormData] = useState({
         name: "",
         church_id: ""
     });
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         setLoading(true);
         let query = supabase
             .from('wilayah')
@@ -45,24 +82,37 @@ export default function WilayahTab() {
             console.error(error);
             showToast("Gagal memuat data wilayah", "error");
         } else {
-            setData(res || []);
+            const mapped = ((res || []) as RawWilayah[]).map((item) => {
+                const church = sanitizeOneToOne<RawChurch>(item.churches);
+                return {
+                    id: Number(item.id ?? 0),
+                    name: String(item.name ?? ""),
+                    church_id: Number(item.church_id ?? 0),
+                    churches: church ? { nama_paroki: String(church.nama_paroki ?? "") } : undefined,
+                };
+            });
+            setData(mapped);
         }
         setLoading(false);
-    };
+    }, [page, search, showToast]);
 
-    const fetchChurches = async () => {
+    const fetchChurches = useCallback(async () => {
         const { data } = await supabase.from('churches').select('id, nama_paroki').order('nama_paroki');
-        setChurches(data || []);
-    };
+        const mapped = ((data || []) as RawChurch[]).map((item) => ({
+            id: Number(item.id ?? 0),
+            nama_paroki: String(item.nama_paroki ?? ""),
+        }));
+        setChurches(mapped);
+    }, []);
 
     useEffect(() => {
         fetchChurches();
-    }, []);
+    }, [fetchChurches]);
 
     useEffect(() => {
         const delay = setTimeout(fetchData, 500);
         return () => clearTimeout(delay);
-    }, [search, page]);
+    }, [fetchData]);
 
     // Handlers
     const handleOpenAdd = () => {
@@ -71,11 +121,11 @@ export default function WilayahTab() {
         setIsModalOpen(true);
     };
 
-    const handleOpenEdit = (item: any) => {
+    const handleOpenEdit = (item: WilayahItem) => {
         setEditingItem(item);
         setFormData({
             name: item.name,
-            church_id: item.church_id
+            church_id: String(item.church_id)
         });
         setIsModalOpen(true);
     };
@@ -117,8 +167,8 @@ export default function WilayahTab() {
             }
             setIsModalOpen(false);
             fetchData();
-        } catch (e: any) {
-            showToast(e.message, "error");
+        } catch (error: unknown) {
+            showToast(toErrorMessage(error), "error");
         } finally {
             setIsSubmitting(false);
         }

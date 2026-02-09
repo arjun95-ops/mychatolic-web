@@ -1,6 +1,15 @@
+'use client';
 
-export default async function PendingApprovalPage() {
-    // Auth check handled by Middleware & DashboardLayout
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
+
+export default function PendingApprovalPage() {
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        router.push('/login');
+    };
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
@@ -21,13 +30,14 @@ export default async function PendingApprovalPage() {
                 </p>
 
                 <div className="pt-4">
-                    <form action="/auth/signout" method="post">
-                        <button className="text-sm font-medium text-red-600 hover:text-red-500 dark:text-red-400">
-                            Keluar (Logout)
-                        </button>
-                    </form>
+                    <button
+                        onClick={handleLogout}
+                        className="text-sm font-medium text-red-600 hover:text-red-500 dark:text-red-400"
+                    >
+                        Keluar (Logout)
+                    </button>
                 </div>
             </div>
         </div>
-    )
+    );
 }

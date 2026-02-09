@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireApprovedAdmin, supabaseAdminClient } from '@/lib/admin-guard'
+import { requireApprovedAdmin } from '@/lib/admin-guard'
+import { parseAdminRole } from '@/lib/admin-constants'
+import { logAdminAudit } from '@/lib/admin-audit'
 
 export async function POST(req: NextRequest) {
     // 1. Auth Check: Super Admin Only
@@ -22,25 +24,74 @@ export async function POST(req: NextRequest) {
         )
     }
 
-    const { auth_user_id } = body
+    const { auth_user_id, role: roleInput } = body
+    const role = parseAdminRole(roleInput || '')
 
-    if (!auth_user_id) {
+    if (!auth_user_id || !role) {
         return NextResponse.json(
-            { error: 'ValidationError', message: 'auth_user_id required' },
+            { error: 'ValidationError', message: 'auth_user_id dan role (super_admin/admin_ops) wajib diisi' },
             { status: 400 }
         )
     }
 
-    // 3. Update Status
-    const { error } = await adminClient
+    const { data: targetAdmin, error: targetError } = await adminClient
         .from('admin_users')
-        .update({
-            status: 'approved',
-            approved_at: new Date().toISOString(),
-            approved_by: currentUser.id
-        })
+        .select('*')
         .eq('auth_user_id', auth_user_id)
-        .eq('role', 'admin_ops') // Safety: only approve admin_ops, not other super_admins or random accounts
+        .maybeSingle()
+
+    if (targetError) {
+        return NextResponse.json(
+            { error: 'DatabaseError', message: targetError.message },
+            { status: 500 }
+        )
+    }
+
+    if (!targetAdmin) {
+        return NextResponse.json(
+            { error: 'NotFound', message: 'Data admin target tidak ditemukan.' },
+            { status: 404 }
+        )
+    }
+
+    if (targetAdmin.status === 'approved' && targetAdmin.role === role) {
+        return NextResponse.json(
+            { error: 'Conflict', message: 'Admin sudah approved dengan role yang sama.' },
+            { status: 409 }
+        )
+    }
+
+    // wajib email verified sebelum bisa di-approve
+    const { data: authData, error: authError } = await adminClient.auth.admin.getUserById(auth_user_id)
+    if (authError || !authData?.user) {
+        return NextResponse.json(
+            { error: 'AuthError', message: 'Gagal membaca data auth target admin.' },
+            { status: 400 }
+        )
+    }
+    const emailVerified = Boolean(authData.user.email_confirmed_at || authData.user.confirmed_at)
+    if (!emailVerified) {
+        return NextResponse.json(
+            { error: 'Forbidden', message: 'Target admin belum verifikasi email.' },
+            { status: 403 }
+        )
+    }
+
+    const updatePayload = {
+        role,
+        status: 'approved',
+        approved_at: new Date().toISOString(),
+        approved_by: currentUser.id,
+        updated_at: new Date().toISOString(),
+    }
+
+    // 3. Update Status + Role
+    const { data: updated, error } = await adminClient
+        .from('admin_users')
+        .update(updatePayload)
+        .eq('auth_user_id', auth_user_id)
+        .select('*')
+        .single()
 
     if (error) {
         console.error('Approve Admin Error:', error)
@@ -50,5 +101,17 @@ export async function POST(req: NextRequest) {
         )
     }
 
-    return NextResponse.json({ success: true })
+    await logAdminAudit({
+        supabaseAdminClient: adminClient,
+        actorAuthUserId: currentUser.id,
+        action: 'APPROVE_ADMIN',
+        tableName: 'admin_users',
+        recordId: auth_user_id,
+        oldData: targetAdmin,
+        newData: updated || updatePayload,
+        request: req,
+        extra: { approved_role: role },
+    })
+
+    return NextResponse.json({ success: true, data: updated })
 }

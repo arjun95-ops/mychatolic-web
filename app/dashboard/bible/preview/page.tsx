@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { BookOpen, ChevronRight, Bookmark, ArrowLeft, Search, ChevronLeft } from "lucide-react";
+import { BookOpen, ChevronRight, ArrowLeft, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 interface BibleBook {
@@ -56,8 +56,9 @@ export default function BiblePreviewPage() {
 
                 if (error) throw error;
                 setBooks(data || []);
-            } catch (err: any) {
-                console.error("Error fetching books:", err.message || err);
+            } catch (err: unknown) {
+                const message = err instanceof Error ? err.message : String(err);
+                console.error("Error fetching books:", message);
                 setErrorMsg("Gagal memuat data kitab. Silakan coba lagi.");
             } finally {
                 setLoadingBooks(false);

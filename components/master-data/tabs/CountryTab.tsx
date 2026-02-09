@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Search, Plus, Edit2, Trash2, Globe, Loader2, Save } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
@@ -13,7 +13,19 @@ interface Country {
     flag_emoji: string;
 }
 
-export default function CountryTab() {
+const normalizeName = (value: string) =>
+    value
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+
+type CountryTabProps = {
+    onDataChanged?: () => void;
+};
+
+export default function CountryTab({ onDataChanged }: CountryTabProps) {
     const { showToast } = useToast();
     const [countries, setCountries] = useState<Country[]>([]);
     const [loading, setLoading] = useState(true);
@@ -26,7 +38,21 @@ export default function CountryTab() {
     const [formData, setFormData] = useState({ name: "", iso_code: "", flag_emoji: "" });
     const [saving, setSaving] = useState(false);
 
-    const fetchCountries = async () => {
+    const duplicateCountryNameSet = useMemo(() => {
+        const counts = new Map<string, number>();
+        countries.forEach((country) => {
+            const key = normalizeName(country.name || "");
+            if (!key) return;
+            counts.set(key, (counts.get(key) || 0) + 1);
+        });
+        const duplicates = new Set<string>();
+        counts.forEach((count, key) => {
+            if (count > 1) duplicates.add(key);
+        });
+        return duplicates;
+    }, [countries]);
+
+    const fetchCountries = useCallback(async () => {
         setLoading(true);
         let query = supabase.from('countries').select('*').order('name');
         if (search) query = query.ilike('name', `%${search}%`);
@@ -35,30 +61,40 @@ export default function CountryTab() {
         if (error) showToast("Gagal memuat negara", "error");
         else setCountries(data || []);
         setLoading(false);
-    };
+    }, [search, showToast]);
 
     useEffect(() => {
         const delay = setTimeout(fetchCountries, 500);
         return () => clearTimeout(delay);
-    }, [search]);
+    }, [fetchCountries]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSaving(true);
         try {
-            if (isEditing && currentId) {
-                const { error } = await supabase.from('countries').update(formData).eq('id', currentId);
-                if (error) throw error;
-                showToast("Negara diperbarui", "success");
-            } else {
-                const { error } = await supabase.from('countries').insert([formData]);
-                if (error) throw error;
-                showToast("Negara ditambahkan", "success");
+            const response = await fetch("/api/admin/master-data/countries/upsert", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: isEditing ? currentId : undefined,
+                    name: formData.name,
+                    iso_code: formData.iso_code,
+                    flag_emoji: formData.flag_emoji,
+                }),
+            });
+
+            const result = (await response.json().catch(() => ({}))) as { message?: string };
+            if (!response.ok) {
+                throw new Error(result.message || "Gagal menyimpan negara.");
             }
+
+            showToast(result.message || (isEditing ? "Negara diperbarui" : "Negara ditambahkan"), "success");
             setIsModalOpen(false);
-            fetchCountries();
-        } catch (error: any) {
-            showToast(error.message, "error");
+            void fetchCountries();
+            onDataChanged?.();
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'Unknown error';
+            showToast(message, "error");
         } finally {
             setSaving(false);
         }
@@ -66,16 +102,44 @@ export default function CountryTab() {
 
     const handleDelete = async (id: string) => {
         if (!confirm("Hapus negara ini?")) return;
-        const { error } = await supabase.from('countries').delete().eq('id', id);
-        if (error) {
-            if (error.code === '23503') { // Foreign Key Violation
-                showToast("Tidak bisa menghapus karena masih dipakai oleh Keuskupan.", "error");
-            } else {
-                showToast("Gagal hapus: " + error.message, "error");
+
+        try {
+            const response = await fetch("/api/admin/master-data/countries/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id }),
+            });
+
+            const result = (await response.json().catch(() => ({}))) as {
+                message?: string;
+                references?: Array<{ label?: string; table?: string; count?: number }>;
+            };
+
+            if (!response.ok) {
+                const references = Array.isArray(result.references) ? result.references : [];
+                if (references.length > 0) {
+                    const referenceText = references
+                        .map((item) => {
+                            const label = String(item.label || item.table || "Relasi");
+                            const count = Number(item.count || 0);
+                            return `${label} (${count})`;
+                        })
+                        .join(", ");
+                    showToast(
+                        `${result.message || "Tidak bisa menghapus negara."} Dipakai oleh: ${referenceText}.`,
+                        "error",
+                    );
+                } else {
+                    showToast(result.message || "Tidak bisa menghapus negara.", "error");
+                }
+                return;
             }
-        } else {
-            showToast("Berhasil hapus", "success");
-            fetchCountries();
+
+            showToast(result.message || "Berhasil hapus", "success");
+            void fetchCountries();
+            onDataChanged?.();
+        } catch {
+            showToast("Gagal menghapus negara (network error).", "error");
         }
     };
 
@@ -113,12 +177,16 @@ export default function CountryTab() {
                     <Plus className="w-4 h-4" /> Tambah Negara
                 </button>
             </div>
+            <div className="px-6 py-2 text-xs text-red-600 dark:text-red-300 bg-red-50/70 dark:bg-red-900/10 border-b border-red-100 dark:border-red-900/30">
+                Baris merah menandakan nama negara duplikat.
+            </div>
 
             {/* Table */}
             <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
                     <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-400 font-bold border-b border-slate-200 dark:border-slate-800 uppercase text-xs">
                         <tr>
+                            <th className="p-5 w-16 text-center">No</th>
                             <th className="p-5">Nama Negara</th>
                             <th className="p-5">ISO Code</th>
                             <th className="p-5">Bendera</th>
@@ -127,15 +195,32 @@ export default function CountryTab() {
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                         {loading ? (
-                            <tr><td colSpan={4} className="p-8 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-primary" /></td></tr>
+                            <tr><td colSpan={5} className="p-8 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-primary" /></td></tr>
                         ) : countries.length === 0 ? (
-                            <tr><td colSpan={4} className="p-8 text-center text-slate-400">Tidak ada data.</td></tr>
+                            <tr><td colSpan={5} className="p-8 text-center text-slate-400">Tidak ada data.</td></tr>
                         ) : (
-                            countries.map((c) => (
-                                <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                            countries.map((c, index) => (
+                                <tr
+                                    key={c.id}
+                                    className={`transition-colors group ${
+                                        duplicateCountryNameSet.has(normalizeName(c.name || ""))
+                                            ? "bg-red-50/80 hover:bg-red-50 dark:bg-red-900/10 dark:hover:bg-red-900/20"
+                                            : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                    }`}
+                                >
+                                    <td className="p-5 text-center font-semibold text-slate-500 dark:text-slate-400">
+                                        {index + 1}
+                                    </td>
                                     <td className="p-5 font-semibold text-slate-900 dark:text-white flex items-center gap-3">
                                         <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-brand-primary dark:text-brand-primary"><Globe className="w-4 h-4" /></div>
-                                        {c.name}
+                                        <div className="flex items-center gap-2">
+                                            <span>{c.name}</span>
+                                            {duplicateCountryNameSet.has(normalizeName(c.name || "")) && (
+                                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800">
+                                                    Duplikat
+                                                </span>
+                                            )}
+                                        </div>
                                     </td>
                                     <td className="p-5 font-mono text-slate-500">{c.iso_code || '-'}</td>
                                     <td className="p-5 text-2xl">{c.flag_emoji || ''}</td>

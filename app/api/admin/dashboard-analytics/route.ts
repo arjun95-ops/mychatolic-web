@@ -16,6 +16,8 @@ type ProfileRow = {
   id: string;
   full_name?: string | null;
   role?: string | null;
+  gender?: string | null;
+  birth_date?: string | null;
   is_catechumen?: boolean | null;
   user_category?: string | null;
   account_status?: string | null;
@@ -49,15 +51,135 @@ type PastoralPerson = {
   church_name: string;
 };
 
+type GenderKey = "male" | "female" | "unknown";
+type AgeRangeKey =
+  | "under_18"
+  | "age_18_24"
+  | "age_25_34"
+  | "age_35_44"
+  | "age_45_54"
+  | "age_55_plus"
+  | "unknown";
+type DemographyFilterGender = "all" | GenderKey;
+type DemographyFilter = {
+  gender: DemographyFilterGender;
+  ageMin: number | null;
+  ageMax: number | null;
+  enabled: boolean;
+};
+
+type DemographyCounter = {
+  male: number;
+  female: number;
+  unknown_gender: number;
+  under_18: number;
+  age_18_24: number;
+  age_25_34: number;
+  age_35_44: number;
+  age_45_54: number;
+  age_55_plus: number;
+  age_unknown: number;
+};
+
 const DEFAULT_TZ = "Asia/Jakarta";
 const REQUIRED_ROLES = ["pastor", "suster", "bruder", "frater", "katekis", "umat"] as const;
 const REQUIRED_STATUSES = ["verified", "pending", "unverified", "rejected", "banned"] as const;
 const PASTORAL_ROLE_ORDER = ["pastor", "suster", "bruder", "frater"] as const;
 const RANGE_PRESETS: RangePreset[] = ["1d", "7d", "30d", "12m", "custom"];
+const AGE_RANGE_ORDER: AgeRangeKey[] = [
+  "under_18",
+  "age_18_24",
+  "age_25_34",
+  "age_35_44",
+  "age_45_54",
+  "age_55_plus",
+  "unknown",
+];
 
 function normalize(value: unknown): string {
   if (value == null) return "";
   return String(value).trim().toLowerCase();
+}
+
+function deriveGender(value: unknown): GenderKey {
+  const normalized = normalize(value);
+  if (
+    normalized === "male" ||
+    normalized === "pria" ||
+    normalized === "laki-laki" ||
+    normalized === "laki laki" ||
+    normalized === "lakilaki" ||
+    normalized === "man"
+  ) {
+    return "male";
+  }
+  if (
+    normalized === "female" ||
+    normalized === "wanita" ||
+    normalized === "perempuan" ||
+    normalized === "woman"
+  ) {
+    return "female";
+  }
+  return "unknown";
+}
+
+function calculateAge(value: string | null | undefined, now: Date): number | null {
+  if (!value) return null;
+  const birthDate = new Date(value);
+  if (Number.isNaN(birthDate.getTime())) return null;
+
+  let age = now.getFullYear() - birthDate.getFullYear();
+  const monthDiff = now.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < birthDate.getDate())) {
+    age -= 1;
+  }
+
+  if (!Number.isFinite(age) || age < 0 || age > 130) return null;
+  return age;
+}
+
+function deriveAgeRangeFromAge(age: number | null): AgeRangeKey {
+  if (age == null) return "unknown";
+  if (age < 18) return "under_18";
+  if (age <= 24) return "age_18_24";
+  if (age <= 34) return "age_25_34";
+  if (age <= 44) return "age_35_44";
+  if (age <= 54) return "age_45_54";
+  return "age_55_plus";
+}
+
+function createDemographyCounter(): DemographyCounter {
+  return {
+    male: 0,
+    female: 0,
+    unknown_gender: 0,
+    under_18: 0,
+    age_18_24: 0,
+    age_25_34: 0,
+    age_35_44: 0,
+    age_45_54: 0,
+    age_55_plus: 0,
+    age_unknown: 0,
+  };
+}
+
+function incrementDemographyCounter(
+  target: DemographyCounter,
+  gender: GenderKey,
+  ageRange: AgeRangeKey
+) {
+  if (gender === "male") target.male += 1;
+  else if (gender === "female") target.female += 1;
+  else target.unknown_gender += 1;
+
+  if (ageRange === "under_18") target.under_18 += 1;
+  else if (ageRange === "age_18_24") target.age_18_24 += 1;
+  else if (ageRange === "age_25_34") target.age_25_34 += 1;
+  else if (ageRange === "age_35_44") target.age_35_44 += 1;
+  else if (ageRange === "age_45_54") target.age_45_54 += 1;
+  else if (ageRange === "age_55_plus") target.age_55_plus += 1;
+  else target.age_unknown += 1;
 }
 
 function safeTimeZone(value: string | null): string {
@@ -301,6 +423,62 @@ function resolveLocationMetric(value: string | null): LocationMetric {
   return "total";
 }
 
+function parseOptionalAge(value: string | null): number | null {
+  if (!value) return null;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  const age = Math.floor(parsed);
+  if (age < 0 || age > 130) return null;
+  return age;
+}
+
+function resolveDemographyGender(value: string | null): DemographyFilterGender {
+  const normalized = normalize(value);
+  if (normalized === "male" || normalized === "female" || normalized === "unknown") {
+    return normalized as GenderKey;
+  }
+  return "all";
+}
+
+function resolveDemographyFilter({
+  genderInput,
+  ageMinInput,
+  ageMaxInput,
+}: {
+  genderInput: string | null;
+  ageMinInput: string | null;
+  ageMaxInput: string | null;
+}): DemographyFilter {
+  const gender = resolveDemographyGender(genderInput);
+  let ageMin = parseOptionalAge(ageMinInput);
+  let ageMax = parseOptionalAge(ageMaxInput);
+
+  if (ageMin != null && ageMax != null && ageMin > ageMax) {
+    const tmp = ageMin;
+    ageMin = ageMax;
+    ageMax = tmp;
+  }
+
+  const enabled = gender !== "all" || ageMin != null || ageMax != null;
+  return { gender, ageMin, ageMax, enabled };
+}
+
+function matchesDemographyFilter({
+  filter,
+  gender,
+  age,
+}: {
+  filter: DemographyFilter;
+  gender: GenderKey;
+  age: number | null;
+}): boolean {
+  if (!filter.enabled) return true;
+  if (filter.gender !== "all" && gender !== filter.gender) return false;
+  if (filter.ageMin != null && (age == null || age < filter.ageMin)) return false;
+  if (filter.ageMax != null && (age == null || age > filter.ageMax)) return false;
+  return true;
+}
+
 function pickTopOrPaginate<T>({
   items,
   mode,
@@ -350,7 +528,10 @@ export async function GET(req: NextRequest) {
 
   const { supabaseAdminClient: supabase, setCookiesToResponse } = ctx;
 
-  const reply = (body: any, init?: any) => {
+  const reply = (
+    body: unknown,
+    init?: ResponseInit
+  ) => {
     const res = NextResponse.json(body, init);
     setCookiesToResponse(res);
     return res;
@@ -377,6 +558,11 @@ export async function GET(req: NextRequest) {
     const locationMetric = resolveLocationMetric(searchParams.get("location_metric"));
     const locationParentId = searchParams.get("location_id") || "";
     const locationQuery = normalize(searchParams.get("location_q"));
+    const demographyFilter = resolveDemographyFilter({
+      genderInput: searchParams.get("demography_gender"),
+      ageMinInput: searchParams.get("age_min"),
+      ageMaxInput: searchParams.get("age_max"),
+    });
     const locationLimit = parsePositiveInt(searchParams.get("limit"), locationMode === "top" ? 10 : 25);
     const locationPage = parsePositiveInt(searchParams.get("page"), 1);
 
@@ -399,7 +585,7 @@ export async function GET(req: NextRequest) {
       supabase
         .from("profiles")
         .select(
-          "id, full_name, role, is_catechumen, user_category, account_status, verification_status, country_id, diocese_id, church_id, is_online, last_seen, last_active"
+          "id, full_name, role, gender, birth_date, is_catechumen, user_category, account_status, verification_status, country_id, diocese_id, church_id, is_online, last_seen, last_active"
         ),
       supabase.from("reports").select("status, created_at").order("created_at", { ascending: true }),
       supabase
@@ -453,6 +639,36 @@ export async function GET(req: NextRequest) {
       umat: 0,
     };
 
+    const genderCountMap: Record<GenderKey, number> = {
+      male: 0,
+      female: 0,
+      unknown: 0,
+    };
+
+    const ageRangeCountMap: Record<AgeRangeKey, number> = {
+      under_18: 0,
+      age_18_24: 0,
+      age_25_34: 0,
+      age_35_44: 0,
+      age_45_54: 0,
+      age_55_plus: 0,
+      unknown: 0,
+    };
+    const filteredGenderCountMap: Record<GenderKey, number> = {
+      male: 0,
+      female: 0,
+      unknown: 0,
+    };
+    const filteredAgeRangeCountMap: Record<AgeRangeKey, number> = {
+      under_18: 0,
+      age_18_24: 0,
+      age_25_34: 0,
+      age_35_44: 0,
+      age_45_54: 0,
+      age_55_plus: 0,
+      unknown: 0,
+    };
+
     const statusCountMap: Record<(typeof REQUIRED_STATUSES)[number], number> = {
       verified: 0,
       pending: 0,
@@ -465,9 +681,15 @@ export async function GET(req: NextRequest) {
     const countryUserCountMap: Record<string, number> = {};
     const dioceseUserCountMap: Record<string, number> = {};
     const churchUserCountMap: Record<string, number> = {};
+    const filteredCountryUserCountMap: Record<string, number> = {};
+    const filteredDioceseUserCountMap: Record<string, number> = {};
+    const filteredChurchUserCountMap: Record<string, number> = {};
     const activeCountryUserCountMap: Record<string, number> = {};
     const activeDioceseUserCountMap: Record<string, number> = {};
     const activeChurchUserCountMap: Record<string, number> = {};
+    const countryDemographyMap: Record<string, DemographyCounter> = {};
+    const dioceseDemographyMap: Record<string, DemographyCounter> = {};
+    const churchDemographyMap: Record<string, DemographyCounter> = {};
     const pastoralPeopleMap: Record<(typeof PASTORAL_ROLE_ORDER)[number], PastoralPerson[]> = {
       pastor: [],
       suster: [],
@@ -482,24 +704,67 @@ export async function GET(req: NextRequest) {
     };
 
     let usersOnlineNow = 0;
+    let usersDemographyFiltered = 0;
+
+    const incrementLocationDemography = (
+      targetMap: Record<string, DemographyCounter>,
+      key: string,
+      gender: GenderKey,
+      ageRange: AgeRangeKey
+    ) => {
+      if (!key) return;
+      if (!targetMap[key]) {
+        targetMap[key] = createDemographyCounter();
+      }
+      incrementDemographyCounter(targetMap[key], gender, ageRange);
+    };
+
+    const incrementCountMap = (targetMap: Record<string, number>, key: string) => {
+      if (!key) return;
+      targetMap[key] = (targetMap[key] || 0) + 1;
+    };
 
     for (const profile of profiles) {
       const status = deriveStatus(profile);
       const role = deriveRole(profile);
+      const gender = deriveGender(profile.gender);
+      const age = calculateAge(profile.birth_date, now);
+      const ageRange = deriveAgeRangeFromAge(age);
+      const directCountryId = profile.country_id ? String(profile.country_id) : "";
+      const directDioceseId = profile.diocese_id ? String(profile.diocese_id) : "";
+      const directChurchId = profile.church_id ? String(profile.church_id) : "";
+      const resolvedDioceseId =
+        directDioceseId || (directChurchId ? churchDioceseIdById.get(directChurchId) || "" : "");
+      const resolvedCountryId =
+        directCountryId || (resolvedDioceseId ? dioceseCountryIdById.get(resolvedDioceseId) || "" : "");
 
       roleCountMap[role] += 1;
       statusCountMap[status] += 1;
+      genderCountMap[gender] += 1;
+      ageRangeCountMap[ageRange] += 1;
+
+      incrementLocationDemography(countryDemographyMap, resolvedCountryId, gender, ageRange);
+      incrementLocationDemography(dioceseDemographyMap, resolvedDioceseId, gender, ageRange);
+      incrementLocationDemography(churchDemographyMap, directChurchId, gender, ageRange);
+
+      const matchesFilter = matchesDemographyFilter({
+        filter: demographyFilter,
+        gender,
+        age,
+      });
+
+      if (matchesFilter) {
+        usersDemographyFiltered += 1;
+        filteredGenderCountMap[gender] += 1;
+        filteredAgeRangeCountMap[ageRange] += 1;
+        incrementCountMap(filteredCountryUserCountMap, directCountryId);
+        incrementCountMap(filteredDioceseUserCountMap, directDioceseId);
+        incrementCountMap(filteredChurchUserCountMap, directChurchId);
+      }
 
       if ((PASTORAL_ROLE_ORDER as readonly string[]).includes(role)) {
         const pastoralRole = role as (typeof PASTORAL_ROLE_ORDER)[number];
         const userId = String(profile.id);
-        const directCountryId = profile.country_id ? String(profile.country_id) : "";
-        const directDioceseId = profile.diocese_id ? String(profile.diocese_id) : "";
-        const directChurchId = profile.church_id ? String(profile.church_id) : "";
-        const resolvedDioceseId =
-          directDioceseId || (directChurchId ? churchDioceseIdById.get(directChurchId) || "" : "");
-        const resolvedCountryId =
-          directCountryId || (resolvedDioceseId ? dioceseCountryIdById.get(resolvedDioceseId) || "" : "");
 
         if (!pastoralPeopleSeenMap[pastoralRole].has(userId)) {
           pastoralPeopleSeenMap[pastoralRole].add(userId);
@@ -541,6 +806,17 @@ export async function GET(req: NextRequest) {
     }
 
     const roles = REQUIRED_ROLES.map((role) => ({ role, count: roleCountMap[role] }));
+    const genderDistributionSource = demographyFilter.enabled ? filteredGenderCountMap : genderCountMap;
+    const ageDistributionSource = demographyFilter.enabled ? filteredAgeRangeCountMap : ageRangeCountMap;
+    const gender_distribution = [
+      { gender: "male", count: genderDistributionSource.male },
+      { gender: "female", count: genderDistributionSource.female },
+      { gender: "unknown", count: genderDistributionSource.unknown },
+    ];
+    const age_distribution = AGE_RANGE_ORDER.map((range) => ({
+      range,
+      count: ageDistributionSource[range],
+    }));
     const verification_status = REQUIRED_STATUSES.map((status) => ({
       status,
       count: statusCountMap[status],
@@ -694,49 +970,76 @@ export async function GET(req: NextRequest) {
 
     const countryList = countries
       .map((country) => ({
+        ...(countryDemographyMap[String(country.id)] || createDemographyCounter()),
         id: String(country.id),
         name: country.name,
         total_count: countryUserCountMap[String(country.id)] || 0,
         active_count: activeCountryUserCountMap[String(country.id)] || 0,
+        filtered_count: demographyFilter.enabled
+          ? filteredCountryUserCountMap[String(country.id)] || 0
+          : countryUserCountMap[String(country.id)] || 0,
         count:
           locationMetric === "active"
             ? activeCountryUserCountMap[String(country.id)] || 0
             : countryUserCountMap[String(country.id)] || 0,
         link: `/dashboard/location/country/${country.id}`,
       }))
-      .sort((a, b) => b.count - a.count || b.total_count - a.total_count || a.name.localeCompare(b.name));
+      .sort((a, b) => {
+        if (demographyFilter.enabled && b.filtered_count !== a.filtered_count) {
+          return b.filtered_count - a.filtered_count;
+        }
+        return b.count - a.count || b.total_count - a.total_count || a.name.localeCompare(b.name);
+      });
 
     const dioceseList = dioceses
       .map((diocese) => ({
+        ...(dioceseDemographyMap[String(diocese.id)] || createDemographyCounter()),
         id: String(diocese.id),
         name: diocese.name,
         parent_id: diocese.country_id ? String(diocese.country_id) : "",
         parent_name: diocese.country_id ? countryNameById.get(String(diocese.country_id)) || "" : "",
         total_count: dioceseUserCountMap[String(diocese.id)] || 0,
         active_count: activeDioceseUserCountMap[String(diocese.id)] || 0,
+        filtered_count: demographyFilter.enabled
+          ? filteredDioceseUserCountMap[String(diocese.id)] || 0
+          : dioceseUserCountMap[String(diocese.id)] || 0,
         count:
           locationMetric === "active"
             ? activeDioceseUserCountMap[String(diocese.id)] || 0
             : dioceseUserCountMap[String(diocese.id)] || 0,
         link: `/dashboard/location/diocese/${diocese.id}`,
       }))
-      .sort((a, b) => b.count - a.count || b.total_count - a.total_count || a.name.localeCompare(b.name));
+      .sort((a, b) => {
+        if (demographyFilter.enabled && b.filtered_count !== a.filtered_count) {
+          return b.filtered_count - a.filtered_count;
+        }
+        return b.count - a.count || b.total_count - a.total_count || a.name.localeCompare(b.name);
+      });
 
     const churchList = churches
       .map((church) => ({
+        ...(churchDemographyMap[String(church.id)] || createDemographyCounter()),
         id: String(church.id),
         name: church.name,
         parent_id: church.diocese_id ? String(church.diocese_id) : "",
         parent_name: church.diocese_id ? dioceseNameById.get(String(church.diocese_id)) || "" : "",
         total_count: churchUserCountMap[String(church.id)] || 0,
         active_count: activeChurchUserCountMap[String(church.id)] || 0,
+        filtered_count: demographyFilter.enabled
+          ? filteredChurchUserCountMap[String(church.id)] || 0
+          : churchUserCountMap[String(church.id)] || 0,
         count:
           locationMetric === "active"
             ? activeChurchUserCountMap[String(church.id)] || 0
             : churchUserCountMap[String(church.id)] || 0,
         link: `/dashboard/location/church/${church.id}`,
       }))
-      .sort((a, b) => b.count - a.count || b.total_count - a.total_count || a.name.localeCompare(b.name));
+      .sort((a, b) => {
+        if (demographyFilter.enabled && b.filtered_count !== a.filtered_count) {
+          return b.filtered_count - a.filtered_count;
+        }
+        return b.count - a.count || b.total_count - a.total_count || a.name.localeCompare(b.name);
+      });
 
     let locationRawItems: Array<{
       id: string;
@@ -745,7 +1048,18 @@ export async function GET(req: NextRequest) {
       parent_name?: string;
       total_count: number;
       active_count: number;
+      filtered_count: number;
       count: number;
+      male: number;
+      female: number;
+      unknown_gender: number;
+      under_18: number;
+      age_18_24: number;
+      age_25_34: number;
+      age_35_44: number;
+      age_45_54: number;
+      age_55_plus: number;
+      age_unknown: number;
       link: string;
     }> = [];
 
@@ -800,6 +1114,12 @@ export async function GET(req: NextRequest) {
         range: period.range,
         from: period.startDayKey,
         to: period.endDayKey,
+        demography: {
+          gender: demographyFilter.gender,
+          age_min: demographyFilter.ageMin,
+          age_max: demographyFilter.ageMax,
+          enabled: demographyFilter.enabled,
+        },
         mode: locationMode,
         location_metric: locationMetric,
         location_scope: locationScope,
@@ -814,6 +1134,10 @@ export async function GET(req: NextRequest) {
         churches: churches.length,
         articles: articlesCount || 0,
         users_total: profiles.length,
+        users_male: genderCountMap.male,
+        users_female: genderCountMap.female,
+        users_gender_unknown: genderCountMap.unknown,
+        users_demography_filtered: usersDemographyFiltered,
         users_online_now: usersOnlineNow,
         users_active_today: usersActiveToday,
         users_active_period: usersActiveInPeriodSet.size,
@@ -838,6 +1162,8 @@ export async function GET(req: NextRequest) {
         },
       },
       roles,
+      gender_distribution,
+      age_distribution,
       pastoral_roles_detail,
       verification_status,
       report_status,
@@ -865,6 +1191,11 @@ export async function GET(req: NextRequest) {
         countries: countryList.slice(0, 10),
         dioceses: dioceseList.slice(0, 10),
         churches: churchList.slice(0, 10),
+      },
+      location_insights: {
+        countries: countryList,
+        dioceses: dioceseList,
+        churches: churchList,
       },
       compatibility: {
         dau_today: usersActiveToday,

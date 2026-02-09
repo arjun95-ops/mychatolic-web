@@ -32,9 +32,10 @@ export default function BulkImportExport() {
             // Cleanup
             window.URL.revokeObjectURL(url);
 
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : 'Unknown error';
             console.error("Export Failed:", error);
-            alert("Gagal mengunduh: " + error.message);
+            alert("Gagal mengunduh: " + message);
         } finally {
             setLoading(false);
         }

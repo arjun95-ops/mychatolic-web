@@ -1,22 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "@/components/ui/Toast";
 import Modal from "@/components/ui/Modal";
 import {
-    BarChart3,
     Clock,
     CheckCircle2,
     Activity,
-    Search,
-    Filter,
-    UserPlus,
-    Users,
     MessageSquare,
-    MoreVertical,
     Eye
 } from "lucide-react";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 
 // --- Types ---
 
@@ -89,13 +84,91 @@ export default function ConsiliumPage() {
 
     // --- Init & Fetch ---
 
+    const fetchCurrentUser = useCallback(async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) setCurrentUserId(user.id);
+    }, []);
+
+    const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('consilium_requests')
+                .select(`
+                    *,
+                    user:profiles!consilium_requests_user_id_fkey(full_name, email),
+                    counselor:profiles!consilium_requests_counselor_id_fkey(full_name)
+                `)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            const fetchedRequests = data as unknown as ConsiliumRequest[];
+            setRequests(fetchedRequests);
+
+            setStats({
+                pending: fetchedRequests.filter(r => r.status === 'pending').length,
+                active: fetchedRequests.filter(r => r.status === 'active').length,
+                completed: fetchedRequests.filter(r => r.status === 'completed').length,
+            });
+
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : "Unknown error";
+            console.error("Error fetching requests:", err);
+            showToast("Gagal memuat data: " + message, "error");
+        } finally {
+            setLoading(false);
+        }
+    }, [showToast]);
+
+    const fetchMessages = useCallback(async (requestId: string) => {
+        setLoadingMessages(true);
+        try {
+            const { data, error } = await supabase
+                .from('consilium_messages')
+                .select(`
+                    *,
+                    sender:profiles!consilium_messages_sender_id_fkey(full_name, email)
+                `)
+                .eq('request_id', requestId)
+                .order('created_at', { ascending: true }); // Oldest first for chat
+
+            if (error) throw error;
+            setMessages(data as unknown as ConsiliumMessage[]);
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : "Unknown error";
+            console.error("Error fetching messages:", JSON.stringify(err, null, 2));
+            showToast("Gagal memuat chat: " + message, "error");
+        } finally {
+            setLoadingMessages(false);
+        }
+    }, [showToast]);
+
+    const fetchCounselors = useCallback(async () => {
+        if (counselors.length > 0) return;
+        setLoadingCounselors(true);
+        try {
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('id, full_name, role')
+                .in('role', ['pastor', 'suster', 'bruder']);
+
+            if (error) throw error;
+            setCounselors(data as Counselor[]);
+        } catch {
+            showToast("Gagal memuat konselor", "error");
+        } finally {
+            setLoadingCounselors(false);
+        }
+    }, [counselors.length, showToast]);
+
     useEffect(() => {
         fetchCurrentUser();
         fetchData();
-    }, []);
+    }, [fetchCurrentUser, fetchData]);
 
     useEffect(() => {
-        let channel: any;
+        let channel: RealtimeChannel | null = null;
 
         if (selectedRequest) {
             // 1. Initial Fetch
@@ -112,7 +185,7 @@ export default function ConsiliumPage() {
                         table: 'consilium_messages',
                         filter: `request_id=eq.${selectedRequest.id}`,
                     },
-                    async (payload: any) => {
+                    async (payload: { new: { id: string } }) => {
                         console.log("New message received:", payload);
                         // Fetch complete message with sender info to display name correctly
                         const { data, error } = await supabase
@@ -138,88 +211,12 @@ export default function ConsiliumPage() {
         return () => {
             if (channel) supabase.removeChannel(channel);
         };
-    }, [selectedRequest]);
+    }, [selectedRequest, fetchMessages]);
 
     // Auto-scroll to bottom of chat
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
-
-    const fetchCurrentUser = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) setCurrentUserId(user.id);
-    };
-
-    const fetchData = async () => {
-        setLoading(true);
-        try {
-            const { data, error } = await supabase
-                .from('consilium_requests')
-                .select(`
-                    *,
-                    user:profiles!consilium_requests_user_id_fkey(full_name, email),
-                    counselor:profiles!consilium_requests_counselor_id_fkey(full_name)
-                `)
-                .order('created_at', { ascending: false });
-
-            if (error) throw error;
-
-            const fetchedRequests = data as unknown as ConsiliumRequest[];
-            setRequests(fetchedRequests);
-
-            setStats({
-                pending: fetchedRequests.filter(r => r.status === 'pending').length,
-                active: fetchedRequests.filter(r => r.status === 'active').length,
-                completed: fetchedRequests.filter(r => r.status === 'completed').length,
-            });
-
-        } catch (err: any) {
-            console.error("Error fetching requests:", err);
-            showToast("Gagal memuat data: " + err.message, "error");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchMessages = async (requestId: string) => {
-        setLoadingMessages(true);
-        try {
-            const { data, error } = await supabase
-                .from('consilium_messages')
-                .select(`
-                    *,
-                    sender:profiles!consilium_messages_sender_id_fkey(full_name, email)
-                `)
-                .eq('request_id', requestId)
-                .order('created_at', { ascending: true }); // Oldest first for chat
-
-            if (error) throw error;
-            setMessages(data as unknown as ConsiliumMessage[]);
-        } catch (err: any) {
-            console.error("Error fetching messages:", JSON.stringify(err, null, 2));
-            showToast("Gagal memuat chat: " + (err.message || "Unknown error"), "error");
-        } finally {
-            setLoadingMessages(false);
-        }
-    };
-
-    const fetchCounselors = async () => {
-        if (counselors.length > 0) return;
-        setLoadingCounselors(true);
-        try {
-            const { data, error } = await supabase
-                .from('profiles')
-                .select('id, full_name, role')
-                .in('role', ['pastor', 'suster', 'bruder']);
-
-            if (error) throw error;
-            setCounselors(data as Counselor[]);
-        } catch (err: any) {
-            showToast("Gagal memuat konselor", "error");
-        } finally {
-            setLoadingCounselors(false);
-        }
-    };
 
     // --- Actions ---
 
@@ -237,8 +234,9 @@ export default function ConsiliumPage() {
             showToast("Konselor berhasil ditugaskan!", "success");
             setIsAssignModalOpen(false);
             fetchData();
-        } catch (err: any) {
-            showToast(err.message, "error");
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : "Gagal menugaskan konselor";
+            showToast(message, "error");
         } finally {
             setIsAssigning(false);
         }
@@ -312,10 +310,10 @@ export default function ConsiliumPage() {
 
                     {/* Toolbar */}
                     <div className="border-b border-slate-100 dark:border-slate-800 px-4 pt-4 flex gap-4 overflow-x-auto shrink-0">
-                        {['all', 'pending', 'active', 'completed'].map(f => (
+                        {(['all', 'pending', 'active', 'completed'] as const).map(f => (
                             <button
                                 key={f}
-                                onClick={() => setStatusFilter(f as any)}
+                                onClick={() => setStatusFilter(f)}
                                 className={`pb-3 px-2 text-sm font-medium transition-all relative capitalize whitespace-nowrap ${statusFilter === f ? 'text-brand-primary dark:text-purple-400 font-bold' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
                             >
                                 {f}
@@ -394,7 +392,7 @@ export default function ConsiliumPage() {
                             {/* Request Detail Card Inside Chat */}
                             <div className="bg-brand-primary/10 dark:bg-purple-900/20 p-3 rounded-xl border border-purple-100 dark:border-purple-800/30 mb-6 text-sm">
                                 <p className="font-semibold text-brand-primary dark:text-brand-primary mb-1">Detail Masalah:</p>
-                                <p className="text-slate-700 dark:text-slate-300 italic">"{selectedRequest.description}"</p>
+                                <p className="text-slate-700 dark:text-slate-300 italic">&quot;{selectedRequest.description}&quot;</p>
                             </div>
 
                             {loadingMessages ? (

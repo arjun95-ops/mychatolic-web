@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Modal from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
@@ -29,17 +29,48 @@ interface DioceseResult {
     countries?: Country; // Guaranteed Single Object
 }
 
+type RawCountry = {
+    id?: unknown;
+    name?: unknown;
+    flag_emoji?: unknown;
+};
+
+type RawDioceseRow = {
+    id?: unknown;
+    name?: unknown;
+    country_id?: unknown;
+    address?: unknown;
+    google_maps_url?: unknown;
+    bishop_name?: unknown;
+    bishop_image_url?: unknown;
+    countries?: RawCountry | RawCountry[] | null;
+};
+
 // --- Constants ---
 const REQUIRED_W = 1080;
 const REQUIRED_H = 1350;
 
 // --- Helper: Sanitize One-to-One Joins ---
-const sanitizeOneToOne = (data: any) => {
+const sanitizeOneToOne = <T,>(data: T | T[] | null | undefined): T | null => {
     if (Array.isArray(data)) {
         return data.length > 0 ? data[0] : null;
     }
-    return data;
+    return data ?? null;
 };
+
+const getErrorMessage = (error: unknown): string => {
+    if (error instanceof Error) return error.message;
+    if (typeof error === "string") return error;
+    return "Unknown error";
+};
+
+const normalizeName = (value: string) =>
+    value
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
 
 // --- Image Validation Helpers ---
 const getImageDimensionsFromFile = (file: File): Promise<{ w: number; h: number }> => {
@@ -68,7 +99,11 @@ const getImageDimensionsFromUrl = (url: string): Promise<{ w: number; h: number 
     });
 };
 
-export default function DioceseTab() {
+type DioceseTabProps = {
+    onDataChanged?: () => void;
+};
+
+export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
     const { showToast } = useToast();
 
     // Data State
@@ -100,8 +135,22 @@ export default function DioceseTab() {
     const [bishopPreviewUrl, setBishopPreviewUrl] = useState<string | null>(null);
     const [isValidBishopImage, setIsValidBishopImage] = useState(true); // Default true if empty, but validates on input
 
+    const duplicateDioceseNameSet = useMemo(() => {
+        const counts = new globalThis.Map<string, number>();
+        data.forEach((item) => {
+            const key = normalizeName(item.name || "");
+            if (!key) return;
+            counts.set(key, (counts.get(key) || 0) + 1);
+        });
+        const duplicates = new Set<string>();
+        counts.forEach((count, key) => {
+            if (count > 1) duplicates.add(key);
+        });
+        return duplicates;
+    }, [data]);
+
     // --- Fetch Data ---
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         setLoading(true);
         try {
             let query = supabase
@@ -124,24 +173,31 @@ export default function DioceseTab() {
             if (error) throw error;
 
             // Sanitize Data
-            const sanitizedData: DioceseResult[] = (res || []).map((item: any) => ({
-                id: item.id,
-                name: item.name,
-                country_id: item.country_id,
-                address: item.address,
-                google_maps_url: item.google_maps_url,
-                bishop_name: item.bishop_name,
-                bishop_image_url: item.bishop_image_url,
-                countries: sanitizeOneToOne(item.countries) as Country
-            }));
+            const sanitizedData: DioceseResult[] = ((res || []) as RawDioceseRow[]).map((item) => {
+                const country = sanitizeOneToOne<RawCountry>(item.countries);
+                return {
+                    id: String(item.id ?? ""),
+                    name: String(item.name ?? ""),
+                    country_id: String(item.country_id ?? ""),
+                    address: item.address ? String(item.address) : null,
+                    google_maps_url: item.google_maps_url ? String(item.google_maps_url) : null,
+                    bishop_name: item.bishop_name ? String(item.bishop_name) : null,
+                    bishop_image_url: item.bishop_image_url ? String(item.bishop_image_url) : null,
+                    countries: country ? {
+                        id: String(country.id ?? ""),
+                        name: String(country.name ?? ""),
+                        flag_emoji: String(country.flag_emoji ?? ""),
+                    } : undefined
+                };
+            });
 
             setData(sanitizedData);
-        } catch (error: any) {
-            showToast("Gagal memuat data: " + error.message, "error");
+        } catch (error: unknown) {
+            showToast("Gagal memuat data: " + getErrorMessage(error), "error");
         } finally {
             setLoading(false);
         }
-    };
+    }, [search, selectedCountryFilter, showToast]);
 
     // Fetch Countries for Dropdown
     const fetchCountries = async () => {
@@ -156,8 +212,7 @@ export default function DioceseTab() {
     useEffect(() => {
         const delay = setTimeout(fetchData, 500);
         return () => clearTimeout(delay);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search, selectedCountryFilter]);
+    }, [fetchData]);
 
     // --- Handlers ---
 
@@ -188,16 +243,44 @@ export default function DioceseTab() {
 
     const handleDelete = async (id: string) => {
         if (!window.confirm("Hapus keuskupan ini?")) return;
-        const { error } = await supabase.from('dioceses').delete().eq('id', id);
-        if (error) {
-            if (error.code === '23503') {
-                showToast("Tidak bisa menghapus karena masih dipakai oleh Paroki.", "error");
-            } else {
-                showToast(error.message, "error");
+
+        try {
+            const response = await fetch("/api/admin/master-data/dioceses/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id }),
+            });
+
+            const result = (await response.json().catch(() => ({}))) as {
+                message?: string;
+                references?: Array<{ label?: string; table?: string; count?: number }>;
+            };
+
+            if (!response.ok) {
+                const references = Array.isArray(result.references) ? result.references : [];
+                if (references.length > 0) {
+                    const referenceText = references
+                        .map((item) => {
+                            const label = String(item.label || item.table || "Relasi");
+                            const count = Number(item.count || 0);
+                            return `${label} (${count})`;
+                        })
+                        .join(", ");
+                    showToast(
+                        `${result.message || "Tidak bisa menghapus keuskupan."} Dipakai oleh: ${referenceText}.`,
+                        "error",
+                    );
+                } else {
+                    showToast(result.message || "Tidak bisa menghapus keuskupan.", "error");
+                }
+                return;
             }
-        } else {
-            showToast("Keuskupan dihapus", "success");
-            fetchData();
+
+            showToast(result.message || "Keuskupan dihapus", "success");
+            void fetchData();
+            onDataChanged?.();
+        } catch {
+            showToast("Gagal menghapus keuskupan (network error).", "error");
         }
     };
 
@@ -253,19 +336,29 @@ export default function DioceseTab() {
                 bishop_image_url: finalImageUrl || null
             };
 
-            if (editingItem) {
-                const { error } = await supabase.from('dioceses').update(payload).eq('id', editingItem.id);
-                if (error) throw error;
-                showToast("Keuskupan diperbarui", "success");
-            } else {
-                const { error } = await supabase.from('dioceses').insert(payload);
-                if (error) throw error;
-                showToast("Keuskupan ditambahkan", "success");
+            const response = await fetch("/api/admin/master-data/dioceses/upsert", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: editingItem?.id,
+                    ...payload,
+                }),
+            });
+
+            const result = (await response.json().catch(() => ({}))) as { message?: string };
+            if (!response.ok) {
+                throw new Error(result.message || "Gagal menyimpan keuskupan.");
             }
+
+            showToast(
+                result.message || (editingItem ? "Keuskupan diperbarui" : "Keuskupan ditambahkan"),
+                "success",
+            );
             setIsModalOpen(false);
-            fetchData();
-        } catch (e: any) {
-            showToast(e.message, "error");
+            void fetchData();
+            onDataChanged?.();
+        } catch (error: unknown) {
+            showToast(getErrorMessage(error), "error");
         } finally {
             setIsSubmitting(false);
         }
@@ -321,12 +414,16 @@ export default function DioceseTab() {
                     Tambah Keuskupan
                 </button>
             </div>
+            <div className="px-6 py-2 text-xs text-red-600 dark:text-red-300 bg-red-50/70 dark:bg-red-900/10 border-b border-red-100 dark:border-red-900/30">
+                Baris merah menandakan nama keuskupan duplikat.
+            </div>
 
             {/* Table */}
             <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
                     <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-400 font-bold border-b border-slate-200 dark:border-slate-800 uppercase text-xs">
                         <tr>
+                            <th className="p-5 w-16 text-center">No</th>
                             <th className="p-5">Nama Keuskupan</th>
                             <th className="p-5">Uskup</th>
                             <th className="p-5">Negara</th>
@@ -336,19 +433,36 @@ export default function DioceseTab() {
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                         {loading ? (
-                            <tr><td colSpan={5} className="p-8 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-primary" /></td></tr>
+                            <tr><td colSpan={6} className="p-8 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-brand-primary" /></td></tr>
                         ) : data.length === 0 ? (
-                            <tr><td colSpan={5} className="p-8 text-center text-slate-400">Data tidak ditemukan.</td></tr>
+                            <tr><td colSpan={6} className="p-8 text-center text-slate-400">Data tidak ditemukan.</td></tr>
                         ) : (
-                            data.map((item) => (
-                                <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+                            data.map((item, index) => (
+                                <tr
+                                    key={item.id}
+                                    className={`transition-colors group ${
+                                        duplicateDioceseNameSet.has(normalizeName(item.name || ""))
+                                            ? "bg-red-50/80 hover:bg-red-50 dark:bg-red-900/10 dark:hover:bg-red-900/20"
+                                            : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                    }`}
+                                >
+                                    <td className="p-5 text-center font-semibold text-slate-500 dark:text-slate-400">
+                                        {index + 1}
+                                    </td>
                                     <td className="p-5 font-semibold text-slate-900 dark:text-white">
                                         <div className="flex items-center gap-3">
                                             <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-brand-primary shrink-0">
                                                 <Map className="w-4 h-4" />
                                             </div>
                                             <div>
-                                                <span>{item.name}</span>
+                                                <div className="flex items-center gap-2">
+                                                    <span>{item.name}</span>
+                                                    {duplicateDioceseNameSet.has(normalizeName(item.name || "")) && (
+                                                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800">
+                                                            Duplikat
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 {item.address && <p className="text-xs text-slate-400 font-normal mt-0.5 line-clamp-1">{item.address}</p>}
                                             </div>
                                         </div>
@@ -518,7 +632,7 @@ export default function DioceseTab() {
                                                         setBishopFile(file);
                                                         setBishopPreviewUrl(URL.createObjectURL(file));
                                                         setFormData({ ...formData, bishop_image_url: "" }); // Prefer file
-                                                    } catch (err) {
+                                                    } catch {
                                                         showToast("Gagal membaca gambar", "error");
                                                     }
                                                 }}
@@ -563,7 +677,7 @@ export default function DioceseTab() {
                                                     } else {
                                                         setIsValidBishopImage(true);
                                                     }
-                                                } catch (err) {
+                                                } catch {
                                                     // If URL invalid/cors, we might allow save but warn, or strictly block.
                                                     // Let's strictly block to ensure quality
                                                     setIsValidBishopImage(false);
