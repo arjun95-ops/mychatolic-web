@@ -1,0 +1,151 @@
+{
+  "rows_total": 4215,
+  "rows_changed": 1994,
+  "replacement_patterns": 214,
+  "phrase_merges_applied": 1578,
+  "post_fix_changes": 3102,
+  "short_run_count_after": 1228,
+  "examples": [
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "3",
+      "before": "Aku, Tobit menempuh jalan kebenaran dan ke saleh anse umur hidup ku dan banyak melakukan kebajikan kepada para saudara dan segenap bangsaku yang ber sama dengan daku telah berang kat ke pembuangan, ke negeri Asyur ke kota Niniwe.",
+      "after": "Aku, Tobit menempuh jalan kebenaran dan ke saleh anse umur hidup ku dan banyak melakukan kebajikan kepada para saudara dan segenap bangsaku yang bersama dengan daku telah berang kat ke pembuangan, ke negeri Asyur ke kota Niniwe."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "5",
+      "before": "Tetapi se mua saudara ku dan juga rumah ba paku Naftali mempersembahkan korban kepada anak lembu yang telah dibuat Yerobeam, raja Israel, di kota Dan yang ter letak di pegunungan Gali lea.",
+      "after": "Tetapi semua saudara ku dan juga rumah ba paku Naftali mempersembahkan korban kepada anak lembu yang telah dibuat Yerobeam, raja Israel, di kota Dan yang ter letak di pegunungan Gali lea."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "6",
+      "before": "Pada hari-hari raya sering kali hanya aku se orang di ri saja lah yang pergi ke Yerusalem, sebagaimana yang ter surat bagi segenap Israel sebagai hukum abadi. Pergi lah aku ke Yerusalem dengan membawa buah bungaran dan anak sulung dari tern",
+      "after": "Pada hari-hari raya sering kali hanya aku seorang diri saja lah yang pergi ke Yerusalem, sebagaimana yang ter surat bagi segenap Israel sebagai hukum abadi. Pergi lah aku ke Yerusalem dengan membawa buah bungaran dan anak sulung dari ternak"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "7",
+      "before": "Semuanya kuberi kan ke pada para imam, ke turun an Harun, untuk mezbah. Bagian seperse puluh dari gandum, anggur, minyak, buah zaitun, buah deli ma dan hasil bumi lainnya kuberi kan kepada kaum Lewi yang menyelenggarakan kebaktian di Yerusa",
+      "after": "Semuanya kuberi kan kepada para imam, ke turun an Harun, untuk mezbah. Bagian seperse puluh dari gandum, anggur, minyak, buah zaitun, buah deli ma dan hasil bumi lainnya kuberi kan kepada kaum Lewi yang menyelenggarakan kebaktian di Yerusal"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "8",
+      "before": "Adapun bagian seperse puluh yang ke tiga ku beri kan ke pada para yatim piatu, para janda dan kaum perantau yang tinggal di tengah-tengah orang Israel. Tiga tahun sekali bagian seperse puluh itu kubawa untuk diberi kan kepada mereka. Itu pu",
+      "after": "Adapun bagian seperse puluh yang ke tiga ku berikan kepada para yatim piatu, para janda dan kaum perantau yang tinggal di tengah-tengah orang Israel. Tiga tahun sekali bagian seperse puluh itu kubawa untuk diberi kan kepada mereka. Itu pun "
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "9",
+      "before": "Setelah menjadi dewasa aku meng ambil is teri dari ke luar ga kami sendiri, Hana namanya. Dari padanya kuperanakkan se orang anak laki-laki yang kunamai Tobia.",
+      "after": "Setelah menjadi dewasa aku meng ambil isteri dari keluarga kami sendiri, Hana namanya. Dari padanya kuperanakkan seorang anak laki-laki yang kunamai Tobia."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "11",
+      "before": "te tapi aku men cegah diriku jangan makan makan an itu.",
+      "after": "tetapi aku men cegah diriku jangan makan makan an itu."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "13",
+      "before": "Oleh Yang Mahatinggi dianugerahkan ke pada ku ke rela an dan penghormatan dari pihak raja Salmaneser. Maka aku menjadi pembe lanja segala sesuatu nya yang diperlukan raja.",
+      "after": "Oleh Yang Mahatinggi dianugerahkan kepadaku ke rela an dan penghormatan dari pihak raja Salmaneser. Maka aku menjadi pembe lanja segala sesuatu nya yang diperlukan raja."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "15",
+      "before": "Semangkatnya Salmaneser maka putera nya San he rib men jadi raja akan ganti nya. Kemudian jalan-jalan di negeri Media tidak terpakai lagi, se hingga aku tidak dapat pergi ke Media lagi.",
+      "after": "Semangkatnya Salmaneser maka putera nya San he rib menjadi raja akan ganti nya. Kemudian jalan-jalan di negeri Media tidak terpakai lagi, se hingga aku tidak dapat pergi ke Media lagi."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "16",
+      "before": "Di zaman Salmaneser aku telah banyak me laku kan kebajikan ke pada para saudara sebangsaku.",
+      "after": "Di zaman Salmaneser aku telah banyak melakukan kebajikan kepada para saudara sebangsaku."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "17",
+      "before": "Makanan ku kuberi kan ke pada orang yang ke lapar an dan pakaian ku kepada orang telanjang. Apabila ku lihat sese orang sebangsa yang telah meninggal dan terbuang di belakang tembok kota Niniwe, maka kukubur kan.",
+      "after": "Makanan ku kuberi kan kepada orang yang ke lapar an dan pakaian ku kepada orang telanjang. Apabila ku lihat sese orang sebangsa yang telah meninggal dan terbuang di belakang tembok kota Niniwe, maka kukubur kan."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "18",
+      "before": "Manakala sese orang di bunuh oleh raja San he rib, setelah raja pulang kalah dari daerah Yehuda di masa ia dihukum oleh Raja Sorgawi karena hujatnya, maka kukubur kan juga. Sebab banyak dari orang Israel dibunuh oleh raja Sanherib TOBIT kar",
+      "after": "Manakala sese orang di bunuh oleh raja San he rib, setelah raja pulang kalah dari daerah Yehuda di masa ia dihukum oleh Raja Sorgawi karena hujatnya, maka kukubur kan juga. Sebab banyak dari orang Israel dibunuh oleh raja Sanherib karena ke"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "19",
+      "before": "Maka salah se orang pen duduk kota Niniwe pergi mela por kan ke pada raja peri hal diriku, bahwa aku lah yang mengubur kan mayat-mayat itu. Kemudian ter paksa aku ber sem bunyi. Ketika aku dapat tahu, bahwa hal itu ketahuan oleh raja dan ak",
+      "after": "Maka salah seorang pen duduk kota Niniwe pergi mela por kan kepada raja peri hal diriku, bahwa aku lah yang mengubur kan mayat-mayat itu. Kemudian ter paksa aku ber sem bunyi. Ketika aku dapat tahu, bahwa hal itu ketahuan oleh raja dan aku "
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "20",
+      "before": "Dari se bab itu segala harta ben daku di sita dan tidak ada lagi sisa pada ku yang tidak di angkut ke istana raja, kecuali Hana, iste riku, dan Tobia, anak ku.",
+      "after": "Dari sebab itu segala harta ben daku di sita dan tidak ada lagi sisa pada ku yang tidak di angkut ke istana raja, kecuali Hana, iste riku, dan Tobia, anakku."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "21",
+      "before": "Te tapi belum juga empat puluh hari berlalu maka raja San he rib di bunuh oleh putera-putera nya yang segera me lari kan di rike gunung Ara rat. Se sudah nya putera San herib, yaitu Esar ha don, men jadi raja. Ahi kar bin Anael, saudara ku,",
+      "after": "Tetapi belum juga empat puluh hari berlalu maka raja San he rib di bunuh oleh putera-putera nya yang segera melarikan diri ke gunung Ara rat. sesudahnya putera San herib, yaitu Esar ha don, menjadi raja. Ahi kar bin Anael, saudara ku, di an"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "22",
+      "before": "Maka Ahi kar men jadi pem bi cara baik bagi ku, sehingga aku dapat pulang ke Niniwe. Di masa pe me rin tahan San he rib, raja Asyur, Ahi kar telah men jadi juru minum an, pen jaga cincin mete rai dan pengurus istana dan ia di per tahan kan ",
+      "after": "Maka Ahi kar menjadi pem bicara baik bagi ku, sehingga aku dapat pulang ke Niniwe. Di masa pe me rin tahan San he rib, raja Asyur, Ahi kar telah menjadi juru minum an, pen jaga cincin mete rai dan pengurus istana dan ia di per tahan kan ole"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "2",
+      "verse": "1",
+      "before": "Jadi, di masa pe me rin tahan Esar ha don aku kemba like rumah ku. Juga is teri ku Hana dan anak ku Tobia di serahkan kem bali ke pada ku. Sekali peristiwa pada hari raya Penta kosta, yaitu hari raya Tujuh Minggu, di saji kan lah ke pada ku",
+      "after": "Jadi, di masa pe me rin tahan Esar ha don aku kembali ke rumah ku. Juga isteri ku Hana dan anakku Tobia di serahkan kembali kepadaku. Sekali peristiwa pada hari raya Penta kosta, yaitu hari raya Tujuh Minggu, disajikan lah kepadaku suatu ja"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "2",
+      "verse": "2",
+      "before": "Sebuah me jadi tempat kan di hadapanku dan ke pada ku di saji kan banyak hidangan. Te tapi ber kata lah aku ke pada anak ku Tobia: ”Nak, pergi lah dan jika kau jumpai se orang miskin dari saudara-saudara kita yang di angkut ter ta wan ke Ni",
+      "after": "Sebuah me jadi tempat kan di hadapanku dan kepadaku disajikan banyak hidangan. Tetapi berkatalah aku kepada anakku Tobia: ”Nak, pergi lah dan jika kau jumpai seorang miskin dari saudara-saudara kita yang di angkut ter ta wan ke Niniwe dan y"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "2",
+      "verse": "3",
+      "before": "Maka ke luar lah Tobia untuk men cari seorang saudara kita yang miskin. Se pulangnya ber kata lah ia: ”Pak!” Sa hut ku: ”Ada apa, nak?” Jawab nya: ”Salah se orang dari bangsa kita sudah di bunuh. Ia dicekik dan di buang di pasar. Masih ada ",
+      "after": "Maka keluarlah Tobia untuk men cari seorang saudara kita yang miskin. Se pulangnya berkatalah ia: ”Pak!” Sa hut ku: ”Ada apa, nak?” Jawab nya: ”Salah seorang dari bangsa kita sudah di bunuh. Ia dicekik dan di buang di pasar. Masih ada di si"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "2",
+      "verse": "6",
+      "before": "Maka ter ingat lah aku ke pada firman yang di ucap kan nabi Amos mengenai kota Betel ini: ”Hari-hari rayamu akan berubah menjadi hari sedih dan segala nyanyianmu akan menjadi ratap!” Lalu menangis lah aku.",
+      "after": "Maka ter ingat lah aku kepada firman yang diucapkan nabi Amos mengenai kota Betel ini: ”Hari-hari rayamu akan berubah menjadi hari sedih dan segala nyanyianmu akan menjadi ratap!” Lalu menangis lah aku."
+    }
+  ],
+  "output_csv": "docs/import/deuterokanonika_tb1_import_clean_v2.csv"
+}

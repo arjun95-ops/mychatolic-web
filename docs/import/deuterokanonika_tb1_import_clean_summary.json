@@ -1,0 +1,157 @@
+{
+  "mode": "aggressive",
+  "wordfreq_available": true,
+  "rows": {
+    "total": 4215,
+    "changed": 2391,
+    "text_changed": 2391,
+    "pericope_changed": 0
+  },
+  "fixes": {
+    "hyphen_repairs": 4383,
+    "aggressive_merges": 36667
+  },
+  "examples": [
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "1",
+      "before": "Ki tab ki sah To bit bin To biel bin Ana niel bin Aduel bin Ga bael bin Rafael bin Ra- guel da ri ke tu run an Asiel da ri su ku Naf ta- li.",
+      "after": "Kitab kisah Tobit bin To biel bin Ana niel bin Aduel bin Ga bael bin Rafael bin Raguel dari ke turun an Asiel dari suku Naftali."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "2",
+      "before": "Di zaman Sal maneser, raja orang-orang Asyur, To bit di ang kut ter ta wan da ri Tis be yang terletak di sebe lah selatan Ku dios-Naf- ta li di Gali lea atas di atas Hazor, yakni di se- be lah barat, dan di se be lah utara Fogor. Tobit dala",
+      "after": "Di zaman Sal maneser, raja orang-orang Asyur, Tobit di angkut ter ta wan dari Tis be yang terletak di sebelah selatan Ku dios-Naftali di Gali lea atas di atas Hazor, yakni di sebelah barat, dan di sebelah utara Fogor. Tobit dalam pembuangan"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "3",
+      "before": "Aku, Tobit menempuh jalan kebenar an dan ke sa leh an se umur hi dup ku dan ba nyak melakukan kebajikan kepada para saudara dan segenap bangsaku yang ber sama dengan daku telah berang kat ke pembuangan, ke ne- geri Asyur ke ko ta Niniwe.",
+      "after": "Aku, Tobit menempuh jalan kebenaran dan ke saleh anse umur hidup ku dan banyak melakukan kebajikan kepada para saudara dan segenap bangsaku yang ber sama dengan daku telah berang kat ke pembuangan, ke negeri Asyur ke kota Niniwe."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "4",
+      "before": "Waktu aku ma- sih ting gal di ta nah air ku, yai tu di ta nah Is ra- el, dan ketika aku masih muda, maka se luruh suku Nafta li moyangku memberontak terha- dap keluarga Daud bapaku dan terhadap Ye- rusalem, ko ta yang telah dipilih dari ant",
+      "after": "Waktu aku masih tinggal di tanah airku, yaitu di tanah Israel, dan ketika aku masih muda, maka se luruh suku Naftali moyangku memberontak terhadap keluarga Daud bapaku dan terhadap Yerusalem, kota yang telah dipilih dari antara semua suku I"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "5",
+      "before": "Te- ta pi se mua sau da ra ku dan ju ga ru mah ba pa- ku Nafta li mempersembahkan korban kepada anak lembu yang telah dibuat Yerobe am, ra- ja Israel, di kota Dan yang ter letak di pe gu- nungan Gali lea.",
+      "after": "Tetapi se mua saudara ku dan juga rumah ba paku Naftali mempersembahkan korban kepada anak lembu yang telah dibuat Yerobeam, raja Israel, di kota Dan yang ter letak di pegunungan Gali lea."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "6",
+      "before": "Pa da hari-ha ri raya sering kali hanya aku se orang di ri sa ja lah yang per gi ke Ye ru sa lem, seba gaimana yang ter surat bagi segenap Is- rael seba gai hukum abadi. Per gi lah aku ke Yerusalem dengan membawa buah bungar- an dan anak su",
+      "after": "Pada hari-hari raya sering kali hanya aku se orang di ri saja lah yang pergi ke Yerusalem, sebagaimana yang ter surat bagi segenap Israel sebagai hukum abadi. Pergi lah aku ke Yerusalem dengan membawa buah bungaran dan anak sulung dari tern"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "7",
+      "before": "Semuanya kuberi kan ke pa da pa ra imam, ke tu run an Ha run, un tuk mez bah. Bagian seperse puluh dari gandum, anggur, minyak, buah zaitun, buah deli ma dan hasil bumi lainnya kuberi kan kepada ka- um Lewi yang menyelenggarakan kebaktian d",
+      "after": "Semuanya kuberi kan ke pada para imam, ke turun an Harun, untuk mezbah. Bagian seperse puluh dari gandum, anggur, minyak, buah zaitun, buah deli ma dan hasil bumi lainnya kuberi kan kepada kaum Lewi yang menyelenggarakan kebaktian di Yerusa"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "8",
+      "before": "Adapun bagian seperse puluh yang ke ti ga ku be ri kan ke pa da pa ra ya tim pia- tu, para janda dan kaum perantau yang ting- gal di tengah-tengah orang Israel. Tiga tahun sekali bagian seperse puluh itu kubawa un- tuk diberi kan kepada mer",
+      "after": "Adapun bagian seperse puluh yang ke tiga ku beri kan ke pada para yatim piatu, para janda dan kaum perantau yang tinggal di tengah-tengah orang Israel. Tiga tahun sekali bagian seperse puluh itu kubawa untuk diberi kan kepada mereka. Itu pu"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "9",
+      "before": "Setelah menja di de wasa aku meng am bil is te ri da ri ke lu ar ga kami sendiri, Ha na namanya. Dari padanya kuperanakkan se orang anak la ki-la ki yang kunamai Tobia.",
+      "after": "Setelah menjadi dewasa aku meng ambil is teri dari ke luar ga kami sendiri, Hana namanya. Dari padanya kuperanakkan se orang anak laki-laki yang kunamai Tobia."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "10",
+      "before": "Ke tika diangkut tertawan dan di asing- kan ke ne ge ri Asyur aku per gi ke ko ta Ni ni- we. Semua saudaraku dan kaum sekeluarga makan makan an bangsa asing,",
+      "after": "Ke tika diangkut tertawan dan di asingkan ke negeri Asyur aku pergi ke kota Niniwe. Semua saudaraku dan kaum sekeluarga makan makan an bangsa asing,"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "11",
+      "before": "te tapi aku men ce gah di ri ku ja ngan ma kan ma kan an itu.",
+      "after": "te tapi aku men cegah diriku jangan makan makan an itu."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "12",
+      "before": "Sebab dengan segenap hatiku aku ingat ke- pada Allah.",
+      "after": "Sebab dengan segenap hatiku aku ingat kepada Allah."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "13",
+      "before": "Oleh Yang Mahatinggi dianu- ge rah kan ke pa da ku ke re la an dan peng hor- matan dari pihak raja Salmaneser. Maka aku menja di pembe lanja segala sesuatu nya yang diperlukan raja.",
+      "after": "Oleh Yang Mahatinggi dianugerahkan ke pada ku ke rela an dan penghormatan dari pihak raja Salmaneser. Maka aku menjadi pembe lanja segala sesuatu nya yang diperlukan raja."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "14",
+      "before": "Dari sebab itu aku bia sa per gi ke ne ge ri Me dia un tuk ber be lan ja ba- gi nya di sa na sampai raja mangkat. Se kali kutitipkan sebuah pundi-pundi pada Gaba- el, saudara Gabria di negeri Media, yang se- puluh talen ta perak isinya.",
+      "after": "Dari sebab itu aku biasa pergi ke negeri Media untuk ber belanja bagi nya di sana sampai raja mangkat. Se kali kutitipkan sebuah pundi-pundi pada Gabael, saudara Gabria di negeri Media, yang sepuluh talenta perak isinya."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "15",
+      "before": "Semangkatnya Salmaneser maka pute- ra nya San he rib men ja di ra ja akan ganti nya. Kemudian jalan-jalan di negeri Media tidak terpakai lagi, se hingga aku tidak dapat per- gi ke Media lagi.",
+      "after": "Semangkatnya Salmaneser maka putera nya San he rib men jadi raja akan ganti nya. Kemudian jalan-jalan di negeri Media tidak terpakai lagi, se hingga aku tidak dapat pergi ke Media lagi."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "16",
+      "before": "Di zaman Salmaneser aku te lah ba nyak me la ku kan ke ba jik an ke pa da para saudara sebangsaku.",
+      "after": "Di zaman Salmaneser aku telah banyak me laku kan kebajikan ke pada para saudara sebangsaku."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "17",
+      "before": "Makan an ku ku- be ri kan ke pa da orang yang ke la par an dan pakaian ku kepada orang te lanjang. Apabila ku li hat sese orang sebangsa yang te lah me- ninggal dan terbuang di belakang tembok ko- ta Niniwe, maka kukubur kan.",
+      "after": "Makanan ku kuberi kan ke pada orang yang ke lapar an dan pakaian ku kepada orang telanjang. Apabila ku lihat sese orang sebangsa yang telah meninggal dan terbuang di belakang tembok kota Niniwe, maka kukubur kan."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "18",
+      "before": "Manakala se- se orang di bu nuh oleh ra ja San he rib, se te lah raja pulang kalah dari daerah Yehuda di ma- sa ia dihukum oleh Raja Sorgawi karena hu- jatnya, maka kukubur kan juga. Sebab banyak dari orang Israel dibunuh oleh raja Sanherib",
+      "after": "Manakala sese orang di bunuh oleh raja San he rib, setelah raja pulang kalah dari daerah Yehuda di masa ia dihukum oleh Raja Sorgawi karena hujatnya, maka kukubur kan juga. Sebab banyak dari orang Israel dibunuh oleh raja Sanherib TOBIT kar"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "19",
+      "before": "Ma ka sa lah se orang pen du duk ko ta Ni ni we per gi me la por kan ke pa da ra ja peri hal di ri ku, bah wa aku lah yang me ngu bur kan ma yat-ma- yat itu. Ke mu di an ter pak sa aku ber sem bu nyi. Ke ti ka aku da pat ta hu, bah wa hal i",
+      "after": "Maka salah se orang pen duduk kota Niniwe pergi mela por kan ke pada raja peri hal diriku, bahwa aku lah yang mengubur kan mayat-mayat itu. Kemudian ter paksa aku ber sem bunyi. Ketika aku dapat tahu, bahwa hal itu ketahuan oleh raja dan ak"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "20",
+      "before": "Da ri se bab itu se ga la har ta ben da ku di si ta dan ti dak ada la gi si sa pa da ku yang ti- dak di ang kut ke is ta na ra ja, ke cu ali Ha na, is- te ri ku, dan To bia, anak ku.",
+      "after": "Dari se bab itu segala harta ben daku di sita dan tidak ada lagi sisa pada ku yang tidak di angkut ke istana raja, kecuali Hana, iste riku, dan Tobia, anak ku."
+    }
+  ],
+  "output_csv": "docs/import/deuterokanonika_tb1_import_clean.csv"
+}

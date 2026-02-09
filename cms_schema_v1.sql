@@ -1,5 +1,5 @@
 -- =============================================
--- Migration Script: CMS & Advanced Bible Features
+-- Migration Script: CMS Features
 -- =============================================
 
 -- Enable UUID extension just in case
@@ -21,10 +21,7 @@ create table if not exists homepage_sections (
 insert into homepage_sections (section_key, label, order_index, is_active)
 values 
   ('banner', 'Banner & Highlights', 10, true),
-  ('daily_verse', 'Ayat Harian', 20, true),
-  ('bible_shortcut', 'Akses Cepat Alkitab', 30, true),
   ('last_read', 'Terakhir Dibaca', 40, true),
-  ('featured_pericope', 'Perikop Pilihan', 50, true),
   ('reading_plan', 'Rencana Bacaan', 60, true)
 on conflict (section_key) do nothing;
 
@@ -36,27 +33,6 @@ create table if not exists audit_logs (
   details jsonb,
   created_at timestamp with time zone default now()
 );
-
--- 3. Confirm Bible Schema Requirements (Idempotent Checks)
-
--- Ensure bible_books has 'category'
-do $$
-begin
-  if not exists (select 1 from information_schema.columns where table_name = 'bible_books' and column_name = 'category') then
-    alter table bible_books add column category text;
-    -- Note: Adding constraint to existing column might fail if data violates it. 
-    -- Assuming fresh or compliant data, or we add valid check if empty.
-    alter table bible_books add constraint check_category check (category in ('Perjanjian Lama', 'Perjanjian Baru', 'Deuterokanonika'));
-  end if;
-end $$;
-
--- Ensure bible_verses has 'pericope'
-do $$
-begin
-  if not exists (select 1 from information_schema.columns where table_name = 'bible_verses' and column_name = 'pericope') then
-    alter table bible_verses add column pericope text;
-  end if;
-end $$;
 
 -- =============================================
 -- RLS Policies

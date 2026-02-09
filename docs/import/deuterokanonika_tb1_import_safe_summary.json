@@ -1,0 +1,157 @@
+{
+  "mode": "safe",
+  "wordfreq_available": true,
+  "rows": {
+    "total": 4215,
+    "changed": 2092,
+    "text_changed": 2092,
+    "pericope_changed": 0
+  },
+  "fixes": {
+    "hyphen_repairs": 4383,
+    "aggressive_merges": 0
+  },
+  "examples": [
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "1",
+      "before": "Ki tab ki sah To bit bin To biel bin Ana niel bin Aduel bin Ga bael bin Rafael bin Ra- guel da ri ke tu run an Asiel da ri su ku Naf ta- li.",
+      "after": "Ki tab ki sah To bit bin To biel bin Ana niel bin Aduel bin Ga bael bin Rafael bin Raguel da ri ke tu run an Asiel da ri su ku Naf tali."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "2",
+      "before": "Di zaman Sal maneser, raja orang-orang Asyur, To bit di ang kut ter ta wan da ri Tis be yang terletak di sebe lah selatan Ku dios-Naf- ta li di Gali lea atas di atas Hazor, yakni di se- be lah barat, dan di se be lah utara Fogor. Tobit dala",
+      "after": "Di zaman Sal maneser, raja orang-orang Asyur, To bit di ang kut ter ta wan da ri Tis be yang terletak di sebe lah selatan Ku dios-Nafta li di Gali lea atas di atas Hazor, yakni di sebe lah barat, dan di se be lah utara Fogor. Tobit dalam pe"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "3",
+      "before": "Aku, Tobit menempuh jalan kebenar an dan ke sa leh an se umur hi dup ku dan ba nyak melakukan kebajikan kepada para saudara dan segenap bangsaku yang ber sama dengan daku telah berang kat ke pembuangan, ke ne- geri Asyur ke ko ta Niniwe.",
+      "after": "Aku, Tobit menempuh jalan kebenar an dan ke sa leh an se umur hi dup ku dan ba nyak melakukan kebajikan kepada para saudara dan segenap bangsaku yang ber sama dengan daku telah berang kat ke pembuangan, ke negeri Asyur ke ko ta Niniwe."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "4",
+      "before": "Waktu aku ma- sih ting gal di ta nah air ku, yai tu di ta nah Is ra- el, dan ketika aku masih muda, maka se luruh suku Nafta li moyangku memberontak terha- dap keluarga Daud bapaku dan terhadap Ye- rusalem, ko ta yang telah dipilih dari ant",
+      "after": "Waktu aku masih ting gal di ta nah air ku, yai tu di ta nah Is rael, dan ketika aku masih muda, maka se luruh suku Nafta li moyangku memberontak terhadap keluarga Daud bapaku dan terhadap Yerusalem, ko ta yang telah dipilih dari anta ra sem"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "5",
+      "before": "Te- ta pi se mua sau da ra ku dan ju ga ru mah ba pa- ku Nafta li mempersembahkan korban kepada anak lembu yang telah dibuat Yerobe am, ra- ja Israel, di kota Dan yang ter letak di pe gu- nungan Gali lea.",
+      "after": "Teta pi se mua sau da ra ku dan ju ga ru mah ba paku Nafta li mempersembahkan korban kepada anak lembu yang telah dibuat Yerobe am, raja Israel, di kota Dan yang ter letak di pe gunungan Gali lea."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "6",
+      "before": "Pa da hari-ha ri raya sering kali hanya aku se orang di ri sa ja lah yang per gi ke Ye ru sa lem, seba gaimana yang ter surat bagi segenap Is- rael seba gai hukum abadi. Per gi lah aku ke Yerusalem dengan membawa buah bungar- an dan anak su",
+      "after": "Pa da hari-ha ri raya sering kali hanya aku se orang di ri sa ja lah yang per gi ke Ye ru sa lem, seba gaimana yang ter surat bagi segenap Israel seba gai hukum abadi. Per gi lah aku ke Yerusalem dengan membawa buah bungaran dan anak sulung"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "7",
+      "before": "Semuanya kuberi kan ke pa da pa ra imam, ke tu run an Ha run, un tuk mez bah. Bagian seperse puluh dari gandum, anggur, minyak, buah zaitun, buah deli ma dan hasil bumi lainnya kuberi kan kepada ka- um Lewi yang menyelenggarakan kebaktian d",
+      "after": "Semuanya kuberi kan ke pa da pa ra imam, ke tu run an Ha run, un tuk mez bah. Bagian seperse puluh dari gandum, anggur, minyak, buah zaitun, buah deli ma dan hasil bumi lainnya kuberi kan kepada kaum Lewi yang menyelenggarakan kebaktian di "
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "8",
+      "before": "Adapun bagian seperse puluh yang ke ti ga ku be ri kan ke pa da pa ra ya tim pia- tu, para janda dan kaum perantau yang ting- gal di tengah-tengah orang Israel. Tiga tahun sekali bagian seperse puluh itu kubawa un- tuk diberi kan kepada mer",
+      "after": "Adapun bagian seperse puluh yang ke ti ga ku be ri kan ke pa da pa ra ya tim piatu, para janda dan kaum perantau yang tinggal di tengah-tengah orang Israel. Tiga tahun sekali bagian seperse puluh itu kubawa untuk diberi kan kepada mereka. I"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "10",
+      "before": "Ke tika diangkut tertawan dan di asing- kan ke ne ge ri Asyur aku per gi ke ko ta Ni ni- we. Semua saudaraku dan kaum sekeluarga makan makan an bangsa asing,",
+      "after": "Ke tika diangkut tertawan dan di asingkan ke ne ge ri Asyur aku per gi ke ko ta Ni niwe. Semua saudaraku dan kaum sekeluarga makan makan an bangsa asing,"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "12",
+      "before": "Sebab dengan segenap hatiku aku ingat ke- pada Allah.",
+      "after": "Sebab dengan segenap hatiku aku ingat kepada Allah."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "13",
+      "before": "Oleh Yang Mahatinggi dianu- ge rah kan ke pa da ku ke re la an dan peng hor- matan dari pihak raja Salmaneser. Maka aku menja di pembe lanja segala sesuatu nya yang diperlukan raja.",
+      "after": "Oleh Yang Mahatinggi dianuge rah kan ke pa da ku ke re la an dan peng hormatan dari pihak raja Salmaneser. Maka aku menja di pembe lanja segala sesuatu nya yang diperlukan raja."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "14",
+      "before": "Dari sebab itu aku bia sa per gi ke ne ge ri Me dia un tuk ber be lan ja ba- gi nya di sa na sampai raja mangkat. Se kali kutitipkan sebuah pundi-pundi pada Gaba- el, saudara Gabria di negeri Media, yang se- puluh talen ta perak isinya.",
+      "after": "Dari sebab itu aku bia sa per gi ke ne ge ri Me dia un tuk ber be lan ja bagi nya di sa na sampai raja mangkat. Se kali kutitipkan sebuah pundi-pundi pada Gabael, saudara Gabria di negeri Media, yang sepuluh talen ta perak isinya."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "15",
+      "before": "Semangkatnya Salmaneser maka pute- ra nya San he rib men ja di ra ja akan ganti nya. Kemudian jalan-jalan di negeri Media tidak terpakai lagi, se hingga aku tidak dapat per- gi ke Media lagi.",
+      "after": "Semangkatnya Salmaneser maka putera nya San he rib men ja di ra ja akan ganti nya. Kemudian jalan-jalan di negeri Media tidak terpakai lagi, se hingga aku tidak dapat pergi ke Media lagi."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "17",
+      "before": "Makan an ku ku- be ri kan ke pa da orang yang ke la par an dan pakaian ku kepada orang te lanjang. Apabila ku li hat sese orang sebangsa yang te lah me- ninggal dan terbuang di belakang tembok ko- ta Niniwe, maka kukubur kan.",
+      "after": "Makan an ku kube ri kan ke pa da orang yang ke la par an dan pakaian ku kepada orang te lanjang. Apabila ku li hat sese orang sebangsa yang te lah meninggal dan terbuang di belakang tembok kota Niniwe, maka kukubur kan."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "18",
+      "before": "Manakala se- se orang di bu nuh oleh ra ja San he rib, se te lah raja pulang kalah dari daerah Yehuda di ma- sa ia dihukum oleh Raja Sorgawi karena hu- jatnya, maka kukubur kan juga. Sebab banyak dari orang Israel dibunuh oleh raja Sanherib",
+      "after": "Manakala sese orang di bu nuh oleh ra ja San he rib, se te lah raja pulang kalah dari daerah Yehuda di masa ia dihukum oleh Raja Sorgawi karena hujatnya, maka kukubur kan juga. Sebab banyak dari orang Israel dibunuh oleh raja Sanherib TOBIT"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "19",
+      "before": "Ma ka sa lah se orang pen du duk ko ta Ni ni we per gi me la por kan ke pa da ra ja peri hal di ri ku, bah wa aku lah yang me ngu bur kan ma yat-ma- yat itu. Ke mu di an ter pak sa aku ber sem bu nyi. Ke ti ka aku da pat ta hu, bah wa hal i",
+      "after": "Ma ka sa lah se orang pen du duk ko ta Ni ni we per gi me la por kan ke pa da ra ja peri hal di ri ku, bah wa aku lah yang me ngu bur kan ma yat-mayat itu. Ke mu di an ter pak sa aku ber sem bu nyi. Ke ti ka aku da pat ta hu, bah wa hal itu"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "20",
+      "before": "Da ri se bab itu se ga la har ta ben da ku di si ta dan ti dak ada la gi si sa pa da ku yang ti- dak di ang kut ke is ta na ra ja, ke cu ali Ha na, is- te ri ku, dan To bia, anak ku.",
+      "after": "Da ri se bab itu se ga la har ta ben da ku di si ta dan ti dak ada la gi si sa pa da ku yang tidak di ang kut ke is ta na ra ja, ke cu ali Ha na, iste ri ku, dan To bia, anak ku."
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "21",
+      "before": "Te ta pi be lum ju ga em pat pu luh ha ri ber- la lu ma ka ra ja San he rib di bu nuh oleh pu te- ra-pu te ra nya yang se ge ra me la ri kan di ri ke gu nung Ara rat. Se su dah nya pu te ra San he- rib, yai tu Esar ha don, men ja di ra ja. ",
+      "after": "Te ta pi be lum ju ga em pat pu luh ha ri berla lu ma ka ra ja San he rib di bu nuh oleh pu tera-pu te ra nya yang se ge ra me la ri kan di ri ke gu nung Ara rat. Se su dah nya pu te ra San herib, yai tu Esar ha don, men ja di ra ja. Ahi ka"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "1",
+      "verse": "22",
+      "before": "Ma ka Ahi kar men ja- di pem bi ca ra ba ik ba gi ku, se hing ga aku da- pat pu lang ke Ni ni we. Di ma sa pe me rin tah an San he rib, ra ja Asyur, Ahi kar te lah men ja di ju ru mi num an, pen ja ga cin cin me te rai dan pengu rus is ta n",
+      "after": "Ma ka Ahi kar men jadi pem bi ca ra ba ik ba gi ku, se hing ga aku dapat pu lang ke Ni ni we. Di ma sa pe me rin tah an San he rib, ra ja Asyur, Ahi kar te lah men ja di ju ru mi num an, pen ja ga cin cin me te rai dan pengu rus is ta na da"
+    },
+    {
+      "book": "Tobit",
+      "chapter": "2",
+      "verse": "1",
+      "before": "Ja di, di ma sa pe me rin tah an Esar ha don aku kem ba li ke ru mah ku. Ju ga is te ri ku Ha na dan anak ku To bia di se rah kan kem ba- li ke pa da ku. Se ka li pe ris ti wa pa da ha ri ra ya Pen ta kos ta, yai tu ha ri ra ya Tu juh Ming ",
+      "after": "Ja di, di ma sa pe me rin tah an Esar ha don aku kem ba li ke ru mah ku. Ju ga is te ri ku Ha na dan anak ku To bia di se rah kan kem bali ke pa da ku. Se ka li pe ris ti wa pa da ha ri ra ya Pen ta kos ta, yai tu ha ri ra ya Tu juh Ming gu"
+    }
+  ],
+  "output_csv": "docs/import/deuterokanonika_tb1_import_safe.csv"
+}
