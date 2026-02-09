@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import { useRouter } from 'next/navigation';
@@ -82,6 +83,27 @@ export default function LoginPage() {
                         {loading ? 'Memproses...' : 'Masuk Dashboard'}
                     </button>
                 </form>
+
+                <div className="mt-5 space-y-3">
+                    <Link
+                        href="/register"
+                        className="block w-full rounded-lg border border-brand-primary/20 bg-brand-primary/5 px-4 py-2.5 text-center text-sm font-semibold text-brand-primary transition hover:bg-brand-primary/10"
+                    >
+                        Daftar Admin Ops
+                    </Link>
+
+                    <Link
+                        href="/register?role=super_admin"
+                        className="block w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-center text-sm font-semibold text-text-primary transition hover:bg-gray-100"
+                    >
+                        Alur Daftar Super Admin
+                    </Link>
+
+                    <p className="text-xs text-text-secondary leading-relaxed">
+                        Catatan: Super Admin tidak aktif otomatis dari halaman login. Akun pertama perlu bootstrap,
+                        dan akun berikutnya dipromosikan oleh Super Admin existing.
+                    </p>
+                </div>
 
                 <div className="mt-6 text-center text-xs text-text-secondary">
                     &copy; 2026 MyCatholic Admin Portal. Secure Access Only.
