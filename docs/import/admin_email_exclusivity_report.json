@@ -1,0 +1,52 @@
+{
+  "started_at": "2026-02-10T04:33:45.319Z",
+  "finished_at": "2026-02-10T04:33:46.411Z",
+  "dry_run": false,
+  "reason": "Email khusus Super Admin/Admin Ops. Akun aplikasi untuk email ini diblokir.",
+  "summary": {
+    "admin_rows": 2,
+    "unique_admin_auth_user_ids": 2,
+    "unique_admin_emails": 2,
+    "matched_profiles": 2,
+    "already_blocked_profiles": 0,
+    "profiles_to_block": 2,
+    "updated_profiles": 2
+  },
+  "samples": {
+    "admins": [
+      {
+        "auth_user_id": "7d5f488a-86c7-4094-8137-42812ec6bd9a",
+        "email": "arjunsitohang95@gmail.com",
+        "role": "super_admin",
+        "status": "approved"
+      },
+      {
+        "auth_user_id": "d5d7b8da-d1c3-4ef1-a880-e39b716d2279",
+        "email": "mychatolic@gmail.com",
+        "role": "super_admin",
+        "status": "approved"
+      }
+    ],
+    "profiles_to_block": [
+      {
+        "id": "d5d7b8da-d1c3-4ef1-a880-e39b716d2279",
+        "email": "mychatolic@gmail.com",
+        "role": "umat",
+        "account_status": "unverified",
+        "verification_status": "unverified",
+        "rejection_reason": null,
+        "updated_at": "2026-02-09T12:20:13.194815+00:00"
+      },
+      {
+        "id": "7d5f488a-86c7-4094-8137-42812ec6bd9a",
+        "email": "arjunsitohang95@gmail.com",
+        "role": "umat",
+        "account_status": "unverified",
+        "verification_status": "unverified",
+        "rejection_reason": null,
+        "updated_at": "2026-02-08T16:34:46.561+00:00"
+      }
+    ],
+    "already_blocked_profiles": []
+  }
+}

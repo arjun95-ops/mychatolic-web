@@ -1,0 +1,706 @@
+{
+  "generated_at": "2026-02-10T03:01:08.718Z",
+  "workspace": "id/TB1",
+  "placeholder_rows": 33,
+  "items": [
+    {
+      "book_name": "Barukh",
+      "grouping": "deutero",
+      "chapter": 1,
+      "verse": 15,
+      "prev_verse": {
+        "verse": 14,
+        "text": "Hendak lah mem baca kan kitab yang kami kirim ini, untuk di umum kan di dalam Rumah Tuhan pada hari raya dan pada hari-hari perhimpunan. 15a katakan lah sebagai berikut: Pengakuan dosa 15b Keadilan ada pada Tuhan, Allah kita, sedang kan malu muka pada kami, sebagai mana halnya hari ini, yaitu: pada orang-orang Yehuda dan pen duduk Yerusalem,"
+      },
+      "next_verse": {
+        "verse": 16,
+        "text": "pada sekali an raja kami, para pemimpin, para imam dan nabi serta pada nenek moyang kami."
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 14,
+          "text": "Hendak lah mem baca kan kitab yang kami kirim ini, untuk di umum kan di dalam Rumah Tuhan pada hari raya dan pada hari-hari perhimpunan. 15a katakan lah sebagai berikut: Pengakuan dosa 15b Keadilan ada pada Tuhan, Allah kita, sedang kan malu muka pada kami, sebagai mana halnya hari ini, yaitu: pada orang-orang Yehuda dan pen duduk Yerusalem,"
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 16,
+          "text": "pada sekali an raja kami, para pemimpin, para imam dan nabi serta pada nenek moyang kami."
+        }
+      }
+    },
+    {
+      "book_name": "Kejadian",
+      "grouping": "old",
+      "chapter": 1,
+      "verse": 4,
+      "prev_verse": {
+        "verse": 3,
+        "text": "Berfirmanlah Allah: \"Jadilah terang.\" Lalu terang itu jadi."
+      },
+      "next_verse": {
+        "verse": 5,
+        "text": "Dan Allah menamai terang itu siang, dan gelap itu malam. Jadilah petang dan jadilah pagi, itulah hari pertama."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Kejadian",
+      "grouping": "old",
+      "chapter": 2,
+      "verse": 2,
+      "prev_verse": {
+        "verse": 1,
+        "text": "Demikianlah diselesaikan langit dan bumi dan segala isinya."
+      },
+      "next_verse": {
+        "verse": 3,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Kejadian",
+      "grouping": "old",
+      "chapter": 2,
+      "verse": 3,
+      "prev_verse": {
+        "verse": 2,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 4,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Kejadian",
+      "grouping": "old",
+      "chapter": 2,
+      "verse": 4,
+      "prev_verse": {
+        "verse": 3,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 5,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Kejadian",
+      "grouping": "old",
+      "chapter": 2,
+      "verse": 5,
+      "prev_verse": {
+        "verse": 4,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 6,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Kejadian",
+      "grouping": "old",
+      "chapter": 2,
+      "verse": 6,
+      "prev_verse": {
+        "verse": 5,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 7,
+        "text": "ketika itulah TUHAN Allah membentuk manusia itu dari debu tanah dan menghembuskan nafas hidup ke dalam hidungnya."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Kejadian",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 2,
+      "prev_verse": {
+        "verse": 1,
+        "text": "Lalu berfirmanlah TUHAN kepada Nuh: \"Masuklah ke dalam bahtera itu, engkau dan seisi rumahmu, sebab engkaulah yang Kulihat benar di hadapan-Ku di antara orang zaman ini."
+      },
+      "next_verse": {
+        "verse": 3,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Kejadian",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 3,
+      "prev_verse": {
+        "verse": 2,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 4,
+        "text": "Sebab tujuh hari lagi Aku akan menurunkan hujan ke atas bumi empat puluh hari empat puluh malam lamanya."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Keluaran",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 2,
+      "prev_verse": {
+        "verse": 1,
+        "text": "Berfirmanlah TUHAN kepada Musa: \"Lihat, Aku mengangkat engkau sebagai Allah bagi Firaun, dan Harun, abangmu, akan menjadi nabimu.\""
+      },
+      "next_verse": {
+        "verse": 3,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Keluaran",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 3,
+      "prev_verse": {
+        "verse": 2,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 4,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Keluaran",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 4,
+      "prev_verse": {
+        "verse": 3,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 5,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Keluaran",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 5,
+      "prev_verse": {
+        "verse": 4,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 6,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Keluaran",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 6,
+      "prev_verse": {
+        "verse": 5,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 7,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Keluaran",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 7,
+      "prev_verse": {
+        "verse": 6,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 8,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Keluaran",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 8,
+      "prev_verse": {
+        "verse": 7,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 9,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Keluaran",
+      "grouping": "old",
+      "chapter": 7,
+      "verse": 9,
+      "prev_verse": {
+        "verse": 8,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 10,
+        "text": "Musa dan Harun pergi menghadap Firaun, lalu mereka berbuat seperti yang diperintahkan TUHAN; Harun melemparkan tongkatnya di depan Firaun dan para pegawainya, maka tongkat itu menjadi ular."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Matius",
+      "grouping": "new",
+      "chapter": 5,
+      "verse": 2,
+      "prev_verse": {
+        "verse": 1,
+        "text": "Ketika Yesus melihat orang banyak itu, naiklah Ia ke atas bukit dan setelah Ia duduk, datanglah murid-murid-Nya kepada-Nya."
+      },
+      "next_verse": {
+        "verse": 3,
+        "text": "\"Berbahagialah orang yang miskin di hadapan Allah, karena merekalah yang empunya Kerajaan Sorga."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 1,
+      "verse": 5,
+      "prev_verse": {
+        "verse": 4,
+        "text": "Sebelum segala-galanya kebijaksanaan sudah diciptakan, dan pengertian yang arif sejak dahulu kala."
+      },
+      "next_verse": {
+        "verse": 6,
+        "text": "Kepada siapakah pangkal kebijaksanaan telah disingkapkan, dan siapakah mengenal segala akalnya?"
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 4,
+          "text": "Sebelum segala-galanya kebijaksanaan sudah diciptakan, dan pengertian yang arif sejak dahulu kala."
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 6,
+          "text": "Kepada siapakah pangkal kebijaksanaan telah disingkapkan, dan siapakah mengenal segala akalnya?"
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 1,
+      "verse": 7,
+      "prev_verse": {
+        "verse": 6,
+        "text": "Kepada siapakah pangkal kebijaksanaan telah disingkapkan, dan siapakah mengenal segala akalnya?"
+      },
+      "next_verse": {
+        "verse": 8,
+        "text": "Hanyalah Satu yang bijaksana, teramat menggetarkan, yaitu Yang bersemayam di atas singgasana-Nya."
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 6,
+          "text": "Kepada siapakah pangkal kebijaksanaan telah disingkapkan, dan siapakah mengenal segala akalnya?"
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 8,
+          "text": "Hanyalah Satu yang bijaksana, teramat menggetarkan, yaitu Yang bersemayam di atas singgasana-Nya."
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 1,
+      "verse": 21,
+      "prev_verse": {
+        "verse": 20,
+        "text": "Pangkal kebijaksanaan ialah ketakutan akan Tuhan, dan ranting-rantingnya adalah umur yang panjang. Kesabaran dan kejujuran"
+      },
+      "next_verse": {
+        "verse": 22,
+        "text": "Amarah yang tak adil tidak dapat dibenarkan, sebab keterlaluan amarah menjadi keruntuhan manusia."
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 20,
+          "text": "Pangkal kebijaksanaan ialah ketakutan akan Tuhan, dan ranting-rantingnya adalah umur yang panjang. Kesabaran dan kejujuran"
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 22,
+          "text": "Amarah yang tak adil tidak dapat dibenarkan, sebab keterlaluan amarah menjadi keruntuhan manusia."
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 11,
+      "verse": 15,
+      "prev_verse": {
+        "verse": 14,
+        "text": "Baik dan buruk, mati dan hidup, kemiskinan dan kekayaan berasal dari Tuhan semua."
+      },
+      "next_verse": {
+        "verse": 16,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 14,
+          "text": "Baik dan buruk, mati dan hidup, kemiskinan dan kekayaan berasal dari Tuhan semua."
+        },
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 11,
+      "verse": 16,
+      "prev_verse": {
+        "verse": 15,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 17,
+        "text": "Anugerah Tuhan tetap ada pada orang bertakwa, dan perkenanan-Nya selalu menyertai mereka."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": {
+          "verse": 17,
+          "text": "Anugerah Tuhan tetap ada pada orang bertakwa, dan perkenanan-Nya selalu menyertai mereka."
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 17,
+      "verse": 5,
+      "prev_verse": {
+        "verse": 4,
+        "text": "Di dalam segala makhluk yang hidup Tuhan menaruh ketakutan kepada manusia, agar manusia merajai binatang dan unggas."
+      },
+      "next_verse": {
+        "verse": 6,
+        "text": "Lidah, mata dan telinga dibentuk-Nya, dan manusia diberi-Nya hati untuk berpikir."
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 4,
+          "text": "Di dalam segala makhluk yang hidup Tuhan menaruh ketakutan kepada manusia, agar manusia merajai binatang dan unggas."
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 6,
+          "text": "Lidah, mata dan telinga dibentuk-Nya, dan manusia diberi-Nya hati untuk berpikir."
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 18,
+      "verse": 3,
+      "prev_verse": {
+        "verse": 2,
+        "text": "Tuhanlah melulu yang ternyata benar."
+      },
+      "next_verse": {
+        "verse": 4,
+        "text": "Tidak ada seorang pun diberi-Nya kuasa mewartakan pekerjaan-Nya. Siapa gerangan menyelami perbuatan agung-Nya?"
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 2,
+          "text": "Tuhanlah melulu yang ternyata benar."
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 4,
+          "text": "Tidak ada seorang pun diberi-Nya kuasa mewartakan pekerjaan-Nya. Siapa gerangan menyelami perbuatan agung-Nya?"
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 23,
+      "verse": 26,
+      "prev_verse": {
+        "verse": 25,
+        "text": "Anak-anaknya tidak akan berakar, dan ranting-rantingnya tidak akan berbuah. Sebagai kutukan kenang-kenangannya ditinggalkannya, dan keaibannya tak akan terhapus."
+      },
+      "next_verse": {
+        "verse": 27,
+        "text": "Maka orang yang masih tertinggal akan menjadi insaf, bahwa tidak ada sesuatu pun lebih baik daripada takut akan Tuhan, dan tidak ada sesuatu pun lebih manis daripada menepati perintah-perintah Tuhan. Kebijaksanaan dan Taurat"
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 25,
+          "text": "Anak-anaknya tidak akan berakar, dan ranting-rantingnya tidak akan berbuah. Sebagai kutukan kenang-kenangannya ditinggalkannya, dan keaibannya tak akan terhapus."
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 27,
+          "text": "Maka orang yang masih tertinggal akan menjadi insaf, bahwa tidak ada sesuatu pun lebih baik daripada takut akan Tuhan, dan tidak ada sesuatu pun lebih manis daripada menepati perintah-perintah Tuhan. Kebijaksanaan dan Taurat"
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 24,
+      "verse": 18,
+      "prev_verse": {
+        "verse": 17,
+        "text": "Bagaikan pokok anggur kutumbuhkan tunas-tunas jelita, dan bungaku menjadi buah yang banyak dan masak sedap."
+      },
+      "next_verse": {
+        "verse": 19,
+        "text": "Hai kamu sekalian yang menginginkan daku, datanglah ke mari, kenyangkanlah dirimu dengan hasilku."
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 17,
+          "text": "Bagaikan pokok anggur kutumbuhkan tunas-tunas jelita, dan bungaku menjadi buah yang banyak dan masak sedap."
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 19,
+          "text": "Hai kamu sekalian yang menginginkan daku, datanglah ke mari, kenyangkanlah dirimu dengan hasilku."
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 25,
+      "verse": 12,
+      "prev_verse": {
+        "verse": 11,
+        "text": "Ketakutan akan Tuhan melampaui segala-galanya, siapa yang berpegang kepadanya, dengan apa gerangan dapat dibandingkan?"
+      },
+      "next_verse": {
+        "verse": 13,
+        "text": "Biar luka apa saja, asal bukan luka hati; biar keburukan apa saja, asal bukan keburukan perempuan;"
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 11,
+          "text": "Ketakutan akan Tuhan melampaui segala-galanya, siapa yang berpegang kepadanya, dengan apa gerangan dapat dibandingkan?"
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 13,
+          "text": "Biar luka apa saja, asal bukan luka hati; biar keburukan apa saja, asal bukan keburukan perempuan;"
+        }
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 37,
+      "verse": 32,
+      "prev_verse": {
+        "verse": 31,
+        "text": "Banyak orang mati karena rakus, sedangkan orang yang menjaga dirinya memperpanjang hidup."
+      },
+      "next_verse": {
+        "verse": 33,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 31,
+          "text": "Banyak orang mati karena rakus, sedangkan orang yang menjaga dirinya memperpanjang hidup."
+        },
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 37,
+      "verse": 33,
+      "prev_verse": {
+        "verse": 32,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 34,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 37,
+      "verse": 34,
+      "prev_verse": {
+        "verse": 33,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 35,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": null
+      }
+    },
+    {
+      "book_name": "Sirakh",
+      "grouping": "deutero",
+      "chapter": 37,
+      "verse": 35,
+      "prev_verse": {
+        "verse": 34,
+        "text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi."
+      },
+      "next_verse": {
+        "verse": 36,
+        "text": ", 37 dan sembunyikanlah rencana terhadap orang yang berdengki akan dikau."
+      },
+      "source_context": {
+        "source_prev": null,
+        "source_self": null,
+        "source_next": {
+          "verse": 36,
+          "text": ", 37 dan sembunyikanlah rencana terhadap orang yang berdengki akan dikau."
+        }
+      }
+    },
+    {
+      "book_name": "Tobit",
+      "grouping": "deutero",
+      "chapter": 9,
+      "verse": 3,
+      "prev_verse": {
+        "verse": 2,
+        "text": "âSaudara Azar ya, hendak lah engkau meng ambil ser tamu empat orang bu jang dan dua ekor unta. baiklah engkau berangkat ke kota Ra gai dan pergi ke Gaba el. Hendak lah engkau menyerah kan kepadanya surat bukti ini lalu memungut uang itu. Dan lagi hendak lah engkau membawa dia ser tamu ke per nikah an nanti. 3"
+      },
+      "next_verse": {
+        "verse": 4,
+        "text": "Engkau tahu bahwa ayah ku mem bilang-bilang hari. Apabila aku bera yal-ayal an, niscaya ayah ku sangat se dih hati. Dan engkau pun tahu ba ikba ik apa yang telah di janji kan oleh Raguel dengan sumpah dan sumpah itu tidak dapat ku lang gar.â"
+      },
+      "source_context": {
+        "source_prev": {
+          "verse": 2,
+          "text": "âSaudara Azar ya, hendak lah engkau meng ambil ser tamu empat orang bu jang dan dua ekor unta. baiklah engkau berangkat ke kota Ra gai dan pergi ke Gaba el. Hendak lah engkau menyerah kan kepadanya surat bukti ini lalu memungut uang itu. Dan lagi hendak lah engkau membawa dia ser tamu ke per nikah an nanti. 3"
+        },
+        "source_self": null,
+        "source_next": {
+          "verse": 4,
+          "text": "Engkau tahu bahwa ayah ku mem bilang-bilang hari. Apabila aku bera yal-ayal an, niscaya ayah ku sangat se dih hati. Dan engkau pun tahu ba ikba ik apa yang telah di janji kan oleh Raguel dengan sumpah dan sumpah itu tidak dapat ku lang gar.â"
+        }
+      }
+    }
+  ]
+}

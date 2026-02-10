@@ -12,6 +12,7 @@ import BulkImport from "@/components/bible-studio/BulkImport";
 import PreviewPane from "@/components/bible-studio/PreviewPane";
 import { useToast } from "@/components/ui/Toast";
 import {
+  AUTO_MISSING_PLACEHOLDER_PREFIX,
   CATEGORY_OPTIONS,
   CATEGORY_TO_GROUPING,
   GROUPING_LABELS,
@@ -24,10 +25,21 @@ import {
   type VerseItem,
   type WorkspaceOption,
 } from "@/components/bible-studio/types";
-import { normalizeBookLookupKey, parsePositiveInt } from "@/lib/bible-admin";
+import {
+  getDeprecatedBibleWorkspaceTarget,
+  normalizeBookLookupKey,
+  parsePositiveInt,
+} from "@/lib/bible-admin";
+
+type RawBookItem = Omit<BookItem, "grouping"> & {
+  grouping: string;
+};
 
 type BooksResponse = {
-  items?: BookItem[];
+  items?: RawBookItem[];
+  pagination?: {
+    total?: number;
+  };
   message?: string;
 };
 
@@ -105,13 +117,38 @@ function matchBook(book: BookItem, query: string): boolean {
 function computeMissingCount(verses: VerseItem[]): number {
   if (verses.length === 0) return 0;
   const maxVerse = verses.reduce((max, verse) => Math.max(max, verse.verse_number), 0);
-  const existing = new Set(verses.map((verse) => verse.verse_number));
+  const existing = new Set(
+    verses
+      .filter((verse) => !verse.text.startsWith(AUTO_MISSING_PLACEHOLDER_PREFIX))
+      .map((verse) => verse.verse_number),
+  );
   let missing = 0;
   for (let i = 1; i <= maxVerse; i += 1) {
     if (!existing.has(i)) missing += 1;
   }
   return missing;
 }
+
+function normalizeGroupingFromDb(value: string): BookItem["grouping"] {
+  const normalized = value.trim().toLowerCase();
+  if (normalized === "old" || normalized.includes("lama") || normalized.includes("old")) {
+    return "old";
+  }
+  if (normalized === "new" || normalized.includes("baru") || normalized.includes("new")) {
+    return "new";
+  }
+  if (normalized === "deutero" || normalized.includes("deutero")) return "deutero";
+  return "old";
+}
+
+function normalizeBooks(items: RawBookItem[]): BookItem[] {
+  return items.map((item) => ({
+    ...item,
+    grouping: normalizeGroupingFromDb(item.grouping),
+  }));
+}
+
+const IS_DEV = process.env.NODE_ENV !== "production";
 
 export default function BibleStudio() {
   const router = useRouter();
@@ -121,6 +158,9 @@ export default function BibleStudio() {
 
   const lang = normalizeLang(searchParams.get("lang"));
   const version = normalizeVersion(searchParams.get("version"));
+  const redirectedWorkspace = getDeprecatedBibleWorkspaceTarget(lang, version);
+  const effectiveLang = redirectedWorkspace?.languageCode || lang;
+  const effectiveVersion = redirectedWorkspace?.versionCode || version;
   const category = parseCategory(searchParams.get("cat"));
   const groupingFilter = CATEGORY_TO_GROUPING[category];
   const tab = parseTab(searchParams.get("tab"));
@@ -146,13 +186,26 @@ export default function BibleStudio() {
 
   useEffect(() => {
     const updates: Record<string, string | null> = {};
-    if (!searchParams.get("lang")) updates.lang = lang;
-    if (!searchParams.get("version")) updates.version = version;
+    if (!searchParams.get("lang")) updates.lang = effectiveLang;
+    if (!searchParams.get("version")) updates.version = effectiveVersion;
+    if (redirectedWorkspace) {
+      updates.lang = effectiveLang;
+      updates.version = effectiveVersion;
+    }
     if (!searchParams.get("cat")) updates.cat = category;
     if (!searchParams.get("ch")) updates.ch = String(selectedChapter);
     if (!searchParams.get("tab")) updates.tab = tab;
     if (Object.keys(updates).length > 0) setQuery(updates);
-  }, [category, lang, searchParams, selectedChapter, setQuery, tab, version]);
+  }, [
+    category,
+    effectiveLang,
+    effectiveVersion,
+    redirectedWorkspace,
+    searchParams,
+    selectedChapter,
+    setQuery,
+    tab,
+  ]);
 
   const [bookSearch, setBookSearch] = useState("");
   const [debouncedBookSearch, setDebouncedBookSearch] = useState("");
@@ -166,6 +219,7 @@ export default function BibleStudio() {
 
   const [books, setBooks] = useState<BookItem[]>([]);
   const [booksLoading, setBooksLoading] = useState(false);
+  const [booksDebugHint, setBooksDebugHint] = useState<string | null>(null);
   const [chapters, setChapters] = useState<ChapterItem[]>([]);
   const [chaptersLoading, setChaptersLoading] = useState(false);
   const [verses, setVerses] = useState<VerseItem[]>([]);
@@ -173,28 +227,35 @@ export default function BibleStudio() {
   const [chapterExists, setChapterExists] = useState(true);
 
   const workspaceOptions: WorkspaceOption[] = useMemo(() => {
-    const key = toWorkspaceKey(lang, version);
+    const key = toWorkspaceKey(effectiveLang, effectiveVersion);
     const exists = WORKSPACE_OPTIONS.some(
       (item) => toWorkspaceKey(item.lang, item.version) === key,
     );
     if (exists) return WORKSPACE_OPTIONS;
-    return [...WORKSPACE_OPTIONS, { label: `Custom (${lang.toUpperCase()} / ${version})`, lang, version }];
-  }, [lang, version]);
-  const activeWorkspaceKey = toWorkspaceKey(lang, version);
+    return [
+      ...WORKSPACE_OPTIONS,
+      {
+        label: `Custom (${effectiveLang.toUpperCase()} / ${effectiveVersion})`,
+        lang: effectiveLang,
+        version: effectiveVersion,
+      },
+    ];
+  }, [effectiveLang, effectiveVersion]);
+  const activeWorkspaceKey = toWorkspaceKey(effectiveLang, effectiveVersion);
 
   const workspaceLabel = useMemo(() => {
     const selected = workspaceOptions.find(
       (item) => toWorkspaceKey(item.lang, item.version) === activeWorkspaceKey,
     );
-    return selected?.label || `${lang.toUpperCase()} / ${version}`;
-  }, [activeWorkspaceKey, lang, version, workspaceOptions]);
+    return selected?.label || `${effectiveLang.toUpperCase()} / ${effectiveVersion}`;
+  }, [activeWorkspaceKey, effectiveLang, effectiveVersion, workspaceOptions]);
 
   const fetchBooks = useCallback(async () => {
     setBooksLoading(true);
     try {
       const params = new URLSearchParams({
-        lang,
-        version,
+        lang: effectiveLang,
+        version: effectiveVersion,
         page: "1",
         limit: "200",
         grouping: groupingFilter,
@@ -208,7 +269,8 @@ export default function BibleStudio() {
       if (!response.ok) {
         throw new Error(extractMessage(result, `Gagal memuat kitab (${response.status}).`));
       }
-      setBooks(Array.isArray(result.items) ? result.items : []);
+      const items = Array.isArray(result.items) ? normalizeBooks(result.items) : [];
+      setBooks(items);
     } catch (errorValue: unknown) {
       const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
       showToast(message, "error");
@@ -216,11 +278,85 @@ export default function BibleStudio() {
     } finally {
       setBooksLoading(false);
     }
-  }, [debouncedBookSearch, groupingFilter, lang, showToast, version]);
+  }, [debouncedBookSearch, effectiveLang, effectiveVersion, groupingFilter, showToast]);
 
   useEffect(() => {
     void fetchBooks();
   }, [fetchBooks]);
+
+  useEffect(() => {
+    if (!IS_DEV) return;
+    if (booksLoading) return;
+    if (books.length > 0) {
+      setBooksDebugHint(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    const runDebugCheck = async () => {
+      try {
+        if (debouncedBookSearch) {
+          if (!cancelled) {
+            setBooksDebugHint(
+              `[DEV] Books kosong. Cek search filter "${debouncedBookSearch}" atau kemungkinan workspace/grouping mismatch.`,
+            );
+          }
+          return;
+        }
+
+        const params = new URLSearchParams({
+          lang: effectiveLang,
+          version: effectiveVersion,
+          page: "1",
+          limit: "3",
+        });
+
+        const response = await fetch(`/api/admin/bible/books?${params.toString()}`, {
+          cache: "no-store",
+        });
+        const result = (await response.json().catch(() => ({}))) as BooksResponse;
+        if (!response.ok) {
+          if (!cancelled) {
+            setBooksDebugHint(
+              `[DEV] Debug gagal: ${extractMessage(result, `status ${response.status}`)}.`,
+            );
+          }
+          return;
+        }
+
+        const total = Number(result.pagination?.total || 0);
+        if (!cancelled) {
+          if (total > 0) {
+            setBooksDebugHint(
+              `[DEV] Kemungkinan grouping mismatch: workspace ${effectiveLang}/${effectiveVersion} punya data kitab, tetapi filter kategori "${category}" (code "${groupingFilter}") tidak cocok dengan nilai grouping di DB.`,
+            );
+          } else {
+            setBooksDebugHint(
+              `[DEV] Kemungkinan workspace mismatch: tidak ada kitab pada lang=${effectiveLang} & version=${effectiveVersion}.`,
+            );
+          }
+        }
+      } catch (errorValue: unknown) {
+        const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
+        if (!cancelled) setBooksDebugHint(`[DEV] Debug gagal: ${message}.`);
+      }
+    };
+
+    void runDebugCheck();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    books.length,
+    booksLoading,
+    category,
+    debouncedBookSearch,
+    effectiveLang,
+    effectiveVersion,
+    groupingFilter,
+  ]);
 
   const selectedBook = useMemo(() => {
     if (books.length === 0) return null;
@@ -250,8 +386,8 @@ export default function BibleStudio() {
     setChaptersLoading(true);
     try {
       const params = new URLSearchParams({
-        lang,
-        version,
+        lang: effectiveLang,
+        version: effectiveVersion,
         book_id: selectedBook.id,
       });
       const response = await fetch(`/api/admin/bible/chapters?${params.toString()}`, {
@@ -269,7 +405,7 @@ export default function BibleStudio() {
     } finally {
       setChaptersLoading(false);
     }
-  }, [lang, selectedBook?.id, showToast, version]);
+  }, [effectiveLang, effectiveVersion, selectedBook?.id, showToast]);
 
   useEffect(() => {
     if (!chapterQuery || chapterQuery <= 0) {
@@ -291,8 +427,8 @@ export default function BibleStudio() {
     setVersesLoading(true);
     try {
       const params = new URLSearchParams({
-        lang,
-        version,
+        lang: effectiveLang,
+        version: effectiveVersion,
         book_id: selectedBook.id,
         chapter_number: String(selectedChapter),
         page: "1",
@@ -316,7 +452,7 @@ export default function BibleStudio() {
     } finally {
       setVersesLoading(false);
     }
-  }, [lang, selectedBook?.id, selectedChapter, showToast, version]);
+  }, [effectiveLang, effectiveVersion, selectedBook?.id, selectedChapter, showToast]);
 
   useEffect(() => {
     void fetchVerses();
@@ -397,6 +533,7 @@ export default function BibleStudio() {
           onBookSearchChange={setBookSearch}
           books={books}
           booksLoading={booksLoading}
+          booksDebugHint={IS_DEV ? booksDebugHint : null}
           selectedBookId={selectedBook?.id || null}
           onSelectBook={(bookId) => {
             const target = books.find((book) => book.id === bookId);
@@ -449,8 +586,8 @@ export default function BibleStudio() {
 
           {tab === "ayat" ? (
             <EditorAyat
-              lang={lang}
-              version={version}
+              lang={effectiveLang}
+              version={effectiveVersion}
               selectedBookId={selectedBook?.id || null}
               selectedChapter={selectedChapter}
               verses={verses}
@@ -460,8 +597,8 @@ export default function BibleStudio() {
 
           {tab === "perikop" ? (
             <EditorPerikop
-              lang={lang}
-              version={version}
+              lang={effectiveLang}
+              version={effectiveVersion}
               selectedBookId={selectedBook?.id || null}
               selectedChapter={selectedChapter}
               verses={verses}
@@ -471,6 +608,10 @@ export default function BibleStudio() {
 
           {tab === "qc" ? (
             <QCPanel
+              lang={effectiveLang}
+              version={effectiveVersion}
+              selectedBookName={selectedBook?.name || null}
+              selectedChapter={selectedChapter}
               verses={verses}
               chapterExists={chapterExists}
               onOpenPreview={() => setQuery({ tab: "preview" })}
@@ -478,7 +619,11 @@ export default function BibleStudio() {
           ) : null}
 
           {tab === "bulk-import" ? (
-            <BulkImport lang={lang} version={version} onImportFinished={refreshStudioData} />
+            <BulkImport
+              lang={effectiveLang}
+              version={effectiveVersion}
+              onImportFinished={refreshStudioData}
+            />
           ) : null}
 
           {tab === "preview" ? (

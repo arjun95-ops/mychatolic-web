@@ -1,0 +1,185 @@
+{
+  "generated_at": "2026-02-10T03:08:32.054Z",
+  "workspace": "id/TB1",
+  "input": "docs/import/tb1_placeholder_patch_template.csv",
+  "report": "docs/import/tb1_placeholder_patch_dry_run_report.json",
+  "dry_run": true,
+  "allow_non_placeholder": false,
+  "total_input_rows": 33,
+  "valid_rows": 0,
+  "inserted": 0,
+  "updated": 0,
+  "skipped_invalid": 0,
+  "skipped_empty_text": 33,
+  "skipped_missing_book": 0,
+  "skipped_missing_legacy_book_id": 0,
+  "skipped_non_placeholder_existing": 0,
+  "failed": 0,
+  "details": [
+    {
+      "row": 2,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 3,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 4,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 5,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 6,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 7,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 8,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 9,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 10,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 11,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 12,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 13,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 14,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 15,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 16,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 17,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 18,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 19,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 20,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 21,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 22,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 23,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 24,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 25,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 26,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 27,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 28,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 29,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 30,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 31,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 32,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 33,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    },
+    {
+      "row": 34,
+      "status": "skipped_empty_text",
+      "reason": "Kolom text kosong."
+    }
+  ]
+}

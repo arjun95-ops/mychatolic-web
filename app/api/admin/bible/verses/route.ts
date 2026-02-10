@@ -3,8 +3,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireApprovedAdmin } from "@/lib/admin-guard";
 import { logAdminAudit } from "@/lib/admin-audit";
 import {
+  getDeprecatedBibleWorkspaceTarget,
   getErrorCode,
   getErrorMessage,
+  isDeprecatedBibleWorkspace,
   isUuid,
   isValidLanguageCode,
   isValidVersionCode,
@@ -13,6 +15,7 @@ import {
   parsePositiveInt,
   sanitizeText,
 } from "@/lib/bible-admin";
+import { ensureLegacyBookIdForBook } from "@/lib/bible-legacy";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +30,11 @@ type VerseRow = {
   pericope: string | null;
 };
 
+type ScopedBookRow = {
+  id: string;
+  legacy_book_id: string | null;
+};
+
 function toSafePage(value: string | null): number {
   const parsed = Number(value || "1");
   if (!Number.isFinite(parsed) || parsed <= 0) return 1;
@@ -37,6 +45,16 @@ function toSafeLimit(value: string | null): number {
   const parsed = Number(value || String(DEFAULT_LIMIT));
   if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_LIMIT;
   return Math.min(Math.floor(parsed), MAX_LIMIT);
+}
+
+function isUnknownColumnError(error: unknown): boolean {
+  const code = getErrorCode(error);
+  const message = getErrorMessage(error).toLowerCase();
+  return (
+    code === "42703" ||
+    message.includes("could not find the") ||
+    (message.includes("column") && message.includes("does not exist"))
+  );
 }
 
 async function resolveChapterId(
@@ -87,7 +105,7 @@ async function ensureScopedBook(
 ) {
   const { data, error } = await adminClient
     .from("bible_books")
-    .select("id")
+    .select("id, legacy_book_id")
     .eq("id", bookId)
     .eq("language_code", languageCode)
     .eq("version_code", versionCode)
@@ -264,6 +282,16 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+  if (isDeprecatedBibleWorkspace(languageCode, versionCode)) {
+    const target = getDeprecatedBibleWorkspaceTarget(languageCode, versionCode);
+    return NextResponse.json(
+      {
+        error: "DeprecatedWorkspace",
+        message: `Workspace ${languageCode}/${versionCode} sudah deprecated (read-only). Gunakan ${target?.languageCode}/${target?.versionCode}.`,
+      },
+      { status: 409 },
+    );
+  }
 
   const scopedBook = await ensureScopedBook(adminClient, bookId, languageCode, versionCode);
   if (scopedBook.error) {
@@ -276,6 +304,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: "NotFound", message: "Kitab tidak ditemukan pada bahasa+versi ini." },
       { status: 404 },
+    );
+  }
+
+  const scopedBookRow = scopedBook.data as ScopedBookRow;
+  let legacyBookId: number | null = null;
+  try {
+    legacyBookId = await ensureLegacyBookIdForBook(
+      adminClient,
+      scopedBookRow.id,
+      scopedBookRow.legacy_book_id,
+    );
+  } catch (errorValue: unknown) {
+    const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
+    return NextResponse.json(
+      { error: "DatabaseError", message: `Gagal menyiapkan legacy_book_id: ${message}` },
+      { status: 500 },
     );
   }
 
@@ -312,17 +356,41 @@ export async function POST(req: NextRequest) {
     verse_number: verseNumber,
     text,
     pericope,
+    ...(legacyBookId
+      ? {
+          book_id: legacyBookId,
+          chapter: chapterNumber,
+          content: text,
+          type: "text",
+        }
+      : {}),
   };
 
-  const { data: upserted, error: upsertError } = await adminClient
+  let upsertResult = await adminClient
     .from("bible_verses")
     .upsert(payload, { onConflict: "chapter_id,verse_number" })
     .select("id, chapter_id, verse_number, text, pericope")
     .maybeSingle();
 
-  if (upsertError) {
+  if (upsertResult.error && isUnknownColumnError(upsertResult.error)) {
+    upsertResult = await adminClient
+      .from("bible_verses")
+      .upsert(
+        {
+          chapter_id: chapterId,
+          verse_number: verseNumber,
+          text,
+          pericope,
+        },
+        { onConflict: "chapter_id,verse_number" },
+      )
+      .select("id, chapter_id, verse_number, text, pericope")
+      .maybeSingle();
+  }
+
+  if (upsertResult.error) {
     return NextResponse.json(
-      { error: "DatabaseError", message: getErrorMessage(upsertError) },
+      { error: "DatabaseError", message: getErrorMessage(upsertResult.error) },
       { status: 500 },
     );
   }
@@ -332,9 +400,9 @@ export async function POST(req: NextRequest) {
     actorAuthUserId: user.id,
     action: oldVerse ? "UPDATE_BIBLE_VERSE" : "CREATE_BIBLE_VERSE",
     tableName: "bible_verses",
-    recordId: String((upserted as { id?: unknown })?.id || ""),
+    recordId: String((upsertResult.data as { id?: unknown })?.id || ""),
     oldData: oldVerse ? (oldVerse as unknown as Record<string, unknown>) : null,
-    newData: (upserted || payload) as unknown as Record<string, unknown>,
+    newData: (upsertResult.data || payload) as unknown as Record<string, unknown>,
     request: req,
     extra: {
       language_code: languageCode,
@@ -348,7 +416,7 @@ export async function POST(req: NextRequest) {
   const res = NextResponse.json({
     success: true,
     message: oldVerse ? "Ayat berhasil diperbarui." : "Ayat berhasil ditambahkan.",
-    data: upserted,
+    data: upsertResult.data,
     chapter_created: chapterResolution.created,
   });
   setCookiesToResponse(res);

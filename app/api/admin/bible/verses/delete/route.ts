@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireApprovedAdmin } from "@/lib/admin-guard";
 import { logAdminAudit } from "@/lib/admin-audit";
 import {
+  getDeprecatedBibleWorkspaceTarget,
   getErrorMessage,
+  isDeprecatedBibleWorkspace,
   isUuid,
   isValidLanguageCode,
   isValidVersionCode,
@@ -52,6 +54,16 @@ export async function POST(req: NextRequest) {
         message: "chapter_number dan verse_number harus angka bulat positif.",
       },
       { status: 400 },
+    );
+  }
+  if (isDeprecatedBibleWorkspace(languageCode, versionCode)) {
+    const target = getDeprecatedBibleWorkspaceTarget(languageCode, versionCode);
+    return NextResponse.json(
+      {
+        error: "DeprecatedWorkspace",
+        message: `Workspace ${languageCode}/${versionCode} sudah deprecated (read-only). Gunakan ${target?.languageCode}/${target?.versionCode}.`,
+      },
+      { status: 409 },
     );
   }
 

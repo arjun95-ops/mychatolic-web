@@ -2,33 +2,122 @@
 
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
-import type { VerseItem } from "@/components/bible-studio/types";
+import {
+  AUTO_MISSING_PLACEHOLDER_PREFIX,
+  type VerseItem,
+} from "@/components/bible-studio/types";
+import {
+  getKnownExpectedMaxReferenceLabel,
+  getKnownExpectedMaxVerse,
+} from "@/components/bible-studio/qc-reference";
+import { parsePositiveInt } from "@/lib/bible-admin";
 
 type QCPanelProps = {
+  lang: string;
+  version: string;
+  selectedBookName: string | null;
+  selectedChapter: number;
   verses: VerseItem[];
   chapterExists: boolean;
   onOpenPreview: () => void;
 };
 
-function computeMissingVerses(verses: VerseItem[]): number[] {
-  if (verses.length === 0) return [];
-  const maxVerse = verses.reduce((max, item) => Math.max(max, item.verse_number), 0);
-  const existing = new Set(verses.map((item) => item.verse_number));
+function computeMissingVerses(existingVerseSet: Set<number>, maxVerse: number): number[] {
+  if (maxVerse <= 0) return [];
   const missing: number[] = [];
   for (let i = 1; i <= maxVerse; i += 1) {
-    if (!existing.has(i)) missing.push(i);
+    if (!existingVerseSet.has(i)) missing.push(i);
   }
   return missing;
 }
 
-export default function QCPanel({ verses, chapterExists, onOpenPreview }: QCPanelProps) {
+type QcMode = "basic" | "strict";
+
+export default function QCPanel({
+  lang,
+  version,
+  selectedBookName,
+  selectedChapter,
+  verses,
+  chapterExists,
+  onOpenPreview,
+}: QCPanelProps) {
   const [query, setQuery] = useState("");
+  const [mode, setMode] = useState<QcMode>("strict");
+  const [strictTargetOverrideByScope, setStrictTargetOverrideByScope] = useState<
+    Record<string, string>
+  >({});
 
   const sortedVerses = useMemo(
     () => [...verses].sort((a, b) => a.verse_number - b.verse_number),
     [verses],
   );
-  const missing = useMemo(() => computeMissingVerses(sortedVerses), [sortedVerses]);
+  const maxVerse = useMemo(
+    () => sortedVerses.reduce((max, item) => Math.max(max, item.verse_number), 0),
+    [sortedVerses],
+  );
+
+  const placeholderVerses = useMemo(
+    () =>
+      sortedVerses.filter((verse) => verse.text.startsWith(AUTO_MISSING_PLACEHOLDER_PREFIX)),
+    [sortedVerses],
+  );
+  const placeholderVerseSet = useMemo(
+    () => new Set(placeholderVerses.map((verse) => verse.verse_number)),
+    [placeholderVerses],
+  );
+
+  const existingNonPlaceholderSet = useMemo(
+    () =>
+      new Set(
+        sortedVerses
+          .filter((verse) => !verse.text.startsWith(AUTO_MISSING_PLACEHOLDER_PREFIX))
+          .map((verse) => verse.verse_number),
+      ),
+    [sortedVerses],
+  );
+
+  const basicMissing = useMemo(
+    () => computeMissingVerses(existingNonPlaceholderSet, maxVerse),
+    [existingNonPlaceholderSet, maxVerse],
+  );
+
+  const knownExpectedMax = useMemo(() => {
+    if (!selectedBookName || !selectedChapter) return null;
+    return getKnownExpectedMaxVerse({
+      lang,
+      version,
+      bookName: selectedBookName,
+      chapter: selectedChapter,
+    });
+  }, [lang, selectedBookName, selectedChapter, version]);
+
+  const knownReferenceLabel = useMemo(
+    () => getKnownExpectedMaxReferenceLabel({ lang, version }),
+    [lang, version],
+  );
+
+  const scopeKey = `${lang}:${version}:${selectedBookName || "-"}:${selectedChapter}`;
+  const defaultStrictTargetInput = knownExpectedMax
+    ? String(knownExpectedMax)
+    : maxVerse > 0
+      ? String(maxVerse)
+      : "1";
+  const strictTargetInput = strictTargetOverrideByScope[scopeKey] ?? defaultStrictTargetInput;
+
+  const strictTarget = useMemo(() => {
+    const parsed = parsePositiveInt(strictTargetInput);
+    if (parsed) return parsed;
+    if (knownExpectedMax) return knownExpectedMax;
+    return maxVerse;
+  }, [knownExpectedMax, maxVerse, strictTargetInput]);
+
+  const strictMissing = useMemo(
+    () => computeMissingVerses(existingNonPlaceholderSet, strictTarget),
+    [existingNonPlaceholderSet, strictTarget],
+  );
+
+  const activeMissing = mode === "strict" ? strictMissing : basicMissing;
 
   const filtered = useMemo(() => {
     const keyword = query.trim().toLowerCase();
@@ -50,14 +139,20 @@ export default function QCPanel({ verses, chapterExists, onOpenPreview }: QCPane
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
         <div className="rounded-xl border border-surface-secondary bg-surface-secondary/20 p-3">
-          <p className="text-xs uppercase tracking-wide text-text-secondary">Ayat Terisi</p>
+          <p className="text-xs uppercase tracking-wide text-text-secondary">Ayat Total</p>
           <p className="mt-1 text-xl font-bold text-text-primary">{verses.length}</p>
         </div>
         <div className="rounded-xl border border-surface-secondary bg-surface-secondary/20 p-3">
-          <p className="text-xs uppercase tracking-wide text-text-secondary">Missing Gap</p>
-          <p className="mt-1 text-xl font-bold text-status-error">{missing.length}</p>
+          <p className="text-xs uppercase tracking-wide text-text-secondary">Ayat Final</p>
+          <p className="mt-1 text-xl font-bold text-text-primary">
+            {Math.max(verses.length - placeholderVerses.length, 0)}
+          </p>
+        </div>
+        <div className="rounded-xl border border-surface-secondary bg-surface-secondary/20 p-3">
+          <p className="text-xs uppercase tracking-wide text-text-secondary">Placeholder</p>
+          <p className="mt-1 text-xl font-bold text-status-pending">{placeholderVerses.length}</p>
         </div>
         <div className="rounded-xl border border-surface-secondary bg-surface-secondary/20 p-3">
           <p className="text-xs uppercase tracking-wide text-text-secondary">Aksi Cepat</p>
@@ -71,12 +166,106 @@ export default function QCPanel({ verses, chapterExists, onOpenPreview }: QCPane
         </div>
       </div>
 
-      <section className="rounded-xl border border-surface-secondary p-4">
-        <h3 className="text-sm font-semibold text-text-primary">Daftar Gap Ayat</h3>
-        {missing.length === 0 ? (
-          <p className="mt-2 text-sm text-status-success">Tidak ada gap. Urutan ayat konsisten.</p>
+      <section className="space-y-3 rounded-xl border border-surface-secondary p-4">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <h3 className="text-sm font-semibold text-text-primary">Mode QC</h3>
+          <div className="inline-flex rounded-lg border border-surface-secondary bg-surface-secondary/20 p-1">
+            <button
+              type="button"
+              onClick={() => setMode("basic")}
+              className={`rounded-md px-3 py-1 text-xs font-semibold ${
+                mode === "basic" ? "bg-action text-text-inverse" : "text-text-secondary"
+              }`}
+            >
+              Basic
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("strict")}
+              className={`rounded-md px-3 py-1 text-xs font-semibold ${
+                mode === "strict" ? "bg-action text-text-inverse" : "text-text-secondary"
+              }`}
+            >
+              Strict
+            </button>
+          </div>
+        </div>
+
+        <p className="text-xs text-text-secondary">
+          Basic: cek rentang 1..ayat terakhir yang ada. Strict: cek rentang 1..target akhir
+          dan hitung placeholder sebagai gap.
+        </p>
+
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+          <div className="rounded-lg border border-surface-secondary bg-surface-secondary/20 p-3">
+            <p className="text-xs uppercase tracking-wide text-text-secondary">Gap Basic</p>
+            <p className="mt-1 text-lg font-bold text-status-error">{basicMissing.length}</p>
+          </div>
+          <div className="rounded-lg border border-surface-secondary bg-surface-secondary/20 p-3">
+            <p className="text-xs uppercase tracking-wide text-text-secondary">Gap Strict</p>
+            <p className="mt-1 text-lg font-bold text-status-error">{strictMissing.length}</p>
+          </div>
+          <label className="rounded-lg border border-surface-secondary bg-surface-primary p-3">
+            <span className="text-xs uppercase tracking-wide text-text-secondary">
+              Target Ayat Akhir (Strict)
+            </span>
+            <input
+              type="number"
+              min={1}
+              value={strictTargetInput}
+              onChange={(event) => {
+                const nextValue = event.target.value;
+                setStrictTargetOverrideByScope((prev) => ({
+                  ...prev,
+                  [scopeKey]: nextValue,
+                }));
+              }}
+              className="mt-1 w-full rounded-lg border border-surface-secondary bg-surface-primary px-3 py-1.5 text-sm outline-none focus:border-action"
+            />
+          </label>
+        </div>
+
+        {knownExpectedMax ? (
+          <p className="rounded-lg border border-status-success/30 bg-status-success/10 px-3 py-2 text-xs text-status-success">
+            Referensi otomatis tersedia: ayat akhir {knownExpectedMax} (sumber:{" "}
+            {knownReferenceLabel || "local reference"}).
+          </p>
         ) : (
-          <p className="mt-2 text-sm text-status-error">Gap: {missing.join(", ")}</p>
+          <p className="rounded-lg border border-status-pending/30 bg-status-pending/10 px-3 py-2 text-xs text-status-pending">
+            Referensi otomatis tidak tersedia untuk kitab/bab ini. Isi target ayat akhir secara
+            manual untuk strict check.
+          </p>
+        )}
+
+        {strictTarget > maxVerse ? (
+          <p className="text-xs text-text-secondary">
+            Strict mode memakai target ayat akhir {strictTarget} (data saat ini berakhir di ayat{" "}
+            {maxVerse}).
+          </p>
+        ) : null}
+      </section>
+
+      <section className="rounded-xl border border-surface-secondary p-4">
+        <h3 className="text-sm font-semibold text-text-primary">
+          Daftar Gap Ayat ({mode === "strict" ? "Strict" : "Basic"})
+        </h3>
+        {activeMissing.length === 0 ? (
+          <p className="mt-2 text-sm text-status-success">
+            Tidak ada gap pada mode {mode === "strict" ? "strict" : "basic"}.
+          </p>
+        ) : (
+          <p className="mt-2 text-sm text-status-error">Gap: {activeMissing.join(", ")}</p>
+        )}
+      </section>
+
+      <section className="rounded-xl border border-surface-secondary p-4">
+        <h3 className="text-sm font-semibold text-text-primary">Placeholder Ayat</h3>
+        {placeholderVerses.length === 0 ? (
+          <p className="mt-2 text-sm text-status-success">Tidak ada placeholder.</p>
+        ) : (
+          <p className="mt-2 text-sm text-status-pending">
+            Placeholder terdeteksi di ayat: {placeholderVerses.map((item) => item.verse_number).join(", ")}
+          </p>
         )}
       </section>
 
@@ -129,6 +318,11 @@ export default function QCPanel({ verses, chapterExists, onOpenPreview }: QCPane
                       {verse.pericope ? (
                         <span className="mr-2 rounded bg-action/10 px-1.5 py-0.5 text-xs font-semibold text-action">
                           {verse.pericope}
+                        </span>
+                      ) : null}
+                      {placeholderVerseSet.has(verse.verse_number) ? (
+                        <span className="mr-2 rounded bg-status-pending/20 px-1.5 py-0.5 text-xs font-semibold text-status-pending">
+                          placeholder
                         </span>
                       ) : null}
                       {verse.text}

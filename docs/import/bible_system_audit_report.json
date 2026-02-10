@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-02-10T04:59:27.948Z",
+  "totals": {
+    "books": 28,
+    "chapters": 320,
+    "verses": 8552
+  },
+  "orphan": {
+    "chapters": 0,
+    "verses": 0
+  },
+  "workspace": {
+    "id/TB": {
+      "books": 12,
+      "chapters": 158,
+      "verses": 4275,
+      "headingRows": 7,
+      "placeholders": 33
+    },
+    "id/TB2": {
+      "books": 2,
+      "chapters": 2,
+      "verses": 4,
+      "headingRows": 0,
+      "placeholders": 0
+    },
+    "en/EN1": {
+      "books": 2,
+      "chapters": 2,
+      "verses": 5,
+      "headingRows": 0,
+      "placeholders": 0
+    },
+    "id/TB1": {
+      "books": 12,
+      "chapters": 158,
+      "verses": 4268,
+      "headingRows": 0,
+      "placeholders": 33
+    }
+  }
+}

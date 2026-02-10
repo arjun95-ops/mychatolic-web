@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-02-10T02:33:56.170Z",
+  "targets": [
+    {
+      "book": "Sirakh",
+      "chapter": 48,
+      "rows": 27,
+      "before": {
+        "maxVerse": 48,
+        "missingCount": 21
+      },
+      "after": {
+        "maxVerse": 27,
+        "missingCount": 0
+      },
+      "mappingSample": [
+        "47->26",
+        "48->27"
+      ]
+    },
+    {
+      "book": "Sirakh",
+      "chapter": 51,
+      "rows": 11,
+      "before": {
+        "maxVerse": 50,
+        "missingCount": 39
+      },
+      "after": {
+        "maxVerse": 11,
+        "missingCount": 0
+      },
+      "mappingSample": [
+        "50->11"
+      ]
+    },
+    {
+      "book": "Tambahan Daniel",
+      "chapter": 14,
+      "rows": 29,
+      "before": {
+        "maxVerse": 42,
+        "missingCount": 13
+      },
+      "after": {
+        "maxVerse": 29,
+        "missingCount": 0
+      },
+      "mappingSample": [
+        "19->6",
+        "20->7",
+        "21->8",
+        "22->9",
+        "23->10",
+        "24->11",
+        "25->12",
+        "26->13",
+        "27->14",
+        "28->15",
+        "29->16",
+        "30->17",
+        "31->18",
+        "32->19",
+        "33->20",
+        "34->21",
+        "35->22",
+        "36->23",
+        "37->24",
+        "38->25"
+      ]
+    }
+  ],
+  "totalDeleted": 67,
+  "totalInserted": 67
+}

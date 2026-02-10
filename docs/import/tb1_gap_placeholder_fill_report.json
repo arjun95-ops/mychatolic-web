@@ -1,0 +1,73 @@
+{
+  "generated_at": "2026-02-10T02:47:54.465Z",
+  "workspace": "id/TB1",
+  "placeholder_text": "[MISSING_VERSE][AUTO] Ayat belum tersedia. Mohon verifikasi dan lengkapi.",
+  "chapters_touched": 6,
+  "placeholders_upserted": 11,
+  "placeholder_rows_total": 33,
+  "remaining_gaps": {
+    "chapters_with_gaps": 0,
+    "total_missing": 0
+  },
+  "details": [
+    {
+      "book": "Kejadian",
+      "grouping": "old",
+      "order_index": 1,
+      "chapter": 1,
+      "missing": [
+        4
+      ]
+    },
+    {
+      "book": "Kejadian",
+      "grouping": "old",
+      "order_index": 1,
+      "chapter": 2,
+      "missing": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "book": "Kejadian",
+      "grouping": "old",
+      "order_index": 1,
+      "chapter": 7,
+      "missing": [
+        2,
+        3
+      ]
+    },
+    {
+      "book": "Tobit",
+      "grouping": "deutero",
+      "order_index": 17,
+      "chapter": 9,
+      "missing": [
+        3
+      ]
+    },
+    {
+      "book": "Sirakh",
+      "grouping": "deutero",
+      "order_index": 28,
+      "chapter": 17,
+      "missing": [
+        5
+      ]
+    },
+    {
+      "book": "Sirakh",
+      "grouping": "deutero",
+      "order_index": 28,
+      "chapter": 18,
+      "missing": [
+        3
+      ]
+    }
+  ]
+}

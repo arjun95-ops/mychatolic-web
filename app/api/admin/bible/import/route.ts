@@ -3,7 +3,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireApprovedAdmin } from "@/lib/admin-guard";
 import { logAdminAudit } from "@/lib/admin-audit";
 import {
+  getDeprecatedBibleWorkspaceTarget,
+  getErrorCode,
   getErrorMessage,
+  isDeprecatedBibleWorkspace,
   isValidGrouping,
   isValidLanguageCode,
   isValidVersionCode,
@@ -12,6 +15,11 @@ import {
   parsePositiveInt,
   sanitizeText,
 } from "@/lib/bible-admin";
+import {
+  ensureLegacyBookIdForBook,
+  insertBookWithGeneratedLegacyId,
+  parseLegacyBookId,
+} from "@/lib/bible-legacy";
 
 type ParsedImportRow = {
   rowNumber: number;
@@ -32,6 +40,7 @@ type BookMapValue = {
   abbreviation: string | null;
   grouping: "old" | "new" | "deutero";
   order_index: number;
+  legacy_book_id: number | null;
 };
 
 const CHUNK_SIZE = 500;
@@ -100,6 +109,15 @@ function buildSimpleAbbreviation(bookName: string): string {
   if (words.length >= 3) return `${words[0][0]}${words[1][0]}${words[2][0]}`.toUpperCase();
   if (words.length === 2) return `${words[0].slice(0, 1)}${words[1].slice(0, 2)}`.toUpperCase();
   return (words[0] || "BOK").slice(0, 3).toUpperCase();
+}
+
+function isUnknownColumnError(error: unknown): boolean {
+  const message = getErrorMessage(error).toLowerCase();
+  return (
+    getErrorCode(error) === "42703" ||
+    message.includes("could not find the") ||
+    (message.includes("column") && message.includes("does not exist"))
+  );
 }
 
 function parseImportRows(rowsInput: unknown[]): { parsed: ParsedImportRow[]; errors: string[] } {
@@ -213,6 +231,16 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+  if (isDeprecatedBibleWorkspace(languageCode, versionCode)) {
+    const target = getDeprecatedBibleWorkspaceTarget(languageCode, versionCode);
+    return NextResponse.json(
+      {
+        error: "DeprecatedWorkspace",
+        message: `Workspace ${languageCode}/${versionCode} sudah deprecated (read-only). Gunakan ${target?.languageCode}/${target?.versionCode}.`,
+      },
+      { status: 409 },
+    );
+  }
 
   const parsedResult = parseImportRows(rowsInput);
   if (parsedResult.errors.length > 0) {
@@ -238,7 +266,7 @@ export async function POST(req: NextRequest) {
 
   const { data: existingBooks, error: existingBooksError } = await adminClient
     .from("bible_books")
-    .select("id, name, abbreviation, grouping, order_index")
+    .select("id, name, abbreviation, grouping, order_index, legacy_book_id")
     .eq("language_code", languageCode)
     .eq("version_code", versionCode)
     .order("order_index", { ascending: true });
@@ -261,12 +289,32 @@ export async function POST(req: NextRequest) {
     if (orderIndex > maxOrderIndex) maxOrderIndex = orderIndex;
     const groupingRaw = sanitizeText((row as { grouping?: unknown }).grouping).toLowerCase();
     const grouping = isValidGrouping(groupingRaw) ? groupingRaw : "old";
+    let legacyBookId = parseLegacyBookId((row as { legacy_book_id?: unknown }).legacy_book_id) || 0;
+    if (!legacyBookId) {
+      try {
+        legacyBookId = await ensureLegacyBookIdForBook(
+          adminClient,
+          id,
+          (row as { legacy_book_id?: unknown }).legacy_book_id,
+        );
+      } catch (errorValue: unknown) {
+        const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
+        return NextResponse.json(
+          {
+            error: "DatabaseError",
+            message: `Gagal backfill legacy_book_id: ${message}`,
+          },
+          { status: 500 },
+        );
+      }
+    }
     bookMap.set(key, {
       id,
       name,
       abbreviation: sanitizeText((row as { abbreviation?: unknown }).abbreviation) || null,
       grouping,
       order_index: orderIndex,
+      legacy_book_id: legacyBookId,
     });
   }
 
@@ -300,44 +348,78 @@ export async function POST(req: NextRequest) {
 
   let createdBooksCount = 0;
   if (newBookDrafts.length > 0) {
-    const insertPayload = newBookDrafts.map((item) => ({
-      language_code: languageCode,
-      version_code: versionCode,
-      name: item.name,
-      abbreviation: item.abbreviation,
-      grouping: item.grouping,
-      order_index: item.order_index,
-    }));
+    type InsertedBookRow = {
+      id: string;
+      name: string;
+      abbreviation: string | null;
+      grouping: string;
+      order_index: number;
+      legacy_book_id: string | null;
+    };
 
-    const { data: insertedBooks, error: insertBookError } = await adminClient
-      .from("bible_books")
-      .insert(insertPayload)
-      .select("id, name, abbreviation, grouping, order_index");
+    const insertedBooks: Array<{
+      id: string;
+      name: string;
+      abbreviation: string | null;
+      grouping: string;
+      order_index: number;
+      legacy_book_id: string | null;
+    }> = [];
 
-    if (insertBookError) {
-      return NextResponse.json(
-        {
-          error: "DatabaseError",
-          message: `Gagal membuat kitab baru: ${getErrorMessage(insertBookError)}`,
-        },
-        { status: 500 },
-      );
+    for (const item of newBookDrafts) {
+      try {
+        const inserted = await insertBookWithGeneratedLegacyId<InsertedBookRow>(
+          adminClient,
+          (legacyBookId) =>
+            adminClient
+              .from("bible_books")
+              .insert({
+                language_code: languageCode,
+                version_code: versionCode,
+                name: item.name,
+                abbreviation: item.abbreviation,
+                grouping: item.grouping,
+                order_index: item.order_index,
+                legacy_book_id: legacyBookId,
+              })
+              .select("id, name, abbreviation, grouping, order_index, legacy_book_id")
+              .maybeSingle(),
+        );
+        insertedBooks.push({
+          id: String(inserted.id || ""),
+          name: String(inserted.name || ""),
+          abbreviation: sanitizeText(inserted.abbreviation) || null,
+          grouping: String(inserted.grouping || ""),
+          order_index: Number(inserted.order_index || 0),
+          legacy_book_id: sanitizeText(inserted.legacy_book_id) || null,
+        });
+      } catch (errorValue: unknown) {
+        const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
+        return NextResponse.json(
+          {
+            error: "DatabaseError",
+            message: `Gagal membuat kitab baru: ${message}`,
+          },
+          { status: 500 },
+        );
+      }
     }
 
-    createdBooksCount = (insertedBooks || []).length;
+    createdBooksCount = insertedBooks.length;
     for (const row of insertedBooks || []) {
-      const id = String((row as { id?: unknown }).id || "");
-      const name = sanitizeText((row as { name?: unknown }).name);
+      const id = String(row.id || "");
+      const name = sanitizeText(row.name);
       const key = normalizeBookLookupKey(name);
       if (!id || !key) continue;
-      const groupingRaw = sanitizeText((row as { grouping?: unknown }).grouping).toLowerCase();
+      const groupingRaw = sanitizeText(row.grouping).toLowerCase();
       const grouping = isValidGrouping(groupingRaw) ? groupingRaw : "old";
       bookMap.set(key, {
         id,
         name,
-        abbreviation: sanitizeText((row as { abbreviation?: unknown }).abbreviation) || null,
+        abbreviation: sanitizeText(row.abbreviation) || null,
         grouping,
-        order_index: Number((row as { order_index?: unknown }).order_index || 0),
+        order_index: Number(row.order_index || 0),
+        legacy_book_id: parseLegacyBookId(row.legacy_book_id),
       });
     }
   }
@@ -413,13 +495,16 @@ export async function POST(req: NextRequest) {
   const verseRows: Array<{
     rowNumber: number;
     chapter_id: string;
+    chapter_number: number;
+    legacy_book_id: number | null;
     verse_number: number;
     text: string;
     pericope: string | null;
   }> = [];
 
   for (const row of parsedResult.parsed) {
-    const bookId = bookMap.get(row.bookKey)?.id || "";
+    const bookData = bookMap.get(row.bookKey);
+    const bookId = bookData?.id || "";
     const chapterId = chapterIdMap.get(`${bookId}::${row.chapterNumber}`) || "";
     if (!chapterId) {
       unresolvedChapterRows.push(
@@ -430,6 +515,8 @@ export async function POST(req: NextRequest) {
     verseRows.push({
       rowNumber: row.rowNumber,
       chapter_id: chapterId,
+      chapter_number: row.chapterNumber,
+      legacy_book_id: bookData?.legacy_book_id || null,
       verse_number: row.verseNumber,
       text: row.text,
       pericope: row.pericope,
@@ -457,19 +544,39 @@ export async function POST(req: NextRequest) {
       verse_number: row.verse_number,
       text: row.text,
       pericope: row.pericope,
+      ...(row.legacy_book_id
+        ? {
+            book_id: row.legacy_book_id,
+            chapter: row.chapter_number,
+            content: row.text,
+            type: "text",
+          }
+        : {}),
     }));
 
-    const { error: bulkError } = await adminClient
+    let bulkRes = await adminClient
       .from("bible_verses")
       .upsert(payload, { onConflict: "chapter_id,verse_number" });
 
-    if (!bulkError) {
+    if (bulkRes.error && isUnknownColumnError(bulkRes.error)) {
+      bulkRes = await adminClient.from("bible_verses").upsert(
+        batch.map((row) => ({
+          chapter_id: row.chapter_id,
+          verse_number: row.verse_number,
+          text: row.text,
+          pericope: row.pericope,
+        })),
+        { onConflict: "chapter_id,verse_number" },
+      );
+    }
+
+    if (!bulkRes.error) {
       successCount += batch.length;
       continue;
     }
 
     for (const row of batch) {
-      const { error: rowError } = await adminClient
+      let rowRes = await adminClient
         .from("bible_verses")
         .upsert(
           {
@@ -477,12 +584,34 @@ export async function POST(req: NextRequest) {
             verse_number: row.verse_number,
             text: row.text,
             pericope: row.pericope,
+            ...(row.legacy_book_id
+              ? {
+                  book_id: row.legacy_book_id,
+                  chapter: row.chapter_number,
+                  content: row.text,
+                  type: "text",
+                }
+              : {}),
           },
           { onConflict: "chapter_id,verse_number" },
         );
 
-      if (rowError) {
-        failedRows.push(`Baris ${row.rowNumber}: ${getErrorMessage(rowError)}`);
+      if (rowRes.error && isUnknownColumnError(rowRes.error)) {
+        rowRes = await adminClient
+          .from("bible_verses")
+          .upsert(
+            {
+              chapter_id: row.chapter_id,
+              verse_number: row.verse_number,
+              text: row.text,
+              pericope: row.pericope,
+            },
+            { onConflict: "chapter_id,verse_number" },
+          );
+      }
+
+      if (rowRes.error) {
+        failedRows.push(`Baris ${row.rowNumber}: ${getErrorMessage(rowRes.error)}`);
       } else {
         successCount += 1;
       }

@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 
 import DashboardGuard from '@/components/DashboardGuard';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -161,7 +162,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     return (
         <DashboardGuard>
-            <div className="min-h-screen bg-surface-secondary dark:bg-surface-primary flex">
+            <div className="dashboard-theme min-h-screen bg-surface-secondary dark:bg-surface-primary flex">
                 {/* MOBILE HEADER */}
                 <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-brand-primary z-50 flex items-center justify-between px-4 shadow-md">
                     <div className="font-bold text-text-inverse text-lg flex items-center gap-2">
@@ -322,6 +323,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </nav>
 
                     <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-text-inverse/10 bg-brand-primary">
+                        <div className="mb-3 rounded-xl border border-text-inverse/10 bg-surface-inverse/10 px-3 py-2 flex items-center justify-between">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-text-inverse/70">
+                                Dark Mode
+                            </span>
+                            <ThemeToggle className="h-8 w-8 border-text-inverse/30 bg-text-inverse/10 text-text-inverse hover:border-text-inverse/50 hover:bg-text-inverse/20 hover:text-text-inverse focus-visible:ring-text-inverse/40" />
+                        </div>
+
                         <div className="mb-3 rounded-xl border border-text-inverse/10 bg-surface-inverse/10 px-3 py-2">
                             <div className="flex items-center gap-2">
                                 <div className="h-8 w-8 rounded-full bg-surface-inverse/20 overflow-hidden flex items-center justify-center text-xs font-bold">

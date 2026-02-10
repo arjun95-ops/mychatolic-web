@@ -4,6 +4,8 @@
 
 @layer base {
     :root {
+        color-scheme: light;
+
         /* Brand Palette */
         --brand-primary: 31 93 140;
         /* #1F5D8C */
@@ -40,6 +42,8 @@
     }
 
     .dark {
+        color-scheme: dark;
+
         /* Brand Palette - Dark Mode adjustments */
         --brand-primary: 31 93 140;
         /* #1F5D8C */
@@ -49,25 +53,189 @@
         /* #3A7CA5 */
 
         /* Surfaces - Dark */
-        --surface-primary: 28 28 28;
-        /* #1C1C1C */
-        --surface-secondary: 44 44 44;
-        /* #2C2C2C (Slightly lighter) */
-        --surface-inverse: 255 255 255;
-        /* Inverse of dark surface is light */
+        --surface-primary: 20 20 20;
+        /* #141414 */
+        --surface-secondary: 36 36 36;
+        /* #242424 */
+        --surface-inverse: 10 10 10;
+        /* #0A0A0A */
 
         /* Text - Dark */
         --text-primary: 255 255 255;
         /* #FFFFFF */
-        --text-secondary: 189 189 189;
-        /* #BDBDBD */
-        --text-inverse: 26 26 26;
-        /* #1A1A1A */
+        --text-secondary: 200 200 200;
+        /* #C8C8C8 */
+        --text-inverse: 255 255 255;
+        /* #FFFFFF */
 
         /* Status - Dark (keeping same currently unless adjustment requested) */
         --status-success: 46 125 50;
         --status-pending: 74 144 226;
         --status-error: 192 57 43;
         --status-disabled: 189 189 189;
+    }
+
+    html,
+    body {
+        min-height: 100%;
+    }
+
+    body {
+        background-color: rgb(var(--surface-primary));
+        color: rgb(var(--text-primary));
+    }
+
+    /*
+      Dashboard theme bridge:
+      Harmonize legacy Tailwind gray/slate utilities in dark mode,
+      without overriding explicit dark:* utilities.
+    */
+    .dark .dashboard-theme :where(.bg-white) {
+        background-color: rgb(var(--surface-primary));
+    }
+
+    .dark .dashboard-theme :where(.bg-gray-50, .bg-slate-50, .bg-gray-100, .bg-slate-100) {
+        background-color: rgb(var(--surface-secondary) / 0.55);
+    }
+
+    .dark .dashboard-theme :where(.bg-gray-200, .bg-slate-200) {
+        background-color: rgb(var(--surface-secondary) / 0.75);
+    }
+
+    .dark .dashboard-theme :where(.bg-gray-300, .bg-slate-300) {
+        background-color: rgb(var(--surface-secondary));
+    }
+
+    .dark .dashboard-theme :where([class~="bg-white/90"], [class~="bg-white/95"]) {
+        background-color: rgb(var(--surface-primary) / 0.92);
+    }
+
+    .dark .dashboard-theme :where([class~="bg-gray-50/50"], [class~="bg-slate-50/50"]) {
+        background-color: rgb(var(--surface-secondary) / 0.45);
+    }
+
+    .dark .dashboard-theme :where(.hover\:bg-white:hover) {
+        background-color: rgb(var(--surface-secondary) / 0.75);
+    }
+
+    .dark .dashboard-theme :where(
+        .hover\:bg-gray-50:hover,
+        .hover\:bg-slate-50:hover,
+        .hover\:bg-gray-100:hover,
+        .hover\:bg-slate-100:hover
+    ) {
+        background-color: rgb(var(--surface-secondary) / 0.7);
+    }
+
+    .dark .dashboard-theme :where(
+        .text-gray-900,
+        .text-slate-900,
+        .text-gray-800,
+        .text-slate-800,
+        .text-gray-700,
+        .text-slate-700
+    ) {
+        color: rgb(var(--text-primary));
+    }
+
+    .dark .dashboard-theme :where(.text-gray-600, .text-slate-600, .text-gray-500, .text-slate-500) {
+        color: rgb(var(--text-secondary));
+    }
+
+    .dark .dashboard-theme :where(.text-gray-400, .text-slate-400, .text-gray-300, .text-slate-300) {
+        color: rgb(171 171 171);
+    }
+
+    .dark .dashboard-theme :where(.text-gray-200, .text-slate-200) {
+        color: rgb(212 212 212);
+    }
+
+    .dark .dashboard-theme :where(.text-gray-100, .text-slate-100) {
+        color: rgb(233 233 233);
+    }
+
+    .dark .dashboard-theme :where(
+        .hover\:text-gray-900:hover,
+        .hover\:text-slate-900:hover,
+        .hover\:text-gray-800:hover,
+        .hover\:text-slate-800:hover,
+        .hover\:text-gray-700:hover,
+        .hover\:text-slate-700:hover
+    ) {
+        color: rgb(var(--text-primary));
+    }
+
+    .dark .dashboard-theme :where(
+        .hover\:text-gray-600:hover,
+        .hover\:text-slate-600:hover,
+        .hover\:text-gray-500:hover,
+        .hover\:text-slate-500:hover
+    ) {
+        color: rgb(var(--text-secondary));
+    }
+
+    .dark .dashboard-theme :where(
+        .border-gray-100,
+        .border-gray-200,
+        .border-slate-100,
+        .border-slate-200
+    ) {
+        border-color: rgb(var(--surface-secondary) / 0.7);
+    }
+
+    .dark .dashboard-theme :where(.border-gray-300, .border-slate-300) {
+        border-color: rgb(var(--surface-secondary));
+    }
+
+    .dark .dashboard-theme :where(.border-gray-400, .border-slate-400) {
+        border-color: rgb(var(--surface-secondary) / 0.95);
+    }
+
+    .dark .dashboard-theme :where(.bg-red-50, .bg-red-100) {
+        background-color: rgb(127 29 29 / 0.24);
+    }
+
+    .dark .dashboard-theme :where(.bg-green-50, .bg-green-100) {
+        background-color: rgb(20 83 45 / 0.24);
+    }
+
+    .dark .dashboard-theme :where(.bg-blue-50, .bg-blue-100) {
+        background-color: rgb(30 64 175 / 0.24);
+    }
+
+    .dark .dashboard-theme :where(.bg-yellow-50, .bg-yellow-100, .bg-amber-50, .bg-amber-100) {
+        background-color: rgb(133 77 14 / 0.24);
+    }
+
+    .dark .dashboard-theme :where(.text-red-800, .text-red-700, .text-red-600) {
+        color: rgb(252 165 165);
+    }
+
+    .dark .dashboard-theme :where(.text-green-800, .text-green-700, .text-green-600) {
+        color: rgb(134 239 172);
+    }
+
+    .dark .dashboard-theme :where(.text-blue-800, .text-blue-700, .text-blue-600) {
+        color: rgb(147 197 253);
+    }
+
+    .dark .dashboard-theme :where(.text-yellow-800, .text-yellow-700, .text-amber-800, .text-amber-700) {
+        color: rgb(253 224 71);
+    }
+
+    .dark .dashboard-theme :where(.border-red-100, .border-red-200, .border-red-300) {
+        border-color: rgb(185 28 28 / 0.55);
+    }
+
+    .dark .dashboard-theme :where(.border-green-100, .border-green-200, .border-green-300) {
+        border-color: rgb(22 101 52 / 0.55);
+    }
+
+    .dark .dashboard-theme :where(.border-blue-100, .border-blue-200, .border-blue-300) {
+        border-color: rgb(30 64 175 / 0.55);
+    }
+
+    .dark .dashboard-theme :where(.border-yellow-100, .border-yellow-200, .border-yellow-300, .border-amber-200) {
+        border-color: rgb(161 98 7 / 0.55);
     }
 }

@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-02-10T02:55:07.168Z",
+  "workspace": "id/TB1",
+  "source_csv": "docs/import/deuterokanonika_tb1_import_clean_v2.csv",
+  "placeholder_before": 33,
+  "matched_from_source": 0,
+  "updated_success": 0,
+  "update_errors": 0,
+  "unresolved_after": 33,
+  "remaining_placeholder_rows_total": 33,
+  "unresolved_by_book": {
+    "Matius": [
+      "5:2"
+    ],
+    "Keluaran": [
+      "7:2",
+      "7:3",
+      "7:4",
+      "7:5",
+      "7:6",
+      "7:7",
+      "7:8",
+      "7:9"
+    ],
+    "Sirakh": [
+      "1:5",
+      "1:7",
+      "1:21",
+      "11:15",
+      "11:16",
+      "17:5",
+      "18:3",
+      "23:26",
+      "24:18",
+      "25:12",
+      "37:32",
+      "37:33",
+      "37:34",
+      "37:35"
+    ],
+    "Barukh": [
+      "1:15"
+    ],
+    "Kejadian": [
+      "1:4",
+      "2:2",
+      "2:3",
+      "2:4",
+      "2:5",
+      "2:6",
+      "7:2",
+      "7:3"
+    ],
+    "Tobit": [
+      "9:3"
+    ]
+  },
+  "duplicate_source_keys": 0,
+  "update_errors_detail": []
+}

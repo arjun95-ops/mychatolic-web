@@ -17,7 +17,7 @@ export const BIBLE_LANGUAGE_CARDS: BibleLanguageCard[] = [
     languageLabel: "Bahasa Indonesia",
     description: "Versi resmi Indonesia untuk liturgi dan studi.",
     versions: [
-      { code: "TB", label: "TB", href: "/dashboard/bible/id/TB" },
+      { code: "TB1", label: "TB1", href: "/dashboard/bible/id/TB1" },
       { code: "TB2", label: "TB2", href: "/dashboard/bible/id/TB2" },
     ],
   },

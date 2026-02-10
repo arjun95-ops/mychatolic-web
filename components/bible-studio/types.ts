@@ -31,6 +31,8 @@ export type VerseItem = {
   pericope: string | null;
 };
 
+export const AUTO_MISSING_PLACEHOLDER_PREFIX = "[MISSING_VERSE][AUTO]";
+
 export const CATEGORY_OPTIONS: StudioCategory[] = [
   "Perjanjian Lama",
   "Perjanjian Baru",

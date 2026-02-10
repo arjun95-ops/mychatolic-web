@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireApprovedAdmin } from '@/lib/admin-guard'
 import { parseAdminRole } from '@/lib/admin-constants'
 import { logAdminAudit } from '@/lib/admin-audit'
+import { ensureAdminEmailExclusive } from '@/lib/admin-email-exclusivity'
 
 export async function POST(req: NextRequest) {
     const ctx = await requireApprovedAdmin(req, 'super_admin')
@@ -71,6 +72,23 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
             { error: 'Forbidden', message: 'Target admin belum verifikasi email.' },
             { status: 403 }
+        )
+    }
+
+    try {
+        await ensureAdminEmailExclusive({
+            supabaseAdminClient: adminClient,
+            authUserId: authUserId,
+            email: String(authData.user.email || targetAdmin.email || ''),
+        })
+    } catch (exclusivityError: unknown) {
+        const message =
+            exclusivityError instanceof Error
+                ? exclusivityError.message
+                : 'Gagal menerapkan aturan email eksklusif admin.'
+        return NextResponse.json(
+            { error: 'DatabaseError', message },
+            { status: 500 }
         )
     }
 

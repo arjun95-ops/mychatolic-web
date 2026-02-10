@@ -1,0 +1,134 @@
+{
+  "started_at": "2026-02-10T04:58:37.823Z",
+  "finished_at": "2026-02-10T04:58:47.929Z",
+  "dry_run": false,
+  "source_workspace": "id/TB1",
+  "target_workspace": "id/TB",
+  "keep_extra_books": false,
+  "orphan_cleanup": {
+    "orphan_chapters": 0,
+    "orphan_verses": 0,
+    "orphan_chapter_sample": [],
+    "orphan_verse_sample": []
+  },
+  "summary": {
+    "source_books": 12,
+    "target_books_before": 12,
+    "target_books_created": 0,
+    "target_books_updated": 0,
+    "target_books_stale": 0,
+    "source_chapters": 158,
+    "target_chapters_before": 158,
+    "target_chapters_created": 0,
+    "target_chapters_stale": 0,
+    "source_verses": 4268,
+    "target_verses_upserted": 4275,
+    "target_verses_stale": 0,
+    "final_target_books": 12,
+    "final_target_chapters": 158,
+    "final_target_verses": 4275
+  },
+  "samples": {
+    "mapping_books": [
+      {
+        "key": "kejadian",
+        "source_book_id": "25309e66-456a-4054-8011-0b490c78b52b",
+        "source_book_name": "Kejadian",
+        "target_book_id": "2144a538-d4af-4a89-913d-d0272e361cc0",
+        "target_book_name": "Kejadian",
+        "target_legacy_book_id": "1"
+      },
+      {
+        "key": "keluaran",
+        "source_book_id": "3ef69e1f-7889-427f-bf72-e32a36a1951f",
+        "source_book_name": "Keluaran",
+        "target_book_id": "bbde152b-ef36-41a9-ad21-3a8ad6e4de01",
+        "target_book_name": "Keluaran",
+        "target_legacy_book_id": "2"
+      },
+      {
+        "key": "tobit",
+        "source_book_id": "958c2800-f00d-4ab6-b1cd-64cd5764c0fa",
+        "source_book_name": "Tobit",
+        "target_book_id": "7634e78f-34e2-469c-8a78-961abfb0e9ad",
+        "target_book_name": "Tobit",
+        "target_legacy_book_id": "21"
+      },
+      {
+        "key": "yudit",
+        "source_book_id": "149e87f5-d4d9-40c3-95b5-237c5418b583",
+        "source_book_name": "Yudit",
+        "target_book_id": "4c063a22-dad1-4c07-89ba-9fb0d823b042",
+        "target_book_name": "Yudit",
+        "target_legacy_book_id": "22"
+      },
+      {
+        "key": "1 makabe",
+        "source_book_id": "886f8a16-41ae-4f14-9510-81e4e2984ed7",
+        "source_book_name": "1 Makabe",
+        "target_book_id": "6d427558-6749-44be-accb-b71664f36088",
+        "target_book_name": "1 Makabe",
+        "target_legacy_book_id": "23"
+      },
+      {
+        "key": "2 makabe",
+        "source_book_id": "a14579b9-ab11-4eb5-a485-7b1fe067bc17",
+        "source_book_name": "2 Makabe",
+        "target_book_id": "f961a398-70db-403d-b468-54ef78100763",
+        "target_book_name": "2 Makabe",
+        "target_legacy_book_id": "24"
+      },
+      {
+        "key": "kebijaksanaan salomo",
+        "source_book_id": "b8fee699-04d5-4dcf-ba51-2511da48186b",
+        "source_book_name": "Kebijaksanaan Salomo",
+        "target_book_id": "4b053aa5-f220-40d1-b33c-53b4f1f8b82b",
+        "target_book_name": "Kebijaksanaan Salomo",
+        "target_legacy_book_id": "25"
+      },
+      {
+        "key": "sirakh",
+        "source_book_id": "c2a57f50-a470-46c6-b239-7b5bb6e1bdc3",
+        "source_book_name": "Sirakh",
+        "target_book_id": "ede41fab-2806-4d42-bebb-12429630acda",
+        "target_book_name": "Sirakh",
+        "target_legacy_book_id": "26"
+      },
+      {
+        "key": "barukh",
+        "source_book_id": "122a0039-cd59-4680-b120-a67ca0a7b4b7",
+        "source_book_name": "Barukh",
+        "target_book_id": "f3a0a350-fb5a-47bd-bda9-6585863339db",
+        "target_book_name": "Barukh",
+        "target_legacy_book_id": "27"
+      },
+      {
+        "key": "tambahan daniel",
+        "source_book_id": "43ed7a1a-2218-4e8e-bcc7-8cea9c074fee",
+        "source_book_name": "Tambahan Daniel",
+        "target_book_id": "2f9464b6-a799-4ae5-a5e9-a90681d5d4a9",
+        "target_book_name": "Tambahan Daniel",
+        "target_legacy_book_id": "28"
+      },
+      {
+        "key": "matius",
+        "source_book_id": "cd54d96b-9c4a-4a04-99b1-3821174d10b7",
+        "source_book_name": "Matius",
+        "target_book_id": "4ba85ab1-da30-4dfe-89d8-94fa23b11ec2",
+        "target_book_name": "Matius",
+        "target_legacy_book_id": "3"
+      },
+      {
+        "key": "markus",
+        "source_book_id": "8d0d6353-e00d-4a69-bf62-9ae6a20c62ae",
+        "source_book_name": "Markus",
+        "target_book_id": "aba49db1-96bb-4856-b8ea-809bc5579dd0",
+        "target_book_name": "Markus",
+        "target_legacy_book_id": "4"
+      }
+    ],
+    "stale_books": [],
+    "stale_chapters": [],
+    "stale_verses": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-02-10T04:50:15.575Z",
+  "unauthenticated": {
+    "read_books_ok": true,
+    "read_chapters_ok": true,
+    "read_verses_ok": true,
+    "write_attempt_ok": false,
+    "write_attempt_error_code": "42501",
+    "write_attempt_error_message": "permission denied for table bible_verses"
+  },
+  "authenticated_temp_user": {
+    "created_user_id": "a223fb9d-49e2-4bfe-b866-db230da11d3b",
+    "sign_in_ok": true,
+    "write_attempt_ok": false,
+    "write_attempt_error_code": "42501",
+    "write_attempt_error_message": "permission denied for table bible_verses"
+  }
+}

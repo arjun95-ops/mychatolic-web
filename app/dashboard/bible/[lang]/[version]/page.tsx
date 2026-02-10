@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getDeprecatedBibleWorkspaceTarget } from "@/lib/bible-admin";
 
 export default async function BibleVersionRootPage({
   params,
@@ -6,9 +7,10 @@ export default async function BibleVersionRootPage({
   params: Promise<{ lang: string; version: string }>;
 }) {
   const { lang, version } = await params;
+  const redirected = getDeprecatedBibleWorkspaceTarget(lang, version);
   const query = new URLSearchParams({
-    lang,
-    version,
+    lang: redirected?.languageCode || lang,
+    version: redirected?.versionCode || version,
   });
   redirect(`/dashboard/bible/studio?${query.toString()}`);
 }

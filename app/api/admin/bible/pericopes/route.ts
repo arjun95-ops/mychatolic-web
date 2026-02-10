@@ -3,7 +3,9 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireApprovedAdmin } from "@/lib/admin-guard";
 import { logAdminAudit } from "@/lib/admin-audit";
 import {
+  getDeprecatedBibleWorkspaceTarget,
   getErrorMessage,
+  isDeprecatedBibleWorkspace,
   isUuid,
   isValidLanguageCode,
   isValidVersionCode,
@@ -177,6 +179,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: "ValidationError", message: "title perikop wajib diisi." },
       { status: 400 },
+    );
+  }
+  if (isDeprecatedBibleWorkspace(languageCode, versionCode)) {
+    const target = getDeprecatedBibleWorkspaceTarget(languageCode, versionCode);
+    return NextResponse.json(
+      {
+        error: "DeprecatedWorkspace",
+        message: `Workspace ${languageCode}/${versionCode} sudah deprecated (read-only). Gunakan ${target?.languageCode}/${target?.versionCode}.`,
+      },
+      { status: 409 },
     );
   }
 

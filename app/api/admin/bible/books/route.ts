@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireApprovedAdmin } from "@/lib/admin-guard";
 import { logAdminAudit } from "@/lib/admin-audit";
 import {
+  getDeprecatedBibleWorkspaceTarget,
   getErrorMessage,
+  isDeprecatedBibleWorkspace,
   isPermissionDenied,
   isUuid,
   isValidGrouping,
@@ -13,6 +15,7 @@ import {
   parsePositiveInt,
   sanitizeText,
 } from "@/lib/bible-admin";
+import { insertBookWithGeneratedLegacyId } from "@/lib/bible-legacy";
 
 export const dynamic = "force-dynamic";
 
@@ -51,7 +54,7 @@ function validateScope(languageCode: string, versionCode: string): string | null
   return null;
 }
 
-function parseGroupingFilter(value: string): "old" | "new" | "deutero" | null {
+function parseGroupingFilterCode(value: string): "old" | "new" | "deutero" | null {
   const normalized = sanitizeText(value).toLowerCase();
   if (!normalized) return null;
   if (isValidGrouping(normalized)) return normalized;
@@ -59,6 +62,43 @@ function parseGroupingFilter(value: string): "old" | "new" | "deutero" | null {
   if (normalized.includes("baru")) return "new";
   if (normalized.includes("deutero")) return "deutero";
   return null;
+}
+
+function getGroupingCandidates(code: "old" | "new" | "deutero"): string[] {
+  if (code === "old") {
+    return [
+      "old",
+      "OLD",
+      "Old",
+      "perjanjian lama",
+      "Perjanjian Lama",
+      "PERJANJIAN LAMA",
+      "old testament",
+      "Old Testament",
+    ];
+  }
+  if (code === "new") {
+    return [
+      "new",
+      "NEW",
+      "New",
+      "perjanjian baru",
+      "Perjanjian Baru",
+      "PERJANJIAN BARU",
+      "new testament",
+      "New Testament",
+    ];
+  }
+  return [
+    "deutero",
+    "DEUTERO",
+    "Deutero",
+    "deuterokanonika",
+    "Deuterokanonika",
+    "DEUTEROKANONIKA",
+    "deuterocanonical",
+    "Deuterocanonical",
+  ];
 }
 
 export async function GET(req: NextRequest) {
@@ -79,14 +119,13 @@ export async function GET(req: NextRequest) {
       { status: 400 },
     );
   }
-
   const search = sanitizeText(url.searchParams.get("q"));
   const groupingInput = sanitizeText(url.searchParams.get("grouping"));
-  const groupingFilter = parseGroupingFilter(groupingInput);
+  const groupingCode = parseGroupingFilterCode(groupingInput);
   const page = toSafePage(url.searchParams.get("page"));
   const limit = toSafeLimit(url.searchParams.get("limit"));
 
-  if (groupingInput && !groupingFilter) {
+  if (groupingInput && !groupingCode) {
     return NextResponse.json(
       {
         error: "ValidationError",
@@ -106,8 +145,9 @@ export async function GET(req: NextRequest) {
     .order("order_index", { ascending: true })
     .order("name", { ascending: true });
 
-  if (groupingFilter) {
-    query = query.eq("grouping", groupingFilter);
+  if (groupingCode) {
+    // Backward compatibility: sebagian data lama mungkin masih menyimpan label panjang.
+    query = query.in("grouping", getGroupingCandidates(groupingCode));
   }
 
   if (search) {
@@ -183,6 +223,16 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+  if (isDeprecatedBibleWorkspace(languageCode, versionCode)) {
+    const target = getDeprecatedBibleWorkspaceTarget(languageCode, versionCode);
+    return NextResponse.json(
+      {
+        error: "DeprecatedWorkspace",
+        message: `Workspace ${languageCode}/${versionCode} sudah deprecated (read-only). Gunakan ${target?.languageCode}/${target?.versionCode}.`,
+      },
+      { status: 409 },
+    );
+  }
 
   const name = sanitizeText((body as { name?: unknown })?.name);
   const abbreviationRaw = sanitizeText((body as { abbreviation?: unknown })?.abbreviation);
@@ -243,7 +293,7 @@ export async function POST(req: NextRequest) {
   if (id) {
     const { data: existing, error: existingError } = await adminClient
       .from("bible_books")
-      .select("id, language_code, version_code, name, abbreviation, grouping, order_index")
+      .select("id, language_code, version_code, name, abbreviation, grouping, order_index, legacy_book_id")
       .eq("id", id)
       .eq("language_code", languageCode)
       .eq("version_code", versionCode)
@@ -268,7 +318,7 @@ export async function POST(req: NextRequest) {
       .eq("id", id)
       .eq("language_code", languageCode)
       .eq("version_code", versionCode)
-      .select("id, language_code, version_code, name, abbreviation, grouping, order_index")
+      .select("id, language_code, version_code, name, abbreviation, grouping, order_index, legacy_book_id")
       .maybeSingle();
 
     if (updateError) {
@@ -300,15 +350,22 @@ export async function POST(req: NextRequest) {
     return res;
   }
 
-  const { data: inserted, error: insertError } = await adminClient
-    .from("bible_books")
-    .insert(payload)
-    .select("id, language_code, version_code, name, abbreviation, grouping, order_index")
-    .maybeSingle();
-
-  if (insertError) {
+  let inserted: BibleBookRow | null = null;
+  try {
+    inserted = await insertBookWithGeneratedLegacyId<BibleBookRow>(adminClient, (legacyBookId) =>
+      adminClient
+        .from("bible_books")
+        .insert({
+          ...payload,
+          legacy_book_id: legacyBookId,
+        })
+        .select("id, language_code, version_code, name, abbreviation, grouping, order_index, legacy_book_id")
+        .maybeSingle(),
+    );
+  } catch (errorValue: unknown) {
+    const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
     return NextResponse.json(
-      { error: "DatabaseError", message: getErrorMessage(insertError) },
+      { error: "DatabaseError", message: `Gagal menambahkan kitab: ${message}` },
       { status: 500 },
     );
   }

@@ -3,8 +3,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireApprovedAdmin } from "@/lib/admin-guard";
 import { logAdminAudit } from "@/lib/admin-audit";
 import {
+  getDeprecatedBibleWorkspaceTarget,
   getErrorCode,
   getErrorMessage,
+  isDeprecatedBibleWorkspace,
   isUuid,
   isValidLanguageCode,
   isValidVersionCode,
@@ -12,6 +14,7 @@ import {
   parsePositiveInt,
   sanitizeText,
 } from "@/lib/bible-admin";
+import { ensureLegacyBookIdForBook } from "@/lib/bible-legacy";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +28,15 @@ type UpsertRow = {
   verse_number: number;
   text: string;
   pericope: string | null;
+  book_id?: number;
+  chapter?: number;
+  content?: string;
+  type?: string;
+};
+
+type ScopedBookRow = {
+  id: string;
+  legacy_book_id: string | null;
 };
 
 const CHUNK_SIZE = 300;
@@ -35,6 +47,15 @@ function chunkArray<T>(items: T[], size: number): T[][] {
     chunks.push(items.slice(i, i + size));
   }
   return chunks;
+}
+
+function isUnknownColumnError(error: unknown): boolean {
+  const message = getErrorMessage(error).toLowerCase();
+  return (
+    getErrorCode(error) === "42703" ||
+    message.includes("could not find the") ||
+    (message.includes("column") && message.includes("does not exist"))
+  );
 }
 
 async function resolveChapterId(
@@ -85,7 +106,7 @@ async function ensureScopedBook(
 ) {
   const { data, error } = await adminClient
     .from("bible_books")
-    .select("id")
+    .select("id, legacy_book_id")
     .eq("id", bookId)
     .eq("language_code", languageCode)
     .eq("version_code", versionCode)
@@ -146,6 +167,16 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+  if (isDeprecatedBibleWorkspace(languageCode, versionCode)) {
+    const target = getDeprecatedBibleWorkspaceTarget(languageCode, versionCode);
+    return NextResponse.json(
+      {
+        error: "DeprecatedWorkspace",
+        message: `Workspace ${languageCode}/${versionCode} sudah deprecated (read-only). Gunakan ${target?.languageCode}/${target?.versionCode}.`,
+      },
+      { status: 409 },
+    );
+  }
 
   const scopedBook = await ensureScopedBook(adminClient, bookId, languageCode, versionCode);
   if (scopedBook.error) {
@@ -158,6 +189,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: "NotFound", message: "Kitab tidak ditemukan pada bahasa+versi ini." },
       { status: 404 },
+    );
+  }
+
+  const scopedBookRow = scopedBook.data as ScopedBookRow;
+  let legacyBookId: number | null = null;
+  try {
+    legacyBookId = await ensureLegacyBookIdForBook(
+      adminClient,
+      scopedBookRow.id,
+      scopedBookRow.legacy_book_id,
+    );
+  } catch (errorValue: unknown) {
+    const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
+    return NextResponse.json(
+      { error: "DatabaseError", message: `Gagal menyiapkan legacy_book_id: ${message}` },
+      { status: 500 },
     );
   }
 
@@ -214,17 +261,37 @@ export async function POST(req: NextRequest) {
       verse_number: row.verse_number,
       text: row.text,
       pericope: existingMap.get(row.verse_number)?.pericope || null,
+      ...(legacyBookId
+        ? {
+            book_id: legacyBookId,
+            chapter: chapterNumber,
+            content: row.text,
+            type: "text",
+          }
+        : {}),
     }));
 
   let insertedOrUpdated = 0;
   const failedRows: string[] = [];
 
   for (const chunk of chunkArray(rowsToUpsert, CHUNK_SIZE)) {
-    const { error: upsertError } = await adminClient
+    let upsertRes = await adminClient
       .from("bible_verses")
       .upsert(chunk, { onConflict: "chapter_id,verse_number" });
 
-    if (!upsertError) {
+    if (upsertRes.error && isUnknownColumnError(upsertRes.error)) {
+      const modernChunk = chunk.map((row) => ({
+        chapter_id: row.chapter_id,
+        verse_number: row.verse_number,
+        text: row.text,
+        pericope: row.pericope,
+      }));
+      upsertRes = await adminClient
+        .from("bible_verses")
+        .upsert(modernChunk, { onConflict: "chapter_id,verse_number" });
+    }
+
+    if (!upsertRes.error) {
       insertedOrUpdated += chunk.length;
       continue;
     }
@@ -233,6 +300,26 @@ export async function POST(req: NextRequest) {
       const { error: rowError } = await adminClient
         .from("bible_verses")
         .upsert(row, { onConflict: "chapter_id,verse_number" });
+      if (rowError && isUnknownColumnError(rowError)) {
+        const modernRes = await adminClient
+          .from("bible_verses")
+          .upsert(
+            {
+              chapter_id: row.chapter_id,
+              verse_number: row.verse_number,
+              text: row.text,
+              pericope: row.pericope,
+            },
+            { onConflict: "chapter_id,verse_number" },
+          );
+        if (!modernRes.error) {
+          insertedOrUpdated += 1;
+          continue;
+        }
+        failedRows.push(`Ayat ${row.verse_number}: ${getErrorMessage(modernRes.error)}`);
+        continue;
+      }
+
       if (rowError) {
         failedRows.push(`Ayat ${row.verse_number}: ${getErrorMessage(rowError)}`);
       } else {

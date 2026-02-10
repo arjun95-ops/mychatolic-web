@@ -1,0 +1,662 @@
+book_name,grouping,chapter,verse,mode
+Kejadian,old,7,5,basic
+Kejadian,old,7,6,basic
+Kejadian,old,7,7,basic
+Kejadian,old,7,8,basic
+Kejadian,old,7,9,basic
+Keluaran,old,1,2,basic
+Keluaran,old,1,3,basic
+Keluaran,old,1,4,basic
+Keluaran,old,1,5,basic
+Keluaran,old,1,6,basic
+Keluaran,old,1,7,basic
+Keluaran,old,1,9,basic
+Keluaran,old,1,10,basic
+Keluaran,old,1,11,basic
+Keluaran,old,1,12,basic
+Keluaran,old,1,13,basic
+Keluaran,old,1,14,basic
+Keluaran,old,1,15,basic
+Keluaran,old,1,16,basic
+Keluaran,old,1,17,basic
+Keluaran,old,1,18,basic
+Keluaran,old,1,19,basic
+Keluaran,old,1,20,basic
+Keluaran,old,1,21,basic
+Tobit,deutero,14,8,basic
+Tobit,deutero,14,11,basic
+Tobit,deutero,14,12,basic
+Kebijaksanaan Salomo,deutero,19,7,basic
+Kebijaksanaan Salomo,deutero,19,8,basic
+Kebijaksanaan Salomo,deutero,19,9,basic
+Kebijaksanaan Salomo,deutero,19,10,basic
+Kebijaksanaan Salomo,deutero,19,11,basic
+Kebijaksanaan Salomo,deutero,19,12,basic
+Kebijaksanaan Salomo,deutero,19,13,basic
+Kebijaksanaan Salomo,deutero,19,14,basic
+Kebijaksanaan Salomo,deutero,19,15,basic
+Kebijaksanaan Salomo,deutero,19,16,basic
+Kebijaksanaan Salomo,deutero,19,17,basic
+Sirakh,deutero,3,19,basic
+Sirakh,deutero,3,25,basic
+Sirakh,deutero,10,21,basic
+Sirakh,deutero,13,14,basic
+Sirakh,deutero,17,9,basic
+Sirakh,deutero,17,18,basic
+Sirakh,deutero,17,21,basic
+Sirakh,deutero,19,18,basic
+Sirakh,deutero,19,19,basic
+Sirakh,deutero,19,21,basic
+Sirakh,deutero,22,7,basic
+Sirakh,deutero,22,8,basic
+Sirakh,deutero,26,19,basic
+Sirakh,deutero,26,20,basic
+Sirakh,deutero,26,21,basic
+Sirakh,deutero,26,22,basic
+Sirakh,deutero,26,23,basic
+Sirakh,deutero,26,24,basic
+Sirakh,deutero,26,25,basic
+Sirakh,deutero,26,26,basic
+Sirakh,deutero,26,27,basic
+Sirakh,deutero,30,26,basic
+Sirakh,deutero,30,27,basic
+Sirakh,deutero,30,28,basic
+Sirakh,deutero,32,25,basic
+Sirakh,deutero,32,26,basic
+Sirakh,deutero,32,27,basic
+Sirakh,deutero,32,28,basic
+Sirakh,deutero,32,29,basic
+Sirakh,deutero,32,30,basic
+Sirakh,deutero,34,27,basic
+Sirakh,deutero,34,28,basic
+Sirakh,deutero,34,29,basic
+Sirakh,deutero,34,30,basic
+Sirakh,deutero,34,31,basic
+Sirakh,deutero,34,32,basic
+Sirakh,deutero,35,25,basic
+Sirakh,deutero,35,26,basic
+Sirakh,deutero,35,27,basic
+Sirakh,deutero,35,28,basic
+Sirakh,deutero,35,29,basic
+Sirakh,deutero,35,30,basic
+Sirakh,deutero,35,31,basic
+Sirakh,deutero,35,32,basic
+Sirakh,deutero,35,33,basic
+Sirakh,deutero,36,28,basic
+Sirakh,deutero,36,29,basic
+Sirakh,deutero,36,30,basic
+Sirakh,deutero,36,31,basic
+Sirakh,deutero,36,32,basic
+Sirakh,deutero,36,33,basic
+Sirakh,deutero,36,34,basic
+Sirakh,deutero,38,35,basic
+Sirakh,deutero,38,36,basic
+Sirakh,deutero,39,36,basic
+Sirakh,deutero,39,37,basic
+Sirakh,deutero,40,31,basic
+Sirakh,deutero,40,32,basic
+Sirakh,deutero,40,33,basic
+Sirakh,deutero,40,34,basic
+Sirakh,deutero,40,35,basic
+Sirakh,deutero,40,36,basic
+Sirakh,deutero,40,37,basic
+Sirakh,deutero,40,38,basic
+Sirakh,deutero,41,28,basic
+Sirakh,deutero,41,29,basic
+Sirakh,deutero,41,30,basic
+Sirakh,deutero,41,31,basic
+Sirakh,deutero,41,32,basic
+Sirakh,deutero,41,33,basic
+Sirakh,deutero,41,34,basic
+Sirakh,deutero,41,35,basic
+Sirakh,deutero,41,36,basic
+Sirakh,deutero,41,37,basic
+Sirakh,deutero,41,38,basic
+Sirakh,deutero,41,39,basic
+Sirakh,deutero,42,26,basic
+Sirakh,deutero,42,27,basic
+Sirakh,deutero,42,28,basic
+Sirakh,deutero,42,29,basic
+Sirakh,deutero,42,30,basic
+Sirakh,deutero,42,31,basic
+Sirakh,deutero,42,32,basic
+Sirakh,deutero,42,33,basic
+Sirakh,deutero,42,34,basic
+Sirakh,deutero,42,35,basic
+Sirakh,deutero,42,36,basic
+Sirakh,deutero,42,37,basic
+Sirakh,deutero,42,38,basic
+Sirakh,deutero,42,39,basic
+Sirakh,deutero,42,40,basic
+Sirakh,deutero,43,16,basic
+Sirakh,deutero,43,17,basic
+Sirakh,deutero,43,34,basic
+Sirakh,deutero,43,35,basic
+Sirakh,deutero,43,36,basic
+Sirakh,deutero,43,37,basic
+Sirakh,deutero,43,38,basic
+Sirakh,deutero,43,39,basic
+Sirakh,deutero,43,40,basic
+Sirakh,deutero,43,41,basic
+Sirakh,deutero,44,24,basic
+Sirakh,deutero,44,25,basic
+Sirakh,deutero,44,26,basic
+Sirakh,deutero,44,27,basic
+Sirakh,deutero,44,28,basic
+Sirakh,deutero,44,29,basic
+Sirakh,deutero,44,30,basic
+Sirakh,deutero,44,31,basic
+Sirakh,deutero,44,32,basic
+Sirakh,deutero,44,33,basic
+Sirakh,deutero,44,34,basic
+Sirakh,deutero,44,35,basic
+Sirakh,deutero,44,36,basic
+Sirakh,deutero,44,37,basic
+Sirakh,deutero,44,38,basic
+Sirakh,deutero,44,39,basic
+Sirakh,deutero,44,40,basic
+Sirakh,deutero,44,41,basic
+Sirakh,deutero,44,42,basic
+Sirakh,deutero,45,27,basic
+Sirakh,deutero,45,28,basic
+Sirakh,deutero,45,29,basic
+Sirakh,deutero,45,30,basic
+Sirakh,deutero,45,31,basic
+Sirakh,deutero,45,32,basic
+Sirakh,deutero,45,33,basic
+Sirakh,deutero,45,34,basic
+Sirakh,deutero,45,35,basic
+Sirakh,deutero,45,36,basic
+Sirakh,deutero,45,37,basic
+Sirakh,deutero,45,38,basic
+Sirakh,deutero,45,39,basic
+Sirakh,deutero,45,40,basic
+Sirakh,deutero,45,41,basic
+Sirakh,deutero,45,42,basic
+Sirakh,deutero,45,43,basic
+Sirakh,deutero,46,21,basic
+Sirakh,deutero,46,22,basic
+Sirakh,deutero,46,23,basic
+Sirakh,deutero,46,24,basic
+Sirakh,deutero,46,25,basic
+Sirakh,deutero,46,26,basic
+Sirakh,deutero,46,27,basic
+Sirakh,deutero,46,28,basic
+Sirakh,deutero,46,29,basic
+Sirakh,deutero,46,30,basic
+Sirakh,deutero,46,31,basic
+Sirakh,deutero,46,32,basic
+Sirakh,deutero,46,33,basic
+Sirakh,deutero,46,34,basic
+Sirakh,deutero,46,35,basic
+Sirakh,deutero,46,36,basic
+Sirakh,deutero,46,37,basic
+Sirakh,deutero,46,38,basic
+Sirakh,deutero,46,39,basic
+Sirakh,deutero,46,40,basic
+Sirakh,deutero,46,41,basic
+Sirakh,deutero,46,42,basic
+Sirakh,deutero,46,43,basic
+Sirakh,deutero,46,44,basic
+Sirakh,deutero,47,26,basic
+Sirakh,deutero,47,27,basic
+Sirakh,deutero,47,28,basic
+Sirakh,deutero,47,29,basic
+Sirakh,deutero,47,30,basic
+Sirakh,deutero,47,31,basic
+Sirakh,deutero,47,32,basic
+Sirakh,deutero,47,33,basic
+Sirakh,deutero,47,34,basic
+Sirakh,deutero,47,35,basic
+Sirakh,deutero,47,36,basic
+Sirakh,deutero,47,37,basic
+Sirakh,deutero,47,38,basic
+Sirakh,deutero,47,39,basic
+Sirakh,deutero,47,40,basic
+Sirakh,deutero,47,41,basic
+Sirakh,deutero,47,42,basic
+Sirakh,deutero,47,43,basic
+Sirakh,deutero,47,44,basic
+Sirakh,deutero,47,45,basic
+Sirakh,deutero,49,17,basic
+Sirakh,deutero,49,18,basic
+Sirakh,deutero,49,19,basic
+Sirakh,deutero,49,20,basic
+Sirakh,deutero,49,21,basic
+Sirakh,deutero,49,22,basic
+Sirakh,deutero,49,23,basic
+Sirakh,deutero,49,24,basic
+Sirakh,deutero,49,25,basic
+Sirakh,deutero,49,26,basic
+Sirakh,deutero,49,27,basic
+Sirakh,deutero,49,28,basic
+Sirakh,deutero,49,29,basic
+Sirakh,deutero,49,30,basic
+Sirakh,deutero,49,31,basic
+Sirakh,deutero,49,32,basic
+Sirakh,deutero,49,33,basic
+Sirakh,deutero,49,34,basic
+Sirakh,deutero,49,35,basic
+Sirakh,deutero,49,36,basic
+Sirakh,deutero,49,37,basic
+Sirakh,deutero,49,38,basic
+Sirakh,deutero,49,39,basic
+Sirakh,deutero,49,40,basic
+Sirakh,deutero,49,41,basic
+Sirakh,deutero,49,42,basic
+Sirakh,deutero,49,43,basic
+Sirakh,deutero,49,44,basic
+Sirakh,deutero,49,45,basic
+Sirakh,deutero,49,46,basic
+Sirakh,deutero,49,47,basic
+Sirakh,deutero,50,30,basic
+Sirakh,deutero,50,31,basic
+Sirakh,deutero,50,32,basic
+Sirakh,deutero,50,33,basic
+Sirakh,deutero,50,34,basic
+Sirakh,deutero,50,35,basic
+Sirakh,deutero,50,36,basic
+Sirakh,deutero,50,37,basic
+Sirakh,deutero,50,38,basic
+Sirakh,deutero,50,39,basic
+Sirakh,deutero,50,40,basic
+Sirakh,deutero,50,41,basic
+Sirakh,deutero,50,42,basic
+Sirakh,deutero,50,43,basic
+Sirakh,deutero,50,44,basic
+Sirakh,deutero,50,45,basic
+Sirakh,deutero,50,46,basic
+Sirakh,deutero,50,47,basic
+Sirakh,deutero,50,48,basic
+Tambahan Daniel,deutero,3,1,basic
+Tambahan Daniel,deutero,3,2,basic
+Tambahan Daniel,deutero,3,3,basic
+Tambahan Daniel,deutero,3,4,basic
+Tambahan Daniel,deutero,3,5,basic
+Tambahan Daniel,deutero,3,6,basic
+Tambahan Daniel,deutero,3,7,basic
+Tambahan Daniel,deutero,3,8,basic
+Tambahan Daniel,deutero,3,9,basic
+Tambahan Daniel,deutero,3,10,basic
+Tambahan Daniel,deutero,3,11,basic
+Tambahan Daniel,deutero,3,12,basic
+Tambahan Daniel,deutero,3,13,basic
+Tambahan Daniel,deutero,3,14,basic
+Tambahan Daniel,deutero,3,15,basic
+Tambahan Daniel,deutero,3,16,basic
+Tambahan Daniel,deutero,3,17,basic
+Tambahan Daniel,deutero,3,18,basic
+Tambahan Daniel,deutero,3,19,basic
+Tambahan Daniel,deutero,3,20,basic
+Tambahan Daniel,deutero,3,21,basic
+Tambahan Daniel,deutero,3,22,basic
+Tambahan Daniel,deutero,3,23,basic
+Tambahan Daniel,deutero,13,19,basic
+Tambahan Daniel,deutero,13,20,basic
+Tambahan Daniel,deutero,13,21,basic
+Tambahan Daniel,deutero,13,22,basic
+Tambahan Daniel,deutero,13,23,basic
+Tambahan Daniel,deutero,13,24,basic
+Matius,new,1,2,basic
+Matius,new,1,3,basic
+Matius,new,1,4,basic
+Matius,new,1,5,basic
+Matius,new,1,6,basic
+Matius,new,1,7,basic
+Matius,new,1,8,basic
+Matius,new,1,9,basic
+Matius,new,1,10,basic
+Matius,new,1,11,basic
+Matius,new,1,12,basic
+Matius,new,1,13,basic
+Matius,new,1,14,basic
+Matius,new,1,15,basic
+Matius,new,1,16,basic
+Matius,new,1,17,basic
+Kejadian,old,1,4,strict
+Kejadian,old,2,2,strict
+Kejadian,old,2,3,strict
+Kejadian,old,2,4,strict
+Kejadian,old,2,5,strict
+Kejadian,old,2,6,strict
+Kejadian,old,7,2,strict
+Kejadian,old,7,3,strict
+Kejadian,old,7,5,strict
+Kejadian,old,7,6,strict
+Kejadian,old,7,7,strict
+Kejadian,old,7,8,strict
+Kejadian,old,7,9,strict
+Keluaran,old,1,2,strict
+Keluaran,old,1,3,strict
+Keluaran,old,1,4,strict
+Keluaran,old,1,5,strict
+Keluaran,old,1,6,strict
+Keluaran,old,1,7,strict
+Keluaran,old,1,9,strict
+Keluaran,old,1,10,strict
+Keluaran,old,1,11,strict
+Keluaran,old,1,12,strict
+Keluaran,old,1,13,strict
+Keluaran,old,1,14,strict
+Keluaran,old,1,15,strict
+Keluaran,old,1,16,strict
+Keluaran,old,1,17,strict
+Keluaran,old,1,18,strict
+Keluaran,old,1,19,strict
+Keluaran,old,1,20,strict
+Keluaran,old,1,21,strict
+Keluaran,old,7,2,strict
+Keluaran,old,7,3,strict
+Keluaran,old,7,4,strict
+Keluaran,old,7,5,strict
+Keluaran,old,7,6,strict
+Keluaran,old,7,7,strict
+Keluaran,old,7,8,strict
+Keluaran,old,7,9,strict
+Tobit,deutero,9,3,strict
+Tobit,deutero,14,8,strict
+Tobit,deutero,14,11,strict
+Tobit,deutero,14,12,strict
+Kebijaksanaan Salomo,deutero,19,7,strict
+Kebijaksanaan Salomo,deutero,19,8,strict
+Kebijaksanaan Salomo,deutero,19,9,strict
+Kebijaksanaan Salomo,deutero,19,10,strict
+Kebijaksanaan Salomo,deutero,19,11,strict
+Kebijaksanaan Salomo,deutero,19,12,strict
+Kebijaksanaan Salomo,deutero,19,13,strict
+Kebijaksanaan Salomo,deutero,19,14,strict
+Kebijaksanaan Salomo,deutero,19,15,strict
+Kebijaksanaan Salomo,deutero,19,16,strict
+Kebijaksanaan Salomo,deutero,19,17,strict
+Sirakh,deutero,1,5,strict
+Sirakh,deutero,1,7,strict
+Sirakh,deutero,1,21,strict
+Sirakh,deutero,3,19,strict
+Sirakh,deutero,3,25,strict
+Sirakh,deutero,10,21,strict
+Sirakh,deutero,11,15,strict
+Sirakh,deutero,11,16,strict
+Sirakh,deutero,13,14,strict
+Sirakh,deutero,17,5,strict
+Sirakh,deutero,17,9,strict
+Sirakh,deutero,17,18,strict
+Sirakh,deutero,17,21,strict
+Sirakh,deutero,18,3,strict
+Sirakh,deutero,19,18,strict
+Sirakh,deutero,19,19,strict
+Sirakh,deutero,19,21,strict
+Sirakh,deutero,22,7,strict
+Sirakh,deutero,22,8,strict
+Sirakh,deutero,23,26,strict
+Sirakh,deutero,24,18,strict
+Sirakh,deutero,25,12,strict
+Sirakh,deutero,26,19,strict
+Sirakh,deutero,26,20,strict
+Sirakh,deutero,26,21,strict
+Sirakh,deutero,26,22,strict
+Sirakh,deutero,26,23,strict
+Sirakh,deutero,26,24,strict
+Sirakh,deutero,26,25,strict
+Sirakh,deutero,26,26,strict
+Sirakh,deutero,26,27,strict
+Sirakh,deutero,30,26,strict
+Sirakh,deutero,30,27,strict
+Sirakh,deutero,30,28,strict
+Sirakh,deutero,32,25,strict
+Sirakh,deutero,32,26,strict
+Sirakh,deutero,32,27,strict
+Sirakh,deutero,32,28,strict
+Sirakh,deutero,32,29,strict
+Sirakh,deutero,32,30,strict
+Sirakh,deutero,34,27,strict
+Sirakh,deutero,34,28,strict
+Sirakh,deutero,34,29,strict
+Sirakh,deutero,34,30,strict
+Sirakh,deutero,34,31,strict
+Sirakh,deutero,34,32,strict
+Sirakh,deutero,35,25,strict
+Sirakh,deutero,35,26,strict
+Sirakh,deutero,35,27,strict
+Sirakh,deutero,35,28,strict
+Sirakh,deutero,35,29,strict
+Sirakh,deutero,35,30,strict
+Sirakh,deutero,35,31,strict
+Sirakh,deutero,35,32,strict
+Sirakh,deutero,35,33,strict
+Sirakh,deutero,36,28,strict
+Sirakh,deutero,36,29,strict
+Sirakh,deutero,36,30,strict
+Sirakh,deutero,36,31,strict
+Sirakh,deutero,36,32,strict
+Sirakh,deutero,36,33,strict
+Sirakh,deutero,36,34,strict
+Sirakh,deutero,37,32,strict
+Sirakh,deutero,37,33,strict
+Sirakh,deutero,37,34,strict
+Sirakh,deutero,37,35,strict
+Sirakh,deutero,38,35,strict
+Sirakh,deutero,38,36,strict
+Sirakh,deutero,39,36,strict
+Sirakh,deutero,39,37,strict
+Sirakh,deutero,40,31,strict
+Sirakh,deutero,40,32,strict
+Sirakh,deutero,40,33,strict
+Sirakh,deutero,40,34,strict
+Sirakh,deutero,40,35,strict
+Sirakh,deutero,40,36,strict
+Sirakh,deutero,40,37,strict
+Sirakh,deutero,40,38,strict
+Sirakh,deutero,41,28,strict
+Sirakh,deutero,41,29,strict
+Sirakh,deutero,41,30,strict
+Sirakh,deutero,41,31,strict
+Sirakh,deutero,41,32,strict
+Sirakh,deutero,41,33,strict
+Sirakh,deutero,41,34,strict
+Sirakh,deutero,41,35,strict
+Sirakh,deutero,41,36,strict
+Sirakh,deutero,41,37,strict
+Sirakh,deutero,41,38,strict
+Sirakh,deutero,41,39,strict
+Sirakh,deutero,42,26,strict
+Sirakh,deutero,42,27,strict
+Sirakh,deutero,42,28,strict
+Sirakh,deutero,42,29,strict
+Sirakh,deutero,42,30,strict
+Sirakh,deutero,42,31,strict
+Sirakh,deutero,42,32,strict
+Sirakh,deutero,42,33,strict
+Sirakh,deutero,42,34,strict
+Sirakh,deutero,42,35,strict
+Sirakh,deutero,42,36,strict
+Sirakh,deutero,42,37,strict
+Sirakh,deutero,42,38,strict
+Sirakh,deutero,42,39,strict
+Sirakh,deutero,42,40,strict
+Sirakh,deutero,43,16,strict
+Sirakh,deutero,43,17,strict
+Sirakh,deutero,43,34,strict
+Sirakh,deutero,43,35,strict
+Sirakh,deutero,43,36,strict
+Sirakh,deutero,43,37,strict
+Sirakh,deutero,43,38,strict
+Sirakh,deutero,43,39,strict
+Sirakh,deutero,43,40,strict
+Sirakh,deutero,43,41,strict
+Sirakh,deutero,44,24,strict
+Sirakh,deutero,44,25,strict
+Sirakh,deutero,44,26,strict
+Sirakh,deutero,44,27,strict
+Sirakh,deutero,44,28,strict
+Sirakh,deutero,44,29,strict
+Sirakh,deutero,44,30,strict
+Sirakh,deutero,44,31,strict
+Sirakh,deutero,44,32,strict
+Sirakh,deutero,44,33,strict
+Sirakh,deutero,44,34,strict
+Sirakh,deutero,44,35,strict
+Sirakh,deutero,44,36,strict
+Sirakh,deutero,44,37,strict
+Sirakh,deutero,44,38,strict
+Sirakh,deutero,44,39,strict
+Sirakh,deutero,44,40,strict
+Sirakh,deutero,44,41,strict
+Sirakh,deutero,44,42,strict
+Sirakh,deutero,45,27,strict
+Sirakh,deutero,45,28,strict
+Sirakh,deutero,45,29,strict
+Sirakh,deutero,45,30,strict
+Sirakh,deutero,45,31,strict
+Sirakh,deutero,45,32,strict
+Sirakh,deutero,45,33,strict
+Sirakh,deutero,45,34,strict
+Sirakh,deutero,45,35,strict
+Sirakh,deutero,45,36,strict
+Sirakh,deutero,45,37,strict
+Sirakh,deutero,45,38,strict
+Sirakh,deutero,45,39,strict
+Sirakh,deutero,45,40,strict
+Sirakh,deutero,45,41,strict
+Sirakh,deutero,45,42,strict
+Sirakh,deutero,45,43,strict
+Sirakh,deutero,46,21,strict
+Sirakh,deutero,46,22,strict
+Sirakh,deutero,46,23,strict
+Sirakh,deutero,46,24,strict
+Sirakh,deutero,46,25,strict
+Sirakh,deutero,46,26,strict
+Sirakh,deutero,46,27,strict
+Sirakh,deutero,46,28,strict
+Sirakh,deutero,46,29,strict
+Sirakh,deutero,46,30,strict
+Sirakh,deutero,46,31,strict
+Sirakh,deutero,46,32,strict
+Sirakh,deutero,46,33,strict
+Sirakh,deutero,46,34,strict
+Sirakh,deutero,46,35,strict
+Sirakh,deutero,46,36,strict
+Sirakh,deutero,46,37,strict
+Sirakh,deutero,46,38,strict
+Sirakh,deutero,46,39,strict
+Sirakh,deutero,46,40,strict
+Sirakh,deutero,46,41,strict
+Sirakh,deutero,46,42,strict
+Sirakh,deutero,46,43,strict
+Sirakh,deutero,46,44,strict
+Sirakh,deutero,47,26,strict
+Sirakh,deutero,47,27,strict
+Sirakh,deutero,47,28,strict
+Sirakh,deutero,47,29,strict
+Sirakh,deutero,47,30,strict
+Sirakh,deutero,47,31,strict
+Sirakh,deutero,47,32,strict
+Sirakh,deutero,47,33,strict
+Sirakh,deutero,47,34,strict
+Sirakh,deutero,47,35,strict
+Sirakh,deutero,47,36,strict
+Sirakh,deutero,47,37,strict
+Sirakh,deutero,47,38,strict
+Sirakh,deutero,47,39,strict
+Sirakh,deutero,47,40,strict
+Sirakh,deutero,47,41,strict
+Sirakh,deutero,47,42,strict
+Sirakh,deutero,47,43,strict
+Sirakh,deutero,47,44,strict
+Sirakh,deutero,47,45,strict
+Sirakh,deutero,49,17,strict
+Sirakh,deutero,49,18,strict
+Sirakh,deutero,49,19,strict
+Sirakh,deutero,49,20,strict
+Sirakh,deutero,49,21,strict
+Sirakh,deutero,49,22,strict
+Sirakh,deutero,49,23,strict
+Sirakh,deutero,49,24,strict
+Sirakh,deutero,49,25,strict
+Sirakh,deutero,49,26,strict
+Sirakh,deutero,49,27,strict
+Sirakh,deutero,49,28,strict
+Sirakh,deutero,49,29,strict
+Sirakh,deutero,49,30,strict
+Sirakh,deutero,49,31,strict
+Sirakh,deutero,49,32,strict
+Sirakh,deutero,49,33,strict
+Sirakh,deutero,49,34,strict
+Sirakh,deutero,49,35,strict
+Sirakh,deutero,49,36,strict
+Sirakh,deutero,49,37,strict
+Sirakh,deutero,49,38,strict
+Sirakh,deutero,49,39,strict
+Sirakh,deutero,49,40,strict
+Sirakh,deutero,49,41,strict
+Sirakh,deutero,49,42,strict
+Sirakh,deutero,49,43,strict
+Sirakh,deutero,49,44,strict
+Sirakh,deutero,49,45,strict
+Sirakh,deutero,49,46,strict
+Sirakh,deutero,49,47,strict
+Sirakh,deutero,50,30,strict
+Sirakh,deutero,50,31,strict
+Sirakh,deutero,50,32,strict
+Sirakh,deutero,50,33,strict
+Sirakh,deutero,50,34,strict
+Sirakh,deutero,50,35,strict
+Sirakh,deutero,50,36,strict
+Sirakh,deutero,50,37,strict
+Sirakh,deutero,50,38,strict
+Sirakh,deutero,50,39,strict
+Sirakh,deutero,50,40,strict
+Sirakh,deutero,50,41,strict
+Sirakh,deutero,50,42,strict
+Sirakh,deutero,50,43,strict
+Sirakh,deutero,50,44,strict
+Sirakh,deutero,50,45,strict
+Sirakh,deutero,50,46,strict
+Sirakh,deutero,50,47,strict
+Sirakh,deutero,50,48,strict
+Barukh,deutero,1,15,strict
+Tambahan Daniel,deutero,3,1,strict
+Tambahan Daniel,deutero,3,2,strict
+Tambahan Daniel,deutero,3,3,strict
+Tambahan Daniel,deutero,3,4,strict
+Tambahan Daniel,deutero,3,5,strict
+Tambahan Daniel,deutero,3,6,strict
+Tambahan Daniel,deutero,3,7,strict
+Tambahan Daniel,deutero,3,8,strict
+Tambahan Daniel,deutero,3,9,strict
+Tambahan Daniel,deutero,3,10,strict
+Tambahan Daniel,deutero,3,11,strict
+Tambahan Daniel,deutero,3,12,strict
+Tambahan Daniel,deutero,3,13,strict
+Tambahan Daniel,deutero,3,14,strict
+Tambahan Daniel,deutero,3,15,strict
+Tambahan Daniel,deutero,3,16,strict
+Tambahan Daniel,deutero,3,17,strict
+Tambahan Daniel,deutero,3,18,strict
+Tambahan Daniel,deutero,3,19,strict
+Tambahan Daniel,deutero,3,20,strict
+Tambahan Daniel,deutero,3,21,strict
+Tambahan Daniel,deutero,3,22,strict
+Tambahan Daniel,deutero,3,23,strict
+Tambahan Daniel,deutero,13,19,strict
+Tambahan Daniel,deutero,13,20,strict
+Tambahan Daniel,deutero,13,21,strict
+Tambahan Daniel,deutero,13,22,strict
+Tambahan Daniel,deutero,13,23,strict
+Tambahan Daniel,deutero,13,24,strict
+Matius,new,1,2,strict
+Matius,new,1,3,strict
+Matius,new,1,4,strict
+Matius,new,1,5,strict
+Matius,new,1,6,strict
+Matius,new,1,7,strict
+Matius,new,1,8,strict
+Matius,new,1,9,strict
+Matius,new,1,10,strict
+Matius,new,1,11,strict
+Matius,new,1,12,strict
+Matius,new,1,13,strict
+Matius,new,1,14,strict
+Matius,new,1,15,strict
+Matius,new,1,16,strict
+Matius,new,1,17,strict
+Matius,new,5,2,strict

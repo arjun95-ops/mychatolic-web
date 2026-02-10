@@ -22,6 +22,7 @@ type NavigatorProps = {
   onBookSearchChange: (value: string) => void;
   books: BookItem[];
   booksLoading: boolean;
+  booksDebugHint?: string | null;
   selectedBookId: string | null;
   onSelectBook: (bookId: string) => void;
   chapters: ChapterItem[];
@@ -49,6 +50,7 @@ export default function Navigator({
   onBookSearchChange,
   books,
   booksLoading,
+  booksDebugHint,
   selectedBookId,
   onSelectBook,
   chapters,
@@ -136,9 +138,16 @@ export default function Navigator({
               Memuat kitab...
             </p>
           ) : books.length === 0 ? (
-            <p className="rounded-lg border border-surface-secondary bg-surface-secondary/20 px-3 py-4 text-sm text-text-secondary">
-              Tidak ada kitab pada filter ini.
-            </p>
+            <div className="space-y-2">
+              <p className="rounded-lg border border-surface-secondary bg-surface-secondary/20 px-3 py-4 text-sm text-text-secondary">
+                Tidak ada kitab pada filter ini.
+              </p>
+              {booksDebugHint ? (
+                <p className="rounded-lg border border-status-pending/30 bg-status-pending/10 px-3 py-2 text-xs text-status-pending">
+                  {booksDebugHint}
+                </p>
+              ) : null}
+            </div>
           ) : (
             books.map((book) => {
               const active = selectedBookId === book.id;

@@ -29,6 +29,21 @@ export function normalizeVersionCode(value: unknown): string {
   return sanitizeText(value).toUpperCase();
 }
 
+export function isDeprecatedBibleWorkspace(languageCode: string, versionCode: string): boolean {
+  return normalizeLanguageCode(languageCode) === "id" && normalizeVersionCode(versionCode) === "TB";
+}
+
+export function getDeprecatedBibleWorkspaceTarget(
+  languageCode: string,
+  versionCode: string,
+): { languageCode: string; versionCode: string } | null {
+  if (!isDeprecatedBibleWorkspace(languageCode, versionCode)) return null;
+  return {
+    languageCode: "id",
+    versionCode: "TB1",
+  };
+}
+
 export function parseBibleScopeFromSearchParams(searchParams: URLSearchParams): {
   languageCode: string;
   versionCode: string;

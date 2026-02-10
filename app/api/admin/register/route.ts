@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthContext, createSupabaseAdminClient } from '@/lib/admin-guard'
-import { normalizeLower } from '@/lib/admin-constants'
+import { normalizeLower, parseAdminRole } from '@/lib/admin-constants'
 import { logAdminAudit } from '@/lib/admin-audit'
+import {
+    ensureAdminEmailExclusive,
+    findActiveAppProfilesByEmail,
+} from '@/lib/admin-email-exclusivity'
 
 export async function POST(req: NextRequest) {
     // 1. Validate Auth & Email Verification
@@ -48,8 +52,28 @@ export async function POST(req: NextRequest) {
     // Initialize Admin Client with Actor (User) Context for Audit
     const adminClient = createSupabaseAdminClient(user.id);
     const normalizedEmail = normalizeLower(user.email || '');
+    const requestedAdminRole = parseAdminRole(user.user_metadata?.requested_admin_role || '');
 
-    // 3. Email allowlist check
+    // 3. Two-way exclusivity guard: existing app account cannot request admin role
+    // unless this account is created from admin onboarding flow.
+    if (!requestedAdminRole) {
+        const appProfileCheck = await findActiveAppProfilesByEmail({
+            supabaseAdminClient: adminClient,
+            email: normalizedEmail,
+        });
+        if (appProfileCheck.hasActiveAppProfile) {
+            return NextResponse.json(
+                {
+                    error: 'Forbidden',
+                    message:
+                        'Email ini sudah dipakai akun aplikasi. Gunakan email khusus untuk Super Admin/Admin Ops.',
+                },
+                { status: 403 }
+            );
+        }
+    }
+
+    // 4. Email allowlist check
     const { data: allowlistedEmail, error: allowlistError } = await adminClient
         .from('admin_email_allowlist')
         .select('email')
@@ -83,7 +107,7 @@ export async function POST(req: NextRequest) {
         );
     }
 
-    // 4. Upsert to admin_users
+    // 5. Upsert to admin_users
     // We check if the user is already a super_admin to prevent accidental overwrite/downgrade via this endpoint.
     const { data: existingAdmin, error: fetchError } = await adminClient
         .from('admin_users')
@@ -136,7 +160,7 @@ export async function POST(req: NextRequest) {
         updated_at: new Date().toISOString(),
     };
 
-    // 5. Perform Upsert
+    // 6. Perform Upsert
     const { error } = await adminClient
         .from('admin_users')
         .upsert(upsertPayload, { onConflict: 'auth_user_id' })
@@ -145,6 +169,23 @@ export async function POST(req: NextRequest) {
         console.error('Register Admin Error:', error);
         return NextResponse.json(
             { error: 'DatabaseError', message: error.message },
+            { status: 500 }
+        );
+    }
+
+    try {
+        await ensureAdminEmailExclusive({
+            supabaseAdminClient: adminClient,
+            authUserId: user.id,
+            email: normalizedEmail,
+        });
+    } catch (exclusivityError: unknown) {
+        const message =
+            exclusivityError instanceof Error
+                ? exclusivityError.message
+                : 'Gagal menerapkan aturan email eksklusif admin.';
+        return NextResponse.json(
+            { error: 'DatabaseError', message },
             { status: 500 }
         );
     }
