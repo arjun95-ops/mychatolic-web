@@ -41,12 +41,40 @@ export async function ensureLegacyBookIdForBook(
   adminClient: SupabaseClient,
   bookId: string,
   currentLegacyBookId: unknown,
+  preferredLegacyBookId?: number | null,
   maxRetries = DEFAULT_RETRIES,
 ): Promise<number> {
   const existing = parseLegacyBookId(currentLegacyBookId);
   if (existing) return existing;
 
   let lastError = "Unknown error";
+
+  const preferred = parseLegacyBookId(preferredLegacyBookId);
+  if (preferred) {
+    const updateResult = await adminClient
+      .from("bible_books")
+      .update({ legacy_book_id: String(preferred) })
+      .eq("id", bookId)
+      .is("legacy_book_id", null)
+      .select("legacy_book_id")
+      .maybeSingle();
+
+    if (!updateResult.error) {
+      const assigned = parseLegacyBookId(
+        (updateResult.data as { legacy_book_id?: unknown } | null)?.legacy_book_id,
+      );
+      if (assigned) return assigned;
+
+      const reread = await readLegacyBookIdByBookId(adminClient, bookId);
+      if (reread) return reread;
+
+      lastError = "legacy_book_id belum ter-set setelah update.";
+    } else if (getErrorCode(updateResult.error) === "23505") {
+      lastError = getErrorMessage(updateResult.error);
+    } else {
+      throw new Error(getErrorMessage(updateResult.error));
+    }
+  }
 
   for (let attempt = 0; attempt < maxRetries; attempt += 1) {
     const alreadySet = await readLegacyBookIdByBookId(adminClient, bookId);
@@ -91,9 +119,22 @@ export async function insertBookWithGeneratedLegacyId<T>(
   insertFn: (
     legacyBookId: string,
   ) => PromiseLike<{ data: T | null; error: unknown }> | { data: T | null; error: unknown },
+  preferredLegacyBookId?: number | null,
   maxRetries = DEFAULT_RETRIES,
 ): Promise<T> {
   let lastError = "Unknown error";
+
+  const preferred = parseLegacyBookId(preferredLegacyBookId);
+  if (preferred) {
+    const preferredResult = await insertFn(String(preferred));
+    if (!preferredResult.error && preferredResult.data) return preferredResult.data;
+    if (preferredResult.error && getErrorCode(preferredResult.error) !== "23505") {
+      throw new Error(getErrorMessage(preferredResult.error));
+    }
+    lastError = preferredResult.error
+      ? getErrorMessage(preferredResult.error)
+      : "Insert tidak mengembalikan data.";
+  }
 
   for (let attempt = 0; attempt < maxRetries; attempt += 1) {
     const candidate = await getNextLegacyBookId(adminClient);

@@ -37,6 +37,7 @@ type UpsertRow = {
 type ScopedBookRow = {
   id: string;
   legacy_book_id: string | null;
+  order_index: number | null;
 };
 
 const CHUNK_SIZE = 300;
@@ -62,7 +63,12 @@ async function resolveChapterId(
   adminClient: SupabaseClient,
   bookId: string,
   chapterNumber: number,
-): Promise<{ chapterId: string | null; created: boolean; error: unknown }> {
+): Promise<{
+  chapterId: string | null;
+  created: boolean;
+  error: unknown;
+  validationMessage: string | null;
+}> {
   const { data: chapter, error: chapterError } = await adminClient
     .from("bible_chapters")
     .select("id")
@@ -70,8 +76,39 @@ async function resolveChapterId(
     .eq("chapter_number", chapterNumber)
     .maybeSingle();
 
-  if (chapterError) return { chapterId: null, created: false, error: chapterError };
-  if (chapter?.id) return { chapterId: String(chapter.id), created: false, error: null };
+  if (chapterError) {
+    return { chapterId: null, created: false, error: chapterError, validationMessage: null };
+  }
+  if (chapter?.id) {
+    return { chapterId: String(chapter.id), created: false, error: null, validationMessage: null };
+  }
+
+  if (chapterNumber > 1) {
+    const { data: previousChapter, error: previousChapterError } = await adminClient
+      .from("bible_chapters")
+      .select("id")
+      .eq("book_id", bookId)
+      .eq("chapter_number", chapterNumber - 1)
+      .maybeSingle();
+
+    if (previousChapterError) {
+      return {
+        chapterId: null,
+        created: false,
+        error: previousChapterError,
+        validationMessage: null,
+      };
+    }
+
+    if (!previousChapter?.id) {
+      return {
+        chapterId: null,
+        created: false,
+        error: null,
+        validationMessage: `Pasal ${chapterNumber - 1} belum tersedia. Simpan pasal secara berurutan.`,
+      };
+    }
+  }
 
   const { data: inserted, error: insertError } = await adminClient
     .from("bible_chapters")
@@ -80,7 +117,7 @@ async function resolveChapterId(
     .maybeSingle();
 
   if (!insertError && inserted?.id) {
-    return { chapterId: String(inserted.id), created: true, error: null };
+    return { chapterId: String(inserted.id), created: true, error: null, validationMessage: null };
   }
 
   if (getErrorCode(insertError) === "23505") {
@@ -91,11 +128,15 @@ async function resolveChapterId(
       .eq("chapter_number", chapterNumber)
       .maybeSingle();
 
-    if (retryError) return { chapterId: null, created: false, error: retryError };
-    if (retryRow?.id) return { chapterId: String(retryRow.id), created: false, error: null };
+    if (retryError) {
+      return { chapterId: null, created: false, error: retryError, validationMessage: null };
+    }
+    if (retryRow?.id) {
+      return { chapterId: String(retryRow.id), created: false, error: null, validationMessage: null };
+    }
   }
 
-  return { chapterId: null, created: false, error: insertError };
+  return { chapterId: null, created: false, error: insertError, validationMessage: null };
 }
 
 async function ensureScopedBook(
@@ -106,7 +147,7 @@ async function ensureScopedBook(
 ) {
   const { data, error } = await adminClient
     .from("bible_books")
-    .select("id, legacy_book_id")
+    .select("id, legacy_book_id, order_index")
     .eq("id", bookId)
     .eq("language_code", languageCode)
     .eq("version_code", versionCode)
@@ -199,6 +240,7 @@ export async function POST(req: NextRequest) {
       adminClient,
       scopedBookRow.id,
       scopedBookRow.legacy_book_id,
+      Number(scopedBookRow.order_index) || null,
     );
   } catch (errorValue: unknown) {
     const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
@@ -217,6 +259,12 @@ export async function POST(req: NextRequest) {
   }
 
   const chapterResolution = await resolveChapterId(adminClient, bookId, chapterNumber);
+  if (chapterResolution.validationMessage) {
+    return NextResponse.json(
+      { error: "ValidationError", message: chapterResolution.validationMessage },
+      { status: 400 },
+    );
+  }
   if (chapterResolution.error || !chapterResolution.chapterId) {
     return NextResponse.json(
       { error: "DatabaseError", message: getErrorMessage(chapterResolution.error) },
@@ -225,6 +273,36 @@ export async function POST(req: NextRequest) {
   }
 
   const chapterId = chapterResolution.chapterId;
+
+  if (startVerse > 1) {
+    const { data: boundaryRows, error: boundaryError } = await adminClient
+      .from("bible_verses")
+      .select("verse_number")
+      .eq("chapter_id", chapterId)
+      .in("verse_number", [startVerse - 1, startVerse]);
+
+    if (boundaryError) {
+      return NextResponse.json(
+        { error: "DatabaseError", message: getErrorMessage(boundaryError) },
+        { status: 500 },
+      );
+    }
+
+    const boundarySet = new Set<number>(
+      ((boundaryRows || []) as Array<{ verse_number: number }>).map((row) => Number(row.verse_number)),
+    );
+    const startVerseExists = boundarySet.has(startVerse);
+    const previousVerseExists = boundarySet.has(startVerse - 1);
+    if (!startVerseExists && !previousVerseExists) {
+      return NextResponse.json(
+        {
+          error: "ValidationError",
+          message: `Ayat ${startVerse - 1} belum tersedia. Mulai batch dari ayat berurutan.`,
+        },
+        { status: 400 },
+      );
+    }
+  }
 
   const mappedRows = normalizedLines.map((text, index) => ({
     verse_number: startVerse + index,

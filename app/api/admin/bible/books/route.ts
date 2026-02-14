@@ -31,6 +31,7 @@ type BibleBookRow = {
 
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
+const MAX_CATHOLIC_ORDER_INDEX = 73;
 
 function toSafePage(value: string | null): number {
   const parsed = Number(value || "1");
@@ -263,6 +264,15 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+  if (orderIndex > MAX_CATHOLIC_ORDER_INDEX) {
+    return NextResponse.json(
+      {
+        error: "ValidationError",
+        message: `order_index maksimal ${MAX_CATHOLIC_ORDER_INDEX} untuk kanon Katolik.`,
+      },
+      { status: 400 },
+    );
+  }
 
   const { data: sameOrderRows, error: orderCheckError } = await adminClient
     .from("bible_books")
@@ -280,6 +290,15 @@ export async function POST(req: NextRequest) {
     );
   }
   const orderIndexConflict = Array.isArray(sameOrderRows) && sameOrderRows.length > 0;
+  if (orderIndexConflict) {
+    return NextResponse.json(
+      {
+        error: "Conflict",
+        message: `order_index ${orderIndex} sudah dipakai pada workspace ${languageCode}/${versionCode}.`,
+      },
+      { status: 409 },
+    );
+  }
 
   const payload = {
     language_code: languageCode,
@@ -352,15 +371,20 @@ export async function POST(req: NextRequest) {
 
   let inserted: BibleBookRow | null = null;
   try {
-    inserted = await insertBookWithGeneratedLegacyId<BibleBookRow>(adminClient, (legacyBookId) =>
-      adminClient
-        .from("bible_books")
-        .insert({
-          ...payload,
-          legacy_book_id: legacyBookId,
-        })
-        .select("id, language_code, version_code, name, abbreviation, grouping, order_index, legacy_book_id")
-        .maybeSingle(),
+    inserted = await insertBookWithGeneratedLegacyId<BibleBookRow>(
+      adminClient,
+      (legacyBookId) =>
+        adminClient
+          .from("bible_books")
+          .insert({
+            ...payload,
+            legacy_book_id: legacyBookId,
+          })
+          .select(
+            "id, language_code, version_code, name, abbreviation, grouping, order_index, legacy_book_id",
+          )
+          .maybeSingle(),
+      orderIndex,
     );
   } catch (errorValue: unknown) {
     const message = errorValue instanceof Error ? errorValue.message : "Unknown error";

@@ -10,6 +10,7 @@ import {
     BarChart3,
     UserCheck,
     Database,
+    CalendarDays,
     BookOpen,
     UserCircle2,
     Shield,
@@ -235,6 +236,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             >
                                 <Database size={20} className={pathname.startsWith('/dashboard/master-data') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
                                 <span>Master Data Gereja</span>
+                            </Link>
+
+                            <Link
+                                href="/dashboard/liturgy"
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/liturgy')
+                                    ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                    : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                    }`}
+                            >
+                                <CalendarDays size={20} className={pathname.startsWith('/dashboard/liturgy') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                                <span>Liturgi</span>
                             </Link>
 
                             <Link

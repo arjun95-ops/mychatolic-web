@@ -1,3 +1,1 @@
-date,feast_name,color,cycle,bacaan1,mazmur,bacaan2,injil,bacaan1_teks,mazmur_teks,bacaan2_teks,injil_teks
-2026-01-11,Pesta Pembaptisan Tuhan,white,C,Yes 42:1-4.6-7,Mzm 29:1-2.3ac-4.3b-9b-10,,Luk 3:15-16.21-22,"Contoh teks bacaan 1 lengkap.","Contoh teks mazmur lengkap.",,"Contoh teks injil lengkap."
-2026-03-15,Hari Minggu Prapaskah III,purple,C,Kel 3:1-8a.13-15,Mzm 103:1-2.3-4.6-7.8.11,1Kor 10:1-6.10-12,Luk 13:1-9,"Contoh teks bacaan 1 minggu prapaskah III.","Contoh teks mazmur minggu prapaskah III.","Contoh teks bacaan 2 minggu prapaskah III.","Contoh teks injil minggu prapaskah III."
+date,feast_name,liturgical_day_name,celebration_rank,memorial_name,saint_name,color,cycle,bacaan1,bacaan1_teks,bacaan2,bacaan2_teks,mazmur,mazmur_teks,bait_pengantar_injil,bait_pengantar_injil_teks,injil,injil_teks

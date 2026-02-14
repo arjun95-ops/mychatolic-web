@@ -296,6 +296,7 @@ export async function POST(req: NextRequest) {
           adminClient,
           id,
           (row as { legacy_book_id?: unknown }).legacy_book_id,
+          orderIndex,
         );
       } catch (errorValue: unknown) {
         const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
@@ -384,6 +385,7 @@ export async function POST(req: NextRequest) {
               })
               .select("id, name, abbreviation, grouping, order_index, legacy_book_id")
               .maybeSingle(),
+          item.order_index,
         );
         insertedBooks.push({
           id: String(inserted.id || ""),
