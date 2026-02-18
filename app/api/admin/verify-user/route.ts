@@ -4,6 +4,32 @@ import { requireApprovedAdmin } from '@/lib/admin-guard';
 import { logAdminAudit } from '@/lib/admin-audit';
 import { ensureAdminEmailExclusive } from '@/lib/admin-email-exclusivity';
 
+const LEGACY_VERIFICATION_STATUS_MAP: Record<string, string> = {
+    verified_catholic: 'verified',
+    verified_pastoral: 'verified',
+};
+
+function normalizeStatusValue(value: unknown): unknown {
+    if (typeof value !== 'string') return value;
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) return value;
+    return LEGACY_VERIFICATION_STATUS_MAP[normalized] ?? normalized;
+}
+
+function normalizeVerificationUpdates(updates: Record<string, unknown>): Record<string, unknown> {
+    const normalizedUpdates: Record<string, unknown> = { ...updates };
+
+    if ('account_status' in normalizedUpdates) {
+        normalizedUpdates.account_status = normalizeStatusValue(normalizedUpdates.account_status);
+    }
+
+    if ('verification_status' in normalizedUpdates) {
+        normalizedUpdates.verification_status = normalizeStatusValue(normalizedUpdates.verification_status);
+    }
+
+    return normalizedUpdates;
+}
+
 export async function POST(req: NextRequest) {
     // 1. Guard: Authentication & Authorization
     const ctx = await requireApprovedAdmin(req);
@@ -20,12 +46,14 @@ export async function POST(req: NextRequest) {
         const { userId, updates } = body;
         const normalizedUserId = String(userId || '').trim();
 
-        if (!normalizedUserId || !updates) {
+        if (!normalizedUserId || !updates || typeof updates !== 'object') {
             return NextResponse.json(
                 { error: 'Missing required fields: userId or updates' },
                 { status: 400 }
             );
         }
+
+        const normalizedUpdates = normalizeVerificationUpdates(updates as Record<string, unknown>);
 
         const { data: linkedAdmin, error: linkedAdminError } = await supabaseAdminClient
             .from('admin_users')
@@ -66,7 +94,7 @@ export async function POST(req: NextRequest) {
         // 3. Update Profile via Admin Client
         const { data, error } = await supabaseAdminClient
             .from('profiles')
-            .update(updates)
+            .update(normalizedUpdates)
             .eq('id', normalizedUserId)
             .select()
             .single();
@@ -83,7 +111,7 @@ export async function POST(req: NextRequest) {
             tableName: 'profiles',
             recordId: normalizedUserId,
             oldData: oldProfile || null,
-            newData: data || updates,
+            newData: data || normalizedUpdates,
             request: req,
         });
 

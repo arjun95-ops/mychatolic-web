@@ -40,6 +40,7 @@ type ReadingsPayload = {
   tingkat_perayaan: CelebrationRank;
   peringatan?: string;
   saint_name?: string;
+  warna_liturgi?: LiturgicalColor;
 };
 
 type DailyLiturgyUpsertPayload = {
@@ -97,21 +98,6 @@ const toCycle = (raw: unknown): LiturgicalCycle => {
   const value = textOrEmpty(raw).toUpperCase();
   if (value === "B" || value === "C") return value;
   return "A";
-};
-
-const toColor = (raw: unknown): LiturgicalColor => {
-  const value = textOrEmpty(raw).toLowerCase();
-  if (value === "putih" || value === "emas" || value === "gold" || value === "white") {
-    return "white";
-  }
-  if (value === "merah" || value === "red") return "red";
-  if (value === "hijau" || value === "green") return "green";
-  if (value === "ungu" || value === "violet" || value === "purple") return "purple";
-  if (value === "rose" || value === "pink" || value === "merah_muda" || value === "merah muda") {
-    return "rose";
-  }
-  if (value === "hitam" || value === "black") return "black";
-  return "green";
 };
 
 const toRank = (raw: unknown): CelebrationRank => {
@@ -199,7 +185,7 @@ export default function LiturgyPage() {
   const [celebrationRank, setCelebrationRank] = useState<CelebrationRank>("feria");
   const [memorialName, setMemorialName] = useState("");
   const [saintName, setSaintName] = useState("");
-  const [color, setColor] = useState<LiturgicalColor>("green");
+  const [color, setColor] = useState<LiturgicalColor | "">("");
   const [cycle, setCycle] = useState<LiturgicalCycle>("A");
 
   const [bacaan1, setBacaan1] = useState("");
@@ -229,7 +215,7 @@ export default function LiturgyPage() {
     setCelebrationRank("feria");
     setMemorialName("");
     setSaintName("");
-    setColor("green");
+    setColor("");
     setCycle("A");
     setBacaan1("");
     setMazmur("");
@@ -277,7 +263,18 @@ export default function LiturgyPage() {
         setCelebrationRank(toRank(firstText(data.celebration_rank, readings.tingkat_perayaan, readings.celebration_rank, readings.rank)));
         setMemorialName(firstText(data.memorial_name, readings.peringatan, readings.memorial_name, readings.memorial));
         setSaintName(firstText(data.saint_name, readings.saint_name, readings.saint, readings.orang_kudus));
-        setColor(toColor(data.color));
+        setColor(
+          parseColorStrict(
+            firstText(
+              data.color,
+              readings.warna_liturgi,
+              readings.warnaLiturgi,
+              readings.liturgical_color,
+              readings.liturgicalColor,
+              readings.color,
+            ),
+          ) ?? "",
+        );
         setCycle(toCycle(firstText(data.liturgical_cycle, readings.tahun_siklus, readings.liturgical_cycle)));
 
         setBacaan1(firstText(data.bacaan1, readings.bacaan1, readings.first_reading));
@@ -389,6 +386,7 @@ export default function LiturgyPage() {
     if (bacaan2Text.trim()) readings.bacaan2_teks = bacaan2Text.trim();
     if (memorialName.trim()) readings.peringatan = memorialName.trim();
     if (saintName.trim()) readings.saint_name = saintName.trim();
+    if (color) readings.warna_liturgi = color;
 
     return readings;
   };
@@ -417,6 +415,7 @@ export default function LiturgyPage() {
     if (!date) throw new Error("Tanggal wajib diisi");
     if (!feastName.trim()) throw new Error("Nama perayaan wajib diisi");
     if (!liturgicalDayName.trim()) throw new Error("Nama hari liturgi wajib diisi");
+    if (!color) throw new Error("Warna liturgi wajib dipilih");
     if (!bacaan1.trim()) throw new Error("Referensi Bacaan I wajib diisi");
     if (!mazmur.trim()) throw new Error("Referensi Mazmur Tanggapan wajib diisi");
     if (!baitPengantarInjil.trim()) throw new Error("Referensi Bait Pengantar Injil wajib diisi");
@@ -440,7 +439,7 @@ export default function LiturgyPage() {
     celebration_rank: celebrationRank,
     memorial_name: memorialName.trim() || null,
     saint_name: saintName.trim() || null,
-    color,
+    color: color as LiturgicalColor,
     liturgical_cycle: cycle,
     bait_pengantar_injil: baitPengantarInjil.trim(),
     bacaan1: bacaan1.trim(),

@@ -1,8 +1,9 @@
 export const VERIFIED_STATUSES = [
+  'verified',
+  'approved',
+  // Legacy values kept for backward compatibility when reading old snapshots.
   'verified_catholic',
   'verified_pastoral',
-  'approved',
-  'verified',
 ] as const;
 
 export type VerificationCategory =
@@ -102,7 +103,8 @@ export function isCatechumenUser(user?: VerificationUserLike | null): boolean {
 }
 
 export function approvedStatusForUser(user?: VerificationUserLike | null): string {
-  return isClergyRole(user?.role) ? 'verified_pastoral' : 'verified_catholic';
+  void user;
+  return 'verified';
 }
 
 export function normalizeProfileLocation<T extends VerificationUserLike>(user: T): T & {

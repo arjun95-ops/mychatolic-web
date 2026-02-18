@@ -73,15 +73,15 @@ export default function UserTable({
         return (
             <div className="p-12 text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary mx-auto"></div>
-                <p className="mt-2 text-sm text-gray-400">Memuat data user...</p>
+                <p className="mt-2 text-sm text-gray-400 dark:text-text-secondary/80">Memuat data user...</p>
             </div>
         );
     }
 
     if (rows.length === 0) {
         return (
-            <div className="p-12 text-center border-t border-gray-100">
-                <p className="text-gray-400">Tidak ada user yang ditemukan dengan filter ini.</p>
+            <div className="p-12 text-center border-t border-gray-100 dark:border-surface-secondary/70">
+                <p className="text-gray-400 dark:text-text-secondary/80">Tidak ada user yang ditemukan dengan filter ini.</p>
             </div>
         );
     }
@@ -90,7 +90,7 @@ export default function UserTable({
         <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
                 <thead>
-                    <tr className="bg-gray-50/50 border-b border-gray-200 text-xs uppercase text-gray-500 font-semibold tracking-wider">
+                    <tr className="bg-gray-50/50 dark:bg-surface-secondary/45 border-b border-gray-200 dark:border-surface-secondary/70 text-xs uppercase text-gray-500 dark:text-text-secondary/80 font-semibold tracking-wider">
                         <th className="px-6 py-4">Pengguna</th>
                         <th className="px-6 py-4">Peran</th>
                         <th className="px-6 py-4">Lokasi Gereja</th>
@@ -100,9 +100,9 @@ export default function UserTable({
                         <th className="px-6 py-4 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-gray-50 dark:divide-surface-secondary/60">
                     {rows.map((user) => (
-                        <tr key={user?.id} className="hover:bg-slate-50 transition group">
+                        <tr key={user?.id} className="hover:bg-slate-50 dark:hover:bg-surface-secondary/55 transition-colors group">
                             <td className="px-6 py-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden relative border border-gray-100 shrink-0">
@@ -151,7 +151,7 @@ export default function UserTable({
                             <td className="px-6 py-4 text-right">
                                 <button
                                     onClick={() => onDetail(user)}
-                                    className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:text-brand-primary hover:border-brand-primary hover:bg-slate-50 transition text-xs font-semibold inline-flex items-center gap-1 shadow-sm"
+                                    className="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-surface-secondary/80 text-gray-600 dark:text-text-secondary hover:text-brand-primary hover:border-brand-primary hover:bg-slate-50 dark:hover:bg-surface-secondary/65 transition text-xs font-semibold inline-flex items-center gap-1 shadow-sm"
                                 >
                                     <Eye size={14} /> Detail
                                 </button>

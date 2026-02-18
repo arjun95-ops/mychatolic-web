@@ -239,7 +239,7 @@ export async function GET(req: NextRequest) {
                 } else if (status === 'rejected') {
                     query = query.or('account_status.eq.rejected,verification_status.eq.rejected');
                 } else if (status === 'verified') {
-                    query = query.or('verification_status.eq.verified_catholic,verification_status.eq.verified_pastoral,account_status.eq.verified');
+                    query = query.or('verification_status.eq.verified,account_status.eq.verified');
                 } else if (status === 'pending') {
                     query = query.or('verification_status.eq.pending,account_status.eq.pending');
                 } else if (status === 'unverified') {
@@ -247,8 +247,6 @@ export async function GET(req: NextRequest) {
                     query = query.neq('account_status', 'banned')
                         .neq('account_status', 'rejected')
                         .neq('verification_status', 'rejected')
-                        .neq('verification_status', 'verified_catholic')
-                        .neq('verification_status', 'verified_pastoral')
                         .neq('verification_status', 'verified')
                         .neq('verification_status', 'pending')
                         .neq('account_status', 'pending')
