@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-02-20T18:19:31.466Z",
+  "workspace": "id/TB1",
+  "args": {
+    "lang": "id",
+    "version": "TB1",
+    "resumeFile": "docs/import/tb1_catholic_sync_resume.json",
+    "reportFile": "docs/import/tb1_catholic_sync_report.json",
+    "deuteroCsv": "docs/import/deuterokanonika_tb1_import_clean_v2.csv",
+    "timeoutMs": 20000,
+    "retries": 5,
+    "retryBaseMs": 750,
+    "chunkSize": 500,
+    "requestDelayMs": 0,
+    "dryRun": false,
+    "resetResume": false,
+    "skipAudit": false,
+    "onlyBook": "Tobit",
+    "fromOrder": 1
+  },
+  "run_stats": {
+    "books_targeted": 1,
+    "books_processed": 1,
+    "chapters_processed": 0,
+    "verses_upserted": 0,
+    "warnings": [],
+    "started_at": "2026-02-20T18:19:20.162Z",
+    "finished_at": "2026-02-20T18:19:31.466Z"
+  },
+  "audit": {
+    "generated_at": "2026-02-20T18:19:31.466Z",
+    "workspace": "id/TB1",
+    "totals": {
+      "books": 73,
+      "chapters": 1334,
+      "verses": 35431,
+      "verses_with_pericope": 2365
+    },
+    "missing_book_coverage": []
+  }
+}

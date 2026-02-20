@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { Search, Plus, Edit2, Trash2, Globe, Loader2, Save } from "lucide-react";
+import { Search, Plus, Edit2, Trash2, Globe, Loader2, Save, RefreshCw } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import Modal from "@/components/ui/Modal";
 
@@ -27,6 +27,7 @@ type CountryTabProps = {
 
 export default function CountryTab({ onDataChanged }: CountryTabProps) {
     const { showToast } = useToast();
+    const showSyncButtons = false;
     const [countries, setCountries] = useState<Country[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
@@ -37,6 +38,7 @@ export default function CountryTab({ onDataChanged }: CountryTabProps) {
     const [currentId, setCurrentId] = useState<string | null>(null);
     const [formData, setFormData] = useState({ name: "", iso_code: "", flag_emoji: "" });
     const [saving, setSaving] = useState(false);
+    const [syncingWorld, setSyncingWorld] = useState(false);
 
     const duplicateCountryNameSet = useMemo(() => {
         const counts = new Map<string, number>();
@@ -143,6 +145,33 @@ export default function CountryTab({ onDataChanged }: CountryTabProps) {
         }
     };
 
+    const handleSyncWorldCountries = async () => {
+        if (!confirm("Sinkronkan data negara dunia ke database? Proses ini akan menambah/memperbarui daftar negara beserta benderanya.")) {
+            return;
+        }
+
+        setSyncingWorld(true);
+        try {
+            const response = await fetch("/api/admin/master-data/countries/sync-world", {
+                method: "POST",
+            });
+
+            const result = (await response.json().catch(() => ({}))) as { message?: string };
+            if (!response.ok) {
+                throw new Error(result.message || "Gagal sinkronisasi data negara dunia.");
+            }
+
+            showToast(result.message || "Sinkronisasi negara dunia selesai.", "success");
+            void fetchCountries();
+            onDataChanged?.();
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : "Unknown error";
+            showToast(message, "error");
+        } finally {
+            setSyncingWorld(false);
+        }
+    };
+
     const openAdd = () => {
         setFormData({ name: "", iso_code: "", flag_emoji: "" });
         setIsEditing(false);
@@ -170,12 +199,24 @@ export default function CountryTab({ onDataChanged }: CountryTabProps) {
                         className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm text-slate-900 dark:text-white transition-colors"
                     />
                 </div>
-                <button
-                    onClick={openAdd}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-brand-primary/20 dark:shadow-brand-primary/20 transition-all text-sm"
-                >
-                    <Plus className="w-4 h-4" /> Tambah Negara
-                </button>
+                <div className="flex gap-2">
+                    {showSyncButtons ? (
+                        <button
+                            onClick={handleSyncWorldCountries}
+                            disabled={syncingWorld}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold transition-all text-sm disabled:opacity-60"
+                        >
+                            {syncingWorld ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                            Sinkron Negara Dunia
+                        </button>
+                    ) : null}
+                    <button
+                        onClick={openAdd}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-brand-primary/20 dark:shadow-brand-primary/20 transition-all text-sm"
+                    >
+                        <Plus className="w-4 h-4" /> Tambah Negara
+                    </button>
+                </div>
             </div>
             <div className="px-6 py-2 text-xs text-red-600 dark:text-red-300 bg-red-50/70 dark:bg-red-900/10 border-b border-red-100 dark:border-red-900/30">
                 Baris merah menandakan nama negara duplikat.

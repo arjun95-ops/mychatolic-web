@@ -9,6 +9,7 @@
     "lint": "eslint",
     "bible:tb1:placeholder-template": "node scripts/patch_tb1_placeholders.mjs --generate-template --dry-run",
     "bible:tb1:placeholder-patch": "node scripts/patch_tb1_placeholders.mjs",
+    "bible:tb1:catholic-sync": "node scripts/sync_tb1_catholic_full.mjs",
     "bible:tb:alias-sync:dry-run": "node scripts/sync_tb_alias_from_tb1.mjs --dry-run",
     "bible:tb:alias-sync:apply": "node scripts/sync_tb_alias_from_tb1.mjs",
     "admin:email-exclusivity:dry-run": "node scripts/enforce_admin_email_exclusivity.mjs --dry-run",

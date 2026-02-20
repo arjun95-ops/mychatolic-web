@@ -15,17 +15,23 @@ export async function POST(req: NextRequest) {
         return ctx
     }
 
-    const { isAuthenticated, emailVerified, user } = ctx
+    const { isAuthenticated, emailVerified, user, setCookiesToResponse } = ctx
+
+    const json = (payload: unknown, init?: { status?: number }) => {
+        const res = NextResponse.json(payload, init)
+        setCookiesToResponse(res)
+        return res
+    }
 
     if (!isAuthenticated || !user) {
-        return NextResponse.json(
+        return json(
             { error: 'Unauthorized', message: 'Silakan login terlebih dahulu' },
             { status: 401 }
         )
     }
 
     if (!emailVerified) {
-        return NextResponse.json(
+        return json(
             { error: 'Forbidden', message: 'Email belum diverifikasi' },
             { status: 403 }
         )
@@ -36,14 +42,14 @@ export async function POST(req: NextRequest) {
     try {
         body = await req.json();
     } catch {
-        return NextResponse.json({ error: 'BadRequest', message: 'Invalid JSON' }, { status: 400 });
+        return json({ error: 'BadRequest', message: 'Invalid JSON' }, { status: 400 });
     }
 
     const fullNameInput = body?.full_name;
     const full_name = typeof fullNameInput === 'string' ? fullNameInput.trim() : '';
 
     if (!full_name) {
-        return NextResponse.json(
+        return json(
             { error: 'ValidationError', message: 'full_name wajib diisi' },
             { status: 400 }
         );
@@ -62,7 +68,7 @@ export async function POST(req: NextRequest) {
             email: normalizedEmail,
         });
         if (appProfileCheck.hasActiveAppProfile) {
-            return NextResponse.json(
+            return json(
                 {
                     error: 'Forbidden',
                     message:
@@ -82,7 +88,7 @@ export async function POST(req: NextRequest) {
 
     if (allowlistError) {
         if (allowlistError.code === '42P01') {
-            return NextResponse.json(
+            return json(
                 {
                     error: 'SchemaError',
                     message:
@@ -91,14 +97,14 @@ export async function POST(req: NextRequest) {
                 { status: 500 }
             );
         }
-        return NextResponse.json(
+        return json(
             { error: 'DatabaseError', message: allowlistError.message },
             { status: 500 }
         );
     }
 
     if (!allowlistedEmail) {
-        return NextResponse.json(
+        return json(
             {
                 error: 'Forbidden',
                 message: 'Email Anda belum masuk daftar allowlist admin. Hubungi Super Admin.',
@@ -117,7 +123,7 @@ export async function POST(req: NextRequest) {
 
     if (fetchError) {
         console.error('Check Existing Admin Error:', fetchError);
-        return NextResponse.json(
+        return json(
             { error: 'DatabaseError', message: 'Gagal mengecek data admin' },
             { status: 500 }
         );
@@ -125,14 +131,14 @@ export async function POST(req: NextRequest) {
 
     if (existingAdmin) {
         if (existingAdmin.role === 'super_admin') {
-            return NextResponse.json(
+            return json(
                 { error: 'Forbidden', message: 'Anda sudah terdaftar sebagai Super Admin' },
                 { status: 403 }
             );
         }
 
         if (existingAdmin.status === 'suspended') {
-            return NextResponse.json(
+            return json(
                 {
                     error: 'Forbidden',
                     message: 'Akun admin Anda sedang suspended. Hanya Super Admin yang bisa mengaktifkan kembali.',
@@ -142,7 +148,7 @@ export async function POST(req: NextRequest) {
         }
 
         if (existingAdmin.status === 'approved') {
-            return NextResponse.json(
+            return json(
                 { error: 'Forbidden', message: 'Akun Anda sudah aktif sebagai admin.' },
                 { status: 403 }
             );
@@ -167,7 +173,7 @@ export async function POST(req: NextRequest) {
 
     if (error) {
         console.error('Register Admin Error:', error);
-        return NextResponse.json(
+        return json(
             { error: 'DatabaseError', message: error.message },
             { status: 500 }
         );
@@ -184,7 +190,7 @@ export async function POST(req: NextRequest) {
             exclusivityError instanceof Error
                 ? exclusivityError.message
                 : 'Gagal menerapkan aturan email eksklusif admin.';
-        return NextResponse.json(
+        return json(
             { error: 'DatabaseError', message },
             { status: 500 }
         );
@@ -202,5 +208,5 @@ export async function POST(req: NextRequest) {
         extra: { source: 'self_register' },
     });
 
-    return NextResponse.json({ success: true });
+    return json({ success: true });
 }

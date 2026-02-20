@@ -12,6 +12,7 @@ import {
   Loader2,
   MapPin,
   Plus,
+  RefreshCw,
   Save,
   Search,
   Trash2,
@@ -21,6 +22,7 @@ import {
 const CHURCH_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_CHURCH_BUCKET || "church_images";
 const REQUIRED_W = 1080;
 const REQUIRED_H = 1350;
+const CLIENT_FETCH_PAGE_SIZE = 1000;
 
 type ErrorLike = {
   message?: unknown;
@@ -65,6 +67,11 @@ interface Diocese {
   country_id: string;
   countries?: Country;
 }
+
+type BatchDioceseRow = {
+  id?: unknown;
+  name?: unknown;
+};
 
 interface Church {
   id: string;
@@ -252,6 +259,69 @@ type SearchableSelectProps = {
   onChange: (value: string) => void;
 };
 
+type WorldSyncCheckpoint = {
+  offset: number;
+  page: number;
+  processed: number;
+  inserted: number;
+  updated: number;
+  unchanged: number;
+  unresolvedDiocese: number;
+  unresolvedCountry: number;
+  skippedNoIso: number;
+  updatedAt: string;
+};
+
+const WORLD_SYNC_CHECKPOINT_KEY = "mychatolic::churches::world-sync-checkpoint::v1";
+
+const parseWorldSyncCheckpoint = (value: unknown): WorldSyncCheckpoint | null => {
+  if (!value || typeof value !== "object") return null;
+  const row = value as {
+    offset?: unknown;
+    page?: unknown;
+    processed?: unknown;
+    inserted?: unknown;
+    updated?: unknown;
+    unchanged?: unknown;
+    unresolvedDiocese?: unknown;
+    unresolvedCountry?: unknown;
+    skippedNoIso?: unknown;
+    updatedAt?: unknown;
+  };
+
+  const asNumber = (input: unknown): number => {
+    const parsed = Number(input);
+    return Number.isFinite(parsed) ? Math.max(0, Math.trunc(parsed)) : 0;
+  };
+
+  const parsed: WorldSyncCheckpoint = {
+    offset: asNumber(row.offset),
+    page: asNumber(row.page),
+    processed: asNumber(row.processed),
+    inserted: asNumber(row.inserted),
+    updated: asNumber(row.updated),
+    unchanged: asNumber(row.unchanged),
+    unresolvedDiocese: asNumber(row.unresolvedDiocese),
+    unresolvedCountry: asNumber(row.unresolvedCountry),
+    skippedNoIso: asNumber(row.skippedNoIso),
+    updatedAt: typeof row.updatedAt === "string" ? row.updatedAt : "",
+  };
+
+  if (parsed.offset <= 0 || parsed.page <= 0) return null;
+  return parsed;
+};
+
+const readWorldSyncCheckpoint = (): WorldSyncCheckpoint | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(WORLD_SYNC_CHECKPOINT_KEY);
+    if (!raw) return null;
+    return parseWorldSyncCheckpoint(JSON.parse(raw));
+  } catch {
+    return null;
+  }
+};
+
 function SearchableSelect({
   value,
   options,
@@ -366,12 +436,23 @@ function SearchableSelect({
 
 export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
   const { showToast } = useToast();
+  const showSyncButtons = false;
   const importInputRef = useRef<HTMLInputElement | null>(null);
+  const duplicateRowRefs = useRef<Map<string, HTMLTableRowElement | null>>(new Map());
 
   const [data, setData] = useState<Church[]>([]);
   const [loading, setLoading] = useState(true);
   const [importing, setImporting] = useState(false);
+  const [syncingIndonesia, setSyncingIndonesia] = useState(false);
+  const [syncingSelectedDiocese, setSyncingSelectedDiocese] = useState(false);
+  const [syncingAllDioceses, setSyncingAllDioceses] = useState(false);
+  const [syncAllProgress, setSyncAllProgress] = useState({ done: 0, total: 0 });
+  const [syncingWorld, setSyncingWorld] = useState(false);
+  const [syncWorldProgress, setSyncWorldProgress] = useState({ page: 0, processed: 0 });
+  const [worldSyncCheckpoint, setWorldSyncCheckpoint] = useState<WorldSyncCheckpoint | null>(null);
   const [hasMapColumns, setHasMapColumns] = useState(true);
+  const [activeDuplicateRowId, setActiveDuplicateRowId] = useState<string>("");
+  const [duplicateCursor, setDuplicateCursor] = useState(-1);
 
   const [search, setSearch] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -394,6 +475,15 @@ export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
     return duplicates;
   }, [data]);
   const duplicateChurchCount = duplicateChurchKeySet.size;
+  const duplicateRowIds = useMemo(
+    () =>
+      data
+        .filter((item) =>
+          duplicateChurchKeySet.has(buildChurchDuplicateKey(item.name || "", item.diocese_id || "")),
+        )
+        .map((item) => item.id),
+    [data, duplicateChurchKeySet],
+  );
 
   const countryOptions = useMemo<SearchableOption[]>(
     () =>
@@ -437,6 +527,70 @@ export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [modalDioceses, setModalDioceses] = useState<Diocese[]>([]);
+
+  useEffect(() => {
+    setWorldSyncCheckpoint(readWorldSyncCheckpoint());
+  }, []);
+
+  useEffect(() => {
+    if (duplicateRowIds.length === 0) {
+      setActiveDuplicateRowId("");
+      setDuplicateCursor(-1);
+      return;
+    }
+    if (!activeDuplicateRowId || !duplicateRowIds.includes(activeDuplicateRowId)) {
+      setActiveDuplicateRowId("");
+      setDuplicateCursor(-1);
+    }
+  }, [activeDuplicateRowId, duplicateRowIds]);
+
+  const persistWorldSyncCheckpoint = useCallback((checkpoint: WorldSyncCheckpoint) => {
+    setWorldSyncCheckpoint(checkpoint);
+    try {
+      window.localStorage.setItem(WORLD_SYNC_CHECKPOINT_KEY, JSON.stringify(checkpoint));
+    } catch {
+      // Ignore localStorage write failure.
+    }
+  }, []);
+
+  const clearWorldSyncCheckpoint = useCallback(() => {
+    setWorldSyncCheckpoint(null);
+    try {
+      window.localStorage.removeItem(WORLD_SYNC_CHECKPOINT_KEY);
+    } catch {
+      // Ignore localStorage remove failure.
+    }
+  }, []);
+
+  const jumpToDuplicateRow = useCallback(
+    (mode: "first" | "next") => {
+      if (duplicateRowIds.length === 0) {
+        showToast("Tidak ada baris duplikat di tampilan saat ini.", "error");
+        return;
+      }
+
+      const nextCursor =
+        mode === "first"
+          ? 0
+          : duplicateCursor >= 0
+            ? (duplicateCursor + 1) % duplicateRowIds.length
+            : 0;
+
+      const rowId = duplicateRowIds[nextCursor] || "";
+      if (!rowId) return;
+      const rowEl = duplicateRowRefs.current.get(rowId);
+      if (!rowEl) {
+        showToast("Baris duplikat tidak ditemukan di tabel saat ini.", "error");
+        return;
+      }
+
+      setDuplicateCursor(nextCursor);
+      setActiveDuplicateRowId(rowId);
+      rowEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      window.setTimeout(() => rowEl.focus(), 120);
+    },
+    [duplicateCursor, duplicateRowIds, showToast],
+  );
 
   const selectChurchesBase = `
     id, name, address, diocese_id, image_url,
@@ -490,28 +644,46 @@ export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
   const fetchChurches = useCallback(async () => {
     setLoading(true);
     try {
-      let query = supabase.from("churches").select(selectChurchesBase).order("name");
-      if (filterDiocese) query = query.eq("diocese_id", filterDiocese);
-      if (search) query = query.ilike("name", `%${search}%`);
+      const fetchChurchRowsPaged = async (selectClause: string) => {
+        const rows: RawChurch[] = [];
+        let from = 0;
 
-      const firstRes = await query;
+        while (true) {
+          let query = supabase
+            .from("churches")
+            .select(selectClause)
+            .order("name")
+            .range(from, from + CLIENT_FETCH_PAGE_SIZE - 1);
+          if (filterDiocese) query = query.eq("diocese_id", filterDiocese);
+          if (search) query = query.ilike("name", `%${search}%`);
+
+          const response = await query;
+          if (response.error) {
+            return { rows: [] as RawChurch[], error: response.error };
+          }
+
+          const batch = (response.data || []) as RawChurch[];
+          rows.push(...batch);
+          if (batch.length < CLIENT_FETCH_PAGE_SIZE) {
+            return { rows, error: null };
+          }
+
+          from += CLIENT_FETCH_PAGE_SIZE;
+        }
+      };
+
+      const firstRes = await fetchChurchRowsPaged(selectChurchesBase);
       let rows: RawChurch[] = [];
       const firstError = firstRes.error;
       if (!firstError) {
-        rows = (firstRes.data || []) as RawChurch[];
+        rows = firstRes.rows;
       } else if (isMissingColumnError(firstError, "google_maps_url")) {
         setHasMapColumns(false);
-        let fallback = supabase
-          .from("churches")
-          .select(selectChurchesFallback)
-          .order("name");
-        if (filterDiocese) fallback = fallback.eq("diocese_id", filterDiocese);
-        if (search) fallback = fallback.ilike("name", `%${search}%`);
-        const fallbackRes = await fallback;
+        const fallbackRes = await fetchChurchRowsPaged(selectChurchesFallback);
         if (fallbackRes.error) {
           throw fallbackRes.error;
         }
-        rows = (fallbackRes.data || []) as RawChurch[];
+        rows = fallbackRes.rows;
       } else {
         throw firstError;
       }
@@ -1097,6 +1269,379 @@ export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
     }
   };
 
+  const handleSyncIndonesiaChurches = async () => {
+    if (!window.confirm("Sinkronkan data paroki/gereja Indonesia ke database? Proses ini akan menambah atau memperbarui nama gereja berdasarkan sumber publik.")) {
+      return;
+    }
+
+    setSyncingIndonesia(true);
+    try {
+      const response = await fetch("/api/admin/master-data/churches/sync-indonesia", {
+        method: "POST",
+      });
+      const result = (await response.json().catch(() => ({}))) as { message?: string };
+      if (!response.ok) {
+        throw new Error(result.message || "Gagal sinkronisasi paroki/gereja Indonesia.");
+      }
+
+      showToast(result.message || "Sinkronisasi paroki/gereja Indonesia selesai.", "success");
+      await fetchChurches();
+      onDataChanged?.();
+    } catch (error: unknown) {
+      showToast(getErrorMessage(error), "error");
+    } finally {
+      setSyncingIndonesia(false);
+    }
+  };
+
+  const handleSyncSelectedDioceseChurches = async () => {
+    if (!filterDiocese) {
+      showToast("Pilih keuskupan terlebih dahulu.", "error");
+      return;
+    }
+
+    const selected = dioceses.find((item) => item.id === filterDiocese);
+    const selectedName = selected?.name || "keuskupan terpilih";
+    if (!window.confirm(`Sinkronkan data paroki/gereja untuk ${selectedName}?`)) {
+      return;
+    }
+
+    setSyncingSelectedDiocese(true);
+    try {
+      const response = await fetch("/api/admin/master-data/churches/sync-diocese", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ diocese_id: filterDiocese }),
+      });
+      const result = (await response.json().catch(() => ({}))) as { message?: string };
+      if (!response.ok) {
+        throw new Error(result.message || "Gagal sinkronisasi keuskupan terpilih.");
+      }
+
+      showToast(result.message || "Sinkronisasi keuskupan selesai.", "success");
+      await fetchChurches();
+      onDataChanged?.();
+    } catch (error: unknown) {
+      showToast(getErrorMessage(error), "error");
+    } finally {
+      setSyncingSelectedDiocese(false);
+    }
+  };
+
+  const handleSyncWorldChurches = async () => {
+    let checkpoint = worldSyncCheckpoint || readWorldSyncCheckpoint();
+    if (checkpoint) {
+      setWorldSyncCheckpoint(checkpoint);
+    }
+
+    if (checkpoint) {
+      const savedDate = new Date(checkpoint.updatedAt);
+      const savedAtLabel = Number.isFinite(savedDate.getTime())
+        ? savedDate.toLocaleString("id-ID")
+        : checkpoint.updatedAt || "waktu tidak diketahui";
+      const resumeConfirmed = window.confirm(
+        `Ditemukan checkpoint sinkron dunia (${savedAtLabel}). Lanjutkan dari halaman ${checkpoint.page + 1}?`,
+      );
+      if (!resumeConfirmed) {
+        if (
+          !window.confirm(
+            "Mulai sinkron dunia dari awal? Checkpoint lama akan dihapus.",
+          )
+        ) {
+          return;
+        }
+        checkpoint = null;
+        clearWorldSyncCheckpoint();
+      }
+    } else if (
+      !window.confirm(
+        "Sinkronkan data paroki/gereja dunia ke database? Proses ini bisa cukup lama.",
+      )
+    ) {
+      return;
+    }
+
+    setSyncingWorld(true);
+
+    try {
+      const pageLimit = 5000;
+      let offset = checkpoint?.offset ?? 0;
+      let page = checkpoint?.page ?? 0;
+      let processedTotal = checkpoint?.processed ?? 0;
+      let insertedTotal = checkpoint?.inserted ?? 0;
+      let updatedTotal = checkpoint?.updated ?? 0;
+      let unchangedTotal = checkpoint?.unchanged ?? 0;
+      let unresolvedDioceseTotal = checkpoint?.unresolvedDiocese ?? 0;
+      let unresolvedCountryTotal = checkpoint?.unresolvedCountry ?? 0;
+      let skippedNoIsoTotal = checkpoint?.skippedNoIso ?? 0;
+      let hasMore = true;
+
+      setSyncWorldProgress({ page, processed: processedTotal });
+
+      while (hasMore) {
+        page += 1;
+
+        let attempt = 0;
+        let pageResult: {
+          message?: string;
+          sourcePageCount?: number;
+          nextOffset?: number;
+          hasMore?: boolean;
+          insertedCount?: number;
+          updatedCount?: number;
+          unchangedCount?: number;
+          unresolvedDioceseCount?: number;
+          unresolvedCountryCount?: number;
+          skippedNoCountryIsoCount?: number;
+        } | null = null;
+
+        while (attempt < 3) {
+          attempt += 1;
+          const response = await fetch("/api/admin/master-data/churches/sync-world", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ offset, limit: pageLimit }),
+          });
+          const result = (await response.json().catch(() => ({}))) as { message?: string };
+          if (response.ok) {
+            pageResult = result;
+            break;
+          }
+
+          const message = result.message || `Gagal sinkronisasi halaman ${page}.`;
+          const normalized = message.toLowerCase();
+          const isTransient =
+            normalized.includes("429") ||
+            normalized.includes("504") ||
+            normalized.includes("timeout") ||
+            normalized.includes("temporarily");
+
+          if (isTransient && attempt < 3) {
+            await new Promise((resolve) => {
+              window.setTimeout(resolve, 1200 * attempt);
+            });
+            continue;
+          }
+
+          throw new Error(message);
+        }
+
+        if (!pageResult) {
+          throw new Error(`Gagal memproses halaman ${page}.`);
+        }
+
+        const sourcePageCount = Number(pageResult.sourcePageCount || 0);
+        processedTotal += sourcePageCount;
+        insertedTotal += Number(pageResult.insertedCount || 0);
+        updatedTotal += Number(pageResult.updatedCount || 0);
+        unchangedTotal += Number(pageResult.unchangedCount || 0);
+        unresolvedDioceseTotal += Number(pageResult.unresolvedDioceseCount || 0);
+        unresolvedCountryTotal += Number(pageResult.unresolvedCountryCount || 0);
+        skippedNoIsoTotal += Number(pageResult.skippedNoCountryIsoCount || 0);
+
+        setSyncWorldProgress({ page, processed: processedTotal });
+
+        const nextOffset = Number(pageResult.nextOffset ?? offset + sourcePageCount);
+        hasMore = Boolean(pageResult.hasMore) && sourcePageCount > 0;
+        if (hasMore) {
+          const resolvedOffset =
+            Number.isFinite(nextOffset) && nextOffset > offset
+              ? nextOffset
+              : offset + Math.max(1, sourcePageCount);
+          offset = resolvedOffset;
+
+          persistWorldSyncCheckpoint({
+            offset: resolvedOffset,
+            page,
+            processed: processedTotal,
+            inserted: insertedTotal,
+            updated: updatedTotal,
+            unchanged: unchangedTotal,
+            unresolvedDiocese: unresolvedDioceseTotal,
+            unresolvedCountry: unresolvedCountryTotal,
+            skippedNoIso: skippedNoIsoTotal,
+            updatedAt: new Date().toISOString(),
+          });
+
+          await new Promise((resolve) => {
+            window.setTimeout(resolve, 250);
+          });
+        }
+      }
+
+      clearWorldSyncCheckpoint();
+      await fetchChurches();
+      onDataChanged?.();
+
+      showToast(
+        `Sinkron gereja dunia selesai. Halaman: ${page}, Sumber: ${processedTotal}, Insert: ${insertedTotal}, Update: ${updatedTotal}, Tidak berubah: ${unchangedTotal}, Keuskupan tidak cocok: ${unresolvedDioceseTotal}, Negara tidak cocok: ${unresolvedCountryTotal}, Tanpa ISO: ${skippedNoIsoTotal}.`,
+        "success",
+      );
+    } catch (error: unknown) {
+      const message = getErrorMessage(error);
+      const saved = readWorldSyncCheckpoint();
+      if (saved) {
+        setWorldSyncCheckpoint(saved);
+        showToast(
+          `${message} Progress tersimpan di halaman ${saved.page} (${saved.processed} sumber). Klik Sinkron Dunia lagi untuk lanjut.`,
+          "error",
+        );
+      } else {
+        showToast(message, "error");
+      }
+    } finally {
+      setSyncingWorld(false);
+      setSyncWorldProgress({ page: 0, processed: 0 });
+    }
+  };
+
+  const handleSyncAllDiocesesChurches = async () => {
+    if (
+      !window.confirm(
+        "Sinkronkan semua keuskupan Indonesia? Proses ini bisa memakan waktu beberapa menit.",
+      )
+    ) {
+      return;
+    }
+
+    setSyncingAllDioceses(true);
+    setSyncAllProgress({ done: 0, total: 0 });
+
+    try {
+      let indonesiaCountryId = "";
+
+      const countryByIsoRes = await supabase
+        .from("countries")
+        .select("id, name")
+        .eq("iso_code", "ID")
+        .maybeSingle();
+
+      if (countryByIsoRes.error && !isMissingColumnError(countryByIsoRes.error, "iso_code")) {
+        throw countryByIsoRes.error;
+      }
+
+      if (!countryByIsoRes.error) {
+        indonesiaCountryId = String(countryByIsoRes.data?.id || "");
+      }
+      if (!indonesiaCountryId) {
+        const countryByNameRes = await supabase
+          .from("countries")
+          .select("id, name")
+          .ilike("name", "Indonesia")
+          .order("name")
+          .limit(1)
+          .maybeSingle();
+
+        if (countryByNameRes.error) {
+          throw countryByNameRes.error;
+        }
+
+        indonesiaCountryId = String(countryByNameRes.data?.id || "");
+      }
+
+      if (!indonesiaCountryId) {
+        throw new Error("Negara Indonesia belum ada di master data.");
+      }
+
+      const diocesesRes = await supabase
+        .from("dioceses")
+        .select("id, name")
+        .eq("country_id", indonesiaCountryId)
+        .order("name");
+
+      if (diocesesRes.error) {
+        throw diocesesRes.error;
+      }
+
+      const allDioceses = ((diocesesRes.data || []) as BatchDioceseRow[])
+        .map((row) => ({
+          id: String(row.id || ""),
+          name: String(row.name || ""),
+        }))
+        .filter((row) => Boolean(row.id) && Boolean(row.name));
+
+      if (allDioceses.length === 0) {
+        throw new Error("Belum ada data keuskupan Indonesia. Sinkronkan data keuskupan dulu.");
+      }
+
+      setSyncAllProgress({ done: 0, total: allDioceses.length });
+
+      let successCount = 0;
+      let insertedTotal = 0;
+      let updatedTotal = 0;
+      let unchangedTotal = 0;
+      const failedDioceses: string[] = [];
+      const skippedNoSourceDioceses: string[] = [];
+
+      for (let i = 0; i < allDioceses.length; i += 1) {
+        const diocese = allDioceses[i];
+
+        try {
+          const response = await fetch("/api/admin/master-data/churches/sync-diocese", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ diocese_id: diocese.id }),
+          });
+
+          const result = (await response.json().catch(() => ({}))) as {
+            message?: string;
+            insertedCount?: number;
+            updatedCount?: number;
+            unchangedCount?: number;
+          };
+
+          if (!response.ok) {
+            const message = result.message || `Gagal sinkronisasi ${diocese.name}.`;
+            const normalizedMessage = message.toLowerCase();
+            if (normalizedMessage.includes("sumber publik belum menyediakan data paroki/gereja")) {
+              skippedNoSourceDioceses.push(diocese.name);
+              continue;
+            }
+            throw new Error(message);
+          }
+
+          successCount += 1;
+          insertedTotal += Number(result.insertedCount || 0);
+          updatedTotal += Number(result.updatedCount || 0);
+          unchangedTotal += Number(result.unchangedCount || 0);
+        } catch (error: unknown) {
+          failedDioceses.push(`${diocese.name}: ${getErrorMessage(error)}`);
+        } finally {
+          setSyncAllProgress({ done: i + 1, total: allDioceses.length });
+        }
+      }
+
+      await fetchChurches();
+      onDataChanged?.();
+
+      if (failedDioceses.length === 0) {
+        const skippedSuffix =
+          skippedNoSourceDioceses.length > 0
+            ? ` Dilewati (belum ada sumber publik): ${skippedNoSourceDioceses.length} keuskupan.`
+            : "";
+        showToast(
+          `Sinkron semua keuskupan selesai. Berhasil ${successCount}/${allDioceses.length}. Insert: ${insertedTotal}, Update: ${updatedTotal}, Tidak berubah: ${unchangedTotal}.${skippedSuffix}`,
+          "success",
+        );
+      } else {
+        const skippedSuffix =
+          skippedNoSourceDioceses.length > 0
+            ? ` Dilewati (belum ada sumber publik): ${skippedNoSourceDioceses.length}.`
+            : "";
+        const failedPreview = failedDioceses.slice(0, 2).join(" | ");
+        showToast(
+          `Sinkron selesai dengan ${failedDioceses.length} gagal dari ${allDioceses.length} keuskupan. Berhasil: ${successCount}.${skippedSuffix} ${failedPreview}`,
+          "error",
+        );
+      }
+    } catch (error: unknown) {
+      showToast(getErrorMessage(error), "error");
+    } finally {
+      setSyncingAllDioceses(false);
+      setSyncAllProgress({ done: 0, total: 0 });
+    }
+  };
+
 
 
   return (
@@ -1147,6 +1692,78 @@ export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
               <Upload className="w-4 h-4" />
               {downloadingTemplate === "xlsx" ? "Menyiapkan..." : "Template Excel"}
             </button>
+            {showSyncButtons ? (
+              <button
+                type="button"
+                onClick={handleSyncIndonesiaChurches}
+                disabled={
+                  syncingIndonesia ||
+                  syncingSelectedDiocese ||
+                  syncingAllDioceses ||
+                  syncingWorld ||
+                  Boolean(filterDiocese)
+                }
+                className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 bg-white hover:bg-slate-50 rounded-xl text-slate-700 font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {syncingIndonesia ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+                Sinkron Nasional (Wikidata)
+              </button>
+            ) : null}
+            {showSyncButtons ? (
+              <button
+                type="button"
+                onClick={handleSyncSelectedDioceseChurches}
+                disabled={syncingSelectedDiocese || syncingIndonesia || syncingAllDioceses || syncingWorld || !filterDiocese}
+                className="flex items-center gap-2 px-4 py-2.5 border border-action/20 bg-action/5 hover:bg-action/10 rounded-xl text-action font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {syncingSelectedDiocese ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+                Sinkron Keuskupan (One-by-one)
+              </button>
+            ) : null}
+            {showSyncButtons ? (
+              <button
+                type="button"
+                onClick={handleSyncWorldChurches}
+                disabled={syncingWorld || syncingIndonesia || syncingSelectedDiocese || syncingAllDioceses}
+                className="flex items-center gap-2 px-4 py-2.5 border border-cyan-200 bg-cyan-50 hover:bg-cyan-100 rounded-xl text-cyan-800 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {syncingWorld ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+                {syncingWorld
+                  ? `Sinkron Dunia (${syncWorldProgress.page}, ${syncWorldProgress.processed})`
+                  : worldSyncCheckpoint
+                    ? `Lanjutkan Dunia (${worldSyncCheckpoint.page}, ${worldSyncCheckpoint.processed})`
+                    : "Sinkron Dunia (Wikidata)"}
+              </button>
+            ) : null}
+            {showSyncButtons ? (
+              <button
+                type="button"
+                onClick={handleSyncAllDiocesesChurches}
+                disabled={syncingAllDioceses || syncingIndonesia || syncingSelectedDiocese || syncingWorld}
+                className="flex items-center gap-2 px-4 py-2.5 border border-amber-200 bg-amber-50 hover:bg-amber-100 rounded-xl text-amber-800 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {syncingAllDioceses ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+                {syncingAllDioceses && syncAllProgress.total > 0
+                  ? `Sinkron Semua (${syncAllProgress.done}/${syncAllProgress.total})`
+                  : "Sinkron Semua Keuskupan"}
+              </button>
+            ) : null}
             <button
               onClick={handleOpenAdd}
               className="flex items-center gap-2 px-5 py-2.5 bg-action hover:bg-action/90 text-text-inverse rounded-xl font-bold shadow-lg shadow-action/20 transition-all text-sm"
@@ -1185,8 +1802,26 @@ export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
           </div>
         </div>
         {duplicateChurchCount > 0 ? (
-          <div className="text-xs text-red-600 dark:text-red-300 bg-red-50/70 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-xl px-3 py-2">
-            Ditemukan {duplicateChurchCount} nama paroki duplikat di keuskupan yang sama. Baris merah perlu dibersihkan.
+          <div className="text-xs text-red-600 dark:text-red-300 bg-red-50/70 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-xl px-3 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <span>
+              Ditemukan {duplicateChurchCount} nama paroki duplikat di keuskupan yang sama. Baris merah perlu dibersihkan.
+            </span>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => jumpToDuplicateRow("first")}
+                className="px-2.5 py-1 rounded-lg border border-red-300 dark:border-red-800 bg-white/80 dark:bg-red-950/30 hover:bg-white dark:hover:bg-red-950/50 text-red-700 dark:text-red-200 font-semibold transition-colors"
+              >
+                Lihat Baris Merah
+              </button>
+              <button
+                type="button"
+                onClick={() => jumpToDuplicateRow("next")}
+                className="px-2.5 py-1 rounded-lg border border-red-300 dark:border-red-800 bg-white/80 dark:bg-red-950/30 hover:bg-white dark:hover:bg-red-950/50 text-red-700 dark:text-red-200 font-semibold transition-colors"
+              >
+                Duplikat Berikutnya
+              </button>
+            </div>
           </div>
         ) : null}
       </div>
@@ -1220,11 +1855,17 @@ export default function ChurchesTab({ onDataChanged }: ChurchesTabProps) {
               data.map((item, index) => (
                 <tr
                   key={item.id}
+                  ref={(el) => {
+                    duplicateRowRefs.current.set(item.id, el);
+                  }}
+                  tabIndex={-1}
                   className={`transition-colors group ${
                     duplicateChurchKeySet.has(
                       buildChurchDuplicateKey(item.name || "", item.diocese_id || ""),
                     )
-                      ? "bg-red-50/80 hover:bg-red-50 dark:bg-red-900/10 dark:hover:bg-red-900/20"
+                      ? activeDuplicateRowId === item.id
+                        ? "bg-red-100 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/30 ring-2 ring-red-300 dark:ring-red-700"
+                        : "bg-red-50/80 hover:bg-red-50 dark:bg-red-900/10 dark:hover:bg-red-900/20"
                       : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
                   }`}
                 >

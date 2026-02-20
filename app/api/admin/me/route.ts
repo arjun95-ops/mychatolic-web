@@ -11,10 +11,16 @@ export async function GET(req: NextRequest) {
         return ctx
     }
 
-    const { isAuthenticated, emailVerified, user } = ctx
+    const { isAuthenticated, emailVerified, user, setCookiesToResponse } = ctx
+
+    const json = (payload: unknown, init?: { status?: number }) => {
+        const res = NextResponse.json(payload, init)
+        setCookiesToResponse(res)
+        return res
+    }
 
     if (!isAuthenticated || !user) {
-        return NextResponse.json(
+        return json(
             { error: 'Unauthorized', message: 'Silakan login terlebih dahulu' },
             { status: 401 }
         )
@@ -66,5 +72,5 @@ export async function GET(req: NextRequest) {
         admin_auth_user_id: adminRow?.auth_user_id || null,
     }
 
-    return NextResponse.json(responseData)
+    return json(responseData)
 }

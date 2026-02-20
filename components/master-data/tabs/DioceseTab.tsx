@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Modal from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
-import { Search, Plus, Edit2, Trash2, Loader2, Save, Map, Upload, X, ExternalLink, User } from "lucide-react";
+import { Search, Plus, Edit2, Trash2, Loader2, Save, Map, Upload, X, ExternalLink, User, RefreshCw } from "lucide-react";
 
 const BISHOP_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BISHOP_BUCKET || "bishop_images";
 
@@ -49,6 +49,7 @@ type RawDioceseRow = {
 // --- Constants ---
 const REQUIRED_W = 1080;
 const REQUIRED_H = 1350;
+const DIOCESE_FETCH_PAGE_SIZE = 1000;
 
 // --- Helper: Sanitize One-to-One Joins ---
 const sanitizeOneToOne = <T,>(data: T | T[] | null | undefined): T | null => {
@@ -105,6 +106,7 @@ type DioceseTabProps = {
 
 export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
     const { showToast } = useToast();
+    const showSyncButtons = false;
 
     // Data State
     const [data, setData] = useState<DioceseResult[]>([]);
@@ -119,6 +121,8 @@ export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [editingItem, setEditingItem] = useState<DioceseResult | null>(null);
+    const [syncingIndonesia, setSyncingIndonesia] = useState(false);
+    const [syncingWorld, setSyncingWorld] = useState(false);
 
     // Form Data
     const [formData, setFormData] = useState({
@@ -153,27 +157,35 @@ export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
     const fetchData = useCallback(async () => {
         setLoading(true);
         try {
-            let query = supabase
-                .from('dioceses')
-                .select(`
+            const rows: RawDioceseRow[] = [];
+            for (let from = 0; ; from += DIOCESE_FETCH_PAGE_SIZE) {
+                let query = supabase
+                    .from('dioceses')
+                    .select(`
                     id, name, country_id,
                     address, google_maps_url, bishop_name, bishop_image_url,
                     countries ( id, name, flag_emoji )
                 `)
-                .order('name');
+                    .order('name')
+                    .range(from, from + DIOCESE_FETCH_PAGE_SIZE - 1);
 
-            if (search) {
-                query = query.ilike('name', `%${search}%`);
-            }
-            if (selectedCountryFilter) {
-                query = query.eq('country_id', selectedCountryFilter);
-            }
+                if (search) {
+                    query = query.ilike('name', `%${search}%`);
+                }
+                if (selectedCountryFilter) {
+                    query = query.eq('country_id', selectedCountryFilter);
+                }
 
-            const { data: res, error } = await query;
-            if (error) throw error;
+                const { data: res, error } = await query;
+                if (error) throw error;
+
+                const batch = (res || []) as RawDioceseRow[];
+                rows.push(...batch);
+                if (batch.length < DIOCESE_FETCH_PAGE_SIZE) break;
+            }
 
             // Sanitize Data
-            const sanitizedData: DioceseResult[] = ((res || []) as RawDioceseRow[]).map((item) => {
+            const sanitizedData: DioceseResult[] = rows.map((item) => {
                 const country = sanitizeOneToOne<RawCountry>(item.countries);
                 return {
                     id: String(item.id ?? ""),
@@ -281,6 +293,58 @@ export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
             onDataChanged?.();
         } catch {
             showToast("Gagal menghapus keuskupan (network error).", "error");
+        }
+    };
+
+    const handleSyncIndonesiaDioceses = async () => {
+        if (!window.confirm("Sinkronkan seluruh keuskupan Indonesia ke database? Proses ini akan menambah atau memperbarui nama keuskupan yang sudah ada.")) {
+            return;
+        }
+
+        setSyncingIndonesia(true);
+        try {
+            const response = await fetch("/api/admin/master-data/dioceses/sync-indonesia", {
+                method: "POST",
+            });
+            const result = (await response.json().catch(() => ({}))) as { message?: string };
+            if (!response.ok) {
+                throw new Error(result.message || "Gagal sinkronisasi keuskupan Indonesia.");
+            }
+
+            showToast(result.message || "Sinkronisasi keuskupan Indonesia selesai.", "success");
+            void fetchCountries();
+            void fetchData();
+            onDataChanged?.();
+        } catch (error: unknown) {
+            showToast(getErrorMessage(error), "error");
+        } finally {
+            setSyncingIndonesia(false);
+        }
+    };
+
+    const handleSyncWorldDioceses = async () => {
+        if (!window.confirm("Sinkronkan keuskupan seluruh dunia ke database? Proses ini bisa memakan waktu lebih lama.")) {
+            return;
+        }
+
+        setSyncingWorld(true);
+        try {
+            const response = await fetch("/api/admin/master-data/dioceses/sync-world", {
+                method: "POST",
+            });
+            const result = (await response.json().catch(() => ({}))) as { message?: string };
+            if (!response.ok) {
+                throw new Error(result.message || "Gagal sinkronisasi keuskupan dunia.");
+            }
+
+            showToast(result.message || "Sinkronisasi keuskupan dunia selesai.", "success");
+            void fetchCountries();
+            void fetchData();
+            onDataChanged?.();
+        } catch (error: unknown) {
+            showToast(getErrorMessage(error), "error");
+        } finally {
+            setSyncingWorld(false);
         }
     };
 
@@ -406,13 +470,35 @@ export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
                     </div>
                 </div>
 
-                <button
-                    onClick={handleOpenAdd}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-brand-primary/20 transition-all text-sm whitespace-nowrap"
-                >
-                    <Plus className="w-4 h-4" />
-                    Tambah Keuskupan
-                </button>
+                <div className="flex items-center gap-2 w-full md:w-auto">
+                    {showSyncButtons ? (
+                        <button
+                            onClick={handleSyncWorldDioceses}
+                            disabled={syncingWorld || syncingIndonesia}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/30 text-amber-800 dark:text-amber-200 rounded-xl font-bold transition-all text-sm whitespace-nowrap disabled:opacity-60"
+                        >
+                            {syncingWorld ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                            Sinkron Keuskupan Dunia
+                        </button>
+                    ) : null}
+                    {showSyncButtons ? (
+                        <button
+                            onClick={handleSyncIndonesiaDioceses}
+                            disabled={syncingIndonesia || syncingWorld}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold transition-all text-sm whitespace-nowrap disabled:opacity-60"
+                        >
+                            {syncingIndonesia ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                            Sinkron Keuskupan Indonesia
+                        </button>
+                    ) : null}
+                    <button
+                        onClick={handleOpenAdd}
+                        className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary hover:opacity-90 text-white rounded-xl font-bold shadow-lg shadow-brand-primary/20 transition-all text-sm whitespace-nowrap"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Tambah Keuskupan
+                    </button>
+                </div>
             </div>
             <div className="px-6 py-2 text-xs text-red-600 dark:text-red-300 bg-red-50/70 dark:bg-red-900/10 border-b border-red-100 dark:border-red-900/30">
                 Baris merah menandakan nama keuskupan duplikat.

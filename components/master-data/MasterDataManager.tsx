@@ -13,6 +13,7 @@ type TabType = 'countries' | 'dioceses' | 'churches' | 'schedules';
 type CountryLite = { id: string; name: string };
 type DioceseLite = { id: string; name: string; country_id: string };
 type ChurchLite = { id: string; diocese_id: string };
+const SUMMARY_FETCH_PAGE_SIZE = 1000;
 
 export default function MasterDataManager() {
     const [activeTab, setActiveTab] = useState<TabType>('countries');
@@ -35,23 +36,66 @@ export default function MasterDataManager() {
     const fetchSummary = useCallback(async () => {
         try {
             setSummaryError(null);
-            const [
-                { data: countryRows, error: countryError },
-                { data: dioceseRows, error: dioceseError },
-                { data: churchRows, error: churchError },
-            ] = await Promise.all([
-                supabase.from("countries").select("id, name").order("name"),
-                supabase.from("dioceses").select("id, name, country_id").order("name"),
-                supabase.from("churches").select("id, diocese_id"),
+            const fetchCountriesAll = async () => {
+                const rows: CountryLite[] = [];
+                for (let from = 0; ; from += SUMMARY_FETCH_PAGE_SIZE) {
+                    const to = from + SUMMARY_FETCH_PAGE_SIZE - 1;
+                    const { data, error } = await supabase
+                        .from("countries")
+                        .select("id, name")
+                        .order("name")
+                        .range(from, to);
+                    if (error) throw error;
+                    const batch = (data || []) as CountryLite[];
+                    rows.push(...batch);
+                    if (batch.length < SUMMARY_FETCH_PAGE_SIZE) break;
+                }
+                return rows;
+            };
+
+            const fetchDiocesesAll = async () => {
+                const rows: DioceseLite[] = [];
+                for (let from = 0; ; from += SUMMARY_FETCH_PAGE_SIZE) {
+                    const to = from + SUMMARY_FETCH_PAGE_SIZE - 1;
+                    const { data, error } = await supabase
+                        .from("dioceses")
+                        .select("id, name, country_id")
+                        .order("name")
+                        .range(from, to);
+                    if (error) throw error;
+                    const batch = (data || []) as DioceseLite[];
+                    rows.push(...batch);
+                    if (batch.length < SUMMARY_FETCH_PAGE_SIZE) break;
+                }
+                return rows;
+            };
+
+            const fetchChurchesAll = async () => {
+                const rows: ChurchLite[] = [];
+                for (let from = 0; ; from += SUMMARY_FETCH_PAGE_SIZE) {
+                    const to = from + SUMMARY_FETCH_PAGE_SIZE - 1;
+                    const { data, error } = await supabase
+                        .from("churches")
+                        .select("id, diocese_id")
+                        .order("id")
+                        .range(from, to);
+                    if (error) throw error;
+                    const batch = (data || []) as ChurchLite[];
+                    rows.push(...batch);
+                    if (batch.length < SUMMARY_FETCH_PAGE_SIZE) break;
+                }
+                return rows;
+            };
+
+            const [countryRows, dioceseRows, churchRows] = await Promise.all([
+                fetchCountriesAll(),
+                fetchDiocesesAll(),
+                fetchChurchesAll(),
             ]);
 
-            if (countryError) throw countryError;
-            if (dioceseError) throw dioceseError;
-            if (churchError) throw churchError;
-
-            setCountries((countryRows || []) as CountryLite[]);
-            setDioceses((dioceseRows || []) as DioceseLite[]);
-            setChurches((churchRows || []) as ChurchLite[]);
+            setCountries(countryRows);
+            setDioceses(dioceseRows);
+            setChurches(churchRows);
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : "Gagal memuat ringkasan data.";
             setSummaryError(message);

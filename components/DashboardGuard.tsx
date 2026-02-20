@@ -116,22 +116,6 @@ export default function DashboardGuard({ children }: { children: React.ReactNode
                 console.error('Admin Guard Error:', err);
                 if (!isMounted) return;
 
-                // Fallback: if local Supabase session is gone, redirect to login.
-                // If session still exists, keep current page and retry shortly.
-                try {
-                    const { data } = await supabase.auth.getSession();
-                    const hasSession = Boolean(data?.session);
-                    if (!hasSession) {
-                        setErrorState('unauthorized');
-                        router.replace('/dashboard/login');
-                        return;
-                    }
-                } catch {
-                    setErrorState('unauthorized');
-                    router.replace('/dashboard/login');
-                    return;
-                }
-
                 setLoading(false);
                 retryTimer = setTimeout(() => {
                     if (isMounted) checkAdminStatus();
