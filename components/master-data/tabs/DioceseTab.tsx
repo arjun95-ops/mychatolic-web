@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Modal from "@/components/ui/Modal";
 import { useToast } from "@/components/ui/Toast";
-import { Search, Plus, Edit2, Trash2, Loader2, Save, Map, Upload, X, ExternalLink, User, RefreshCw } from "lucide-react";
+import { Search, Plus, Edit2, Trash2, Loader2, Save, Map, Upload, ExternalLink, User, RefreshCw, ChevronDown } from "lucide-react";
 
 const BISHOP_BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BISHOP_BUCKET || "bishop_images";
 
@@ -104,6 +104,134 @@ type DioceseTabProps = {
     onDataChanged?: () => void;
 };
 
+type SearchableOption = {
+    value: string;
+    label: string;
+    searchText?: string;
+};
+
+type SearchableSelectProps = {
+    value: string;
+    options: SearchableOption[];
+    allLabel: string;
+    searchPlaceholder: string;
+    emptyLabel: string;
+    disabled?: boolean;
+    onChange: (value: string) => void;
+};
+
+function SearchableSelect({
+    value,
+    options,
+    allLabel,
+    searchPlaceholder,
+    emptyLabel,
+    disabled,
+    onChange,
+}: SearchableSelectProps) {
+    const [open, setOpen] = useState(false);
+    const [query, setQuery] = useState("");
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const selectedLabel = useMemo(() => {
+        if (!value) return allLabel;
+        return options.find((item) => item.value === value)?.label || allLabel;
+    }, [allLabel, options, value]);
+
+    const visibleOptions = useMemo(() => {
+        const merged: SearchableOption[] = [{ value: "", label: allLabel }, ...options];
+        const normalizedQuery = query.trim().toLowerCase();
+        if (!normalizedQuery) return merged;
+        return merged.filter((item) => {
+            const haystack = (item.searchText || item.label).toLowerCase();
+            return haystack.includes(normalizedQuery);
+        });
+    }, [allLabel, options, query]);
+
+    useEffect(() => {
+        if (!open) return;
+        const onPointerDown = (event: MouseEvent) => {
+            if (!rootRef.current) return;
+            if (!rootRef.current.contains(event.target as Node)) {
+                setOpen(false);
+                setQuery("");
+            }
+        };
+        document.addEventListener("mousedown", onPointerDown);
+        return () => document.removeEventListener("mousedown", onPointerDown);
+    }, [open]);
+
+    useEffect(() => {
+        if (!open) return;
+        const timer = setTimeout(() => inputRef.current?.focus(), 0);
+        return () => clearTimeout(timer);
+    }, [open]);
+
+    const handleSelect = (nextValue: string) => {
+        onChange(nextValue);
+        setOpen(false);
+        setQuery("");
+    };
+
+    return (
+        <div ref={rootRef} className="relative">
+            <button
+                type="button"
+                disabled={disabled}
+                onClick={() => setOpen((prev) => !prev)}
+                className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm text-slate-900 dark:text-white disabled:opacity-50 flex items-center justify-between gap-2"
+            >
+                <span className="truncate text-left">{selectedLabel}</span>
+                <ChevronDown className="w-4 h-4 shrink-0 text-slate-400" />
+            </button>
+
+            {open && !disabled ? (
+                <div className="absolute z-40 mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl">
+                    <div className="p-2 border-b border-slate-100 dark:border-slate-800">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <input
+                                ref={inputRef}
+                                type="text"
+                                value={query}
+                                onChange={(event) => setQuery(event.target.value)}
+                                placeholder={searchPlaceholder}
+                                className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-slate-900 dark:text-white"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="max-h-60 overflow-auto py-1">
+                        {visibleOptions.length === 0 ? (
+                            <div className="px-3 py-2 text-sm text-slate-500">{emptyLabel}</div>
+                        ) : (
+                            visibleOptions.map((item) => {
+                                const isSelected = value === item.value;
+                                return (
+                                    <button
+                                        key={item.value || "__all__"}
+                                        type="button"
+                                        onMouseDown={(event) => event.preventDefault()}
+                                        onClick={() => handleSelect(item.value)}
+                                        className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+                                            isSelected
+                                                ? "bg-brand-primary/10 text-brand-primary font-semibold"
+                                                : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                        }`}
+                                    >
+                                        {item.label}
+                                    </button>
+                                );
+                            })
+                        )}
+                    </div>
+                </div>
+            ) : null}
+        </div>
+    );
+}
+
 export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
     const { showToast } = useToast();
     const showSyncButtons = false;
@@ -152,6 +280,19 @@ export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
         });
         return duplicates;
     }, [data]);
+
+    const countryOptions = useMemo<SearchableOption[]>(
+        () =>
+            countries.map((country) => {
+                const label = [country.flag_emoji, country.name].filter(Boolean).join(" ");
+                return {
+                    value: country.id,
+                    label,
+                    searchText: label,
+                };
+            }),
+        [countries],
+    );
 
     // --- Fetch Data ---
     const fetchData = useCallback(async () => {
@@ -445,28 +586,15 @@ export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
                         />
                     </div>
                     {/* Filter Country */}
-                    <div className="relative min-w-[200px]">
-                        <select
-                            className="w-full pl-3 pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm text-slate-900 dark:text-white appearance-none"
+                    <div className="min-w-[220px]">
+                        <SearchableSelect
                             value={selectedCountryFilter}
-                            onChange={(e) => setSelectedCountryFilter(e.target.value)}
-                        >
-                            <option value="">Semua Negara</option>
-                            {countries.map(c => <option key={c.id} value={c.id}>{c.flag_emoji} {c.name}</option>)}
-                        </select>
-                        {/* Clear Filter Button if active */}
-                        {selectedCountryFilter && (
-                            <button
-                                onClick={() => setSelectedCountryFilter("")}
-                                className="absolute right-8 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-red-500"
-                                title="Clear Filter"
-                            >
-                                <X className="w-3 h-3" />
-                            </button>
-                        )}
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </div>
+                            options={countryOptions}
+                            allLabel="Semua Negara"
+                            searchPlaceholder="Cari negara..."
+                            emptyLabel="Tidak ada negara ditemukan"
+                            onChange={setSelectedCountryFilter}
+                        />
                     </div>
                 </div>
 
@@ -623,15 +751,15 @@ export default function DioceseTab({ onDataChanged }: DioceseTabProps) {
                     </div>
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Negara</label>
-                        <select
-                            className="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-primary outline-none text-slate-900 dark:text-white"
-                            required
+                        <SearchableSelect
                             value={formData.country_id}
-                            onChange={e => setFormData({ ...formData, country_id: e.target.value })}
-                        >
-                            <option value="">Pilih Negara</option>
-                            {countries.map(c => <option key={c.id} value={c.id}>{c.flag_emoji} {c.name}</option>)}
-                        </select>
+                            options={countryOptions}
+                            allLabel="Pilih Negara"
+                            searchPlaceholder="Cari negara..."
+                            emptyLabel="Tidak ada negara ditemukan"
+                            disabled={isSubmitting}
+                            onChange={(value) => setFormData({ ...formData, country_id: value })}
+                        />
                     </div>
 
                     {/* Address & Maps */}

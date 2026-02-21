@@ -1,0 +1,130 @@
+{
+  "started_at": "2026-02-21T07:12:24.688Z",
+  "params": {
+    "sample_books": 20,
+    "seed": 20260221,
+    "concurrency": 8
+  },
+  "target_workspace": "en/EN1",
+  "sampled_books": [
+    {
+      "id": "28b29cc8-73d3-44d4-87b5-c17321af3fde",
+      "name": "Genesis",
+      "order_index": 1
+    },
+    {
+      "id": "6e4026e8-b206-487d-a4eb-834cca8e4f74",
+      "name": "Exodus",
+      "order_index": 2
+    },
+    {
+      "id": "e2c575d8-edfe-412f-9702-da63d47d8d48",
+      "name": "Deuteronomy",
+      "order_index": 5
+    },
+    {
+      "id": "470dbecb-97c4-432b-b0fe-de6e683b0bb4",
+      "name": "2 Kings",
+      "order_index": 12
+    },
+    {
+      "id": "8a9fee12-dc32-4bce-92d9-88792b56b7ba",
+      "name": "2 Chronicles",
+      "order_index": 14
+    },
+    {
+      "id": "2fdc6561-1dbc-41ca-8320-e8dc28dc33af",
+      "name": "Lamentations",
+      "order_index": 31
+    },
+    {
+      "id": "0a5e00d2-58f2-442a-b813-ced6c8e0c4c2",
+      "name": "Ezekiel",
+      "order_index": 33
+    },
+    {
+      "id": "2fc9f63b-b4b7-4dc7-abf7-b9a4afef4ab8",
+      "name": "Daniel",
+      "order_index": 34
+    },
+    {
+      "id": "390a7e3d-f040-4ca1-8889-7e2bdabac1c5",
+      "name": "Nahum",
+      "order_index": 41
+    },
+    {
+      "id": "48dc1947-4100-4eae-870e-7a8adb2e0cb5",
+      "name": "Habakkuk",
+      "order_index": 42
+    },
+    {
+      "id": "3b63dcc1-37bb-4844-8bdf-75c43e292351",
+      "name": "Malachi",
+      "order_index": 46
+    },
+    {
+      "id": "28aab96f-a4c4-491b-99d5-54d8b138a0d4",
+      "name": "Matthew",
+      "order_index": 47
+    },
+    {
+      "id": "043d56aa-036a-4dc7-9f1d-52a92c38895c",
+      "name": "Mark",
+      "order_index": 48
+    },
+    {
+      "id": "61795576-2034-4cc0-87f0-c3f7390ea344",
+      "name": "Acts",
+      "order_index": 51
+    },
+    {
+      "id": "420eeae9-8721-499f-bf5e-e3a0cd954a1c",
+      "name": "2 Corinthians",
+      "order_index": 54
+    },
+    {
+      "id": "77f4ce84-e954-4bc0-9667-99bf9a428c7e",
+      "name": "Galatians",
+      "order_index": 55
+    },
+    {
+      "id": "fa1ed6e4-e55c-4119-92c6-699497673c02",
+      "name": "Hebrews",
+      "order_index": 65
+    },
+    {
+      "id": "61a3bb48-a11d-435f-b634-50ddd824a3a7",
+      "name": "James",
+      "order_index": 66
+    },
+    {
+      "id": "d10edf42-b4ad-44f2-ba9c-ec1b5d13ff10",
+      "name": "1 John",
+      "order_index": 69
+    },
+    {
+      "id": "9c1ec163-0728-4625-a732-e34545f13524",
+      "name": "3 John",
+      "order_index": 71
+    }
+  ],
+  "summary": {
+    "sampled_books": 20,
+    "sampled_chapters": 376,
+    "fetched_pages": 376,
+    "compared_chapters": 376,
+    "chapters_with_findings": 0,
+    "expected_pericope_starts_total": 1020,
+    "actual_pericope_starts_total": 1020,
+    "source_fetch_errors": 0,
+    "source_missing_sections": 0,
+    "fallback_applied_total": 0,
+    "verification_passed": true
+  },
+  "samples": {
+    "findings": [],
+    "source_fetch_errors": [],
+    "source_missing_sections": []
+  },
+  "finished_at": "2026-02-21T07:12:24.692Z"
+}

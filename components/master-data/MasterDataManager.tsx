@@ -1,19 +1,146 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CountryTab from "./tabs/CountryTab";
 import DioceseTab from "./tabs/DioceseTab";
 import ChurchesTab from "./tabs/ChurchesTab";
 import SchedulesTab from "./tabs/SchedulesTab";
 import BulkImportExport from "./BulkImportExport";
 import { supabase } from "@/lib/supabaseClient";
-import { Loader2, RefreshCw } from "lucide-react";
+import { ChevronDown, Loader2, RefreshCw, Search } from "lucide-react";
 
 type TabType = 'countries' | 'dioceses' | 'churches' | 'schedules';
 type CountryLite = { id: string; name: string };
 type DioceseLite = { id: string; name: string; country_id: string };
 type ChurchLite = { id: string; diocese_id: string };
 const SUMMARY_FETCH_PAGE_SIZE = 1000;
+
+type SearchableOption = {
+    value: string;
+    label: string;
+    searchText?: string;
+};
+
+type SearchableSelectProps = {
+    value: string;
+    options: SearchableOption[];
+    placeholder: string;
+    searchPlaceholder: string;
+    emptyLabel: string;
+    disabled?: boolean;
+    onChange: (value: string) => void;
+};
+
+function SearchableSelect({
+    value,
+    options,
+    placeholder,
+    searchPlaceholder,
+    emptyLabel,
+    disabled,
+    onChange,
+}: SearchableSelectProps) {
+    const [open, setOpen] = useState(false);
+    const [query, setQuery] = useState("");
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const selectedLabel = useMemo(() => {
+        if (!value) return placeholder;
+        return options.find((item) => item.value === value)?.label || placeholder;
+    }, [options, placeholder, value]);
+
+    const visibleOptions = useMemo(() => {
+        const normalizedQuery = query.trim().toLowerCase();
+        if (!normalizedQuery) return options;
+        return options.filter((item) => {
+            const haystack = (item.searchText || item.label).toLowerCase();
+            return haystack.includes(normalizedQuery);
+        });
+    }, [options, query]);
+
+    useEffect(() => {
+        if (!open) return;
+        const onPointerDown = (event: MouseEvent) => {
+            if (!rootRef.current) return;
+            if (!rootRef.current.contains(event.target as Node)) {
+                setOpen(false);
+                setQuery("");
+            }
+        };
+        document.addEventListener("mousedown", onPointerDown);
+        return () => document.removeEventListener("mousedown", onPointerDown);
+    }, [open]);
+
+    useEffect(() => {
+        if (!open) return;
+        const timer = setTimeout(() => inputRef.current?.focus(), 0);
+        return () => clearTimeout(timer);
+    }, [open]);
+
+    const handleSelect = (nextValue: string) => {
+        onChange(nextValue);
+        setOpen(false);
+        setQuery("");
+    };
+
+    return (
+        <div ref={rootRef} className="relative">
+            <button
+                type="button"
+                disabled={disabled}
+                onClick={() => setOpen((prev) => !prev)}
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm text-left text-slate-900 dark:text-white disabled:opacity-60 flex items-center justify-between gap-2"
+            >
+                <span className="truncate">{selectedLabel}</span>
+                <ChevronDown className="w-4 h-4 shrink-0 text-slate-400" />
+            </button>
+
+            {open && !disabled ? (
+                <div className="absolute z-40 mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl">
+                    <div className="p-2 border-b border-slate-100 dark:border-slate-800">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <input
+                                ref={inputRef}
+                                type="text"
+                                value={query}
+                                onChange={(event) => setQuery(event.target.value)}
+                                placeholder={searchPlaceholder}
+                                className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary text-slate-900 dark:text-white"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="max-h-60 overflow-auto py-1">
+                        {visibleOptions.length === 0 ? (
+                            <div className="px-3 py-2 text-sm text-slate-500">{emptyLabel}</div>
+                        ) : (
+                            visibleOptions.map((item) => {
+                                const isSelected = value === item.value;
+                                return (
+                                    <button
+                                        key={item.value}
+                                        type="button"
+                                        onMouseDown={(event) => event.preventDefault()}
+                                        onClick={() => handleSelect(item.value)}
+                                        className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+                                            isSelected
+                                                ? "bg-brand-primary/10 text-brand-primary font-semibold"
+                                                : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                                        }`}
+                                    >
+                                        {item.label}
+                                    </button>
+                                );
+                            })
+                        )}
+                    </div>
+                </div>
+            ) : null}
+        </div>
+    );
+}
 
 export default function MasterDataManager() {
     const [activeTab, setActiveTab] = useState<TabType>('countries');
@@ -165,6 +292,26 @@ export default function MasterDataManager() {
         return dioceses.filter((item) => String(item.country_id || "") === selectedCountryId);
     }, [dioceses, selectedCountryId]);
 
+    const countryOptions = useMemo<SearchableOption[]>(
+        () =>
+            countries.map((country) => ({
+                value: country.id,
+                label: country.name,
+                searchText: country.name,
+            })),
+        [countries]
+    );
+
+    const dioceseOptions = useMemo<SearchableOption[]>(
+        () =>
+            filteredDioceseOptions.map((diocese) => ({
+                value: diocese.id,
+                label: diocese.name,
+                searchText: diocese.name,
+            })),
+        [filteredDioceseOptions]
+    );
+
     useEffect(() => {
         if (countries.length === 0) {
             if (selectedCountryId) setSelectedCountryId("");
@@ -253,18 +400,15 @@ export default function MasterDataManager() {
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                     <div className="rounded-xl border border-slate-200 dark:border-slate-800 p-4 space-y-3">
                         <p className="text-sm font-bold text-slate-900 dark:text-white">Klasifikasi Negara</p>
-                        <select
+                        <SearchableSelect
                             value={selectedCountryId}
-                            onChange={(e) => setSelectedCountryId(e.target.value)}
-                            className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm"
+                            options={countryOptions}
+                            placeholder={summaryLoading ? "Memuat negara..." : "Pilih negara"}
+                            searchPlaceholder="Cari negara..."
+                            emptyLabel="Negara tidak ditemukan"
                             disabled={summaryLoading || countries.length === 0}
-                        >
-                            {countries.map((country) => (
-                                <option key={country.id} value={country.id}>
-                                    {country.name}
-                                </option>
-                            ))}
-                        </select>
+                            onChange={setSelectedCountryId}
+                        />
                         <div className="grid grid-cols-2 gap-3">
                             <div className="rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-3">
                                 <p className="text-xs text-slate-500 uppercase font-semibold">Jumlah Keuskupan</p>
@@ -282,18 +426,15 @@ export default function MasterDataManager() {
 
                     <div className="rounded-xl border border-slate-200 dark:border-slate-800 p-4 space-y-3">
                         <p className="text-sm font-bold text-slate-900 dark:text-white">Klasifikasi Keuskupan</p>
-                        <select
+                        <SearchableSelect
                             value={selectedDioceseId}
-                            onChange={(e) => setSelectedDioceseId(e.target.value)}
-                            className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm"
+                            options={dioceseOptions}
+                            placeholder={summaryLoading ? "Memuat keuskupan..." : "Pilih keuskupan"}
+                            searchPlaceholder="Cari keuskupan..."
+                            emptyLabel="Keuskupan tidak ditemukan"
                             disabled={summaryLoading || filteredDioceseOptions.length === 0}
-                        >
-                            {filteredDioceseOptions.map((diocese) => (
-                                <option key={diocese.id} value={diocese.id}>
-                                    {diocese.name}
-                                </option>
-                            ))}
-                        </select>
+                            onChange={setSelectedDioceseId}
+                        />
                         <div className="rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-3">
                             <p className="text-xs text-slate-500 uppercase font-semibold">Jumlah Paroki</p>
                             <p className="text-xl font-bold text-slate-900 dark:text-white mt-1">{selectedDioceseChurchCount}</p>

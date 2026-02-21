@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-02-21T10:24:26.242Z",
+  "scope": {
+    "language_code": "id",
+    "source_version": "TB1",
+    "target_version": "TB2"
+  },
+  "summary": {
+    "source_books": 73,
+    "target_books": 73,
+    "missing_books_in_target": 0,
+    "extra_books_in_target": 0,
+    "source_chapters": 1334,
+    "target_chapters": 1334,
+    "missing_chapters_in_target": 0,
+    "extra_chapters_in_target": 0,
+    "source_distinct_verses": 35431,
+    "target_distinct_verses": 35431,
+    "missing_verses_in_target": 0,
+    "extra_verses_in_target": 0,
+    "source_pericope_starts": 2365,
+    "target_pericope_starts": 2365,
+    "missing_pericope_starts_in_target": 0,
+    "extra_pericope_starts_in_target": 0,
+    "source_duplicate_verse_rows": 0,
+    "target_duplicate_verse_rows": 0,
+    "target_tb2_placeholder_rows": 0,
+    "complete_bab_ayat_perikop": true
+  },
+  "samples": {
+    "missing_books_in_target": [],
+    "extra_books_in_target": [],
+    "missing_chapters_in_target": [],
+    "extra_chapters_in_target": [],
+    "missing_verses_in_target": [],
+    "extra_verses_in_target": [],
+    "missing_pericope_starts_in_target": [],
+    "extra_pericope_starts_in_target": [],
+    "source_duplicate_verse_rows": [],
+    "target_duplicate_verse_rows": []
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "dry_run": true,
+  "lang": "id",
+  "version": "TB2",
+  "csv": "docs/import/tb2_text_clean_aligned.csv",
+  "summary": {
+    "csv_rows": 35431,
+    "db_books": 73,
+    "db_chapters": 1334,
+    "db_verses_text_rows": 35431,
+    "updates_prepared": 13,
+    "rows_changed": 13,
+    "rows_unchanged": 35418,
+    "missing_in_csv": 0
+  },
+  "samples": {
+    "missing_in_csv": [],
+    "updates": [
+      {
+        "id": "8b3a54ec-19bc-4027-a847-57ffb43e84cc",
+        "chapter_id": "16688b49-bbad-4ded-9931-8ec7c9e3a63f",
+        "verse_number": 22,
+        "book_id": 106,
+        "chapter": 16,
+        "text": "Memang banyak orang meminang dia, tetapi ia tidak disentuh oleh seorang laki-laki lagi sepanjang masa hidupnya, semenjak Manasye, suaminya, meninggal dan dipersatukan dengan kaumnya.",
+        "content": "Memang banyak orang meminang dia, tetapi ia tidak disentuh oleh seorang laki-laki lagi sepanjang masa hidupnya, semenjak Manasye, suaminya, meninggal dan dipersatukan dengan kaumnya.",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "f8a6f4d9-fa91-40f7-856e-84c404f113b6",
+        "chapter_id": "1ceac31b-185c-4ce6-a43d-cc70accb0bb4",
+        "verse_number": 23,
+        "book_id": 111,
+        "chapter": 78,
+        "text": "Maka Ia memerintahkan awan-awan dari atas, membuka pintu-pintu langit,",
+        "content": "Maka Ia memerintahkan awan-awan dari atas, membuka pintu-pintu langit,",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "2d273090-bf61-4d9a-92d9-05343175627e",
+        "chapter_id": "6ea6042d-6137-4c60-816a-d2d1fe19374b",
+        "verse_number": 24,
+        "book_id": 107,
+        "chapter": 13,
+        "text": "Ya Allah, Engkaulah yang terlebih kuat dari sekalian orang, dengarkanlah suara orang-orang yang putus harapannya dan selamatkanlah kami dari kekuasaan para penjahat dan selamatkanlah aku ini dari ketakutanku!\"",
+        "content": "Ya Allah, Engkaulah yang terlebih kuat dari sekalian orang, dengarkanlah suara orang-orang yang putus harapannya dan selamatkanlah kami dari kekuasaan para penjahat dan selamatkanlah aku ini dari ketakutanku!\"",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "684b087b-f476-4b1e-abbc-afad8f653e97",
+        "chapter_id": "5a901672-2665-407d-88a5-b21f4bba74db",
+        "verse_number": 7,
+        "book_id": 144,
+        "chapter": 1,
+        "text": "Memang sudah sepatutnya aku berpikir demikian tentang kamu semua, sebab kamu ada di dalam hatiku, oleh karena kamu semua turut mendapat bagian dalam anugerah yang diberikan kepadaku, baik pada waktu aku dipenjarakan, maupun pada waktu aku membela dan meneguhkan Berita Injil.",
+        "content": "Memang sudah sepatutnya aku berpikir demikian tentang kamu semua, sebab kamu ada di dalam hatiku, oleh karena kamu semua turut mendapat bagian dalam anugerah yang diberikan kepadaku, baik pada waktu aku dipenjarakan, maupun pada waktu aku membela dan meneguhkan Berita Injil.",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "c1872790-5cf8-4905-9306-0b686c10b902",
+        "chapter_id": "68ad5c50-c4d0-41b2-a09a-be3519ea419c",
+        "verse_number": 53,
+        "book_id": 108,
+        "chapter": 12,
+        "text": "Lalu semua bangsa lain di sekeliling berusaha membasmi orang-orang Yahudi. Sebab pikir mereka: \"Mereka tidak lagi mempunyai pemimpin atau penolong. Baiklah kita sekarang bertempur melawan mereka dan menghapus kenangan akan mereka dari tengah-tengah manusia.\"",
+        "content": "Lalu semua bangsa lain di sekeliling berusaha membasmi orang-orang Yahudi. Sebab pikir mereka: \"Mereka tidak lagi mempunyai pemimpin atau penolong. Baiklah kita sekarang bertempur melawan mereka dan menghapus kenangan akan mereka dari tengah-tengah manusia.\"",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "c8d84ace-71a9-4ad0-9f74-5afcfd7e030f",
+        "chapter_id": "5eb4698d-1452-4c9a-a283-38e76bfda21f",
+        "verse_number": 21,
+        "book_id": 107,
+        "chapter": 15,
+        "text": "Tiap-tiap kota dan pada umumnya tiap-tiap daerah yang tidak akan berbuat sesuai dengan titah ini dengan tombak dan api akan dihancurkan tanpa kenal ampun, sehingga untuk selamanya tidak hanya menjadi tempat yang tidak dimasuki manusia lagi, tetapi juga suatu tempat yang dibenci oleh binatang-binatang buas dan unggas!\"",
+        "content": "Tiap-tiap kota dan pada umumnya tiap-tiap daerah yang tidak akan berbuat sesuai dengan titah ini dengan tombak dan api akan dihancurkan tanpa kenal ampun, sehingga untuk selamanya tidak hanya menjadi tempat yang tidak dimasuki manusia lagi, tetapi juga suatu tempat yang dibenci oleh binatang-binatang buas dan unggas!\"",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "e29a995e-707e-466b-aca3-0f03add69c7a",
+        "chapter_id": "53ab48d1-c23f-4422-b294-8cd52a2817bb",
+        "verse_number": 50,
+        "book_id": 136,
+        "chapter": 9,
+        "text": "Yesus berkata kepadanya, \"Jangan kamu cegah, sebab siapa saja yang tidak melawan kamu, ia ada di pihak kamu.\"",
+        "content": "Yesus berkata kepadanya, \"Jangan kamu cegah, sebab siapa saja yang tidak melawan kamu, ia ada di pihak kamu.\"",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "f78b6921-ee85-4b0e-bebf-e8ddc1eb242b",
+        "chapter_id": "80bd8686-df17-47c6-bfd3-8041c7b2978b",
+        "verse_number": 5,
+        "book_id": 160,
+        "chapter": 15,
+        "text": "Setelah itu aku melihat Bait Suci — Kemah Kesaksian — di surga, terbuka.",
+        "content": "Setelah itu aku melihat Bait Suci — Kemah Kesaksian — di surga, terbuka.",
+        "pericope": "Tujuh malaikat dengan tujuh cawan murka Allah",
+        "type": "text"
+      },
+      {
+        "id": "46a7e030-8745-40d3-8654-0080a8c35006",
+        "chapter_id": "b9a0ebe3-cbcb-486f-a8ec-f76b61bd9fcf",
+        "verse_number": 26,
+        "book_id": 109,
+        "chapter": 13,
+        "text": "Maka Lisias naik panggung dan sedapat-dapatnya membela tindakan itu. Iapun meyakinkan orang juga dan dapat menenangkan dan mempersenangkan mereka. Kemudian kembalilah ia ke Antiokhia. Demikianlah jalannya penyerbuan dan pengunduran raja.",
+        "content": "Maka Lisias naik panggung dan sedapat-dapatnya membela tindakan itu. Iapun meyakinkan orang juga dan dapat menenangkan dan mempersenangkan mereka. Kemudian kembalilah ia ke Antiokhia. Demikianlah jalannya penyerbuan dan pengunduran raja.",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "fa2393fe-b61d-46dd-a4f6-e7fbacf98623",
+        "chapter_id": "98050d53-3189-4a82-829a-441ae2a44f7d",
+        "verse_number": 16,
+        "book_id": 105,
+        "chapter": 4,
+        "text": "Dari makananmu sendiri berikanlah kepada yang lapar dan dari pakaianmu sendiri kepada yang telanjang. Apa yang berlebih-lebihan padamu berikanlah sebagai sedekah; dan matamu jangan menyesal apabila engkau memberikan sedekah.",
+        "content": "Dari makananmu sendiri berikanlah kepada yang lapar dan dari pakaianmu sendiri kepada yang telanjang. Apa yang berlebih-lebihan padamu berikanlah sebagai sedekah; dan matamu jangan menyesal apabila engkau memberikan sedekah.",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "1bf065a9-37e2-4cc7-8a82-bf92367e5153",
+        "chapter_id": "cd9433fb-5e0c-4b18-a561-34b7cf6fe1f4",
+        "verse_number": 22,
+        "book_id": 138,
+        "chapter": 1,
+        "text": "yaitu mulai dari baptisan Yohanes sampai hari Yesus diangkat ke surga meninggalkan kami, untuk menjadi saksi dengan kami tentang kebangkitan-Nya.\"",
+        "content": "yaitu mulai dari baptisan Yohanes sampai hari Yesus diangkat ke surga meninggalkan kami, untuk menjadi saksi dengan kami tentang kebangkitan-Nya.\"",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "8d096917-bbd8-4313-9b11-95eaafe4b02d",
+        "chapter_id": "c5287761-61e5-414e-bbed-b2f6f8baf1e7",
+        "verse_number": 26,
+        "book_id": 93,
+        "chapter": 7,
+        "text": "Dan janganlah engkau membawa sesuatu kekejian masuk ke dalam rumahmu, sehingga engkau pun ditumpas seperti itu; haruslah engkau benar-benar merasa jijik dan keji terhadap hal itu, sebab semuanya itu dikhususkan untuk dimusnahkan.\"",
+        "content": "Dan janganlah engkau membawa sesuatu kekejian masuk ke dalam rumahmu, sehingga engkau pun ditumpas seperti itu; haruslah engkau benar-benar merasa jijik dan keji terhadap hal itu, sebab semuanya itu dikhususkan untuk dimusnahkan.\"",
+        "pericope": null,
+        "type": "text"
+      },
+      {
+        "id": "cd886173-4b69-49d4-8a9a-788f9b13eee9",
+        "chapter_id": "e4e11978-80cf-45af-b57c-07c2c8fb6815",
+        "verse_number": 18,
+        "book_id": 109,
+        "chapter": 2,
+        "text": "sebagaimana telah dijanjikan oleh hukum Taurat. Kami mengharap bahwa Allah itu lekas akan mengasihani kita serta mengumpulkan kita dari seluruh kolong langit ke tempat yang suci. Sebab Tuhan telah melepaskan kita dari banyak malapetaka yang besar dan sudah mentahirkan Tempat itu.",
+        "content": "sebagaimana telah dijanjikan oleh hukum Taurat. Kami mengharap bahwa Allah itu lekas akan mengasihani kita serta mengumpulkan kita dari seluruh kolong langit ke tempat yang suci. Sebab Tuhan telah melepaskan kita dari banyak malapetaka yang besar dan sudah mentahirkan Tempat itu.",
+        "pericope": null,
+        "type": "text"
+      }
+    ]
+  }
+}

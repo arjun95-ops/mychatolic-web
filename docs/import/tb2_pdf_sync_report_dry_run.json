@@ -1,0 +1,1307 @@
+{
+  "started_at": "2026-02-21T08:44:57.527Z",
+  "finished_at": "2026-02-21T08:45:16.691Z",
+  "dry_run": true,
+  "source_extract": "tmp/tb2_pdf_extract_full.json",
+  "target_workspace": "id/TB2",
+  "fallback_workspace": "id/TB1",
+  "summary": {
+    "target_books": 73,
+    "target_chapters": 1334,
+    "target_verses_text_rows": 35431,
+    "updates_prepared": 35431,
+    "extracted_applied": 33922,
+    "fallback_tb1_applied": 1509,
+    "kept_existing_applied": 0,
+    "unresolved_rows": 0,
+    "target_placeholders_before": 35431,
+    "target_placeholders_after_projected": 0
+  },
+  "samples": {
+    "unresolved": [],
+    "updates_from_extract": [
+      {
+        "id": "00010102-7ae4-4446-85ad-4a46d15c2ca4",
+        "text": "Ke ti ka aku me na nya kan ke pa da de wan pena se hat ku ba gai ma na hal ter se but da pat diusa ha kan se ba ik-ba ik nya, ma ka Ha man yang di ka langan ki ta sung guh ulung ka re na ke bijak sa na an nya dan yang su dah ter buk ti lah kebak ti an nya yang te tap ser ta ke se tia an nya yang ku at dan yang me me gang ja bat an ke dua dalam ke ra ja an,",
+        "content": "Ke ti ka aku me na nya kan ke pa da de wan pena se hat ku ba gai ma na hal ter se but da pat diusa ha kan se ba ik-ba ik nya, ma ka Ha man yang di ka langan ki ta sung guh ulung ka re na ke bijak sa na an nya dan yang su dah ter buk ti lah kebak ti an nya yang te tap ser ta ke se tia an nya yang ku at dan yang me me gang ja bat an ke dua dalam ke ra ja an,",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "002a8d2a-2f89-47c1-9544-6cfc8654a41e",
+        "text": "Ju ga Daud mem ba gi-ba gi me re ka da lam rom bongan me nu rut anak-anak Le wi, yak ni Ger son, Ke hat dan Me ra ri.",
+        "content": "Ju ga Daud mem ba gi-ba gi me re ka da lam rom bongan me nu rut anak-anak Le wi, yak ni Ger son, Ke hat dan Me ra ri.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "002e6362-246c-4ccf-986a-e6486900852d",
+        "text": "Dan Ye hu da ber kum pul un tuk me min ta per to long an da ri pa da Tuhan. Mere ka da tang da ri se mua ko ta di Ye hu da untuk men ca ri Tuhan.",
+        "content": "Dan Ye hu da ber kum pul un tuk me min ta per to long an da ri pa da Tuhan. Mere ka da tang da ri se mua ko ta di Ye hu da untuk men ca ri Tuhan.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "003bd9c3-fad5-481d-89eb-0b6e6d34d84b",
+        "text": "Ja di se lu ruh ne ge ri itu di be ri kan Tuhan ke pa da orang Is rael, yak ni ne ge ri yang di janji kan-Nya de ngan ber sum pah un tuk di be rikan ke pa da ne nek mo yang me re ka. Me re ka men du duki ne ge ri itu dan me ne tap di sa na.",
+        "content": "Ja di se lu ruh ne ge ri itu di be ri kan Tuhan ke pa da orang Is rael, yak ni ne ge ri yang di janji kan-Nya de ngan ber sum pah un tuk di be rikan ke pa da ne nek mo yang me re ka. Me re ka men du duki ne ge ri itu dan me ne tap di sa na.",
+        "pericope": "Keamanan di negeri yang dijanjikan TUHAN",
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0042e5c9-805f-4ff2-8548-b94aa4610082",
+        "text": "Aku kepunyaan kekasihku, dan kepunyaanku kekasihku, yang menggembalakan domba di tengah-tengah bunga bakung. Mempelai laki-laki memuji mempelai perempuan",
+        "content": "Aku kepunyaan kekasihku, dan kepunyaanku kekasihku, yang menggembalakan domba di tengah-tengah bunga bakung. Mempelai laki-laki memuji mempelai perempuan",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "004e76cc-bb2d-4f1a-9b5d-8fbac27182c5",
+        "text": "Ia membiarkan diri-Nya ditemukan oleh yang tidak mencobai-Nya, dan menampakkan diri kepada semua yang tidak menaruh syak wasangka terhadap-Nya.",
+        "content": "Ia membiarkan diri-Nya ditemukan oleh yang tidak mencobai-Nya, dan menampakkan diri kepada semua yang tidak menaruh syak wasangka terhadap-Nya.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0057cdd6-c1f6-428a-9b6d-1dbec716b4d9",
+        "text": "Betapa mulialah engkau, hai Elia, dengan segala mujizatmu, dan siapa boleh bermegah-megah bahwa sama dengan dikau?",
+        "content": "Betapa mulialah engkau, hai Elia, dengan segala mujizatmu, dan siapa boleh bermegah-megah bahwa sama dengan dikau?",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "006178e4-0453-4550-bd09-6f2a4b186dbe",
+        "text": "Sebagai ganti semak duri akan tumbuh pohon sanobar, dan sebagai ganti kecubung akan tumbuh pohon murad, dan itu akan terjadi sebagai kemasyhuran bagi Tuhan, sebagai tanda abadi yang tidak akan lenyap. PASAL 56-66 PENGGENAPAN KESELAMATAN DAN SYARAT-SYARATNYA Keselamatan adalah bagi semua orang",
+        "content": "Sebagai ganti semak duri akan tumbuh pohon sanobar, dan sebagai ganti kecubung akan tumbuh pohon murad, dan itu akan terjadi sebagai kemasyhuran bagi Tuhan, sebagai tanda abadi yang tidak akan lenyap. PASAL 56-66 PENGGENAPAN KESELAMATAN DAN SYARAT-SYARATNYA Keselamatan adalah bagi semua orang",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "007811f8-0405-40d2-92fb-17a0ff5ad1bd",
+        "text": "La lu Si mon Pet rus, yang mem bawa pe dang, meng hu nus pe dang itu, me netak kan nya ke pa da ham ba Imam Be sar dan me mu tus kan te li nga ka nan nya. Na ma hamba itu Mal khus.",
+        "content": "La lu Si mon Pet rus, yang mem bawa pe dang, meng hu nus pe dang itu, me netak kan nya ke pa da ham ba Imam Be sar dan me mu tus kan te li nga ka nan nya. Na ma hamba itu Mal khus.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "007b19ae-cc77-44b0-9f95-8388f2964355",
+        "text": "La gi Abra ham me lanjut kan per ka ta an nya kepada-Nya: \"Se ki ra nya em pat pu luh di da pati di sa na?\" Firman-Nya: \"Aku ti dak akan ber bu at de mi ki an ka re na yang em pat pu luh itu.\"",
+        "content": "La gi Abra ham me lanjut kan per ka ta an nya kepada-Nya: \"Se ki ra nya em pat pu luh di da pati di sa na?\" Firman-Nya: \"Aku ti dak akan ber bu at de mi ki an ka re na yang em pat pu luh itu.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0092e679-7c6b-4eab-9751-607f88ef9d14",
+        "text": "\"Berbi ca ra lah ke pa da Ha run dan anak-anaknya: Be gi ni lah ha rus ka mu mem ber kati orang Israel, ka ta kan lah ke pa da mereka:",
+        "content": "\"Berbi ca ra lah ke pa da Ha run dan anak-anaknya: Be gi ni lah ha rus ka mu mem ber kati orang Israel, ka ta kan lah ke pa da mereka:",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0098f73a-716b-4ac9-9357-23f19eb3ba0e",
+        "text": "Ia menyelidiki arti rahasia dari pepatah, dan teka-teki amsal disibukkannya.",
+        "content": "Ia menyelidiki arti rahasia dari pepatah, dan teka-teki amsal disibukkannya.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "00beb303-8d82-403a-8e0a-1e69708e7193",
+        "text": "La lu ber ka ta lah De bo ra ke pa da Barak: \"Ber si aplah, se bab ini lah ha ri nya Tuhan me nye rahkan Si se ra ke da lam ta ngan mu. Bu kan kah Tuhan te lah ma ju di de pan eng kau?\" La lu tu run lah Ba rak da ri gu nung Ta bor dan se puluh ri bu orang mengi kuti dia,",
+        "content": "La lu ber ka ta lah De bo ra ke pa da Barak: \"Ber si aplah, se bab ini lah ha ri nya Tuhan me nye rahkan Si se ra ke da lam ta ngan mu. Bu kan kah Tuhan te lah ma ju di de pan eng kau?\" La lu tu run lah Ba rak da ri gu nung Ta bor dan se puluh ri bu orang mengi kuti dia,",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "00e35851-289e-42a0-b7f8-41ab4d40eb3f",
+        "text": "Ju ga di bu at me re kalah dua ge lang emas dan di pa sang pa da ke dua tu tup ba hu ba ju efod, di se be lah ba wah pa da ba gi an de pan, de kat ke tem pat per sam bung an nya, di se belah atas sa buk ba ju efod.",
+        "content": "Ju ga di bu at me re kalah dua ge lang emas dan di pa sang pa da ke dua tu tup ba hu ba ju efod, di se be lah ba wah pa da ba gi an de pan, de kat ke tem pat per sam bung an nya, di se belah atas sa buk ba ju efod.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "00e81009-2e91-4e42-9159-425d7e5c59e5",
+        "text": "Ke ti ka da yang-da yang dan si da-si da Ester mem be ri ta hu kan hal itu ke pa da nya, maka sa ngat lah ri sau ha ti sang ra tu, la lu di kirim kan nya lah pa kai an, su pa ya di pa kai kan ke pa da Mor de khai dan su pa ya di tang gal kan ka in ka bung nya da ri pa da nya, te ta pi ti dak di te ri ma nya.",
+        "content": "Ke ti ka da yang-da yang dan si da-si da Ester mem be ri ta hu kan hal itu ke pa da nya, maka sa ngat lah ri sau ha ti sang ra tu, la lu di kirim kan nya lah pa kai an, su pa ya di pa kai kan ke pa da Mor de khai dan su pa ya di tang gal kan ka in ka bung nya da ri pa da nya, te ta pi ti dak di te ri ma nya.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "00f3b4aa-9e5e-4b1e-a010-e1f37afb8717",
+        "text": "Se bab apa bila orang bang kit da ri an ta ra orang ma ti, orang ti dak ka win dan ti dak di ka win kan me la in kan hi dup se per ti ma lai kat di sor ga.",
+        "content": "Se bab apa bila orang bang kit da ri an ta ra orang ma ti, orang ti dak ka win dan ti dak di ka win kan me la in kan hi dup se per ti ma lai kat di sor ga.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0100a5f8-53f1-4ee3-bfe2-660b40fd921d",
+        "text": "Orang akan mem be li la dang la gi di ne geri ini yang ka mu katakan: Itu ada lah tempat tan dus tan pa ma nu sia dan hewan; itu telah di se rah kan ke da lam ta ngan orang-orang Kas dim!",
+        "content": "Orang akan mem be li la dang la gi di ne geri ini yang ka mu katakan: Itu ada lah tempat tan dus tan pa ma nu sia dan hewan; itu telah di se rah kan ke da lam ta ngan orang-orang Kas dim!",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01266f6b-9845-4394-add7-c931badfe3d8",
+        "text": "Ke mu di an da tang lah fi r man Tuhan ke pa da Ye hu bin Ha na ni me la wan Bae sa, bunyinya:",
+        "content": "Ke mu di an da tang lah fi r man Tuhan ke pa da Ye hu bin Ha na ni me la wan Bae sa, bunyinya:",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0132ab23-8612-496f-9283-84cf42eebfd6",
+        "text": "Kepa da Ha run me re ka berkata: Bu at lah un tuk ka mi be be ra pa allah yang akan ber ja lan di de pan ka mi, se bab Mu sa ini yang te lah memim pin ka mi ke lu ar da ri ta nah Me sir - kami ti dak ta hu apa yang te lah ter ja di de ngan dia.",
+        "content": "Kepa da Ha run me re ka berkata: Bu at lah un tuk ka mi be be ra pa allah yang akan ber ja lan di de pan ka mi, se bab Mu sa ini yang te lah memim pin ka mi ke lu ar da ri ta nah Me sir - kami ti dak ta hu apa yang te lah ter ja di de ngan dia.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01370e1f-f6da-43b0-aaad-1715c7223da9",
+        "text": "Ti ga ta hun la ma nya ia me merin tah di Ye ru sa lem. Na ma ibu nya ia lah Mikha ya, anak Uriel da ri Gi bea. Dan ada pe rang an ta ra Abia dan Ye ro beam.",
+        "content": "Ti ga ta hun la ma nya ia me merin tah di Ye ru sa lem. Na ma ibu nya ia lah Mikha ya, anak Uriel da ri Gi bea. Dan ada pe rang an ta ra Abia dan Ye ro beam.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0137c48a-273c-4e1e-bc9c-b38de4344fa2",
+        "text": "Se le bih nya da ri ri wa yat Yo as dan se gala yang di la ku kan nya dan ke pah la wan an nya, ba gai ma na ia ber pe rang me la wan Ama zia, ra ja Ye hu da, bu kan kah se mua nya itu ter tu lis da lam ki tab se ja rah ra ja-ra ja Is rael?",
+        "content": "Se le bih nya da ri ri wa yat Yo as dan se gala yang di la ku kan nya dan ke pah la wan an nya, ba gai ma na ia ber pe rang me la wan Ama zia, ra ja Ye hu da, bu kan kah se mua nya itu ter tu lis da lam ki tab se ja rah ra ja-ra ja Is rael?",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "013ae5f5-061b-4991-bc85-8785928e0e03",
+        "text": "la lu ka ta-Nya ke pa da mereka: \"Ha ti-Ku sangat se dih, se per ti mau ma ti ra sa nya. Ting gallah di si ni dan ber ja ga-ja ga lah de ngan Aku.\"",
+        "content": "la lu ka ta-Nya ke pa da mereka: \"Ha ti-Ku sangat se dih, se per ti mau ma ti ra sa nya. Ting gallah di si ni dan ber ja ga-ja ga lah de ngan Aku.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01601f77-7e8c-41f5-80a2-3052cc80d27b",
+        "text": "Mak sudnya su pa ya ka mu mengingat dan me la ku kan se ga la pe rin tah-Ku dan men ja di ku dus ba gi Allah mu.",
+        "content": "Mak sudnya su pa ya ka mu mengingat dan me la ku kan se ga la pe rin tah-Ku dan men ja di ku dus ba gi Allah mu.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01652654-867b-442f-be55-826a39d570fa",
+        "text": "Sebaliknya kemuliaan seseorang terletak dalam menghormati bapanya, dan malu anak ialah ibu ternista.",
+        "content": "Sebaliknya kemuliaan seseorang terletak dalam menghormati bapanya, dan malu anak ialah ibu ternista.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0177415d-8237-49a4-96bc-f474ad0bd3c6",
+        "text": "Me mang ada lah sua tu tan da buk ti ke ba ik an ha ti yang be sar, ka lau orang fa sik ti dak la ma di bi arkan sa ja, me la in kan se ge ra di ja tuhi hu kuman.",
+        "content": "Me mang ada lah sua tu tan da buk ti ke ba ik an ha ti yang be sar, ka lau orang fa sik ti dak la ma di bi arkan sa ja, me la in kan se ge ra di ja tuhi hu kuman.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "017fda24-a458-4f27-92e8-2a6acca75d94",
+        "text": "Be be rapa wak tu la ma nya ha kim itu me no lak. Te tapi ke mu di an ia ber ka ta da lam hatinya: Walau pun aku ti dak ta kut akan Allah dan ti dak meng hor mati se orang pun,",
+        "content": "Be be rapa wak tu la ma nya ha kim itu me no lak. Te tapi ke mu di an ia ber ka ta da lam hatinya: Walau pun aku ti dak ta kut akan Allah dan ti dak meng hor mati se orang pun,",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "018ab0e0-26b0-411a-97b3-89c3c00cc404",
+        "text": "Ada pun Ed na ber ka ta ke pa da To bia: \"Anak dan sau da ra ku yang ter cin ta, mo gamo ga Tuhan meng an tar eng kau pu lang dan mu dah-mu dah an aku ma sih me li hat se la ma hi dup ku anak-anak mu dan anak-anak Sa ra, anak ku, se be lum aku me ning gal. Di ha dapan Tuhan anak ku ku per ca ya kan ke pa da mu se ba gai pe ta ruh. Ja ngan me nye dih kan ha tinya se pan jang umur hi dup mu. Per gi lah dengan se la mat, anak ku! Mu lai se ka rang ini aku lah ibu mu dan Sa ra men ja di sau da ri mu. Mo ga-mo ga ki ta se ka li an hi dup ba ha gia sepan jang umur hi dup ki ta, se per ti hal nya seka rang ini.\" La lu di be ri nya sa lam ke pa da mere ka dan di bi ar kan nya me re ka per gi.",
+        "content": "Ada pun Ed na ber ka ta ke pa da To bia: \"Anak dan sau da ra ku yang ter cin ta, mo gamo ga Tuhan meng an tar eng kau pu lang dan mu dah-mu dah an aku ma sih me li hat se la ma hi dup ku anak-anak mu dan anak-anak Sa ra, anak ku, se be lum aku me ning gal. Di ha dapan Tuhan anak ku ku per ca ya kan ke pa da mu se ba gai pe ta ruh. Ja ngan me nye dih kan ha tinya se pan jang umur hi dup mu. Per gi lah dengan se la mat, anak ku! Mu lai se ka rang ini aku lah ibu mu dan Sa ra men ja di sau da ri mu. Mo ga-mo ga ki ta se ka li an hi dup ba ha gia sepan jang umur hi dup ki ta, se per ti hal nya seka rang ini.\" La lu di be ri nya sa lam ke pa da mere ka dan di bi ar kan nya me re ka per gi.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "018f34e7-206a-400f-85b4-16ba988592f1",
+        "text": "Se bab be gi ni lah fi r man Tuhan: \"Kepada orang-orang kebiri yang memelihara hari-hari Sabat-Ku dan yang memilih apa yang Kukehendaki dan yang berpegang kepada perjanjian-Ku,",
+        "content": "Se bab be gi ni lah fi r man Tuhan: \"Kepada orang-orang kebiri yang memelihara hari-hari Sabat-Ku dan yang memilih apa yang Kukehendaki dan yang berpegang kepada perjanjian-Ku,",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01ade119-2c05-474e-9fbf-d7d276ed204a",
+        "text": "untuk menghalang-halangi orangorang lemah mendapat keadilan dan untuk merebut hak orang-orang sengsara di antara umat-Ku, supaya mereka dapat merampas milik janda-janda, dan dapat menjarah anak-anak yatim!",
+        "content": "untuk menghalang-halangi orangorang lemah mendapat keadilan dan untuk merebut hak orang-orang sengsara di antara umat-Ku, supaya mereka dapat merampas milik janda-janda, dan dapat menjarah anak-anak yatim!",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01b0090f-ce54-4eb4-b747-406c99cd9c34",
+        "text": "Hai orang-orang Ga la tia yang bo doh, siapa kah yang te lah mem pe so na ka mu? Bu kan kah Yesus Kristus yang di sa lib kan itu te lah di lu kis kan de ngan te rang di de pan mu?",
+        "content": "Hai orang-orang Ga la tia yang bo doh, siapa kah yang te lah mem pe so na ka mu? Bu kan kah Yesus Kristus yang di sa lib kan itu te lah di lu kis kan de ngan te rang di de pan mu?",
+        "pericope": "Dibenarkan oleh karena iman",
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01bbe2e8-135f-4c69-9329-c8be31c60fea",
+        "text": "Di mana gerangan persembunyian singa dan gua singa-singa muda, tempat singa pulang pergi, tempat anak singa, di mana tidak ada yang mengganggunya?",
+        "content": "Di mana gerangan persembunyian singa dan gua singa-singa muda, tempat singa pulang pergi, tempat anak singa, di mana tidak ada yang mengganggunya?",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01c4c00a-7e52-4826-8be0-7b9d7b0646ee",
+        "text": "Me reka sa ngat ke ta kut an dan me nun duk kan kepa la, te ta pi ke dua orang itu ber ka ta ke pa da mereka: \"Menga pa ka mu men ca ri Dia yang 23:46: Mzm. 31:6 23:49: Luk. 8:2-3 23:56b: Kel. 20:10; Ul. 5:14 hi dup, di an ta ra orang ma ti?",
+        "content": "Me reka sa ngat ke ta kut an dan me nun duk kan kepa la, te ta pi ke dua orang itu ber ka ta ke pa da mereka: \"Menga pa ka mu men ca ri Dia yang 23:46: Mzm. 31:6 23:49: Luk. 8:2-3 23:56b: Kel. 20:10; Ul. 5:14 hi dup, di an ta ra orang ma ti?",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01f0a46d-3a88-4a15-b172-9c6536990613",
+        "text": "La lu Mu sa menyu ruh Ha run dan anak-anak nya men de kat, dan di ba suh nya lah me re ka de ngan air.",
+        "content": "La lu Mu sa menyu ruh Ha run dan anak-anak nya men de kat, dan di ba suh nya lah me re ka de ngan air.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01f8c24a-edef-4fbe-b515-fcdfb759bef6",
+        "text": "Te ta pi pa ra pang li ma orang Fi lis tin itu men ja di ma rah kepadanya; ser ta ber ka ta kepadanya: \"Suruh lah orang itu pu lang, su pa ya ia kem ba li ke tem pat, yang kau tun juk kan ke pa da nya, dan ja ngan lah ia per gi ber pe rang, ber sa masa ma de ngan ki ta, su pa ya ja ngan ia menja di la wan ki ta da lam pe pe rang an. Se bab de ngan apa kah orang ini da pat me nyu kakan ha ti tu an nya, ke cu ali de ngan mem beri ke pa la-ke pa la orang-orang ini?",
+        "content": "Te ta pi pa ra pang li ma orang Fi lis tin itu men ja di ma rah kepadanya; ser ta ber ka ta kepadanya: \"Suruh lah orang itu pu lang, su pa ya ia kem ba li ke tem pat, yang kau tun juk kan ke pa da nya, dan ja ngan lah ia per gi ber pe rang, ber sa masa ma de ngan ki ta, su pa ya ja ngan ia menja di la wan ki ta da lam pe pe rang an. Se bab de ngan apa kah orang ini da pat me nyu kakan ha ti tu an nya, ke cu ali de ngan mem beri ke pa la-ke pa la orang-orang ini?",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01fb0673-0bd9-4c09-8099-5c96a8686e24",
+        "text": "Apa bila imam su dah meng ha dap kan pe rem pu an itu ke pada Tuhan, ha rus lah ia meng urai kan rambut pe rem pu an itu, la lu me le tak kan kor ban peri ngat an, yak ni kor ban sa ji an cem bu ru an, ke atas te la pak ta ngan pe rem pu an itu, sedang di ta ngan imam ha rus lah ada air pa hit yang men da tang kan ku tuk.",
+        "content": "Apa bila imam su dah meng ha dap kan pe rem pu an itu ke pada Tuhan, ha rus lah ia meng urai kan rambut pe rem pu an itu, la lu me le tak kan kor ban peri ngat an, yak ni kor ban sa ji an cem bu ru an, ke atas te la pak ta ngan pe rem pu an itu, sedang di ta ngan imam ha rus lah ada air pa hit yang men da tang kan ku tuk.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "01fff2f8-1fa6-493a-a716-9057e2865641",
+        "text": "Se ge ra se su dah hal itu ke de ngar an kepa da Ye ro beam bin Ne bat - ia ada di Me sir, se bab ia me la ri kan di ri ke sa na da ri ha dapan ra ja Sa lo mo - ma ka kem ba li lah ia da ri Me sir.",
+        "content": "Se ge ra se su dah hal itu ke de ngar an kepa da Ye ro beam bin Ne bat - ia ada di Me sir, se bab ia me la ri kan di ri ke sa na da ri ha dapan ra ja Sa lo mo - ma ka kem ba li lah ia da ri Me sir.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "021d6b49-9ca0-4c18-ab3c-5827401da99d",
+        "text": "Aku pun mempunyai pengertian, sama seperti kamu, aku tidak kalah dengan kamu; siapa tidak tahu hal-hal serupa itu?",
+        "content": "Aku pun mempunyai pengertian, sama seperti kamu, aku tidak kalah dengan kamu; siapa tidak tahu hal-hal serupa itu?",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "021f6a58-a26f-4bf2-b4e8-6a49d620a066",
+        "text": "Te tapi ja wab Harun: \"Ja ngan lah bang kit ama rah tuanku; eng kau sen diri ta hu, bah wa bangsa ini ja hat se ma ta-ma ta.",
+        "content": "Te tapi ja wab Harun: \"Ja ngan lah bang kit ama rah tuanku; eng kau sen diri ta hu, bah wa bangsa ini ja hat se ma ta-ma ta.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "022405ba-b7f0-44e3-821e-7c575ea57c9a",
+        "text": "Se sung guhnya, de mi ki an lah fi r man Tuhan, Aku membe ri pe rin tah dan mem ba wa me re ka kem ba li ke ko ta ini un tuk me me rangi nya, me re butnya dan meng ha ngus kan nya de ngan api. Aku akan mem bu at ko ta-ko ta Ye hu da men ja di ketan dus an tan pa pen du duk.\" Kesetiaan orang-orang Rekhab",
+        "content": "Se sung guhnya, de mi ki an lah fi r man Tuhan, Aku membe ri pe rin tah dan mem ba wa me re ka kem ba li ke ko ta ini un tuk me me rangi nya, me re butnya dan meng ha ngus kan nya de ngan api. Aku akan mem bu at ko ta-ko ta Ye hu da men ja di ketan dus an tan pa pen du duk.\" Kesetiaan orang-orang Rekhab",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0225def2-3640-42d8-9207-32f87bfa8c33",
+        "text": "Jadi, marilah kita menikmati hal-hal baik yang masih ada, dan bergegas menggunakan alam seperti di masa muda!",
+        "content": "Jadi, marilah kita menikmati hal-hal baik yang masih ada, dan bergegas menggunakan alam seperti di masa muda!",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "022abf92-c6bf-4846-9346-c9b842d8ce10",
+        "text": "Ia meng ang kut se lu ruh pen du duk Ye ru sa lem ke da lam pem bu ang an, se mua pang li ma dan se mua pah la wan yang ga gah per ka sa, se pu luh ri bu orang ta wan an, ju ga se mua tu kang dan pan dai besi; ti dak ada yang di ting gal kan ke cu ali orang-orang le mah da ri rak yat ne ge ri.",
+        "content": "Ia meng ang kut se lu ruh pen du duk Ye ru sa lem ke da lam pem bu ang an, se mua pang li ma dan se mua pah la wan yang ga gah per ka sa, se pu luh ri bu orang ta wan an, ju ga se mua tu kang dan pan dai besi; ti dak ada yang di ting gal kan ke cu ali orang-orang le mah da ri rak yat ne ge ri.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "025599bf-9a29-4126-8fea-29103676a1fb",
+        "text": "De mi ki an pu la Tuhan te lah me ne tap kan, bah wa me re ka yang mem be ri ta kan In jil, ha rus hi dup da ri pem beri ta an In jil itu.",
+        "content": "De mi ki an pu la Tuhan te lah me ne tap kan, bah wa me re ka yang mem be ri ta kan In jil, ha rus hi dup da ri pem beri ta an In jil itu.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0256d83c-2682-4547-ad24-bf7295fa793a",
+        "text": "Ke ti ka Yesus dan mu rid-mu rid-Nya telah de kat Ye ru sa lem dan ti ba di Betfa ge yang ter le tak di Bu kit Zai tun, Yesus menyu ruh dua orang mu rid-Nya",
+        "content": "Ke ti ka Yesus dan mu rid-mu rid-Nya telah de kat Ye ru sa lem dan ti ba di Betfa ge yang ter le tak di Bu kit Zai tun, Yesus menyu ruh dua orang mu rid-Nya",
+        "pericope": "Yesus dielu-elukan di Yerusalem",
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0274a508-181a-4c8f-b9ca-9372182eaf7f",
+        "text": "Lalu Mu sa mem be ri kan ke pa da me re ka, ke pada ba ni Gad, ke pa da ba ni Ru ben dan ke pa da se te ngah su ku Ma na sye bin Yusuf: ke ra ja an Si hon, ra ja orang Amori, dan ke ra ja an Og, ra ja Ba san, yak ni ne ge ri me re ka be ser ta kota-ko ta nya di se lu ruh ne ge ri itu, de ngan daerah-dae rah se ti ap ko ta itu.",
+        "content": "Lalu Mu sa mem be ri kan ke pa da me re ka, ke pada ba ni Gad, ke pa da ba ni Ru ben dan ke pa da se te ngah su ku Ma na sye bin Yusuf: ke ra ja an Si hon, ra ja orang Amori, dan ke ra ja an Og, ra ja Ba san, yak ni ne ge ri me re ka be ser ta kota-ko ta nya di se lu ruh ne ge ri itu, de ngan daerah-dae rah se ti ap ko ta itu.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "027832ba-fb83-4940-b897-69a035fe7af9",
+        "text": "Ja wab Laban: \"Ti dak bia sa orang ber bu at de mi ki an di tem pat ka mi ini, me nga win kan adik nya le bih da hu lu da ri pa da ka kak nya.",
+        "content": "Ja wab Laban: \"Ti dak bia sa orang ber bu at de mi ki an di tem pat ka mi ini, me nga win kan adik nya le bih da hu lu da ri pa da ka kak nya.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "028b18f8-467d-4165-ae22-bb2c634db1e4",
+        "text": "Ka re na ha ti mu ta hu bah wa engkau ju ga te lah ke rap kali me ngu tuki orangorang la in. Pengejaran hikmat yang mengecewakan",
+        "content": "Ka re na ha ti mu ta hu bah wa engkau ju ga te lah ke rap kali me ngu tuki orangorang la in. Pengejaran hikmat yang mengecewakan",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "02a46e87-f3fe-4b66-8dae-0e7aecdb1c53",
+        "text": "Ma ka ter se bar lah ka bar di an ta ra sau da ra-sau da ra itu, bah wa mu rid itu ti dak akan ma ti. Te ta pi Yesus tidak me nga ta kan ke pa da Pet rus, bah wa murid itu ti dak akan ma ti, melainkan: \"Ji ka lau Aku meng hen daki su pa ya ia ting gal hi dup sam pai Aku da tang, itu bu kan urus an mu.\" Kata penutup",
+        "content": "Ma ka ter se bar lah ka bar di an ta ra sau da ra-sau da ra itu, bah wa mu rid itu ti dak akan ma ti. Te ta pi Yesus tidak me nga ta kan ke pa da Pet rus, bah wa murid itu ti dak akan ma ti, melainkan: \"Ji ka lau Aku meng hen daki su pa ya ia ting gal hi dup sam pai Aku da tang, itu bu kan urus an mu.\" Kata penutup",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "02ba413f-88fd-4310-ba36-ed268b95d840",
+        "text": "Orang Fi lis tin me ngum pul kan ten ta ranya un tuk berperang; me re ka ber kumpul di So kho yang di ta nah Ye hu da dan ber kemah an ta ra So kho dan Aze ka di Efes-Da mim.",
+        "content": "Orang Fi lis tin me ngum pul kan ten ta ranya un tuk berperang; me re ka ber kumpul di So kho yang di ta nah Ye hu da dan ber kemah an ta ra So kho dan Aze ka di Efes-Da mim.",
+        "pericope": "Goliat menantang tentara Israel",
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "02c34f95-6445-4678-8203-692525dc02ea",
+        "text": "La lu ber ti up lah angin yang da ri Tuhan asalnya; di ba wa nya lah bu rung-bu rung puyuh da ri se be lah la ut, dan di ham bur kan nya ke atas tem pat per ke mah an dan di se ke li lingnya, ki ra-ki ra se ha ri per ja lan an ja uh nya ke se ga la pen ju ru, dan ki ra-ki ra dua has ta tinggi nya da ri atas mu ka bu mi.",
+        "content": "La lu ber ti up lah angin yang da ri Tuhan asalnya; di ba wa nya lah bu rung-bu rung puyuh da ri se be lah la ut, dan di ham bur kan nya ke atas tem pat per ke mah an dan di se ke li lingnya, ki ra-ki ra se ha ri per ja lan an ja uh nya ke se ga la pen ju ru, dan ki ra-ki ra dua has ta tinggi nya da ri atas mu ka bu mi.",
+        "pericope": "Burung puyuh",
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "02c95a2c-5c40-4f95-8a2e-efc70c4c5d4c",
+        "text": "Di Gi beon di am ba pa Gi beon, yakni Ye iel, dan na ma is te ri nya ia lah Maa kha.",
+        "content": "Di Gi beon di am ba pa Gi beon, yakni Ye iel, dan na ma is te ri nya ia lah Maa kha.",
+        "pericope": "Silsilah Saul",
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "02dbbc6c-5d3a-41aa-9a92-340da28f4d70",
+        "text": "Dan ta ngan Tuhan me nyer tai me re ka dan se jum lah besar orang men ja di per ca ya dan ber ba lik kepa da Tuhan.",
+        "content": "Dan ta ngan Tuhan me nyer tai me re ka dan se jum lah besar orang men ja di per ca ya dan ber ba lik kepa da Tuhan.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "02e81afa-0e9f-435c-b7fc-dcd2c7b20470",
+        "text": "Sesungguhnya, semua orang yang bangkit amarahnya terhadap engkau akan mendapat malu dan kena noda; orang-orang yang membantah engkau akan seperti tidak ada dan akan binasa;",
+        "content": "Sesungguhnya, semua orang yang bangkit amarahnya terhadap engkau akan mendapat malu dan kena noda; orang-orang yang membantah engkau akan seperti tidak ada dan akan binasa;",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "02f0ec98-2b9c-473a-9c8a-123ce7918c21",
+        "text": "Se bab ti dak ada per be da an an ta ra orang Ya hu di dan orang Yu na ni. Kare na, Allah yang sa tu itu ada lah Tuhan dari se mua orang, ka ya ba gi se mua orang yang ber se ru ke pa da-Nya.",
+        "content": "Se bab ti dak ada per be da an an ta ra orang Ya hu di dan orang Yu na ni. Kare na, Allah yang sa tu itu ada lah Tuhan dari se mua orang, ka ya ba gi se mua orang yang ber se ru ke pa da-Nya.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0302caf6-ca6e-4fca-8348-7b788a7735a5",
+        "text": "Ma ka se ka rang, ayah ku te lah mem be ban kan ke pada ka mu tang gung an yang be rat, te ta pi aku akan me nam bah tang gung an kamu; ayah ku te lah meng ha jar ka mu de ngan cam buk, teta pi aku akan meng ha jar ka mu de ngan cambuk yang ber du ri be si.\"",
+        "content": "Ma ka se ka rang, ayah ku te lah mem be ban kan ke pada ka mu tang gung an yang be rat, te ta pi aku akan me nam bah tang gung an kamu; ayah ku te lah meng ha jar ka mu de ngan cam buk, teta pi aku akan meng ha jar ka mu de ngan cambuk yang ber du ri be si.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "030dbb46-5248-4564-a3eb-9447cee86a8f",
+        "text": "Ka ta Yu dit: \"Angkatlah nyanyian untuk Allah dengan iringan gendang, bernyanyilah bagi Tuhan dengan bunyi canang, gabungkanlah bagi-Nya mazmur dan kidung, tinggikanlah dan sebutkanlah nama-Nya.",
+        "content": "Ka ta Yu dit: \"Angkatlah nyanyian untuk Allah dengan iringan gendang, bernyanyilah bagi Tuhan dengan bunyi canang, gabungkanlah bagi-Nya mazmur dan kidung, tinggikanlah dan sebutkanlah nama-Nya.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03192959-686d-4b25-b40c-4fa69089792c",
+        "text": "Yo sa fat me me rin tah atas Ye hu da. Ia berumur ti ga pu luh li ma ta hun pa da wak tu ia men ja di ra ja dan dua pu luh li ma ta hun lama nya ia me me rin tah di Ye ru sa lem. Na ma ibu nya ia lah Azu ba, anak Sil hi.",
+        "content": "Yo sa fat me me rin tah atas Ye hu da. Ia berumur ti ga pu luh li ma ta hun pa da wak tu ia men ja di ra ja dan dua pu luh li ma ta hun lama nya ia me me rin tah di Ye ru sa lem. Na ma ibu nya ia lah Azu ba, anak Sil hi.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "033abd98-4eb9-489c-ba50-774451cb7051",
+        "text": "Se mua pin tu di la luinya la lu ber di ri lah ia di ha dap an ra ja. Ra ja ber se ma yam di atas takh ta ke ra ja an nya dengan ber dan dan an ke be sar an nya, se lu ruhnya ber ta bur an emas dan per ma ta. Sungguh men dah syat kan lah ia. Ka ta ra ja ke pa da nya: \"...] Surat penetapan raja Ahasyweros mengenai orang-orang Yahudi [Ester 8:12... pada tanggal tiga belas bulan yang kedua belas yakni bulan Adar.] E",
+        "content": "Se mua pin tu di la luinya la lu ber di ri lah ia di ha dap an ra ja. Ra ja ber se ma yam di atas takh ta ke ra ja an nya dengan ber dan dan an ke be sar an nya, se lu ruhnya ber ta bur an emas dan per ma ta. Sungguh men dah syat kan lah ia. Ka ta ra ja ke pa da nya: \"...] Surat penetapan raja Ahasyweros mengenai orang-orang Yahudi [Ester 8:12... pada tanggal tiga belas bulan yang kedua belas yakni bulan Adar.] E",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "033e48ee-b3f4-484d-9ec5-75f1cabec329",
+        "text": "Keindahan hutan Asyur dan kebun buah-buahannya akan dihabiskan-Nya, dari batangnya sampai rantingnya, sehingga akan menjadi seperti seorang sakit yang merana sampai mati;",
+        "content": "Keindahan hutan Asyur dan kebun buah-buahannya akan dihabiskan-Nya, dari batangnya sampai rantingnya, sehingga akan menjadi seperti seorang sakit yang merana sampai mati;",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "034e9c34-20dc-421f-a6ae-9ffb7fd3b98b",
+        "text": "Dari kekal sampai kekal Ia memandang ke bawah, tidak ada barang sesuatu pun yang luar biasa bagi-Nya.",
+        "content": "Dari kekal sampai kekal Ia memandang ke bawah, tidak ada barang sesuatu pun yang luar biasa bagi-Nya.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "035f9b0b-d5ff-4ad1-aad2-16a2fb52503c",
+        "text": "Se bab orangorang Fa ri si se per ti orang-orang Ya hu di lain nya ti dak ma kan ka lau ti dak me la ku kan pem ba suh an ta ngan le bih du lu, ka re na mere ka ber pe gang pa da adat is tia dat ne nek moyang mereka;",
+        "content": "Se bab orangorang Fa ri si se per ti orang-orang Ya hu di lain nya ti dak ma kan ka lau ti dak me la ku kan pem ba suh an ta ngan le bih du lu, ka re na mere ka ber pe gang pa da adat is tia dat ne nek moyang mereka;",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0399839f-6dc6-478b-8892-1c253a349578",
+        "text": "Sebab kebijaksanaan tidak masuk ke dalam hati keruh, dan tidak pula tinggal dalam tubuh yang dikuasai oleh dosa.",
+        "content": "Sebab kebijaksanaan tidak masuk ke dalam hati keruh, dan tidak pula tinggal dalam tubuh yang dikuasai oleh dosa.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03aa4da3-339a-403d-85fe-e11affe8ce03",
+        "text": "Pada masa kelaparan engkau dibebaskan-Nya dari maut, dan pada masa perang dari kuasa pedang.",
+        "content": "Pada masa kelaparan engkau dibebaskan-Nya dari maut, dan pada masa perang dari kuasa pedang.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03c159cb-3282-460f-9f2a-d936b21ec573",
+        "text": "Ma ka ke lu ar lah ia da ri ne ge ri orang Kas dim, la lu me ne tap di Ha ran. Dan se te lah ayah nya me ning gal, Allah menyu ruh dia pin dah da ri si tu ke ta nah ini, tempat ka mu di am sekarang;",
+        "content": "Ma ka ke lu ar lah ia da ri ne ge ri orang Kas dim, la lu me ne tap di Ha ran. Dan se te lah ayah nya me ning gal, Allah menyu ruh dia pin dah da ri si tu ke ta nah ini, tempat ka mu di am sekarang;",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03c498ce-f79a-434d-a016-c8d06de1e6b6",
+        "text": "Ma ka ter bu ka lah teli nga orang itu dan se ke ti ka itu ter le pas pula lah pengi kat li dah nya, la lu ia ber ka ta-ka ta de ngan ba ik.",
+        "content": "Ma ka ter bu ka lah teli nga orang itu dan se ke ti ka itu ter le pas pula lah pengi kat li dah nya, la lu ia ber ka ta-ka ta de ngan ba ik.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03d0cacd-8d6e-458c-819d-a7b3fe4130a4",
+        "text": "Ke mu di an Ia ber ka ta ke pa da mereka: \"Si apa kah di an ta ra ka mu yang ti dak se ge ra me na rik ke lu ar anak nya atau lem bu nya kalau ter pe ro sok ke da lam se bu ah su mur, meski pun pa da ha ri Sa bat?\"",
+        "content": "Ke mu di an Ia ber ka ta ke pa da mereka: \"Si apa kah di an ta ra ka mu yang ti dak se ge ra me na rik ke lu ar anak nya atau lem bu nya kalau ter pe ro sok ke da lam se bu ah su mur, meski pun pa da ha ri Sa bat?\"",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03d2d995-83a6-44eb-9acd-b3ea41f561e8",
+        "text": "La lu aku me li hat: aku men de ngar seekor bu rung na sar ter bang di te ngah la ngit dan ber ka ta de ngan su ara nya ring: \"Ce la ka, ce la ka, ce la ka lah me re ka yang di am di atas bu mi oleh ka re na bu nyi sang ka ka la ke ti ga ma lai kat la in, yang ma sih akan me ni up sangka ka la nya.\" Sangkakala yang kelima",
+        "content": "La lu aku me li hat: aku men de ngar seekor bu rung na sar ter bang di te ngah la ngit dan ber ka ta de ngan su ara nya ring: \"Ce la ka, ce la ka, ce la ka lah me re ka yang di am di atas bu mi oleh ka re na bu nyi sang ka ka la ke ti ga ma lai kat la in, yang ma sih akan me ni up sangka ka la nya.\" Sangkakala yang kelima",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03d38180-39be-4f18-b6fb-15453a3eec7c",
+        "text": "Se te lah mu rid-mu rid Yo ha nes per gi, mulai lah Yesus ber bi ca ra ke pa da orang ba nyak itu ten tang Yohanes: \"Un tuk apa kah ka mu per gi ke pa dang gu run? Me li hat bu luh yang di go yang kan angin ki an ke ma ri?",
+        "content": "Se te lah mu rid-mu rid Yo ha nes per gi, mulai lah Yesus ber bi ca ra ke pa da orang ba nyak itu ten tang Yohanes: \"Un tuk apa kah ka mu per gi ke pa dang gu run? Me li hat bu luh yang di go yang kan angin ki an ke ma ri?",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03d9c09e-f832-40a9-9a0e-5be9838908c8",
+        "text": "Engkau membuat kami menjadi cela bagi tetangga-tetangga kami, menjadi olok-olok dan cemooh bagi orang-orang sekeliling kami.",
+        "content": "Engkau membuat kami menjadi cela bagi tetangga-tetangga kami, menjadi olok-olok dan cemooh bagi orang-orang sekeliling kami.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03db4a68-4f06-4618-8b2f-328922050529",
+        "text": "Ma ka jawab-Nya: \"Apakah ka mu ju ga ti dak da pat me ma hami nya? Ti dak ta hu kah ka mu bah wa se ga la se sua tu da ri lu ar yang ma suk ke da lam se seo rang tidak da pat me na jis kan nya,",
+        "content": "Ma ka jawab-Nya: \"Apakah ka mu ju ga ti dak da pat me ma hami nya? Ti dak ta hu kah ka mu bah wa se ga la se sua tu da ri lu ar yang ma suk ke da lam se seo rang tidak da pat me na jis kan nya,",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03db5e86-4e44-4fb3-ab77-0cc74452fe0b",
+        "text": "Orang pergi ke sa na ter pak sa mem ba wa anak-anak panah dan bu sur, se bab pu te ri ma lu dan rumput be la ka se lu ruh ne ge ri itu.",
+        "content": "Orang pergi ke sa na ter pak sa mem ba wa anak-anak panah dan bu sur, se bab pu te ri ma lu dan rumput be la ka se lu ruh ne ge ri itu.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "03fe296b-41d3-4f9f-8558-18ed5fd28ba3",
+        "text": "Ba gai ma na se ki ra nya ada li ma pu luh orang be nar da lam ko ta itu? Apa kah Eng kau akan me le nyap kan tem pat itu dan ti dak kah Eng kau meng am puni nya ka re na ke li ma pu luh orang be nar yang ada di da lam nya itu?",
+        "content": "Ba gai ma na se ki ra nya ada li ma pu luh orang be nar da lam ko ta itu? Apa kah Eng kau akan me le nyap kan tem pat itu dan ti dak kah Eng kau meng am puni nya ka re na ke li ma pu luh orang be nar yang ada di da lam nya itu?",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "041605a4-81a3-4a64-8e1a-de97b7081341",
+        "text": "apa bila eng kau men de ngar kan suara Tuhan, Allah mu, de ngan ber pe gang pada pe rin tah dan ke te tap an-Nya, yang ter tulis da lam ki tab Tau rat ini dan apa bila eng kau ber ba lik ke pa da Tuhan, Allah mu, de ngan sege nap ha ti mu dan de ngan se ge nap ji wa mu.\" Kehidupan atau kematian",
+        "content": "apa bila eng kau men de ngar kan suara Tuhan, Allah mu, de ngan ber pe gang pada pe rin tah dan ke te tap an-Nya, yang ter tulis da lam ki tab Tau rat ini dan apa bila eng kau ber ba lik ke pa da Tuhan, Allah mu, de ngan sege nap ha ti mu dan de ngan se ge nap ji wa mu.\" Kehidupan atau kematian",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0436fbb9-5e87-4c58-8c0d-d80f81d3003c",
+        "text": "Se te lah se lu ruh Is rael me li hat, bah wa ra ja ti dak men de ngar kan per min ta an me reka, ma ka rak yat men ja wab raja: \"Bagian apakah kita dapat dari pada Daud? Kita tidak memperoleh warisan dari anak Isai itu! Masing-masing ke kemahmu, hai orang Israel! Uruslah sekarang rumahmu sendiri, hai Daud!\" Ma ka per gi lah se lu ruh orang Is rael ke ke mahnya,",
+        "content": "Se te lah se lu ruh Is rael me li hat, bah wa ra ja ti dak men de ngar kan per min ta an me reka, ma ka rak yat men ja wab raja: \"Bagian apakah kita dapat dari pada Daud? Kita tidak memperoleh warisan dari anak Isai itu! Masing-masing ke kemahmu, hai orang Israel! Uruslah sekarang rumahmu sendiri, hai Daud!\" Ma ka per gi lah se lu ruh orang Is rael ke ke mahnya,",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "043a1d69-77db-4941-9fc5-b7135b5f2be9",
+        "text": "Hi dup lah de ngan pe nuh hik mat ter ha dap orang-orang lu ar, per gu na kan lah wak tu yang ada.",
+        "content": "Hi dup lah de ngan pe nuh hik mat ter ha dap orang-orang lu ar, per gu na kan lah wak tu yang ada.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "045009cf-d79e-48ad-a4b9-971288667e58",
+        "text": "Sebagai ganti tembaga Aku akan membawa emas, dan sebagai ganti besi Aku akan membawa perak, sebagai ganti kayu, tembaga, dan sebagai ganti batu, besi; Aku akan memberikan damai sejahtera dan keadilan yang akan melindungi dan mengatur hidupmu.",
+        "content": "Sebagai ganti tembaga Aku akan membawa emas, dan sebagai ganti besi Aku akan membawa perak, sebagai ganti kayu, tembaga, dan sebagai ganti batu, besi; Aku akan memberikan damai sejahtera dan keadilan yang akan melindungi dan mengatur hidupmu.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "04576ecc-a4a2-4658-b433-e4c4a601ec74",
+        "text": "Ke de ngar an lah ke pa da Yit ro, imam di Mi di an, mer tua Mu sa, se ga la yang dila ku kan Allah ke pa da Mu sa dan ke pa da Israel, umat-Nya, yak ni bah wa Tuhan te lah mem ba wa orang Is rael ke lu ar da ri Me sir.",
+        "content": "Ke de ngar an lah ke pa da Yit ro, imam di Mi di an, mer tua Mu sa, se ga la yang dila ku kan Allah ke pa da Mu sa dan ke pa da Israel, umat-Nya, yak ni bah wa Tuhan te lah mem ba wa orang Is rael ke lu ar da ri Me sir.",
+        "pericope": "Yitro mengunjungi Musa",
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "045794ae-8b7c-4f9a-bf4c-bdf3d82e09d0",
+        "text": "Dan se su dah ketu juh gu ruh itu se le sai ber bi ca ra, aku mau me nu lis kan nya, te ta pi aku men de ngar sua tu su ara da ri sor ga ber ka ta: \"Me te rai kan lah apa yang di ka ta kan oleh ke tu juh gu ruh itu dan ja ngan lah eng kau me nu lis kan nya!\"",
+        "content": "Dan se su dah ketu juh gu ruh itu se le sai ber bi ca ra, aku mau me nu lis kan nya, te ta pi aku men de ngar sua tu su ara da ri sor ga ber ka ta: \"Me te rai kan lah apa yang di ka ta kan oleh ke tu juh gu ruh itu dan ja ngan lah eng kau me nu lis kan nya!\"",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "046b0c51-603f-4664-9fbb-0c6d30171229",
+        "text": "\"La gi ha rus lah eng kau ber bi ca ra ke pa da orang Lewi dan ber ka ta ke pa da mereka: Apa bila ka mu me ne ri ma da ri pi hak orang Is rael per sem bahan per se pu luh an yang Ku be ri kan ke pa da mu da ri pi hak me re ka se ba gai mi lik pu sa ka mu, ma ka ha rus lah ka mu mem per sem bah kan seba gi an da ri pa da nya se ba gai per sem bah an khu sus ke pa da Tuhan, yak ni per sem bah an per se pu luh an mu da ri per sem bah an per se puluh an itu,",
+        "content": "\"La gi ha rus lah eng kau ber bi ca ra ke pa da orang Lewi dan ber ka ta ke pa da mereka: Apa bila ka mu me ne ri ma da ri pi hak orang Is rael per sem bahan per se pu luh an yang Ku be ri kan ke pa da mu da ri pi hak me re ka se ba gai mi lik pu sa ka mu, ma ka ha rus lah ka mu mem per sem bah kan seba gi an da ri pa da nya se ba gai per sem bah an khu sus ke pa da Tuhan, yak ni per sem bah an per se pu luh an mu da ri per sem bah an per se puluh an itu,",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "0477fee9-6669-4f78-9f82-27e78d62e77e",
+        "text": "Hutan rimba dan segala pohon yang harum semerbak pun menaungi Israel atas perintah Allah.",
+        "content": "Hutan rimba dan segala pohon yang harum semerbak pun menaungi Israel atas perintah Allah.",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      },
+      {
+        "id": "04836e6c-f288-42c1-b3c5-2ff04433167f",
+        "text": "Ka mi sen diri akan me nye be rang de ngan ber sen jata di ha dap an Tuhan ke ta nah Ka na an, teta pi ba gi ka mi te tap lah ta nah mi lik pu saka ka mi di se be rang su ngai Yor dan si ni.\"",
+        "content": "Ka mi sen diri akan me nye be rang de ngan ber sen jata di ha dap an Tuhan ke ta nah Ka na an, teta pi ba gi ka mi te tap lah ta nah mi lik pu saka ka mi di se be rang su ngai Yor dan si ni.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "extract"
+      }
+    ],
+    "updates_from_fallback": [
+      {
+        "id": "054a7986-fe6a-4fb7-98ba-55c4bcf49be4",
+        "text": "Sebab di dalam Dia dan oleh darah-Nya kita beroleh penebusan, yaitu pengampunan dosa, menurut kekayaan kasih karunia-Nya,",
+        "content": "Sebab di dalam Dia dan oleh darah-Nya kita beroleh penebusan, yaitu pengampunan dosa, menurut kekayaan kasih karunia-Nya,",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "05e742f0-25ec-4d23-b6d0-76696a5bcddb",
+        "text": "(6-16) Lalu bergegas-gegaslah orang-orang itu menghadap raja serta berkata kepadanya: \"Ketahuilah, ya raja, bahwa menurut undang-undang orang Media dan Persia tidak ada larangan atau penetapan yang dikeluarkan raja yang dapat diubah!\"",
+        "content": "(6-16) Lalu bergegas-gegaslah orang-orang itu menghadap raja serta berkata kepadanya: \"Ketahuilah, ya raja, bahwa menurut undang-undang orang Media dan Persia tidak ada larangan atau penetapan yang dikeluarkan raja yang dapat diubah!\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "09b52c46-c50a-47d5-a547-7953f66afb29",
+        "text": "Mengapa rusuh bangsa-bangsa, mengapa suku-suku bangsa mereka-reka perkara yang sia-sia?",
+        "content": "Mengapa rusuh bangsa-bangsa, mengapa suku-suku bangsa mereka-reka perkara yang sia-sia?",
+        "pericope": "Raja yang diurapi TUHAN",
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "09da2bc2-44db-469c-8c9b-cd78ed36ea43",
+        "text": "Lalu Yesus menjawab mereka: \"Tidakkah kamu baca apa yang dilakukan oleh Daud, ketika ia dan mereka yang mengikutinya lapar,",
+        "content": "Lalu Yesus menjawab mereka: \"Tidakkah kamu baca apa yang dilakukan oleh Daud, ketika ia dan mereka yang mengikutinya lapar,",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "0c2782ba-6049-442e-8326-5c80653bc6da",
+        "text": "\"Karena tidak ada pohon yang baik yang menghasilkan buah yang tidak baik, dan juga tidak ada pohon yang tidak baik yang menghasilkan buah yang baik.",
+        "content": "\"Karena tidak ada pohon yang baik yang menghasilkan buah yang tidak baik, dan juga tidak ada pohon yang tidak baik yang menghasilkan buah yang baik.",
+        "pericope": "Pohon dan buahnya",
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "10ee02c7-1acf-4cee-bc25-fc45a27a9d4d",
+        "text": "\"Mengapa kamu berseru kepada-Ku: Tuhan, Tuhan, padahal kamu tidak melakukan apa yang Aku katakan?",
+        "content": "\"Mengapa kamu berseru kepada-Ku: Tuhan, Tuhan, padahal kamu tidak melakukan apa yang Aku katakan?",
+        "pericope": "Dua macam dasar",
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "1162e58b-6f51-461b-8de0-b2921b8fd764",
+        "text": "Tetapi Ia mengetahui pikiran mereka, lalu berkata kepada orang yang mati tangannya itu: \"Bangunlah dan berdirilah di tengah!\" Maka bangunlah orang itu dan berdiri.",
+        "content": "Tetapi Ia mengetahui pikiran mereka, lalu berkata kepada orang yang mati tangannya itu: \"Bangunlah dan berdirilah di tengah!\" Maka bangunlah orang itu dan berdiri.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "118a47e5-7eb3-4d69-9d19-1d936a5486de",
+        "text": "Berilah dan kamu akan diberi: suatu takaran yang baik, yang dipadatkan, yang digoncang dan yang tumpah ke luar akan dicurahkan ke dalam ribaanmu. Sebab ukuran yang kamu pakai untuk mengukur, akan diukurkan kepadamu.\"",
+        "content": "Berilah dan kamu akan diberi: suatu takaran yang baik, yang dipadatkan, yang digoncang dan yang tumpah ke luar akan dicurahkan ke dalam ribaanmu. Sebab ukuran yang kamu pakai untuk mengukur, akan diukurkan kepadamu.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "1197f1c6-a3bc-4873-b960-50048822780d",
+        "text": "Aku mau menceritakan tentang ketetapan TUHAN; Ia berkata kepadaku: \"Anak-Ku engkau! Engkau telah Kuperanakkan pada hari ini.",
+        "content": "Aku mau menceritakan tentang ketetapan TUHAN; Ia berkata kepadaku: \"Anak-Ku engkau! Engkau telah Kuperanakkan pada hari ini.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "1371ac1f-70d5-4071-a3f1-81bc98f0b3d0",
+        "text": "Seorang murid tidak lebih dari pada gurunya, tetapi barangsiapa yang telah tamat pelajarannya akan sama dengan gurunya.",
+        "content": "Seorang murid tidak lebih dari pada gurunya, tetapi barangsiapa yang telah tamat pelajarannya akan sama dengan gurunya.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "13d1a18b-e667-4fe3-a6fd-dc471b301492",
+        "text": "Tetapi beberapa orang Farisi berkata: \"Mengapa kamu berbuat sesuatu yang tidak diperbolehkan pada hari Sabat?\"",
+        "content": "Tetapi beberapa orang Farisi berkata: \"Mengapa kamu berbuat sesuatu yang tidak diperbolehkan pada hari Sabat?\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "14d24a68-b205-43a0-9c7f-dd5781f3c135",
+        "text": "(6-19) Lalu pergilah raja ke istananya dan berpuasalah ia semalam-malaman itu; ia tidak menyuruh datang penghibur-penghibur, dan ia tidak dapat tidur.",
+        "content": "(6-19) Lalu pergilah raja ke istananya dan berpuasalah ia semalam-malaman itu; ia tidak menyuruh datang penghibur-penghibur, dan ia tidak dapat tidur.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "151ea488-329f-417c-9893-21d29ca1b18f",
+        "text": "(6-26) Kemudian raja Darius mengirim surat kepada orang-orang dari segala bangsa, suku bangsa dan bahasa, yang mendiami seluruh bumi, bunyinya: \"Bertambah-tambahlah kiranya kesejahteraanmu!",
+        "content": "(6-26) Kemudian raja Darius mengirim surat kepada orang-orang dari segala bangsa, suku bangsa dan bahasa, yang mendiami seluruh bumi, bunyinya: \"Bertambah-tambahlah kiranya kesejahteraanmu!",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "16cf5730-1517-47ed-adb5-6c2529f8f9f3",
+        "text": "Tetapi Bileam beroleh peringatan keras untuk kejahatannya, sebab keledai beban yang bisu berbicara dengan suara manusia dan mencegah kebebalan nabi itu.",
+        "content": "Tetapi Bileam beroleh peringatan keras untuk kejahatannya, sebab keledai beban yang bisu berbicara dengan suara manusia dan mencegah kebebalan nabi itu.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "170e34cf-45d5-4d86-9f85-24a8eb28c687",
+        "text": "Mengapakah engkau melihat selumbar di dalam mata saudaramu, sedangkan balok di dalam matamu sendiri tidak engkau ketahui?",
+        "content": "Mengapakah engkau melihat selumbar di dalam mata saudaramu, sedangkan balok di dalam matamu sendiri tidak engkau ketahui?",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "1c5c6f19-420a-466a-8eb8-ba4640fd535e",
+        "text": "(6-18) Maka dibawalah sebuah batu dan diletakkan pada mulut gua itu, lalu raja mencap itu dengan cincin meterainya dan dengan cincin meterai para pembesarnya, supaya dalam hal Daniel tidak dibuat perubahan apa-apa.",
+        "content": "(6-18) Maka dibawalah sebuah batu dan diletakkan pada mulut gua itu, lalu raja mencap itu dengan cincin meterainya dan dengan cincin meterai para pembesarnya, supaya dalam hal Daniel tidak dibuat perubahan apa-apa.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "1f2a6eb7-33e0-47fc-a231-899b01ffa0fd",
+        "text": "Dan karena serakahnya guru-guru palsu itu akan berusaha mencari untung dari kamu dengan ceritera-ceritera isapan jempol mereka. Tetapi untuk perbuatan mereka itu hukuman telah lama tersedia dan kebinasaan tidak akan tertunda.",
+        "content": "Dan karena serakahnya guru-guru palsu itu akan berusaha mencari untung dari kamu dengan ceritera-ceritera isapan jempol mereka. Tetapi untuk perbuatan mereka itu hukuman telah lama tersedia dan kebinasaan tidak akan tertunda.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "1fa0481b-73f9-4a6f-b082-c281299feab3",
+        "text": "Sesudah itu Ayub masih hidup seratus empat puluh tahun lamanya; ia melihat anak-anaknya dan cucu-cucunya sampai keturunan yang keempat.",
+        "content": "Sesudah itu Ayub masih hidup seratus empat puluh tahun lamanya; ia melihat anak-anaknya dan cucu-cucunya sampai keturunan yang keempat.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "208747d8-1188-499a-8db2-b6a449567aa2",
+        "text": "dan jikalau Allah membinasakan kota Sodom dan Gomora dengan api, dan dengan demikian memusnahkannya dan menjadikannya suatu peringatan untuk mereka yang hidup fasik di masa-masa kemudian,",
+        "content": "dan jikalau Allah membinasakan kota Sodom dan Gomora dengan api, dan dengan demikian memusnahkannya dan menjadikannya suatu peringatan untuk mereka yang hidup fasik di masa-masa kemudian,",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "2140d8e0-7d47-4658-aee7-7b66d0a8cba2",
+        "text": "Mintalah kepada-Ku, maka bangsa-bangsa akan Kuberikan kepadamu menjadi milik pusakamu, dan ujung bumi menjadi kepunyaanmu.",
+        "content": "Mintalah kepada-Ku, maka bangsa-bangsa akan Kuberikan kepadamu menjadi milik pusakamu, dan ujung bumi menjadi kepunyaanmu.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "23a292f8-267e-4ff7-8a42-d4db93d31afd",
+        "text": "Tetapi aku sekali-kali tidak mau bermegah, selain dalam salib Tuhan kita Yesus Kristus, sebab olehnya dunia telah disalibkan bagiku dan aku bagi dunia.",
+        "content": "Tetapi aku sekali-kali tidak mau bermegah, selain dalam salib Tuhan kita Yesus Kristus, sebab olehnya dunia telah disalibkan bagiku dan aku bagi dunia.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "23ca61da-0d15-4590-9749-c2c4d353172c",
+        "text": "Akan tetapi barangsiapa mendengar perkataan-Ku, tetapi tidak melakukannya, ia sama dengan seorang yang mendirikan rumah di atas tanah tanpa dasar. Ketika banjir melandanya, rumah itu segera rubuh dan hebatlah kerusakannya.\"",
+        "content": "Akan tetapi barangsiapa mendengar perkataan-Ku, tetapi tidak melakukannya, ia sama dengan seorang yang mendirikan rumah di atas tanah tanpa dasar. Ketika banjir melandanya, rumah itu segera rubuh dan hebatlah kerusakannya.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "2496d994-9c21-43c1-bb6b-c0ec167b8b84",
+        "text": "Bersukacitalah pada waktu itu dan bergembiralah, sebab sesungguhnya, upahmu besar di sorga; karena secara demikian juga nenek moyang mereka telah memperlakukan para nabi.",
+        "content": "Bersukacitalah pada waktu itu dan bergembiralah, sebab sesungguhnya, upahmu besar di sorga; karena secara demikian juga nenek moyang mereka telah memperlakukan para nabi.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "25ba37e2-72a6-40cd-8f31-5a2506b7f367",
+        "text": "Selanjutnya janganlah ada orang yang menyusahkan aku, karena pada tubuhku ada tanda-tanda milik Yesus.",
+        "content": "Selanjutnya janganlah ada orang yang menyusahkan aku, karena pada tubuhku ada tanda-tanda milik Yesus.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "292af3e3-9ec2-4b54-a123-832ae172ffd3",
+        "text": "Hendaklah kamu murah hati, sama seperti Bapamu adalah murah hati.\"",
+        "content": "Hendaklah kamu murah hati, sama seperti Bapamu adalah murah hati.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "2ada5bbb-c6a4-4767-b6a6-3ae8bad76562",
+        "text": "Sebab jikalau Allah tidak menyayangkan malaikat-malaikat yang berbuat dosa tetapi melemparkan mereka ke dalam neraka dan dengan demikian menyerahkannya ke dalam gua-gua yang gelap untuk menyimpan mereka sampai hari penghakiman;",
+        "content": "Sebab jikalau Allah tidak menyayangkan malaikat-malaikat yang berbuat dosa tetapi melemparkan mereka ke dalam neraka dan dengan demikian menyerahkannya ke dalam gua-gua yang gelap untuk menyimpan mereka sampai hari penghakiman;",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "2b06aefe-cf19-4614-85b1-51888e56d346",
+        "text": "(6-9) Oleh sebab itu, ya raja, keluarkanlah larangan itu dan buatlah suatu surat perintah yang tidak dapat diubah, menurut undang-undang orang Media dan Persia, yang tidak dapat dicabut kembali.\"",
+        "content": "(6-9) Oleh sebab itu, ya raja, keluarkanlah larangan itu dan buatlah suatu surat perintah yang tidak dapat diubah, menurut undang-undang orang Media dan Persia, yang tidak dapat dicabut kembali.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "2cec71ae-319f-4eaf-b322-5877ed03b886",
+        "text": "dan akan mengalami nasib yang buruk sebagai upah kejahatan mereka. Berfoya-foya pada siang hari, mereka anggap kenikmatan. Mereka adalah kotoran dan noda, yang mabuk dalam hawa nafsu mereka kalau mereka duduk makan minum bersama-sama dengan kamu.",
+        "content": "dan akan mengalami nasib yang buruk sebagai upah kejahatan mereka. Berfoya-foya pada siang hari, mereka anggap kenikmatan. Mereka adalah kotoran dan noda, yang mabuk dalam hawa nafsu mereka kalau mereka duduk makan minum bersama-sama dengan kamu.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "303a1d63-457f-4535-9b5d-91629c4a2c7a",
+        "text": "supaya Ia jangan murka dan kamu binasa di jalan, sebab mudah sekali murka-Nya menyala. Berbahagialah semua orang yang berlindung pada-Nya!",
+        "content": "supaya Ia jangan murka dan kamu binasa di jalan, sebab mudah sekali murka-Nya menyala. Berbahagialah semua orang yang berlindung pada-Nya!",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "30886b8e-1622-4343-b509-d93c312c0c5e",
+        "text": "\"Akulah yang telah melantik raja-Ku di Sion, gunung-Ku yang kudus!\"",
+        "content": "\"Akulah yang telah melantik raja-Ku di Sion, gunung-Ku yang kudus!\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "3331b110-bebc-4d09-9953-fac63ffec9b9",
+        "text": "\"Janganlah kamu menghakimi, maka kamupun tidak akan dihakimi. Dan janganlah kamu menghukum, maka kamupun tidak akan dihukum; ampunilah dan kamu akan diampuni.",
+        "content": "\"Janganlah kamu menghakimi, maka kamupun tidak akan dihakimi. Dan janganlah kamu menghukum, maka kamupun tidak akan dihukum; ampunilah dan kamu akan diampuni.",
+        "pericope": "Hal menghakimi",
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "3401afc2-83a0-4869-9730-0dcc0e9238d8",
+        "text": "Lalu Yesus berkata kepada mereka: \"Aku bertanya kepada kamu: Manakah yang diperbolehkan pada hari Sabat, berbuat baik atau berbuat jahat, menyelamatkan nyawa orang atau membinasakannya?\"",
+        "content": "Lalu Yesus berkata kepada mereka: \"Aku bertanya kepada kamu: Manakah yang diperbolehkan pada hari Sabat, berbuat baik atau berbuat jahat, menyelamatkan nyawa orang atau membinasakannya?\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "359a86c1-3f07-4869-b9e5-7d7caec274c9",
+        "text": "terutama mereka yang menuruti hawa nafsunya karena ingin mencemarkan diri dan yang menghina pemerintahan Allah. Mereka begitu berani dan angkuh, sehingga tidak segan-segan menghujat kemuliaan,",
+        "content": "terutama mereka yang menuruti hawa nafsunya karena ingin mencemarkan diri dan yang menghina pemerintahan Allah. Mereka begitu berani dan angkuh, sehingga tidak segan-segan menghujat kemuliaan,",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "360753d7-8cff-4170-ac6a-428d4c57f1e1",
+        "text": "\"Marilah kita memutuskan belenggu-belenggu mereka dan membuang tali-tali mereka dari pada kita!\"",
+        "content": "\"Marilah kita memutuskan belenggu-belenggu mereka dan membuang tali-tali mereka dari pada kita!\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "360f3b7c-9058-4f44-a0a8-3fb86d5425b6",
+        "text": "Sebagaimana nabi-nabi palsu dahulu tampil di tengah-tengah umat Allah, demikian pula di antara kamu akan ada guru-guru palsu. Mereka akan memasukkan pengajaran-pengajaran sesat yang membinasakan, bahkan mereka akan menyangkal Penguasa yang telah menebus mereka dan dengan jalan demikian segera mendatangkan kebinasaan atas diri mereka.",
+        "content": "Sebagaimana nabi-nabi palsu dahulu tampil di tengah-tengah umat Allah, demikian pula di antara kamu akan ada guru-guru palsu. Mereka akan memasukkan pengajaran-pengajaran sesat yang membinasakan, bahkan mereka akan menyangkal Penguasa yang telah menebus mereka dan dengan jalan demikian segera mendatangkan kebinasaan atas diri mereka.",
+        "pericope": "Nabi-nabi dan guru-guru yang palsu",
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "38fc9637-1530-4d0d-aa54-fb34d197dbd1",
+        "text": "Aku telah membulatkan hatiku untuk memahami hikmat dan pengetahuan, kebodohan dan kebebalan. Tetapi aku menyadari bahwa hal inipun adalah usaha menjaring angin,",
+        "content": "Aku telah membulatkan hatiku untuk memahami hikmat dan pengetahuan, kebodohan dan kebebalan. Tetapi aku menyadari bahwa hal inipun adalah usaha menjaring angin,",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "391e08b0-f107-4495-ac68-20b0433fbed2",
+        "text": "(6-22) Lalu kata Daniel kepada raja: \"Ya raja, kekallah hidupmu!",
+        "content": "(6-22) Lalu kata Daniel kepada raja: \"Ya raja, kekallah hidupmu!",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "39a84598-d390-41d1-802f-420cde6597ec",
+        "text": "Oleh karena mereka telah meninggalkan jalan yang benar, maka tersesatlah mereka, lalu mengikuti jalan Bileam, anak Beor, yang suka menerima upah untuk perbuatan-perbuatan yang jahat.",
+        "content": "Oleh karena mereka telah meninggalkan jalan yang benar, maka tersesatlah mereka, lalu mengikuti jalan Bileam, anak Beor, yang suka menerima upah untuk perbuatan-perbuatan yang jahat.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "39ef8c22-a886-4959-a416-78e048770d3e",
+        "text": "Tiap-tiap orang yang turut mengambil bagian dalam pertandingan, menguasai dirinya dalam segala hal. Mereka berbuat demikian untuk memperoleh suatu mahkota yang fana, tetapi kita untuk memperoleh suatu mahkota yang abadi.",
+        "content": "Tiap-tiap orang yang turut mengambil bagian dalam pertandingan, menguasai dirinya dalam segala hal. Mereka berbuat demikian untuk memperoleh suatu mahkota yang fana, tetapi kita untuk memperoleh suatu mahkota yang abadi.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "3afe23c6-7f62-4420-a19b-d4bbd1d1c73b",
+        "text": "Lalu Yesus memandang murid-murid-Nya dan berkata: \"Berbahagialah, hai kamu yang miskin, karena kamulah yang empunya Kerajaan Allah.",
+        "content": "Lalu Yesus memandang murid-murid-Nya dan berkata: \"Berbahagialah, hai kamu yang miskin, karena kamulah yang empunya Kerajaan Allah.",
+        "pericope": "Ucapan bahagia dan peringatan",
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "3ea885c3-62e9-49d8-a7f8-983217bbb99b",
+        "text": "Sekaliannya itu ialah keturunan Yediael, kepala-kepala puak mereka, pahlawan-pahlawan yang gagah perkasa; orang-orang yang sanggup berperang ada tujuh belas ribu dua ratus.",
+        "content": "Sekaliannya itu ialah keturunan Yediael, kepala-kepala puak mereka, pahlawan-pahlawan yang gagah perkasa; orang-orang yang sanggup berperang ada tujuh belas ribu dua ratus.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "3ec05521-ecf7-4f58-bcc3-76b86553769e",
+        "text": "(6-29) Dan Daniel ini mempunyai kedudukan tinggi pada zaman pemerintahan Darius dan pada zaman pemerintahan Koresh, orang Persia itu.",
+        "content": "(6-29) Dan Daniel ini mempunyai kedudukan tinggi pada zaman pemerintahan Darius dan pada zaman pemerintahan Koresh, orang Persia itu.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "3f2bcaa2-254b-4429-8b78-61763ecfd062",
+        "text": "Sebab tiap-tiap orang akan memikul tanggungannya sendiri.",
+        "content": "Sebab tiap-tiap orang akan memikul tanggungannya sendiri.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "3f6d6664-2c19-4466-a138-3a06d3163138",
+        "text": "tetapi Ia menyelamatkan Lot, orang yang benar, yang terus-menerus menderita oleh cara hidup orang-orang yang tak mengenal hukum dan yang hanya mengikuti hawa nafsu mereka saja, --",
+        "content": "tetapi Ia menyelamatkan Lot, orang yang benar, yang terus-menerus menderita oleh cara hidup orang-orang yang tak mengenal hukum dan yang hanya mengikuti hawa nafsu mereka saja, --",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "3f73472e-0048-496b-9fe0-26a6d1fb6f33",
+        "text": "Sebab jika mereka, oleh pengenalan mereka akan Tuhan dan Juruselamat kita, Yesus Kristus, telah melepaskan diri dari kecemaran-kecemaran dunia, tetapi terlibat lagi di dalamnya, maka akhirnya keadaan mereka lebih buruk dari pada yang semula.",
+        "content": "Sebab jika mereka, oleh pengenalan mereka akan Tuhan dan Juruselamat kita, Yesus Kristus, telah melepaskan diri dari kecemaran-kecemaran dunia, tetapi terlibat lagi di dalamnya, maka akhirnya keadaan mereka lebih buruk dari pada yang semula.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "41765245-354d-4a71-8c30-0efebcbfd842",
+        "text": "Engkau akan meremukkan mereka dengan gada besi, memecahkan mereka seperti tembikar tukang periuk.\"",
+        "content": "Engkau akan meremukkan mereka dengan gada besi, memecahkan mereka seperti tembikar tukang periuk.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "441a9204-79cd-4952-ba2d-4cc5ada1ce2f",
+        "text": "(6-24) Lalu sangat sukacitalah raja dan ia memberi perintah, supaya Daniel ditarik dari dalam gua itu. Maka ditariklah Daniel dari dalam gua itu, dan tidak terdapat luka apa-apa padanya, karena ia percaya kepada Allahnya.",
+        "content": "(6-24) Lalu sangat sukacitalah raja dan ia memberi perintah, supaya Daniel ditarik dari dalam gua itu. Maka ditariklah Daniel dari dalam gua itu, dan tidak terdapat luka apa-apa padanya, karena ia percaya kepada Allahnya.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "44d3b111-559f-4b06-a82d-edbe126b730d",
+        "text": "Sebab aku teringat akan imanmu yang tulus ikhlas, yaitu iman yang pertama-tama hidup di dalam nenekmu Lois dan di dalam ibumu Eunike dan yang aku yakin hidup juga di dalam dirimu.",
+        "content": "Sebab aku teringat akan imanmu yang tulus ikhlas, yaitu iman yang pertama-tama hidup di dalam nenekmu Lois dan di dalam ibumu Eunike dan yang aku yakin hidup juga di dalam dirimu.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "4cc509f4-037d-406e-a362-3bb912cf866c",
+        "text": "Sebab kalau seorang menyangka, bahwa ia berarti, padahal ia sama sekali tidak berarti, ia menipu dirinya sendiri.",
+        "content": "Sebab kalau seorang menyangka, bahwa ia berarti, padahal ia sama sekali tidak berarti, ia menipu dirinya sendiri.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "525bb37b-b76d-4067-9339-dae13d252827",
+        "text": "Ia juga mendapat tujuh orang anak laki-laki dan tiga orang anak perempuan;",
+        "content": "Ia juga mendapat tujuh orang anak laki-laki dan tiga orang anak perempuan;",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "52b97849-6e87-44ac-a5a6-290a6c55123a",
+        "text": "Beribadahlah kepada TUHAN dengan takut dan ciumlah kaki-Nya dengan gemetar,",
+        "content": "Beribadahlah kepada TUHAN dengan takut dan ciumlah kaki-Nya dengan gemetar,",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "55c1e67b-48a8-44ce-8837-4f7e6efdaf23",
+        "text": "Barangsiapa menampar pipimu yang satu, berikanlah juga kepadanya pipimu yang lain, dan barangsiapa yang mengambil jubahmu, biarkan juga ia mengambil bajumu.",
+        "content": "Barangsiapa menampar pipimu yang satu, berikanlah juga kepadanya pipimu yang lain, dan barangsiapa yang mengambil jubahmu, biarkan juga ia mengambil bajumu.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "583ad1c9-85f4-4ac0-8625-a4784579d587",
+        "text": "Janganlah kita jemu-jemu berbuat baik, karena apabila sudah datang waktunya, kita akan menuai, jika kita tidak menjadi lemah.",
+        "content": "Janganlah kita jemu-jemu berbuat baik, karena apabila sudah datang waktunya, kita akan menuai, jika kita tidak menjadi lemah.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "5844fa0c-ad79-4b5c-a55b-8b4dcefac2e6",
+        "text": "Ketika hari siang, Ia memanggil murid-murid-Nya kepada-Nya, lalu memilih dari antara mereka dua belas orang, yang disebut-Nya rasul:",
+        "content": "Ketika hari siang, Ia memanggil murid-murid-Nya kepada-Nya, lalu memilih dari antara mereka dua belas orang, yang disebut-Nya rasul:",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "594565b4-0aa4-4e42-b9fc-ca7869a4323e",
+        "text": "Pada suatu hari Sabat, ketika Yesus berjalan di ladang gandum, murid-murid-Nya memetik bulir gandum dan memakannya, sementara mereka menggisarnya dengan tangannya.",
+        "content": "Pada suatu hari Sabat, ketika Yesus berjalan di ladang gandum, murid-murid-Nya memetik bulir gandum dan memakannya, sementara mereka menggisarnya dengan tangannya.",
+        "pericope": "Murid-murid memetik gandum pada hari Sabat",
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "59b73f5b-49ef-4ba0-8f20-ec531890628d",
+        "text": "Keturunan Yediael ialah Bilhan dan anak-anak Bilhan ialah Yeush, Benyamin, Ehud, Kenaana, Zetan, Tarsis dan Ahisahar.",
+        "content": "Keturunan Yediael ialah Bilhan dan anak-anak Bilhan ialah Yeush, Benyamin, Ehud, Kenaana, Zetan, Tarsis dan Ahisahar.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "5aaeba48-86b9-4a92-8bfe-28be27d9efbb",
+        "text": "Sebab mereka mengucapkan kata-kata yang congkak dan hampa dan mempergunakan hawa nafsu cabul untuk memikat orang-orang yang baru saja melepaskan diri dari mereka yang hidup dalam kesesatan.",
+        "content": "Sebab mereka mengucapkan kata-kata yang congkak dan hampa dan mempergunakan hawa nafsu cabul untuk memikat orang-orang yang baru saja melepaskan diri dari mereka yang hidup dalam kesesatan.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "60c418f9-bd56-4f6a-bc9e-6a4cdce84037",
+        "text": "bagaimana ia masuk ke dalam Rumah Allah dan mengambil roti sajian, lalu memakannya dan memberikannya kepada pengikut-pengikutnya, padahal roti itu tidak boleh dimakan kecuali oleh imam-imam?\"",
+        "content": "bagaimana ia masuk ke dalam Rumah Allah dan mengambil roti sajian, lalu memakannya dan memberikannya kepada pengikut-pengikutnya, padahal roti itu tidak boleh dimakan kecuali oleh imam-imam?\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "632ab933-2cc9-4eb3-bcae-87f44fe83597",
+        "text": "(6-10) Sebab itu raja Darius membuat surat perintah dengan larangan itu.",
+        "content": "(6-10) Sebab itu raja Darius membuat surat perintah dengan larangan itu.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "6439fb67-9387-412a-8faf-239f2be30c5c",
+        "text": "Karena itu bagi mereka adalah lebih baik, jika mereka tidak pernah mengenal Jalan Kebenaran dari pada mengenalnya, tetapi kemudian berbalik dari perintah kudus yang disampaikan kepada mereka.",
+        "content": "Karena itu bagi mereka adalah lebih baik, jika mereka tidak pernah mengenal Jalan Kebenaran dari pada mengenalnya, tetapi kemudian berbalik dari perintah kudus yang disampaikan kepada mereka.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "6550d38e-b1ab-439f-bdd4-3da46578c762",
+        "text": "(6-23) Allahku telah mengutus malaikat-Nya untuk mengatupkan mulut singa-singa itu, sehingga mereka tidak mengapa-apakan aku, karena ternyata aku tak bersalah di hadapan-Nya; tetapi juga terhadap tuanku, ya raja, aku tidak melakukan kejahatan.\"",
+        "content": "(6-23) Allahku telah mengutus malaikat-Nya untuk mengatupkan mulut singa-singa itu, sehingga mereka tidak mengapa-apakan aku, karena ternyata aku tak bersalah di hadapan-Nya; tetapi juga terhadap tuanku, ya raja, aku tidak melakukan kejahatan.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "67c4ae03-97d2-4f74-9767-829c12f7b67e",
+        "text": "Sejak hari pertama bulan yang ketujuh mereka mulai mempersembahkan korban bakaran kepada TUHAN, namun dasar bait suci TUHAN belum juga diletakkan.",
+        "content": "Sejak hari pertama bulan yang ketujuh mereka mulai mempersembahkan korban bakaran kepada TUHAN, namun dasar bait suci TUHAN belum juga diletakkan.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "68196498-9d14-4a12-93e9-add449edc803",
+        "text": "(6-5) Kemudian para pejabat tinggi dan wakil raja itu mencari alasan dakwaan terhadap Daniel dalam hal pemerintahan, tetapi mereka tidak mendapat alasan apapun atau sesuatu kesalahan, sebab ia setia dan tidak ada didapati sesuatu kelalaian atau sesuatu kesalahan padanya.",
+        "content": "(6-5) Kemudian para pejabat tinggi dan wakil raja itu mencari alasan dakwaan terhadap Daniel dalam hal pemerintahan, tetapi mereka tidak mendapat alasan apapun atau sesuatu kesalahan, sebab ia setia dan tidak ada didapati sesuatu kelalaian atau sesuatu kesalahan padanya.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "6a2faf5a-aca3-4733-aa62-33c9522fb6de",
+        "text": "Maka berkatalah Ia kepada mereka dalam murka-Nya dan mengejutkan mereka dalam kehangatan amarah-Nya:",
+        "content": "Maka berkatalah Ia kepada mereka dalam murka-Nya dan mengejutkan mereka dalam kehangatan amarah-Nya:",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "6bc4c74d-569d-4d3e-be8c-93cb68c34dca",
+        "text": "Kata Pilatus kepada-Nya: \"Apakah kebenaran itu?\"",
+        "content": "Kata Pilatus kepada-Nya: \"Apakah kebenaran itu?\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "6cd70926-1158-4aa8-bb83-d04cd22b667e",
+        "text": "Tetapi mereka itu sama dengan hewan yang tidak berakal, sama dengan binatang yang hanya dilahirkan untuk ditangkap dan dimusnahkan. Mereka menghujat apa yang tidak mereka ketahui, sehingga oleh perbuatan mereka yang jahat mereka sendiri akan binasa seperti binatang liar,",
+        "content": "Tetapi mereka itu sama dengan hewan yang tidak berakal, sama dengan binatang yang hanya dilahirkan untuk ditangkap dan dimusnahkan. Mereka menghujat apa yang tidak mereka ketahui, sehingga oleh perbuatan mereka yang jahat mereka sendiri akan binasa seperti binatang liar,",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "6d2c7865-8245-4974-844d-1ce2f0bdc136",
+        "text": "ia sama dengan seorang yang mendirikan rumah: Orang itu menggali dalam-dalam dan meletakkan dasarnya di atas batu. Ketika datang air bah dan banjir melanda rumah itu, rumah itu tidak dapat digoyahkan, karena rumah itu kokoh dibangun.",
+        "content": "ia sama dengan seorang yang mendirikan rumah: Orang itu menggali dalam-dalam dan meletakkan dasarnya di atas batu. Ketika datang air bah dan banjir melanda rumah itu, rumah itu tidak dapat digoyahkan, karena rumah itu kokoh dibangun.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "6e294fff-30a3-4ec0-9de2-9aa635e7bc02",
+        "text": "Lalu mereka memberikan uang kepada tukang batu dan tukang kayu, sedang kepada orang Sidon dan Tirus makanan dan minuman dan minyak, supaya orang-orang itu membawa kayu aras dari Libanon sampai ke laut dekat Yafo, seperti yang telah diizinkan kepada mereka oleh Koresh, raja negeri Persia.",
+        "content": "Lalu mereka memberikan uang kepada tukang batu dan tukang kayu, sedang kepada orang Sidon dan Tirus makanan dan minuman dan minyak, supaya orang-orang itu membawa kayu aras dari Libanon sampai ke laut dekat Yafo, seperti yang telah diizinkan kepada mereka oleh Koresh, raja negeri Persia.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "7008d160-e6b7-436e-99ef-288d7edd94d7",
+        "text": "Sebab jikalau kamu berbuat baik kepada orang yang berbuat baik kepada kamu, apakah jasamu? Orang-orang berdosapun berbuat demikian.",
+        "content": "Sebab jikalau kamu berbuat baik kepada orang yang berbuat baik kepada kamu, apakah jasamu? Orang-orang berdosapun berbuat demikian.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "704175b8-617b-45a1-b5da-a6ae3fa8feaf",
+        "text": "Kata Yesus lagi kepada mereka: \"Anak Manusia adalah Tuhan atas hari Sabat.\"",
+        "content": "Kata Yesus lagi kepada mereka: \"Anak Manusia adalah Tuhan atas hari Sabat.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "7071b827-bc91-40c8-8f25-e6939fd3a85e",
+        "text": "Maka meluaplah amarah mereka, lalu mereka berunding, apakah yang akan mereka lakukan terhadap Yesus.",
+        "content": "Maka meluaplah amarah mereka, lalu mereka berunding, apakah yang akan mereka lakukan terhadap Yesus.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "711a4735-b04d-4a00-8bb6-de698fdecf11",
+        "text": "(6-15) Setelah raja mendengar hal itu, maka sangat sedihlah ia, dan ia mencari jalan untuk melepaskan Daniel, bahkan sampai matahari masuk, ia masih berusaha untuk menolongnya.",
+        "content": "(6-15) Setelah raja mendengar hal itu, maka sangat sedihlah ia, dan ia mencari jalan untuk melepaskan Daniel, bahkan sampai matahari masuk, ia masih berusaha untuk menolongnya.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "747d7d73-083c-4a3b-babe-55f9b2a50582",
+        "text": "(6-14) Lalu kata mereka kepada raja: \"Daniel, salah seorang buangan dari Yehuda, tidak mengindahkan tuanku, ya raja, dan tidak mengindahkan larangan yang tuanku keluarkan, tetapi tiga kali sehari ia mengucapkan doanya.\"",
+        "content": "(6-14) Lalu kata mereka kepada raja: \"Daniel, salah seorang buangan dari Yehuda, tidak mengindahkan tuanku, ya raja, dan tidak mengindahkan larangan yang tuanku keluarkan, tetapi tiga kali sehari ia mengucapkan doanya.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "75ce62a2-6cbf-40c3-a80a-7df1c4206feb",
+        "text": "Jangan sesat! Allah tidak membiarkan diri-Nya dipermainkan. Karena apa yang ditabur orang, itu juga yang akan dituainya.",
+        "content": "Jangan sesat! Allah tidak membiarkan diri-Nya dipermainkan. Karena apa yang ditabur orang, itu juga yang akan dituainya.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "7614f28e-7314-4782-8a84-ea726cd60a5b",
+        "text": "Maka matilah Ayub, tua dan lanjut umur.",
+        "content": "Maka matilah Ayub, tua dan lanjut umur.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "7bb8c115-8781-4d40-9bda-6d7c573ef8d6",
+        "text": "Berbahagialah kamu, jika karena Anak Manusia orang membenci kamu, dan jika mereka mengucilkan kamu, dan mencela kamu serta menolak namamu sebagai sesuatu yang jahat.",
+        "content": "Berbahagialah kamu, jika karena Anak Manusia orang membenci kamu, dan jika mereka mengucilkan kamu, dan mencela kamu serta menolak namamu sebagai sesuatu yang jahat.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "7d05e1af-0d1d-4be9-b02e-7a85297a4115",
+        "text": "Mereka menjanjikan kemerdekaan kepada orang lain, padahal mereka sendiri adalah hamba-hamba kebinasaan, karena siapa yang dikalahkan orang, ia adalah hamba orang itu.",
+        "content": "Mereka menjanjikan kemerdekaan kepada orang lain, padahal mereka sendiri adalah hamba-hamba kebinasaan, karena siapa yang dikalahkan orang, ia adalah hamba orang itu.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "7d17dd85-8db6-4837-870d-d6383b11447b",
+        "text": "dan anak perempuan yang pertama diberinya nama Yemima, yang kedua Kezia dan yang ketiga Kerenhapukh.",
+        "content": "dan anak perempuan yang pertama diberinya nama Yemima, yang kedua Kezia dan yang ketiga Kerenhapukh.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "7eac1b08-3baa-4dae-9510-2da09d46d703",
+        "text": "Dan sejak itu diadakanlah korban bakaran yang tetap, juga korban bakaran pada bulan baru dan pada setiap hari raya yang kudus bagi TUHAN, dan setiap kali orang mempersembahkan persembahan sukarela kepada TUHAN.",
+        "content": "Dan sejak itu diadakanlah korban bakaran yang tetap, juga korban bakaran pada bulan baru dan pada setiap hari raya yang kudus bagi TUHAN, dan setiap kali orang mempersembahkan persembahan sukarela kepada TUHAN.",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      },
+      {
+        "id": "7f24c6a6-aa9f-489a-9661-e61292b47677",
+        "text": "Bagaimanakah engkau dapat berkata kepada saudaramu: Saudara, biarlah aku mengeluarkan selumbar yang ada di dalam matamu, padahal balok yang di dalam matamu tidak engkau lihat? Hai orang munafik, keluarkanlah dahulu balok dari matamu, maka engkau akan melihat dengan jelas untuk mengeluarkan selumbar itu dari mata saudaramu.\"",
+        "content": "Bagaimanakah engkau dapat berkata kepada saudaramu: Saudara, biarlah aku mengeluarkan selumbar yang ada di dalam matamu, padahal balok yang di dalam matamu tidak engkau lihat? Hai orang munafik, keluarkanlah dahulu balok dari matamu, maka engkau akan melihat dengan jelas untuk mengeluarkan selumbar itu dari mata saudaramu.\"",
+        "pericope": null,
+        "type": "text",
+        "source": "fallback_tb1"
+      }
+    ]
+  }
+}

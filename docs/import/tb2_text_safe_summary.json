@@ -1,0 +1,157 @@
+{
+  "mode": "safe",
+  "wordfreq_available": true,
+  "rows": {
+    "total": 35431,
+    "changed": 5097,
+    "text_changed": 5097,
+    "pericope_changed": 0
+  },
+  "fixes": {
+    "hyphen_repairs": 1,
+    "aggressive_merges": 0
+  },
+  "examples": [
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "3",
+      "before": "Ber fi r man lah Allah: \"Ja di lah te rang.\" Lalu te rang itu ja di.",
+      "after": "Ber fi r man lah Allah:\"Ja di lah te rang.\" Lalu te rang itu ja di."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "6",
+      "before": "Ber fi r man lah Allah: \"Ja di lah cak ra wa la di te ngah se ga la air un tuk me mi sah kan air dari air.\"",
+      "after": "Ber fi r man lah Allah:\"Ja di lah cak ra wa la di te ngah se ga la air un tuk me mi sah kan air dari air.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "9",
+      "before": "Ber fi r man lah Allah: \"Hen dak lah se ga la air yang di ba wah la ngit ber kum pul pa da satu tem pat, se hing ga ke li hat an yang ke ring.\" Dan ja di lah de mi ki an.",
+      "after": "Ber fi r man lah Allah:\"Hen dak lah se ga la air yang di ba wah la ngit ber kum pul pa da satu tem pat, se hing ga ke li hat an yang ke ring.\" Dan ja di lah de mi ki an."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "11",
+      "before": "Ber fi r man lah Allah: \"Hen dak lah ta nah me num buh kan tu nas-tu nas mu da, tum buhtum buh an yang ber bi ji, se ga la je nis po hon bu ah-bu ah an yang meng ha sil kan bu ah yang ber bi ji, su pa ya ada tum buh-tum buh an di bumi.\" Dan",
+      "after": "Ber fi r man lah Allah:\"Hen dak lah ta nah me num buh kan tu nas-tu nas mu da, tum buhtum buh an yang ber bi ji, se ga la je nis po hon bu ah-bu ah an yang meng ha sil kan bu ah yang ber bi ji, su pa ya ada tum buh-tum buh an di bumi.\" Dan "
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "14",
+      "before": "Ber fi r man lah Allah: \"Ja di lah ben da-benda pe ne rang pa da cak ra wa la un tuk me mi sahkan si ang da ri ma lam. Bi ar lah ben da-ben da pe ne rang itu men ja di tan da yang me nun jukkan ma sa-ma sa yang te tap dan ha ri-ha ri dan ta",
+      "after": "Ber fi r man lah Allah:\"Ja di lah ben da-benda pe ne rang pa da cak ra wa la un tuk me mi sahkan si ang da ri ma lam. Bi ar lah ben da-ben da pe ne rang itu men ja di tan da yang me nun jukkan ma sa-ma sa yang te tap dan ha ri-ha ri dan ta "
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "20",
+      "before": "Ber fi r man lah Allah: \"Hen dak lah da lam air ber ke ri ap an makh luk yang hi dup, dan hen dak lah bu rung be ter bang an di atas bumi me lin tasi cak ra wa la.\"",
+      "after": "Ber fi r man lah Allah:\"Hen dak lah da lam air ber ke ri ap an makh luk yang hi dup, dan hen dak lah bu rung be ter bang an di atas bumi me lin tasi cak ra wa la.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "22",
+      "before": "La lu Allah mem ber kati se mua nya itu, fi rman-Nya: \"Berkem bang bi ak lah dan ber tam bah ba nyak lah ser ta pe nuhi lah air da lam la ut, dan hen daklah bu rung-bu rung di bu mi ber tam bah banyak.\"",
+      "after": "La lu Allah mem ber kati se mua nya itu, fi rman-Nya:\"Berkem bang bi ak lah dan ber tam bah ba nyak lah ser ta pe nuhi lah air da lam la ut, dan hen daklah bu rung-bu rung di bu mi ber tam bah banyak.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "24",
+      "before": "Ber fi r man lah Allah: \"Hen dak lah bu mi me nge lu ar kan se ga la je nis makh luk yang hidup, ter nak dan bi na tang me la ta dan se ga la je nis bi na tang li ar.\" Dan ja di lah de mi ki an.",
+      "after": "Ber fi r man lah Allah:\"Hen dak lah bu mi me nge lu ar kan se ga la je nis makh luk yang hidup, ter nak dan bi na tang me la ta dan se ga la je nis bi na tang li ar.\" Dan ja di lah de mi ki an."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "26",
+      "before": "Ber fi r man lah Allah: \"Ba ik lah Ki ta menja di kan ma nu sia me nu rut gam bar dan ru pa Ki ta, su pa ya me re ka ber kua sa atas ikan-ikan di la ut dan bu rung-bu rung di uda ra dan atas ter nak dan atas se lu ruh bu mi dan atas se gala",
+      "after": "Ber fi r man lah Allah:\"Ba ik lah Ki ta menja di kan ma nu sia me nu rut gam bar dan ru pa Ki ta, su pa ya me re ka ber kua sa atas ikan-ikan di la ut dan bu rung-bu rung di uda ra dan atas ter nak dan atas se lu ruh bu mi dan atas se gala "
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "28",
+      "before": "Allah mem ber kati me re ka, la lu Allah ber fi r man ke pa da mereka: \"Ber anak cu cu lah dan ber tam bah banyak; penuhi lah bu mi dan tak luk kan lah itu, ber kuasa lah atas ikan-ikan di la ut dan bu rung-burung di uda ra dan atas se ga l",
+      "after": "Allah mem ber kati me re ka, la lu Allah ber fi r man ke pa da mereka:\"Ber anak cu cu lah dan ber tam bah banyak; penuhi lah bu mi dan tak luk kan lah itu, ber kuasa lah atas ikan-ikan di la ut dan bu rung-burung di uda ra dan atas se ga la"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "29",
+      "before": "Ber fi r man lah Allah: \"Li hat lah, Aku membe ri kan ke pa da mu se ga la tum buh-tum buh an yang ber bi ji di se lu ruh bu mi dan se ga la pohon-po hon an yang bu ah nya berbiji; itu lah akan men ja di ma kan an mu.",
+      "after": "Ber fi r man lah Allah:\"Li hat lah, Aku membe ri kan ke pa da mu se ga la tum buh-tum buh an yang ber bi ji di se lu ruh bu mi dan se ga la pohon-po hon an yang bu ah nya berbiji; itu lah akan men ja di ma kan an mu."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "2",
+      "verse": "16",
+      "before": "La lu Tuhan Allah mem be ri pe rin tah ini ke pa da manusia: \"Se mua po hon da lam ta man ini bo leh kau ma kan bu ah nya de ngan be bas,",
+      "after": "La lu Tuhan Allah mem be ri pe rin tah ini ke pa da manusia:\"Se mua po hon da lam ta man ini bo leh kau ma kan bu ah nya de ngan be bas,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "2",
+      "verse": "18",
+      "before": "Tuhan Allah berfi rman: \"Ti dak ba ik, ka lau ma nu sia itu se orang di ri sa ja. Aku akan men ja di kan pe no long ba gi nya, yang se padan de ngan dia.\"",
+      "after": "Tuhan Allah berfi rman:\"Ti dak ba ik, ka lau ma nu sia itu se orang di ri sa ja. Aku akan men ja di kan pe no long ba gi nya, yang se padan de ngan dia.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "2",
+      "verse": "23",
+      "before": "La lu ber ka ta lah ma nu sia itu: \"Ini lah dia, tu lang da ri tu lang ku dan da ging da ri daging ku. Ia akan di na mai pe rem pu an, se bab ia di am bil da ri la ki-la ki.\"",
+      "after": "La lu ber ka ta lah ma nu sia itu:\"Ini lah dia, tu lang da ri tu lang ku dan da ging da ri daging ku. Ia akan di na mai pe rem pu an, se bab ia di am bil da ri la ki-la ki.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "3",
+      "verse": "1",
+      "before": "Ada pun ular ia lah yang pa ling cer dik dari se ga la bi na tang di da rat yang di ja di kan oleh Tuhan Allah. Ular itu ber ka ta ke pa da pe rem pu an itu: \"Ten tu lah Allah berfi rman: Se mua po hon da lam ta man ini ja ngan ka mu ma kan",
+      "after": "Ada pun ular ia lah yang pa ling cer dik dari se ga la bi na tang di da rat yang di ja di kan oleh Tuhan Allah. Ular itu ber ka ta ke pa da pe rem pu an itu:\"Ten tu lah Allah berfi rman: Se mua po hon da lam ta man ini ja ngan ka mu ma kan "
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "3",
+      "verse": "2",
+      "before": "La lu sa hut pe rempu an itu ke pa da ular itu: \"Bu ah po hon-pohon an da lam ta man ini bo leh ka mi ma kan, Why. 2:7, 22:2, 14 2:24: Mat. 19:5; Mrk. 10:7-8;",
+      "after": "La lu sa hut pe rempu an itu ke pa da ular itu:\"Bu ah po hon-pohon an da lam ta man ini bo leh ka mi ma kan, Why. 2:7, 22:2, 14 2:24: Mat. 19:5; Mrk. 10:7-8;"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "3",
+      "verse": "4",
+      "before": "Te ta pi ular itu ber ka ta ke pa da perem pu an itu: \"Se ka li-ka li ka mu ti dak akan ma ti,",
+      "after": "Te ta pi ular itu ber ka ta ke pa da perem pu an itu:\"Se ka li-ka li ka mu ti dak akan ma ti,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "3",
+      "verse": "9",
+      "before": "Te ta pi Tuhan Allah me mang gil ma nusia itu dan ber fi r man kepadanya: \"Di ma nakah eng kau?\"",
+      "after": "Te ta pi Tuhan Allah me mang gil ma nusia itu dan ber fi r man kepadanya:\"Di ma nakah eng kau?\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "3",
+      "verse": "10",
+      "before": "Ia menjawab: \"Ke ti ka aku men de ngar, bah wa Eng kau ada da lam ta man ini, aku men ja di ta kut, ka re na aku telanjang; se bab itu aku ber sem bu nyi.\"",
+      "after": "Ia menjawab:\"Ke ti ka aku men de ngar, bah wa Eng kau ada da lam ta man ini, aku men ja di ta kut, ka re na aku telanjang; se bab itu aku ber sem bu nyi.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "3",
+      "verse": "11",
+      "before": "Firman-Nya: \"Si apa kah yang mem be ri ta hu kan ke pa da mu, bah wa eng kau te lan jang? Apa kah eng kau makan da ri bu ah po hon, yang Ku la rang eng kau ma kan itu?\"",
+      "after": "Firman-Nya:\"Si apa kah yang mem be ri ta hu kan ke pa da mu, bah wa eng kau te lan jang? Apa kah eng kau makan da ri bu ah po hon, yang Ku la rang eng kau ma kan itu?\""
+    }
+  ],
+  "output_csv": "docs/import/tb2_text_safe.csv"
+}

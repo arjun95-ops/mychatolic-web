@@ -1,0 +1,151 @@
+{
+  "rows_total": 35431,
+  "rows_changed": 19414,
+  "replacement_patterns": 350,
+  "phrase_merges_applied": 30809,
+  "post_fix_changes": 16296,
+  "short_run_count_after": 13299,
+  "examples": [
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "7",
+      "before": "Maka Allah men jadi kan cakra wala dan Ia memisahkan air yang ada di bawah cakra wala itu dari air yang ada di atas nya. Dan jadi lah demi kian.",
+      "after": "Maka Allah menjadi kan cakra wala dan Ia memisahkan air yang ada di bawah cakra wala itu dari air yang ada di atas nya. Dan jadi lah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "8",
+      "before": "Lalu Allah mena mai cakra wala itu langit. Jadi lah petang dan jadi lah pagi, itulah hari ke dua.",
+      "after": "Lalu Allah mena mai cakra wala itu langit. Jadi lah petang dan jadi lah pagi, itulah hari kedua."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "9",
+      "before": "Ber firman lah Allah:\"Hendak lah segala air yang di bawah langit ber kumpul pada satu tempat, sehingga ke lihat an yang ke ring.\" Dan jadi lah demi kian.",
+      "after": "Ber firman lah Allah:\"Hendak lah segala air yang di bawah langit ber kumpul pada satu tempat, sehingga ke lihat an yang ke ring.\" Dan jadi lah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "11",
+      "before": "Ber firman lah Allah:\"Hendak lah tanah menumbuhkan tunas-tunas muda, tum buhtum buh an yang ber biji, segala jenis pohon buah-buah an yang meng hasil kan buah yang ber biji, supaya ada tumbuh-tumbuh andi bumi.\" Dan jadi lah demi kian.",
+      "after": "Ber firman lah Allah:\"Hendak lah tanah menumbuhkan tunas-tunas muda, tum buhtum buh an yang ber biji, segala jenis pohon buah-buah an yang meng hasil kan buah yang ber biji, supaya ada tumbuh-tumbuh andi bumi.\" Dan jadi lah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "14",
+      "before": "Ber firman lah Allah:\"Jadi lah benda-benda pene rang pada cakra wala untuk memisahkan siang dari malam. Biar lah benda-benda pene rang itu men jadi tanda yang menunjukkan masa-masa yang tetap dan hari-hari dan tahun-tahun,",
+      "after": "Ber firman lah Allah:\"Jadi lah benda-benda pene rang pada cakra wala untuk memisahkan siang dari malam. Biar lah benda-benda pene rang itu menjadi tanda yang menunjukkan masa-masa yang tetap dan hari-hari dan tahun-tahun,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "15",
+      "before": "dan sebagai pene rang pada cakra wala biar lah benda-benda itu menerangi bumi.\" Dan jadi lah demi kian.",
+      "after": "dan sebagai pene rang pada cakra wala biar lah benda-benda itu menerangi bumi.\" Dan jadi lah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "16",
+      "before": "Maka Allah men jadi kan ke dua benda pene rang yang besar itu, yakni yang lebih besar untuk menguasai siang dan yang lebih ke cil untuk menguasai malam, dan men jadi kan juga bintang-bin tang.",
+      "after": "Maka Allah menjadi kan kedua benda pene rang yang besar itu, yakni yang lebih besar untuk menguasai siang dan yang lebih ke cil untuk menguasai malam, dan menjadi kan juga bintang-bin tang."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "17",
+      "before": "Allah mena ruh semuanya itu di cakra wala untuk menerangi bumi,",
+      "after": "Allah menaruh semuanya itu di cakra wala untuk menerangi bumi,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "21",
+      "before": "Maka Allah menciptakan bina tang-bina tang laut yang besar dan segala jenis makhluk hidup yang ber gerak, yang berke ri apan dalam air, dan se gala jenis burung yang ber sayap. Allah melihat bahwa semuanya itu baik.",
+      "after": "Maka Allah menciptakan binatang-binatang laut yang besar dan segala jenis makhluk hidup yang ber gerak, yang berke ri apan dalam air, dan se gala jenis burung yang ber sayap. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "24",
+      "before": "Ber firman lah Allah:\"Hendak lah bumi me nge luar kan segala jenis makhluk yang hidup, ternak dan bina tang mela ta dan segala jenis bina tang liar.\" Dan jadi lah demi kian.",
+      "after": "Ber firman lah Allah:\"Hendak lah bumi me nge luar kan segala jenis makhluk yang hidup, ternak dan binatang mela ta dan segala jenis binatang liar.\" Dan jadi lah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "25",
+      "before": "Allah men jadi kan segala jenis bina tang liar dan segala jenis ternak dan segala jenis bina tang mela tadi muka bumi. Allah melihat bahwa semuanya itu baik.",
+      "after": "Allah menjadi kan segala jenis binatang liar dan segala jenis ternak dan segala jenis binatang mela tadi muka bumi. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "26",
+      "before": "Ber firman lah Allah:\"Baik lah Kita menjadi kan manusia menurut gambar dan rupa Kita, supaya mereka ber kuasa atas ikan-ikan di laut dan burung-burung di udara dan atas ternak dan atas seluruh bumi dan atas se gala bina tang mela ta yang me",
+      "after": "Ber firman lah Allah:\"Baiklah Kita menjadi kan manusia menurut gambar dan rupa Kita, supaya mereka ber kuasa atas ikan-ikan di laut dan burung-burung di udara dan atas ternak dan atas seluruh bumi dan atas se gala binatang mela ta yang mera"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "28",
+      "before": "Allah member kati mereka, lalu Allah ber firman ke pada mereka:\"Ber anak cucu lah dan ber tambah banyak; penuhi lah bumi dan tak luk kan lah itu, ber kuasa lah atas ikan-ikan di laut dan burung-burung di udara dan atas segala bina tang yang",
+      "after": "Allah member kati mereka, lalu Allah ber firman kepada mereka:\"Ber anak cucu lah dan ber tambah banyak; penuhi lah bumi dan tak luk kan lah itu, ber kuasa lah atas ikan-ikan di laut dan burung-burung di udara dan atas segala binatang yang m"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "29",
+      "before": "Ber firman lah Allah:\"Lihat lah, Aku memberi kan ke pada mu segala tumbuh-tumbuh an yang ber biji di seluruh bumi dan segala pohon-pohon an yang buah nya berbiji; itulah akan men jadi makan an mu.",
+      "after": "Ber firman lah Allah:\"Lihat lah, Aku memberi kan kepadamu segala tumbuh-tumbuh an yang ber biji di seluruh bumi dan segala pohon-pohon an yang buah nya berbiji; itulah akan menjadi makan an mu."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "30",
+      "before": "Te tapi ke pada segala bina tang di bumi dan segala burung di udara dan segala yang mera yap di bumi, yang ber nyawa, Ku beri kan segala tumbuh-tumbuhan hijau men jadi makan annya.\" Dan jadi lah demi kian.",
+      "after": "Tetapi kepada segala binatang di bumi dan segala burung di udara dan segala yang mera yap di bumi, yang ber nyawa, Ku berikan segala tumbuh-tumbuhan hijau menjadi makan annya.\" Dan jadi lah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "2",
+      "verse": "1",
+      "before": "Demi kian lah di selesai kan langit dan bumi dan segala isinya.",
+      "after": "demikian lah di selesai kan langit dan bumi dan segala isinya."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "2",
+      "verse": "4",
+      "before": "Demi kian lah riwayat langit dan bumi pada waktu di cipta kan. Ketika Tuhan Allah men jadi kan bumi dan langit,",
+      "after": "demikian lah riwayat langit dan bumi pada waktu di cipta kan. Ketika Tuhan Allah menjadi kan bumi dan langit,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "2",
+      "verse": "5",
+      "before": "belum ada se mak apapun di bumi, belum timbul tumbuh-tumbuh an apapun di padang, se bab Tuhan Allah belum menurun kan hujan ke bumi, dan belum ada orang untuk mengu saha kan tanah itu;",
+      "after": "belum ada se mak apapun di bumi, belum timbul tumbuh-tumbuh an apapun di padang, sebab Tuhan Allah belum menurun kan hujan ke bumi, dan belum ada orang untuk mengu saha kan tanah itu;"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "2",
+      "verse": "6",
+      "before": "te tapi ada kabut naik ke atas dari bumi dan membasahi seluruh per muka an bumi itu",
+      "after": "tetapi ada kabut naik ke atas dari bumi dan membasahi seluruh per muka an bumi itu"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "2",
+      "verse": "7",
+      "before": "ketika itulah Tuhan Allah mem bentuk manusia itu dari debu tanah dan meng hem bus kan nafas hidup ke dalam hidungnya; demi kian lah manusia itu men jadi makhluk yang hidup. Manusia dan taman Eden",
+      "after": "ketika itulah Tuhan Allah mem bentuk manusia itu dari debu tanah dan meng hem bus kan nafas hidup ke dalam hidungnya; demikian lah manusia itu menjadi makhluk yang hidup. Manusia dan taman Eden"
+    }
+  ],
+  "output_csv": "docs/import/tb2_text_refined.csv"
+}

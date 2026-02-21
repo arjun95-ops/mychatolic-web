@@ -1,0 +1,536 @@
+{
+  "input_tb2_csv": "docs/import/tb2_text_raw.csv",
+  "input_tb1_csv": "docs/import/tb1_text_raw.csv",
+  "output_csv": "docs/import/tb2_text_clean_aligned.csv",
+  "settings": {
+    "min_direct_ratio": 0.82,
+    "min_neighbor_ratio": 0.82,
+    "neighbor_window": 6
+  },
+  "rows": {
+    "total": 35431,
+    "changed": 28210,
+    "alignment_same_verse": 32997,
+    "alignment_neighbor": 1107,
+    "fallback": 1327,
+    "low_confidence_rows": 1327
+  },
+  "quality": {
+    "short_runs_before": 146148,
+    "short_runs_after": 688
+  },
+  "examples": [
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "1",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Pa da mu la nya Allah men cip ta kan la ngit dan bu mi.",
+      "after": "Pada mulanya Allah menciptakan langit dan bumi."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "2",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Bu mi be lum ber ben tuk dan kosong; ge lap gu li ta me nu tupi sa mu de ra ra ya, dan Roh Allah me la yang-la yang di atas permu ka an air.",
+      "after": "Bumi belum berbentuk dan kosong; gelap gulita menutupi samudera raya, dan Roh Allah melayang-layang di atas permukaan air."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "3",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Ja di lah te rang.\" Lalu te rang itu ja di.",
+      "after": "Berfirmanlah Allah: \"Jadilah terang.\" Lalu terang itu jadi."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "4",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Allah me li hat bah wa terang itu ba ik, la lu di pi sah kan-Nya lah te rang itu da ri ge lap.",
+      "after": "Allah melihat bahwa terang itu baik, lalu dipisahkan-Nyalah terang itu dari gelap."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "5",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Dan Allah me na mai te rang itu si ang, dan ge lap itu ma lam. Ja di lah pe tang dan ja di lah pa gi, itu lah ha ri per ta ma.",
+      "after": "Dan Allah menamai terang itu siang, dan gelap itu malam. Jadilah petang dan jadilah pagi, itulah hari pertama."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "6",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Ja di lah cak ra wa la di te ngah se ga la air un tuk me mi sah kan air dari air.\"",
+      "after": "Berfirmanlah Allah: \"Jadilah cakrawala di tengah segala air untuk memisahkan air dari air.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "7",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ma ka Allah men ja di kan cak ra wa la dan Ia me mi sah kan air yang ada di ba wah cakra wa la itu da ri air yang ada di atas nya. Dan ja di lah de mi ki an.",
+      "after": "Maka Allah menjadikan cakrawala dan Ia memisahkan air yang ada di bawah cakrawala itu dari air yang ada di atasnya. Dan jadilah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "8",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "La lu Allah me na mai cakra wa la itu la ngit. Ja di lah pe tang dan ja di lah pa gi, itu lah ha ri ke dua.",
+      "after": "Lalu Allah menamai cakrawala itu langit. Jadilah petang dan jadilah pagi, itulah hari kedua."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "9",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Hen dak lah se ga la air yang di ba wah la ngit ber kum pul pa da satu tem pat, se hing ga ke li hat an yang ke ring.\" Dan ja di lah de mi ki an.",
+      "after": "Berfirmanlah Allah: \"Hendaklah segala air yang di bawah langit berkumpul pada satu tempat, sehingga kelihatan yang kering.\" Dan jadilah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "10",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "La lu Allah me na mai yang ke ring itu da rat, dan kum pul an air itu di na mai-Nya la ut. Allah me li hat bah wa semua nya itu ba ik.",
+      "after": "Lalu Allah menamai yang kering itu darat, dan kumpulan air itu dinamai-Nya laut. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "11",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Hen dak lah ta nah me num buh kan tu nas-tu nas mu da, tum buhtum buh an yang ber bi ji, se ga la je nis po hon bu ah-bu ah an yang meng ha sil kan bu ah yang ber bi ji, su pa ya ada tum buh-tum buh an di bumi.\" Dan",
+      "after": "Berfirmanlah Allah: \"Hendaklah tanah menumbuhkan tunas-tunas muda, tumbuh-tumbuhan yang berbiji, segala jenis pohon buah-buahan yang menghasilkan buah yang berbiji, supaya ada tumbuh-tumbuhan di bumi.\" Dan jadilah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "12",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ta nah itu menum buh kan tu nas-tu nas mu da, se ga la je nis tum buh-tum buh an yang ber bi ji dan se ga la jenis po hon-po hon an yang meng ha sil kan bu ah yang ber bi ji. Allah me li hat bah wa se mua nya itu ba ik.",
+      "after": "Tanah itu menumbuhkan tunas-tunas muda, segala jenis tumbuh-tumbuhan yang berbiji dan segala jenis pohon-pohonan yang menghasilkan buah yang berbiji. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "13",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ja di lah pe tang dan ja di lah pa gi, itu lah ha ri ke ti ga.",
+      "after": "Jadilah petang dan jadilah pagi, itulah hari ketiga."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "14",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Ja di lah ben da-benda pe ne rang pa da cak ra wa la un tuk me mi sahkan si ang da ri ma lam. Bi ar lah ben da-ben da pe ne rang itu men ja di tan da yang me nun jukkan ma sa-ma sa yang te tap dan ha ri-ha ri dan ta",
+      "after": "Berfirmanlah Allah: \"Jadilah benda-benda penerang pada cakrawala untuk memisahkan siang dari malam. Biarlah benda-benda penerang itu menjadi tanda yang menunjukkan masa-masa yang tetap dan hari-hari dan tahun-tahun"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "15",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "dan se ba gai pe ne rang pa da cak ra wa la bi ar lah ben da-ben da itu me nerangi bu mi.\" Dan ja di lah de mi ki an.",
+      "after": "dan sebagai penerang pada cakrawala biarlah benda-benda itu menerangi bumi.\" Dan jadilah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "16",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Maka Allah men ja di kan ke dua ben da pe ne rang yang be sar itu, yak ni yang le bih be sar un tuk me ngua sai si ang dan yang le bih ke cil un tuk me ngua sai ma lam, dan men ja di kan ju ga bintang-bin tang.",
+      "after": "Maka Allah menjadikan kedua benda penerang yang besar itu, yakni yang lebih besar untuk menguasai siang dan yang lebih kecil untuk menguasai malam, dan menjadikan juga bintang-bintang."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "17",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Allah me na ruh se mua nya itu di cak ra wa la un tuk me ne rangi bu mi,",
+      "after": "Allah menaruh semuanya itu di cakrawala untuk menerangi bumi"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "18",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "dan un tuk me ngua sai si ang dan ma lam, dan untuk me mi sah kan te rang da ri ge lap. Allah meli hat bah wa se mua nya itu ba ik.",
+      "after": "dan untuk menguasai siang dan malam, dan untuk memisahkan terang dari gelap. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "19",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ja di lah petang dan ja di lah pa gi, itu lah ha ri ke em pat.",
+      "after": "Jadilah petang dan jadilah pagi, itulah hari keempat."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "20",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Hen dak lah da lam air ber ke ri ap an makh luk yang hi dup, dan hen dak lah bu rung be ter bang an di atas bumi me lin tasi cak ra wa la.\"",
+      "after": "Berfirmanlah Allah: \"Hendaklah dalam air berkeriapan makhluk yang hidup, dan hendaklah burung beterbangan di atas bumi melintasi cakrawala.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "21",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ma ka Allah mencip ta kan bi na tang-bi na tang la ut yang be sar dan se ga la je nis makh luk hi dup yang ber gerak, yang ber ke ri ap an da lam air, dan se gala je nis bu rung yang ber sa yap. Allah me lihat bah wa se mua nya itu ba ik.",
+      "after": "Maka Allah menciptakan binatang-binatang laut yang besar dan segala jenis makhluk hidup yang bergerak, yang berkeriapan dalam air, dan segala jenis burung yang bersayap. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "22",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "La lu Allah mem ber kati se mua nya itu, fi rman-Nya: \"Berkem bang bi ak lah dan ber tam bah ba nyak lah ser ta pe nuhi lah air da lam la ut, dan hen daklah bu rung-bu rung di bu mi ber tam bah banyak.\"",
+      "after": "Lalu Allah memberkati semuanya itu, firman-Nya: \"Berkembangbiaklah dan bertambah banyaklah serta penuhilah air dalam laut, dan hendaklah burung-burung di bumi bertambah banyak.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "23",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ja di lah pe tang dan ja di lah pa gi, itulah ha ri ke li ma.",
+      "after": "Jadilah petang dan jadilah pagi, itulah hari kelima."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "24",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Hen dak lah bu mi me nge lu ar kan se ga la je nis makh luk yang hidup, ter nak dan bi na tang me la ta dan se ga la je nis bi na tang li ar.\" Dan ja di lah de mi ki an.",
+      "after": "Berfirmanlah Allah: \"Hendaklah bumi mengeluarkan segala jenis makhluk yang hidup, ternak dan binatang melata dan segala jenis binatang liar.\" Dan jadilah demikian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "25",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Allah men ja di kan se ga la je nis bi na tang liar dan se ga la je nis ter nak dan se ga la je nis bina tang me la ta di mu ka bu mi. Allah me li hat bah wa se mua nya itu ba ik.",
+      "after": "Allah menjadikan segala jenis binatang liar dan segala jenis ternak dan segala jenis binatang melata di muka bumi. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "26",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Ba ik lah Ki ta menja di kan ma nu sia me nu rut gam bar dan ru pa Ki ta, su pa ya me re ka ber kua sa atas ikan-ikan di la ut dan bu rung-bu rung di uda ra dan atas ter nak dan atas se lu ruh bu mi dan atas se gala",
+      "after": "Berfirmanlah Allah: \"Baiklah Kita menjadikan manusia menurut gambar dan rupa Kita, supaya mereka berkuasa atas ikan-ikan di laut dan burung-burung di udara dan atas ternak dan atas seluruh bumi dan atas segala binatang melata yang merayap d"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "27",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ma ka Allah men cip ta kan ma nu sia itu menu rut gam bar-Nya, me nu rut gam bar Allah di cip ta kan-Nya dia; la ki-la ki dan pe rem pu an di cip ta kan-Nya me re ka.",
+      "after": "Maka Allah menciptakan manusia itu menurut gambar-Nya, menurut gambar Allah diciptakan-Nya dia; laki-laki dan perempuan diciptakan-Nya mereka."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "28",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Allah mem ber kati me re ka, la lu Allah ber fi r man ke pa da mereka: \"Ber anak cu cu lah dan ber tam bah banyak; penuhi lah bu mi dan tak luk kan lah itu, ber kuasa lah atas ikan-ikan di la ut dan bu rung-burung di uda ra dan atas se ga l",
+      "after": "Allah memberkati mereka, lalu Allah berfirman kepada mereka: \"Beranakcuculah dan bertambah banyak; penuhilah bumi dan taklukkanlah itu, berkuasalah atas ikan-ikan di laut dan burung-burung di udara dan atas segala binatang yang merayap di b"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "29",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Ber fi r man lah Allah: \"Li hat lah, Aku membe ri kan ke pa da mu se ga la tum buh-tum buh an yang ber bi ji di se lu ruh bu mi dan se ga la pohon-po hon an yang bu ah nya berbiji; itu lah akan men ja di ma kan an mu.",
+      "after": "Berfirmanlah Allah: \"Lihatlah, Aku memberikan kepadamu segala tumbuh-tumbuhan yang berbiji di seluruh bumi dan segala pohon-pohonan yang buahnya berbiji; itulah akan menjadi makananmu."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "30",
+      "method": "alignment_same",
+      "ratio": 1.0,
+      "before": "Te ta pi ke pa da se ga la bi na tang di bu mi dan se ga la bu rung di uda ra dan se ga la yang me ra yap di bu mi, yang ber nya wa, Ku be ri kan se ga la tum buh-tum buhan hi jau men ja di ma kan an nya.\" Dan ja di lah de mi ki an.",
+      "after": "Tetapi kepada segala binatang di bumi dan segala burung di udara dan segala yang merayap di bumi, yang bernyawa, Kuberikan segala tumbuh-tumbuhan hijau menjadi makanannya.\" Dan jadilah demikian."
+    }
+  ],
+  "low_confidence_examples": [
+    {
+      "book": "Kejadian",
+      "chapter": "9",
+      "verse": "29",
+      "ratio": 0.732,
+      "before": "Ja di Nuh men capai umur sem bi lan ra tus li ma pu luh ta hun, la lu ia ma ti. Daftar bangsa-bangsa keturunan Sem, Ham dan Yafet",
+      "after": "Jadi Nuh mencapai umur sembilan ratus lima puluh tahun, lalu ia mati."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "16",
+      "verse": "16",
+      "ratio": 0.7486,
+      "before": "Abram ber umur de la pan pu luh enam ta hun, ke ti ka Ha gar me la hir kan Is mael ba gi nya. Sunat sebagai tanda perjanjian Allah dengan Abraham",
+      "after": "Abram berumur delapan puluh enam tahun, ketika Hagar me lahir kan Ismael bagi nya."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "17",
+      "verse": "27",
+      "ratio": 0.8079,
+      "before": "Dan se mua orang da ri isi ru mah Abra ham, ba ik yang la hir di ru mah nya, mau pun yang di beli de ngan uang da ri orang asing, di su nat bersa ma-sa ma de ngan dia. Allah mengulangi menjanjikan seorang anak laki-laki ",
+      "after": "Dan semua orang dari isi rumah Abraham, baik yang lahir di rumah nya, mau pun yang di beli dengan uang dari orang asing, di sunat bersama-sama dengan dia."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "26",
+      "verse": "35",
+      "ratio": 0.775,
+      "before": "Ke dua pe rem pu an itu menim bul kan ke pe dih an ha ti ba gi Is hak dan ba gi Rib ka. Yakub diberkati Ishak sebagai anak sulung",
+      "after": "Ke dua perempuan itu menimbulkan ke pedih an hati bagi Ishak dan bagi Ribka."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "35",
+      "verse": "15",
+      "ratio": 0.8143,
+      "before": "Ya kub me na mai tem pat di mana Allah te lah ber fi r man ke pa da nya \"Be tel\". Kelahiran Benyamin - Rahel mati",
+      "after": "Yakub menamai tempat di mana Allah telah berfirman ke pada nya \"Betel\"."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "35",
+      "verse": "21",
+      "ratio": 0.622,
+      "before": "Se su dah itu be rang kat lah Is rael, la lu ia me ma sang ke mah nya di se be rang Mig dalEder. 22a Ke ti ka Is rael di am di ne ge ri ini, terja di lah bah wa Ru ben sam pai ti dur de ngan Bilha, gun dik ayah nya, dan ",
+      "after": "Sesudah itu berangkatlah Israel, lalu ia memasang kemah nya di seberang Mig dalEder."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "50",
+      "verse": "26",
+      "ratio": 0.7472,
+      "before": "Ke mu di an ma ti lah Yu suf, ber umur se ra tus se pu luh tahun. Ma yat nya di rem pah-rem pahi, dan di taruh da lam pe ti ma ti di Me sir. ma kin di tin das, ma kin ber tam bah ba nyak dan ber kem bang me re ka, se hin",
+      "after": "Ke mu di an matilah Yusuf, berumur seratus sepuluh tahun. Mayat nya di rem pah-rem pahi, dan di taruh dalam peti mati di Mesir."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "1",
+      "verse": "12",
+      "ratio": 0.5109,
+      "before": "Te ta pi ra sa ta kut ke pa da orang Is rael itu.",
+      "after": "Tetapi rasa takut ke pada orang Israel itu."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "8",
+      "verse": "32",
+      "ratio": 0.8045,
+      "before": "Te ta pi se ka li ini pun Fi ra un te tap ber ke ras hati; ia ti dak mem bi ar kan bang sa itu per gi. Tulah kelima: penyakit sampar pada ternak",
+      "after": "Tetapi sekali ini pun Firaun tetap berkeras hati; ia tidak membiarkan bangsa itu pergi."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "11",
+      "verse": "2",
+      "ratio": 0.7332,
+      "before": "Baik lah ka ta kan ke pa da bang sa itu, su pa ya seti ap la ki-la ki me min ta ba rang-ba rang emas dan pe rak ke pa da te tang ga nya dan se ti ap perem pu an ke pa da te tang ga nya pu la.\" Maka orang-orang Israel men",
+      "after": "Baiklah kata kan ke pada bangsa itu, supaya setiap laki-laki me minta barang-barang emas dan perak ke pada tetangga nya dan setiap perempuan ke pada tetangga nya pula."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "11",
+      "verse": "4",
+      "ratio": 0.6294,
+      "before": "Ber ka ta lah Musa: \"Be gi ni lah fir man Tuhan: Pa da wak tu te ngah ma lam Aku akan ber ja lan da ri te ngah-te ngah Me sir. Ketika menderita dahaga mereka berseru kepada-Mu, lalu diberi air dari batu karang yang keras",
+      "after": "Berkatalah Musa: \"Beginilah firman Tuhan: Pada waktu tengah malam Aku akan berjalan dari tengah-tengah Mesir."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "11",
+      "verse": "5",
+      "ratio": 0.8067,
+      "before": "Ma ka tiap-ti ap anak su lung di ta nah Me sir akan ma ti, da ri anak su lung Fi ra un yang du duk di takhta nya sam pai ke pa da anak su lung bu dak perem pu an yang meng ha dapi ba tu ki lang an, juga se ga la anak su ",
+      "after": "Maka tiap-tiap anak sulung di tanah Mesir akan mati, dari anak sulung Firaun yang duduk di takhta nya sampai ke pada anak sulung budak perempuan yang menghadapi batu kilangan, juga segala anak sulung hewan."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "12",
+      "verse": "28",
+      "ratio": 0.8043,
+      "before": "Per gi lah orang Is rael, la lu ber bu at demikian; se per ti yang di pe rin tah kan Tuhan ke pa da Mu sa dan Ha run, de mi ki an lah di perbu at me re ka. Tulah kesepuluh: Anak sulung mati Orang Israel keluar dari Mesir",
+      "after": "Pergilah orang Israel, lalu berbuat demikian; seperti yang di perintah kan Tuhan ke pada Musa dan Harun, demi kian lah di perbuat mereka."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "12",
+      "verse": "51",
+      "ratio": 0.7783,
+      "before": "Dan te pat pa da ha ri itu ju ga Tuhan mem ba wa orang Is rael ke lu ar da ri ta nah Mesir, me nu rut pa suk an me re ka. Ketetapan tentang anak sulung Hari raya Roti Tidak Beragi",
+      "after": "Dan tepat pada hari itu juga Tuhan membawa orang Israel ke luar dari tanah Mesir, menurut pasukan mereka."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "14",
+      "verse": "14",
+      "ratio": 0.8,
+      "before": "Tuhan akan ber pe rang un tuk ka mu, dan ka mu akan di am sa ja.\" Menyeberangi Laut Teberau",
+      "after": "Tuhan akan berperang untuk kamu, dan kamu akan diam saja."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "16",
+      "verse": "36",
+      "ratio": 0.7952,
+      "before": "Ada pun se go mer ia lah se per se pu luh efa. Di Masa dan di Meriba",
+      "after": "Ada pun segomer ialah se per sepuluh efa."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "18",
+      "verse": "27",
+      "ratio": 0.7871,
+      "before": "Ke mu di an Mu sa mem bi ar kan mer tua nya itu per gi dan ia pu lang ke ne ge ri nya. Tuhan menampakkan diri di gunung Sinai",
+      "after": "Ke mu di an Musa membiarkan mertua nya itu pergi dan ia pulang ke negeri nya."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "22",
+      "verse": "20",
+      "ratio": 0.8077,
+      "before": "Si apa yang mem per sem bah kan kor ban ke pa da allah ke cu ali ke pa da Tuhan sen diri, ha rus lah ia di tum pas.\" Peraturan tentang orang-orang yang tidak mampu",
+      "after": "Si apa yang mem per sem bah kan korban ke pada allah kecuali ke pada Tuhan sendiri, haruslah ia di tumpas."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "24",
+      "verse": "18",
+      "ratio": 0.8143,
+      "before": "Ma suk lah Mu sa ke te ngah-te ngah awan itu de ngan men da ki gu nung itu. La lu ting gallah ia di atas gu nung itu em pat pu luh ha ri dan em pat pu luh ma lam la ma nya. Petunjuk untuk mendirikan Kemah Suci Mengenai p",
+      "after": "Masuklah Musa ke tengah-tengah awan itu dengan mendaki gunung itu. Lalu tinggallah ia di atas gunung itu empat puluh hari dan empat puluh malam lama nya."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "35",
+      "verse": "3",
+      "ratio": 0.6634,
+      "before": "Ja ngan lah ka mu me ma sang api di ma na pun da lam tem pat ke di am an mu pa da ha ri Sa bat.\" Persembahan khusus untuk mendirikan Kemah Suci dan untuk kebaktian di dalamnya",
+      "after": "Janganlah kamu memasang api di mana pun dalam tempat ke di aman mu pada hari Sabat."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "37",
+      "verse": "28",
+      "ratio": 0.7556,
+      "before": "Dan di bu at nya lah ka yu pengu sung itu da ri ka yu pe na ga dan di salut nya de ngan emas. Membuat minyak urapan dan ukupan dari wangi-wangian",
+      "after": "Dan di buat nya lah kayu pengusung itu dari kayu penaga dan di salut nya dengan emas."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "8",
+      "ratio": 0.403,
+      "before": "Ha ruslah kau bu at pe la tar an ke li ling dan kau gantung kan lah ti rai pin tu ger bang pe la tar an itu. Sebab dengan melewatkan kebijaksanaan penduduk Pancakota tidak hanya mendapat rugi karena tidak mengenal yang b",
+      "after": "Haruslah kau buat pelataran keliling dan kau gantung kan lah tirai pintu gerbang pelataran itu."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "9",
+      "ratio": 0.633,
+      "before": "Ke mu di an kau am bil lah mi nyak urap an dan kau urapi lah Ke mah Su ci de ngan se ga la yang ada di dalamnya; de mi ki an lah ha rus eng kau me ngu dus kan nya, de ngan se ga la pe ra bot annya, se hing ga men ja di k",
+      "after": "Ke mu di an kau ambillah minyak urap an dan kau urapilah Kemah Suci dengan segala yang ada di dalamnya; demi kian lah harus engkau menguduskan nya, dengan segala perabotannya, sehingga menjadi kudus."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "10",
+      "ratio": 0.6481,
+      "before": "Ju ga kauurapi lah mez bah kor ban ba kar an itu de ngan se ga la perkakasnya; de mi ki an lah eng kau harus me ngu dus kan mez bah itu, se hing ga mezbah itu ma ha ku dus. Kebijaksanaan memperlihatkan kerajaan Allah kep",
+      "after": "Juga kauurapilah mezbah korban bakar an itu dengan segala perkakasnya; demi kian lah engkau harus menguduskan mezbah itu, sehingga mezbah itu maha kudus."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "11",
+      "ratio": 0.7078,
+      "before": "Ju ga kau urapi lah beja na pem ba suh an itu de ngan alas nya, dan de mi ki an lah eng kau ha rus me ngu dus kan nya. Terhadap para pemerasnya yang serakah didampinginya, dan ia dijadikan kaya olehnya.",
+      "after": "Juga kau urapilah bejana pembasuh an itu dengan alas nya, dan demi kian lah engkau harus menguduskan nya."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "12",
+      "ratio": 0.4896,
+      "before": "Ke mu di an kau su ruh lah Ha run dan anakanak nya da tang ke pin tu Ke mah Per te mu an dan kau ba suh lah me re ka de ngan air. Terhadap para musuhnya ia dilindungi oleh kebijaksanaan, dan diamankan terhadap para penga",
+      "after": "Ke mu di an kau suruhlah Harun dan anakanak nya datang ke pintu Kemah Pertemuan dan kau basuhlah mereka dengan air."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "13",
+      "ratio": 0.699,
+      "before": "Kauke na kan lah pa kai an yang ku dus ke pa da Harun, kau urapi dan kau ku dus kan lah dia supa ya ia me me gang ja bat an imam ba gi-Ku. Kebijaksanaan tidak meninggalkan orang benar yang sudah dijual, melainkan menjaga",
+      "after": "Kaukenakanlah pakai an yang kudus ke pada Harun, kau urapi dan kau kudus kan lah dia supaya ia me me gang jabatan imam bagi-Ku."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "14",
+      "ratio": 0.3269,
+      "before": "Ju ga anak-anak nya kau su ruh lah men de kat dan kau ke na kan lah ke me ja ke pa da me re ka. Ia turun sertanya ke dalam penjara, dan dalam belenggu pun tidak meninggalkannya, sampai tongkat kerajaan dibawakan kepada d",
+      "after": "Juga anak-anak nya kau suruhlah mendekat dan kau kena kan lah ke meja ke pada mereka."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "15",
+      "ratio": 0.7974,
+      "before": "Urapi lah me re ka, se per ti eng kau mengurapi ayah me re ka, su pa ya me re ka me me gang ja bat an imam bagi-Ku; dan ini ter ja di, su paya ber da sar kan pengu rap an itu me re ka meme gang ja bat an imam un tuk se l",
+      "after": "Urapilah mereka, seperti engkau mengurapi ayah mereka, supaya mereka me me gang jabatan imam bagi-Ku; dan ini ter jadi, supaya berdasar kan pengurapan itu mereka memegang jabatan imam untuk selama-lamanya turun-temurun."
+    },
+    {
+      "book": "Keluaran",
+      "chapter": "40",
+      "verse": "16",
+      "ratio": 0.6019,
+      "before": "Dan Mu sa me la ku kan se mua nya itu te pat se per ti yang di pe rin tahkan Tuhan ke pa da nya, de mi ki an lah di laku kan nya. Ia masuk ke dalam jiwa seseorang yang mengabdi kepada Tuhan, yang kemudian menghadapi raja",
+      "after": "Dan Musa me laku kan semua nya itu tepat seperti yang di perintahkan Tuhan ke pada nya, demi kian lah di laku kan nya."
+    }
+  ]
+}

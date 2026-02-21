@@ -1,0 +1,151 @@
+{
+  "rows_total": 35431,
+  "rows_changed": 1887,
+  "replacement_patterns": 25,
+  "phrase_merges_applied": 2275,
+  "post_fix_changes": 179,
+  "short_run_count_after": 911,
+  "examples": [
+    {
+      "book": "Kejadian",
+      "chapter": "4",
+      "verse": "13",
+      "before": "Kata Kain kepada Tuhan: \"Hukumanku itu lebih besar dari pada yang dapat kutanggung.",
+      "after": "Kata Kain kepada Tuhan: \"Hukumanku itu lebih besar daripada yang dapat kutanggung."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "12",
+      "verse": "5",
+      "before": "Abram membawa Sarai, isterinya, dan Lot, anak saudaranya, dan segala harta benda yang didapat mereka dan orang-orang yang diperoleh mereka di Haran; mereka berangkat ke tanah Kanaan, lalu sampai di situ.",
+      "after": "Abram membawa Sarai, isterinya, dan Lot, anak saudaranya, dan segala harta benda yang didapat mereka dan orang-orang yang diperoleh mereka di Haran; mereka berangkat ke tanah Kanaan, lalu sampai disitu."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "12",
+      "verse": "7",
+      "before": "Ketika itu Tuhan menampakkan diri kepada Abram dan berfirman: \"Aku akan memberikan negeri ini kepada keturunanmu.\" Maka didirikannya di situ mezbah bagi Tuhan yang telah menampakkan diri kepadanya.",
+      "after": "Ketika itu Tuhan menampakkan diri kepada Abram dan berfirman: \"Aku akan memberikan negeri ini kepada keturunanmu.\" Maka didirikannya disitu mezbah bagi Tuhan yang telah menampakkan diri kepadanya."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "12",
+      "verse": "8",
+      "before": "Kemudian ia pindah dari situ ke pegunungan di sebelah timur Betel. Ia memasang kemahnya dengan Betel di sebelah barat dan Ai di sebelah timur, lalu ia mendirikan di situ mezbah bagi Tuhan dan memanggil nama Tuhan.",
+      "after": "Kemudian ia pindah dari situ ke pegunungan di sebelah timur Betel. Ia memasang kemahnya dengan Betel di sebelah barat dan Ai di sebelah timur, lalu ia mendirikan disitu mezbah bagi Tuhan dan memanggil nama Tuhan."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "12",
+      "verse": "10",
+      "before": "Ketika kelaparan timbul di negeri itu, pergilah Abram ke Mesir untuk tinggal di situ sebagai orang asing, sebab hebat kelaparan di negeri itu.",
+      "after": "Ketika kelaparan timbul di negeri itu, pergilah Abram ke Mesir untuk tinggal disitu sebagai orang asing, sebab hebat kelaparan di negeri itu."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "13",
+      "verse": "14",
+      "before": "Setelah Lot berpisah dari pada Abram, berfirmanlah Tuhan kepada Abram: \"Pandanglah sekelilingmu dan lihatlah dari tempat engkau berdiri itu ke timur dan barat, utara dan selatan,",
+      "after": "Setelah Lot berpisah daripada Abram, berfirmanlah Tuhan kepada Abram: \"Pandanglah sekelilingmu dan lihatlah dari tempat engkau berdiri itu ke timur dan barat, utara dan selatan,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "13",
+      "verse": "18",
+      "before": "Sesudah itu Abram memindahkan kemahnya dan menetap di dekat pohon-pohon tarbantin di Mamre, dekat Hebron, lalu didirikannyalah mezbah di situ bagi TuhanAbram. mengalahkan raja-raja di Timur dan menolong Lot",
+      "after": "Sesudah itu Abram memindahkan kemahnya dan menetap di dekat pohon-pohon tarbantin di Mamre, dekat Hebron, lalu didirikannyalah mezbah disitu bagi TuhanAbram. mengalahkan raja-raja di Timur dan menolong Lot"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "15",
+      "verse": "5",
+      "before": "Lalu Tuhan membawa Abram ke luar serta berfirman: \"Coba lihat ke langit, hitunglah bintang-bintang, jika engkau dapat menghitungnya.\" Maka firman-Nya kepadanya: \"Demikianlah banyaknya nanti keturunanmu.\"",
+      "after": "Lalu Tuhan membawa Abram keluar serta berfirman: \"Coba lihat ke langit, hitunglah bintang-bintang, jika engkau dapat menghitungnya.\" Maka firman-Nya kepadanya: \"Demikianlah banyaknya nanti keturunanmu.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "18",
+      "verse": "25",
+      "before": "Jauhlah kiranya dari pada-Mu untuk berbuat demikian, membunuh orang benar bersama-sama dengan orang fasik, sehingga orang benar itu seolah-olah sama dengan orang fasik! Jauhlah kiranya yang demikian dari pada-Mu! Masakan Hakim segenap bumi ",
+      "after": "Jauhlah kiranya daripada-Mu untuk berbuat demikian, membunuh orang benar bersama-sama dengan orang fasik, sehingga orang benar itu seolah-olah sama dengan orang fasik! Jauhlah kiranya yang demikian daripada-Mu! Masakan Hakim segenap bumi ti"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "19",
+      "verse": "8",
+      "before": "Kamu tahu, aku mempunyai dua orang anak perempuan yang belum pernah dijamah laki-laki, baiklah mereka kubawa ke luar kepadamu; perbuatlah kepada mereka seperti yang kamu pandang baik; hanya jangan kamu apa-apakan orang-orang ini, sebab mere",
+      "after": "Kamu tahu, aku mempunyai dua orang anak perempuan yang belum pernah dijamah laki-laki, baiklah mereka kubawa keluar kepadamu; perbuatlah kepada mereka seperti yang kamu pandang baik; hanya jangan kamu apa-apakan orang-orang ini, sebab merek"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "19",
+      "verse": "9",
+      "before": "Tetapi mereka berkata: \"Enyahlah!\" Lagi kata mereka: \"Orang ini datang ke sini sebagai orang asing dan dia mau menjadi hakim atas kita! Sekarang kami akan menganiaya engkau lebih dari pada kedua orang itu!\" Lalu mereka mendesak orang itu, y",
+      "after": "Tetapi mereka berkata: \"Enyahlah!\" Lagi kata mereka: \"Orang ini datang ke sini sebagai orang asing dan dia mau menjadi hakim atas kita! Sekarang kami akan menganiaya engkau lebih daripada kedua orang itu!\" Lalu mereka mendesak orang itu, ya"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "19",
+      "verse": "16",
+      "before": "Ketika ia berlambat-lambat, maka tangannya, tangan isteri dan tangan kedua anaknya dipegang oleh kedua orang itu, sebab Tuhan hendak mengasihani dia; lalu kedua orang itu menuntunnya ke luar kota dan melepaskannya di sana.",
+      "after": "Ketika ia berlambat-lambat, maka tangannya, tangan isteri dan tangan kedua anaknya dipegang oleh kedua orang itu, sebab Tuhan hendak mengasihani dia; lalu kedua orang itu menuntunnya keluar kota dan melepaskannya di sana."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "19",
+      "verse": "17",
+      "before": "Sesudah kedua orang itu menuntun mereka sampai ke luar, berkatalah seorang: \"Larilah, selamatkanlah nyawamu; janganlah menoleh ke belakang, dan janganlah berhenti di manapun juga di Lembah Yordan, larilah ke pegunungan, supaya engkau jangan",
+      "after": "Sesudah kedua orang itu menuntun mereka sampai keluar, berkatalah seorang: \"Larilah, selamatkanlah nyawamu; janganlah menoleh ke belakang, dan janganlah berhenti di manapun juga di Lembah Yordan, larilah ke pegunungan, supaya engkau jangan "
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "21",
+      "verse": "16",
+      "before": "dan ia duduk agak jauh, kira-kira sepemanah jauhnya, sebab katanya: \"Tidak tahan aku melihat anak itu mati.\" Sedang ia duduk di situ, menangislah ia dengan suara nyaring.",
+      "after": "dan ia duduk agak jauh, kira-kira sepemanah jauhnya, sebab katanya: \"Tidak tahan aku melihat anak itu mati.\" Sedang ia duduk disitu, menangislah ia dengan suara nyaring."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "22",
+      "verse": "9",
+      "before": "Sampailah mereka ke tempat yang dikatakan Allah kepadanya. Lalu Abraham mendirikan mezbah di situ, disusunnyalah kayu, diikatnya Ishak, anaknya itu, dan diletakkannya di mezbah itu, di atas kayu api.",
+      "after": "Sampailah mereka ke tempat yang dikatakan Allah kepadanya. Lalu Abraham mendirikan mezbah disitu, disusunnyalah kayu, diikatnya Ishak, anaknya itu, dan diletakkannya di mezbah itu, di atas kayu api."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "24",
+      "verse": "29",
+      "before": "Ribka mempunyai saudara laki-laki, namanya Laban. Laban berlari ke luar mendapatkan orang itu, ke mata air tadi,",
+      "after": "Ribka mempunyai saudara laki-laki, namanya Laban. Laban berlari keluar mendapatkan orang itu, ke mata air tadi,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "24",
+      "verse": "43",
+      "before": "Di sini aku berdiri di dekat mata air ini; kiranya terjadi begini: Apabila seorang gadis datang ke luar untuk menimba air dan aku berkata kepadanya: Tolong berikan aku minum air sedikit dari buyungmu itu,",
+      "after": "Di sini aku berdiri di dekat mata air ini; kiranya terjadi begini: Apabila seorang gadis datang keluar untuk menimba air dan aku berkata kepadanya: Tolong berikan aku minum air sedikit dari buyungmu itu,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "24",
+      "verse": "54",
+      "before": "Sesudah itu makan dan minumlah mereka, ia dan orang-orang yang bersama-sama dengan dia, dan mereka bermalam di situ. Paginya sesudah mereka bangun, berkatalah hamba itu: \"Lepaslah aku pulang kepada tuanku.\"",
+      "after": "Sesudah itu makan dan minumlah mereka, ia dan orang-orang yang bersama-sama dengan dia, dan mereka bermalam disitu. Paginya sesudah mereka bangun, berkatalah hamba itu: \"Lepaslah aku pulang kepada tuanku.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "26",
+      "verse": "16",
+      "before": "Lalu kata Abimelekh kepada Ishak: \"Pergilah dari tengah-tengah kami sebab engkau telah menjadi jauh lebih berkuasa dari pada kami.\"",
+      "after": "Lalu kata Abimelekh kepada Ishak: \"Pergilah dari tengah-tengah kami sebab engkau telah menjadi jauh lebih berkuasa daripada kami.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "26",
+      "verse": "17",
+      "before": "Jadi pergilah Ishak dari situ dan berkemahlah ia di lembah Gerar, dan ia menetap di situ.",
+      "after": "Jadi pergilah Ishak dari situ dan berkemahlah ia di lembah Gerar, dan ia menetap disitu."
+    }
+  ],
+  "output_csv": "docs/import/tb2_text_clean_aligned_pass2.csv"
+}

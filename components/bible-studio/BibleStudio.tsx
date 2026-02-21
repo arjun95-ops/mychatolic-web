@@ -219,6 +219,7 @@ export default function BibleStudio() {
 
   const [books, setBooks] = useState<BookItem[]>([]);
   const [booksLoading, setBooksLoading] = useState(false);
+  const [booksWorkspaceKey, setBooksWorkspaceKey] = useState<string>("");
   const [booksDebugHint, setBooksDebugHint] = useState<string | null>(null);
   const [chapters, setChapters] = useState<ChapterItem[]>([]);
   const [chaptersLoading, setChaptersLoading] = useState(false);
@@ -250,6 +251,15 @@ export default function BibleStudio() {
     return selected?.label || `${effectiveLang.toUpperCase()} / ${effectiveVersion}`;
   }, [activeWorkspaceKey, effectiveLang, effectiveVersion, workspaceOptions]);
 
+  useEffect(() => {
+    setBooks([]);
+    setBooksWorkspaceKey("");
+    setBooksDebugHint(null);
+    setChapters([]);
+    setVerses([]);
+    setChapterExists(true);
+  }, [activeWorkspaceKey]);
+
   const fetchBooks = useCallback(async () => {
     setBooksLoading(true);
     try {
@@ -271,14 +281,23 @@ export default function BibleStudio() {
       }
       const items = Array.isArray(result.items) ? normalizeBooks(result.items) : [];
       setBooks(items);
+      setBooksWorkspaceKey(activeWorkspaceKey);
     } catch (errorValue: unknown) {
       const message = errorValue instanceof Error ? errorValue.message : "Unknown error";
       showToast(message, "error");
       setBooks([]);
+      setBooksWorkspaceKey("");
     } finally {
       setBooksLoading(false);
     }
-  }, [debouncedBookSearch, effectiveLang, effectiveVersion, groupingFilter, showToast]);
+  }, [
+    activeWorkspaceKey,
+    debouncedBookSearch,
+    effectiveLang,
+    effectiveVersion,
+    groupingFilter,
+    showToast,
+  ]);
 
   useEffect(() => {
     void fetchBooks();
@@ -378,7 +397,7 @@ export default function BibleStudio() {
   }, [bookQuery, booksLoading, selectedBook, setQuery]);
 
   const fetchChapters = useCallback(async () => {
-    if (!selectedBook?.id) {
+    if (!selectedBook?.id || booksWorkspaceKey !== activeWorkspaceKey) {
       setChapters([]);
       return;
     }
@@ -395,7 +414,13 @@ export default function BibleStudio() {
       });
       const result = (await response.json().catch(() => ({}))) as ChaptersResponse;
       if (!response.ok) {
-        throw new Error(extractMessage(result, `Gagal memuat bab (${response.status}).`));
+        const message = extractMessage(result, `Gagal memuat bab (${response.status}).`);
+        if (response.status === 404 && message.toLowerCase().includes("kitab tidak ditemukan")) {
+          setChapters([]);
+          if (bookQuery) setQuery({ book: null, ch: "1" });
+          return;
+        }
+        throw new Error(message);
       }
       setChapters(Array.isArray(result.items) ? result.items : []);
     } catch (errorValue: unknown) {
@@ -405,7 +430,16 @@ export default function BibleStudio() {
     } finally {
       setChaptersLoading(false);
     }
-  }, [effectiveLang, effectiveVersion, selectedBook?.id, showToast]);
+  }, [
+    activeWorkspaceKey,
+    bookQuery,
+    booksWorkspaceKey,
+    effectiveLang,
+    effectiveVersion,
+    selectedBook?.id,
+    setQuery,
+    showToast,
+  ]);
 
   useEffect(() => {
     if (!chapterQuery || chapterQuery <= 0) {
@@ -418,9 +452,9 @@ export default function BibleStudio() {
   }, [fetchChapters]);
 
   const fetchVerses = useCallback(async () => {
-    if (!selectedBook?.id || !selectedChapter) {
+    if (!selectedBook?.id || !selectedChapter || booksWorkspaceKey !== activeWorkspaceKey) {
       setVerses([]);
-      setChapterExists(false);
+      setChapterExists(true);
       return;
     }
 
@@ -439,7 +473,14 @@ export default function BibleStudio() {
       });
       const result = (await response.json().catch(() => ({}))) as VersesResponse;
       if (!response.ok) {
-        throw new Error(extractMessage(result, `Gagal memuat ayat (${response.status}).`));
+        const message = extractMessage(result, `Gagal memuat ayat (${response.status}).`);
+        if (response.status === 404 && message.toLowerCase().includes("kitab tidak ditemukan")) {
+          setVerses([]);
+          setChapterExists(false);
+          if (bookQuery) setQuery({ book: null, ch: "1" });
+          return;
+        }
+        throw new Error(message);
       }
       const verseItems = Array.isArray(result.items) ? result.items : [];
       setVerses(verseItems);
@@ -452,7 +493,17 @@ export default function BibleStudio() {
     } finally {
       setVersesLoading(false);
     }
-  }, [effectiveLang, effectiveVersion, selectedBook?.id, selectedChapter, showToast]);
+  }, [
+    activeWorkspaceKey,
+    bookQuery,
+    booksWorkspaceKey,
+    effectiveLang,
+    effectiveVersion,
+    selectedBook?.id,
+    selectedChapter,
+    setQuery,
+    showToast,
+  ]);
 
   useEffect(() => {
     void fetchVerses();
@@ -628,6 +679,9 @@ export default function BibleStudio() {
 
           {tab === "preview" ? (
             <PreviewPane
+              lang={effectiveLang}
+              version={effectiveVersion}
+              selectedBookId={selectedBook?.id || null}
               workspaceLabel={workspaceLabel}
               bookName={selectedBook?.name || null}
               chapters={chapters}
@@ -635,6 +689,7 @@ export default function BibleStudio() {
               onSelectChapter={(chapterNumber) => setQuery({ ch: String(chapterNumber) })}
               verses={verses}
               loading={versesLoading}
+              onRefresh={refreshChapterData}
             />
           ) : null}
         </section>

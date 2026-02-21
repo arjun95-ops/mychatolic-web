@@ -1,0 +1,2318 @@
+{
+  "started_at": "2026-02-21T07:06:42.514Z",
+  "finished_at": "2026-02-21T07:07:45.581Z",
+  "dry_run": false,
+  "source": {
+    "base_url": "https://bible.usccb.org/bible",
+    "fetched_pages": 1328,
+    "esther_sections_detected": [
+      "1",
+      "10",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ]
+  },
+  "target_workspace": "en/EN1",
+  "summary": {
+    "books": 73,
+    "chapters": 1334,
+    "verses": 35466,
+    "chapters_with_detected_headings": 1252,
+    "headings_detected_from_source": 3062,
+    "headings_resolved_to_existing_verses": 3062,
+    "headings_resolved_with_fallback_verse": 3,
+    "headings_unresolved_missing_verse": 0,
+    "source_fetch_errors": 0,
+    "source_missing_sections": 0,
+    "pericope_non_null_before": 0,
+    "pericope_non_null_after": 3062
+  },
+  "samples": {
+    "source_fetch_errors": [],
+    "source_missing_sections": [],
+    "unresolved_headings": [],
+    "chapter_detection_summary": [
+      {
+        "book": "Genesis",
+        "chapter": 1,
+        "chapter_label": "1",
+        "source_url": "https://bible.usccb.org/bible/genesis/1.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Story of Creation"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 2,
+        "chapter_label": "2",
+        "source_url": "https://bible.usccb.org/bible/genesis/2.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Garden of Eden"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 3,
+        "chapter_label": "3",
+        "source_url": "https://bible.usccb.org/bible/genesis/3.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Expulsion from Eden"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 4,
+        "chapter_label": "4",
+        "source_url": "https://bible.usccb.org/bible/genesis/4.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Cain and Abel",
+          "Descendants of Cain and Seth"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 5,
+        "chapter_label": "5",
+        "source_url": "https://bible.usccb.org/bible/genesis/5.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Generations: Adam to Noah"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 6,
+        "chapter_label": "6",
+        "source_url": "https://bible.usccb.org/bible/genesis/6.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Origin of the Nephilim",
+          "Warning of the Flood",
+          "Preparation for the Flood"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 7,
+        "chapter_label": "7",
+        "source_url": "https://bible.usccb.org/bible/genesis/7.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Great Flood"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 9,
+        "chapter_label": "9",
+        "source_url": "https://bible.usccb.org/bible/genesis/9.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Covenant with Noah",
+          "Noah and His Sons"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 10,
+        "chapter_label": "10",
+        "source_url": "https://bible.usccb.org/bible/genesis/10.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Table of the Nations"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 11,
+        "chapter_label": "11",
+        "source_url": "https://bible.usccb.org/bible/genesis/11.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Tower of Babel",
+          "Descendants from Shem to Abraham",
+          "Terah"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 12,
+        "chapter_label": "12",
+        "source_url": "https://bible.usccb.org/bible/genesis/12.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Abram's Call and Migration",
+          "Abram and Sarai in Egypt"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 13,
+        "chapter_label": "13",
+        "source_url": "https://bible.usccb.org/bible/genesis/13.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Abram and Lot Part"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 14,
+        "chapter_label": "14",
+        "source_url": "https://bible.usccb.org/bible/genesis/14.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Four Kings"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 15,
+        "chapter_label": "15",
+        "source_url": "https://bible.usccb.org/bible/genesis/15.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Covenant with Abram"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 16,
+        "chapter_label": "16",
+        "source_url": "https://bible.usccb.org/bible/genesis/16.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Birth of Ishmael"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 17,
+        "chapter_label": "17",
+        "source_url": "https://bible.usccb.org/bible/genesis/17.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Covenant of Circumcision"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 18,
+        "chapter_label": "18",
+        "source_url": "https://bible.usccb.org/bible/genesis/18.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Abraham's Visitors",
+          "Abraham Intercedes for Sodom"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 19,
+        "chapter_label": "19",
+        "source_url": "https://bible.usccb.org/bible/genesis/19.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Destruction of Sodom and Gomorrah",
+          "Moabites and Ammonites"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 20,
+        "chapter_label": "20",
+        "source_url": "https://bible.usccb.org/bible/genesis/20.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Abraham at Gerar"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 21,
+        "chapter_label": "21",
+        "source_url": "https://bible.usccb.org/bible/genesis/21.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Birth of Isaac",
+          "The Covenant at Beer-sheba"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 22,
+        "chapter_label": "22",
+        "source_url": "https://bible.usccb.org/bible/genesis/22.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Testing of Abraham",
+          "Nahor's Descendants"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 23,
+        "chapter_label": "23",
+        "source_url": "https://bible.usccb.org/bible/genesis/23.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Purchase of a Burial Plot"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 24,
+        "chapter_label": "24",
+        "source_url": "https://bible.usccb.org/bible/genesis/24.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Isaac and Rebekah"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 25,
+        "chapter_label": "25",
+        "source_url": "https://bible.usccb.org/bible/genesis/25.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Abraham's Sons by Keturah",
+          "Death of Abraham",
+          "Descendants of Ishmael",
+          "Birth of Esau and Jacob"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 26,
+        "chapter_label": "26",
+        "source_url": "https://bible.usccb.org/bible/genesis/26.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Isaac and Abimelech"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 27,
+        "chapter_label": "27",
+        "source_url": "https://bible.usccb.org/bible/genesis/27.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Jacob's Deception",
+          "Jacob Sent to Laban"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 28,
+        "chapter_label": "28",
+        "source_url": "https://bible.usccb.org/bible/genesis/28.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Jacob's Dream at Bethel"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 29,
+        "chapter_label": "29",
+        "source_url": "https://bible.usccb.org/bible/genesis/29.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Arrival in Haran",
+          "Marriage to Leah and Rachel",
+          "Jacob's Children"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 30,
+        "chapter_label": "30",
+        "source_url": "https://bible.usccb.org/bible/genesis/30.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Jacob Outwits Laban"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 31,
+        "chapter_label": "31",
+        "source_url": "https://bible.usccb.org/bible/genesis/31.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Flight from Laban",
+          "Jacob and Laban in Gilead"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 32,
+        "chapter_label": "32",
+        "source_url": "https://bible.usccb.org/bible/genesis/32.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Envoys to Esau",
+          "Jacob's New Name"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 33,
+        "chapter_label": "33",
+        "source_url": "https://bible.usccb.org/bible/genesis/33.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Jacob and Esau Meet"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 34,
+        "chapter_label": "34",
+        "source_url": "https://bible.usccb.org/bible/genesis/34.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Rape of Dinah",
+          "Revenge of Jacob's Sons"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 35,
+        "chapter_label": "35",
+        "source_url": "https://bible.usccb.org/bible/genesis/35.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Bethel Revisited",
+          "Jacob's Family"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 36,
+        "chapter_label": "36",
+        "source_url": "https://bible.usccb.org/bible/genesis/36.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Edomite Lists"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 37,
+        "chapter_label": "37",
+        "source_url": "https://bible.usccb.org/bible/genesis/37.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Joseph Sold into Egypt"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 38,
+        "chapter_label": "38",
+        "source_url": "https://bible.usccb.org/bible/genesis/38.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Judah and Tamar"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 39,
+        "chapter_label": "39",
+        "source_url": "https://bible.usccb.org/bible/genesis/39.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Joseph's Temptation"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 40,
+        "chapter_label": "40",
+        "source_url": "https://bible.usccb.org/bible/genesis/40.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Dreams Interpreted"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 41,
+        "chapter_label": "41",
+        "source_url": "https://bible.usccb.org/bible/genesis/41.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Pharaoh's Dream"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 42,
+        "chapter_label": "42",
+        "source_url": "https://bible.usccb.org/bible/genesis/42.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Brothers' First Journey to Egypt"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 43,
+        "chapter_label": "43",
+        "source_url": "https://bible.usccb.org/bible/genesis/43.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Second Journey to Egypt"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 44,
+        "chapter_label": "44",
+        "source_url": "https://bible.usccb.org/bible/genesis/44.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Final Test"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 45,
+        "chapter_label": "45",
+        "source_url": "https://bible.usccb.org/bible/genesis/45.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Truth Revealed"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 46,
+        "chapter_label": "46",
+        "source_url": "https://bible.usccb.org/bible/genesis/46.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Migration to Egypt"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 47,
+        "chapter_label": "47",
+        "source_url": "https://bible.usccb.org/bible/genesis/47.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Settlement in Goshen",
+          "Joseph's Land Policy",
+          "Israel Blesses Ephraim and Manasseh"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 49,
+        "chapter_label": "49",
+        "source_url": "https://bible.usccb.org/bible/genesis/49.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Jacob's Testament",
+          "Farewell and Death"
+        ]
+      },
+      {
+        "book": "Genesis",
+        "chapter": 50,
+        "chapter_label": "50",
+        "source_url": "https://bible.usccb.org/bible/genesis/50.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Jacob's Funeral",
+          "Plea for Forgiveness",
+          "Death of Joseph"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 1,
+        "chapter_label": "1",
+        "source_url": "https://bible.usccb.org/bible/exodus/1.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Jacob's Descendants in Egypt",
+          "The Oppression",
+          "Command to the Midwives"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 2,
+        "chapter_label": "2",
+        "source_url": "https://bible.usccb.org/bible/exodus/2.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Birth and Adoption of Moses",
+          "Moses' Flight to Midian",
+          "The Burning Bush"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 3,
+        "chapter_label": "3",
+        "source_url": "https://bible.usccb.org/bible/exodus/3.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Call and Commission of Moses"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 4,
+        "chapter_label": "4",
+        "source_url": "https://bible.usccb.org/bible/exodus/4.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Aaron's Office as Assistant",
+          "Moses' Return to Egypt"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 5,
+        "chapter_label": "5",
+        "source_url": "https://bible.usccb.org/bible/exodus/5.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Pharaoh's Hardness of Heart",
+          "Complaint of the Foremen",
+          "Renewal of God's Promise"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 6,
+        "chapter_label": "6",
+        "source_url": "https://bible.usccb.org/bible/exodus/6.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Confirmation of the Promise to the Ancestors",
+          "Genealogy of Moses and Aaron"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 7,
+        "chapter_label": "7",
+        "source_url": "https://bible.usccb.org/bible/exodus/7.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Staff Turned into a Serpent",
+          "First Plague: Water Turned into Blood",
+          "Second Plague: The Frogs"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 8,
+        "chapter_label": "8",
+        "source_url": "https://bible.usccb.org/bible/exodus/8.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Third Plague: The Gnats",
+          "Fourth Plague: The Flies"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 9,
+        "chapter_label": "9",
+        "source_url": "https://bible.usccb.org/bible/exodus/9.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Fifth Plague:The Pestilence",
+          "Sixth Plague: The Boils",
+          "Seventh Plague: The Hail"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 10,
+        "chapter_label": "10",
+        "source_url": "https://bible.usccb.org/bible/exodus/10.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Eighth Plague: The Locusts",
+          "Ninth Plague: The Darkness"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 11,
+        "chapter_label": "11",
+        "source_url": "https://bible.usccb.org/bible/exodus/11.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Tenth Plague: The Death of the Firstborn"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 12,
+        "chapter_label": "12",
+        "source_url": "https://bible.usccb.org/bible/exodus/12.md",
+        "starts_detected": 6,
+        "sample_titles": [
+          "The Passover Ritual Prescribed",
+          "Promulgation of the Passover",
+          "Death of the Firstborn",
+          "Permission to Depart"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 13,
+        "chapter_label": "13",
+        "source_url": "https://bible.usccb.org/bible/exodus/13.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Consecration of Firstborn",
+          "Toward the Red Sea"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 14,
+        "chapter_label": "14",
+        "source_url": "https://bible.usccb.org/bible/exodus/14.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Crossing the Red Sea",
+          "Rout of the Egyptians"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 15,
+        "chapter_label": "15",
+        "source_url": "https://bible.usccb.org/bible/exodus/15.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "At Marah and Elim"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 16,
+        "chapter_label": "16",
+        "source_url": "https://bible.usccb.org/bible/exodus/16.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Wilderness of Sin",
+          "The Quail and the Manna",
+          "Regulations Regarding the Manna"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 17,
+        "chapter_label": "17",
+        "source_url": "https://bible.usccb.org/bible/exodus/17.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Water from the Rock",
+          "Battle with Amalek"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 18,
+        "chapter_label": "18",
+        "source_url": "https://bible.usccb.org/bible/exodus/18.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Meeting with Jethro",
+          "Appointment of Minor Judges"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 19,
+        "chapter_label": "19",
+        "source_url": "https://bible.usccb.org/bible/exodus/19.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Arrival at Sinai",
+          "The Great Theophany"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 20,
+        "chapter_label": "20",
+        "source_url": "https://bible.usccb.org/bible/exodus/20.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Ten Commandments",
+          "Moses Accepted as Mediator",
+          "The Covenant Code"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 21,
+        "chapter_label": "21",
+        "source_url": "https://bible.usccb.org/bible/exodus/21.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Laws Regarding Slaves",
+          "Personal Injury",
+          "Property Damage"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 22,
+        "chapter_label": "22",
+        "source_url": "https://bible.usccb.org/bible/exodus/22.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Trusts and Loans",
+          "Social Laws"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 23,
+        "chapter_label": "23",
+        "source_url": "https://bible.usccb.org/bible/exodus/23.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Religious Laws",
+          "Reward of Fidelity"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 24,
+        "chapter_label": "24",
+        "source_url": "https://bible.usccb.org/bible/exodus/24.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Ratification of the Covenant",
+          "Moses on the Mountain"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 25,
+        "chapter_label": "25",
+        "source_url": "https://bible.usccb.org/bible/exodus/25.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Collection of Materials",
+          "Plan of the Ark",
+          "The Table",
+          "The Menorah"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 26,
+        "chapter_label": "26",
+        "source_url": "https://bible.usccb.org/bible/exodus/26.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Tent Cloth",
+          "The Framework",
+          "The Veils"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 27,
+        "chapter_label": "27",
+        "source_url": "https://bible.usccb.org/bible/exodus/27.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Altar for Burnt Offerings",
+          "Court of the Tabernacle",
+          "Oil for the Lamps"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 28,
+        "chapter_label": "28",
+        "source_url": "https://bible.usccb.org/bible/exodus/28.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Priestly Vestments",
+          "The Ephod and Breastpiece",
+          "Other Vestments"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 29,
+        "chapter_label": "29",
+        "source_url": "https://bible.usccb.org/bible/exodus/29.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Consecration of the Priests",
+          "Installation Sacrifices"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 30,
+        "chapter_label": "30",
+        "source_url": "https://bible.usccb.org/bible/exodus/30.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Altar of Incense",
+          "Census Tax",
+          "The Basin",
+          "The Anointing Oil"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 31,
+        "chapter_label": "31",
+        "source_url": "https://bible.usccb.org/bible/exodus/31.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Choice of Artisans",
+          "Sabbath Laws"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 32,
+        "chapter_label": "32",
+        "source_url": "https://bible.usccb.org/bible/exodus/32.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Golden Calf",
+          "The Atonement"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 33,
+        "chapter_label": "33",
+        "source_url": "https://bible.usccb.org/bible/exodus/33.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Moses' Intimacy with God"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 34,
+        "chapter_label": "34",
+        "source_url": "https://bible.usccb.org/bible/exodus/34.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Renewal of the Tablets",
+          "Religious Laws",
+          "Radiance of Moses' Face"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 35,
+        "chapter_label": "35",
+        "source_url": "https://bible.usccb.org/bible/exodus/35.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Sabbath Regulations",
+          "Collection of Materials",
+          "Call for Artisans",
+          "The Contribution"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 36,
+        "chapter_label": "36",
+        "source_url": "https://bible.usccb.org/bible/exodus/36.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Tent Cloth and Coverings",
+          "The Framework",
+          "The Veil"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 37,
+        "chapter_label": "37",
+        "source_url": "https://bible.usccb.org/bible/exodus/37.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "The Ark",
+          "The Table",
+          "The Menorah",
+          "The Altar of Incense"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 38,
+        "chapter_label": "38",
+        "source_url": "https://bible.usccb.org/bible/exodus/38.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Altar for Burnt Offerings",
+          "The Court of the Tabernacle",
+          "Amount of Metal Used"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 39,
+        "chapter_label": "39",
+        "source_url": "https://bible.usccb.org/bible/exodus/39.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Priestly Vestments",
+          "Other Vestments",
+          "Presentation of the Work to Moses"
+        ]
+      },
+      {
+        "book": "Exodus",
+        "chapter": 40,
+        "chapter_label": "40",
+        "source_url": "https://bible.usccb.org/bible/exodus/40.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Setting Up the Tabernacle",
+          "God's Presence in the Tabernacle"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 1,
+        "chapter_label": "1",
+        "source_url": "https://bible.usccb.org/bible/leviticus/1.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Burnt Offerings"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 2,
+        "chapter_label": "2",
+        "source_url": "https://bible.usccb.org/bible/leviticus/2.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Grain Offerings"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 3,
+        "chapter_label": "3",
+        "source_url": "https://bible.usccb.org/bible/leviticus/3.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Communion Sacrifices"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 4,
+        "chapter_label": "4",
+        "source_url": "https://bible.usccb.org/bible/leviticus/4.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Purification Offerings",
+          "For the Anointed Priest",
+          "For the Community",
+          "For the Tribal Leader"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 5,
+        "chapter_label": "5",
+        "source_url": "https://bible.usccb.org/bible/leviticus/5.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Special Cases for Purification Offerings",
+          "Reparation Offerings"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 6,
+        "chapter_label": "6",
+        "source_url": "https://bible.usccb.org/bible/leviticus/6.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "The Daily Burnt Offering",
+          "The Grain Offering",
+          "High Priest's Daily Grain Offering",
+          "Purification Offerings"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 7,
+        "chapter_label": "7",
+        "source_url": "https://bible.usccb.org/bible/leviticus/7.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Reparation Offerings",
+          "Communion Sacrifices",
+          "Prohibition Against Blood and Fat",
+          "Portions from the Communion Sacrifice for Priests"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 8,
+        "chapter_label": "8",
+        "source_url": "https://bible.usccb.org/bible/leviticus/8.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Ordination of Aaron and His Sons",
+          "Ordination Sacrifices"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 9,
+        "chapter_label": "9",
+        "source_url": "https://bible.usccb.org/bible/leviticus/9.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Octave of the Ordination",
+          "Revelation of the Lord's Glory"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 10,
+        "chapter_label": "10",
+        "source_url": "https://bible.usccb.org/bible/leviticus/10.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Nadab and Abihu",
+          "Conduct of the Priests",
+          "The Eating of the Priestly Portions"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 11,
+        "chapter_label": "11",
+        "source_url": "https://bible.usccb.org/bible/leviticus/11.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Clean and Unclean Meats"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 12,
+        "chapter_label": "12",
+        "source_url": "https://bible.usccb.org/bible/leviticus/12.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Uncleanness of Childbirth"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 13,
+        "chapter_label": "13",
+        "source_url": "https://bible.usccb.org/bible/leviticus/13.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Scaly Infection",
+          "Fungal Infection of Fabrics and Leather"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 14,
+        "chapter_label": "14",
+        "source_url": "https://bible.usccb.org/bible/leviticus/14.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Purification After Scaly Infection",
+          "Poor Person's Sacrifices",
+          "Fungal Infection of Houses"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 15,
+        "chapter_label": "15",
+        "source_url": "https://bible.usccb.org/bible/leviticus/15.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Sexual Uncleanness"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 16,
+        "chapter_label": "16",
+        "source_url": "https://bible.usccb.org/bible/leviticus/16.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Day of Atonement",
+          "The Scapegoat",
+          "The Fast"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 17,
+        "chapter_label": "17",
+        "source_url": "https://bible.usccb.org/bible/leviticus/17.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Sacredness of Blood"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 18,
+        "chapter_label": "18",
+        "source_url": "https://bible.usccb.org/bible/leviticus/18.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Laws Concerning Sexual Behavior"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 19,
+        "chapter_label": "19",
+        "source_url": "https://bible.usccb.org/bible/leviticus/19.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Various Rules of Conduct"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 20,
+        "chapter_label": "20",
+        "source_url": "https://bible.usccb.org/bible/leviticus/20.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Penalties for Various Sins"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 21,
+        "chapter_label": "21",
+        "source_url": "https://bible.usccb.org/bible/leviticus/21.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Sanctity of the Priesthood",
+          "Priestly Blemishes"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 22,
+        "chapter_label": "22",
+        "source_url": "https://bible.usccb.org/bible/leviticus/22.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Priestly Purity",
+          "Unacceptable Victims"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 23,
+        "chapter_label": "23",
+        "source_url": "https://bible.usccb.org/bible/leviticus/23.md",
+        "starts_detected": 6,
+        "sample_titles": [
+          "Holy Days",
+          "Passover",
+          "Pentecost",
+          "New Year's Day"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 24,
+        "chapter_label": "24",
+        "source_url": "https://bible.usccb.org/bible/leviticus/24.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Sanctuary Light",
+          "The Showbread",
+          "Punishment of Blasphemy"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 25,
+        "chapter_label": "25",
+        "source_url": "https://bible.usccb.org/bible/leviticus/25.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Sabbatical Year",
+          "The Jubilee Year",
+          "Redemption of Property"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 26,
+        "chapter_label": "26",
+        "source_url": "https://bible.usccb.org/bible/leviticus/26.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Reward of Obedience",
+          "The Punishment of Disobedience"
+        ]
+      },
+      {
+        "book": "Leviticus",
+        "chapter": 27,
+        "chapter_label": "27",
+        "source_url": "https://bible.usccb.org/bible/leviticus/27.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Votive Offerings and Dedications",
+          "Irredeemable Offerings"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 1,
+        "chapter_label": "1",
+        "source_url": "https://bible.usccb.org/bible/numbers/1.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "The Census",
+          "Moses' Assistants",
+          "Count of the Twelve Tribes",
+          "Levites Omitted in the Census"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 2,
+        "chapter_label": "2",
+        "source_url": "https://bible.usccb.org/bible/numbers/2.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Arrangement of the Tribes"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 3,
+        "chapter_label": "3",
+        "source_url": "https://bible.usccb.org/bible/numbers/3.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "The Sons of Aaron",
+          "Levites in Place of the Firstborn",
+          "Census of the Levites",
+          "Duties of the Levitical Clans"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 4,
+        "chapter_label": "4",
+        "source_url": "https://bible.usccb.org/bible/numbers/4.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Duties Further Defined",
+          "Number of Adult Levites"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 5,
+        "chapter_label": "5",
+        "source_url": "https://bible.usccb.org/bible/numbers/5.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Unclean Expelled",
+          "Unjust Possession",
+          "Ordeal for Suspected Adultery"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 6,
+        "chapter_label": "6",
+        "source_url": "https://bible.usccb.org/bible/numbers/6.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Laws Concerning Nazirites",
+          "The Priestly Blessing"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 7,
+        "chapter_label": "7",
+        "source_url": "https://bible.usccb.org/bible/numbers/7.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Offerings of the Tribal Leaders",
+          "The Voice"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 8,
+        "chapter_label": "8",
+        "source_url": "https://bible.usccb.org/bible/numbers/8.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Menorah",
+          "Purification of the Levites",
+          "Age Limits for Levitical Service"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 9,
+        "chapter_label": "9",
+        "source_url": "https://bible.usccb.org/bible/numbers/9.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Second Passover",
+          "The Fiery Cloud"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 10,
+        "chapter_label": "10",
+        "source_url": "https://bible.usccb.org/bible/numbers/10.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "The Silver Trumpets",
+          "Departure from Sinai",
+          "Hobab as Guide",
+          "Into the Wilderness"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 11,
+        "chapter_label": "11",
+        "source_url": "https://bible.usccb.org/bible/numbers/11.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Discontent of the People",
+          "The Seventy Elders",
+          "The Spirit on the Elders",
+          "The Quail"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 12,
+        "chapter_label": "12",
+        "source_url": "https://bible.usccb.org/bible/numbers/12.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Jealousy of Aaron and Miriam",
+          "Miriam's Punishment"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 13,
+        "chapter_label": "13",
+        "source_url": "https://bible.usccb.org/bible/numbers/13.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Twelve Scouts",
+          "Their Report"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 14,
+        "chapter_label": "14",
+        "source_url": "https://bible.usccb.org/bible/numbers/14.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Threats of Revolt",
+          "The Lord's Sentence",
+          "Unsuccessful Invasion"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 15,
+        "chapter_label": "15",
+        "source_url": "https://bible.usccb.org/bible/numbers/15.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Secondary Offerings",
+          "Purification Offerings",
+          "The Sabbath-breaker",
+          "Tassels on the Cloak"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 16,
+        "chapter_label": "16",
+        "source_url": "https://bible.usccb.org/bible/numbers/16.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Rebellion of Korah",
+          "Rebellion of Dathan and Abiram",
+          "Korah",
+          "Punishment of Dathan and Abiram"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 17,
+        "chapter_label": "17",
+        "source_url": "https://bible.usccb.org/bible/numbers/17.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Aaron's Staff",
+          "Charge of the Sacred Things"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 18,
+        "chapter_label": "18",
+        "source_url": "https://bible.usccb.org/bible/numbers/18.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Priests' Share of the Sacrifices",
+          "Tithes Due the Levites",
+          "Tithes Paid by the Levites"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 19,
+        "chapter_label": "19",
+        "source_url": "https://bible.usccb.org/bible/numbers/19.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Ashes of the Red Heifer",
+          "Use of the Ashes"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 20,
+        "chapter_label": "20",
+        "source_url": "https://bible.usccb.org/bible/numbers/20.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Death of Miriam",
+          "Need for Water at Kadesh",
+          "Sin of Moses and Aaron",
+          "Edom's Refusal"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 21,
+        "chapter_label": "21",
+        "source_url": "https://bible.usccb.org/bible/numbers/21.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Victory over Arad",
+          "The Bronze Serpent",
+          "Journey Around Moab",
+          "Victory over Sihon"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 22,
+        "chapter_label": "22",
+        "source_url": "https://bible.usccb.org/bible/numbers/22.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Balaam Summoned",
+          "Second Appeal to Balaam",
+          "The Talking Donkey",
+          "The First Oracle"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 23,
+        "chapter_label": "23",
+        "source_url": "https://bible.usccb.org/bible/numbers/23.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Second Oracle",
+          "The Third Oracle"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 24,
+        "chapter_label": "24",
+        "source_url": "https://bible.usccb.org/bible/numbers/24.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Fourth Oracle"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 25,
+        "chapter_label": "25",
+        "source_url": "https://bible.usccb.org/bible/numbers/25.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Worship of Baal of Peor",
+          "Zeal of Phinehas",
+          "Vengeance on the Midianites"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 26,
+        "chapter_label": "26",
+        "source_url": "https://bible.usccb.org/bible/numbers/26.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Second Census",
+          "Allotment of the Land",
+          "Census of the Levites"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 27,
+        "chapter_label": "27",
+        "source_url": "https://bible.usccb.org/bible/numbers/27.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Zelophehad's Daughters",
+          "Laws Concerning Heiresses",
+          "Joshua to Succeed Moses"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 28,
+        "chapter_label": "28",
+        "source_url": "https://bible.usccb.org/bible/numbers/28.md",
+        "starts_detected": 6,
+        "sample_titles": [
+          "General Sacrifices",
+          "Each Morning and Evening",
+          "On the Sabbath",
+          "At the New Moon Feast"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 29,
+        "chapter_label": "29",
+        "source_url": "https://bible.usccb.org/bible/numbers/29.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "On New Year's Day",
+          "On the Day of Atonement",
+          "On the Feast of Booths"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 30,
+        "chapter_label": "30",
+        "source_url": "https://bible.usccb.org/bible/numbers/30.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Validity and Annulment of Vows"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 31,
+        "chapter_label": "31",
+        "source_url": "https://bible.usccb.org/bible/numbers/31.md",
+        "starts_detected": 6,
+        "sample_titles": [
+          "Campaign Against the Midianites",
+          "Treatment of the Captives",
+          "Purification After Combat",
+          "Division of the Spoils"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 32,
+        "chapter_label": "32",
+        "source_url": "https://bible.usccb.org/bible/numbers/32.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Request of Gad and Reuben",
+          "Moses' Rebuke",
+          "Counter Proposal",
+          "Agreement Reached"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 33,
+        "chapter_label": "33",
+        "source_url": "https://bible.usccb.org/bible/numbers/33.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Stages of the Journey",
+          "From Egypt to Sinai",
+          "From Sinai to Kadesh",
+          "From Kadesh to the Plains of Moab"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 34,
+        "chapter_label": "34",
+        "source_url": "https://bible.usccb.org/bible/numbers/34.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Boundaries",
+          "Supervisors of the Allotment"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 35,
+        "chapter_label": "35",
+        "source_url": "https://bible.usccb.org/bible/numbers/35.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Cities for the Levites",
+          "Cities of Asylum",
+          "Murder and Manslaughter",
+          "Judgment"
+        ]
+      },
+      {
+        "book": "Numbers",
+        "chapter": 36,
+        "chapter_label": "36",
+        "source_url": "https://bible.usccb.org/bible/numbers/36.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Inheritance of Daughters",
+          "Conclusion"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 1,
+        "chapter_label": "1",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/1.md",
+        "starts_detected": 6,
+        "sample_titles": [
+          "Introduction",
+          "Departure from Horeb",
+          "Appointment of Elders",
+          "The Twelve Scouts"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 2,
+        "chapter_label": "2",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/2.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Northward Along Edom",
+          "Along Moab",
+          "Along Ammon",
+          "Defeat of Sihon"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 3,
+        "chapter_label": "3",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/3.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Defeat of Og",
+          "Allotment of the Conquered Lands",
+          "Moses Excluded from the Promised Land"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 4,
+        "chapter_label": "4",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/4.md",
+        "starts_detected": 6,
+        "sample_titles": [
+          "Advantages of Fidelity",
+          "Revelation at Horeb",
+          "Danger of Idolatry",
+          "God's Fidelity and Love"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 5,
+        "chapter_label": "5",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/5.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Covenant at Horeb",
+          "The Decalogue",
+          "Moses as Mediator"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 6,
+        "chapter_label": "6",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/6.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Great Commandment",
+          "Fidelity in Prosperity",
+          "Instruction to Children"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 7,
+        "chapter_label": "7",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/7.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Destruction of the Nations in the Land",
+          "Blessings of Obedience"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 8,
+        "chapter_label": "8",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/8.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "God's Care",
+          "Cautions About Prosperity"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 9,
+        "chapter_label": "9",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/9.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Unmerited Success",
+          "The Golden Calf"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 10,
+        "chapter_label": "10",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/10.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Lord's Majesty and Compassion"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 11,
+        "chapter_label": "11",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/11.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Recalling the Wonders of the Lord",
+          "The Gift of Rain",
+          "Need for Fidelity",
+          "Blessing and Curse"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 12,
+        "chapter_label": "12",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/12.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "One Center of Worship",
+          "Profane and Sacred Slaughter",
+          "Warning Against Abominable Practices"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 13,
+        "chapter_label": "13",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/13.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Penalties for Enticing to Idolatry"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 14,
+        "chapter_label": "14",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/14.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Improper Mourning Rites",
+          "Clean and Unclean Animals",
+          "Tithes"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 15,
+        "chapter_label": "15",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/15.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Debts and the Poor",
+          "Hebrew Slaves",
+          "Firstlings"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 16,
+        "chapter_label": "16",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/16.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Feast of the Passover",
+          "Feast of Weeks",
+          "Feast of Booths",
+          "Justice"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 17,
+        "chapter_label": "17",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/17.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Judges",
+          "The King"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 18,
+        "chapter_label": "18",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/18.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Priests",
+          "Prophets"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 19,
+        "chapter_label": "19",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/19.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Cities of Refuge",
+          "Removal of Landmarks",
+          "False Witnesses"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 20,
+        "chapter_label": "20",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/20.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Courage in War",
+          "Cities of the Enemy",
+          "Trees of a Besieged City"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 21,
+        "chapter_label": "21",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/21.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Absolution of Untraced Murder",
+          "Marriage with a Female Captive",
+          "Rights of the Firstborn",
+          "The Stubborn and Rebellious Son"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 22,
+        "chapter_label": "22",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/22.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Concern for the Neighbor",
+          "Various Precepts",
+          "Marriage Legislation"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 23,
+        "chapter_label": "23",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/23.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Membership in the Assembly",
+          "Cleanliness in Camp",
+          "Various Precepts"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 24,
+        "chapter_label": "24",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/24.md",
+        "starts_detected": 6,
+        "sample_titles": [
+          "Marriage Legislation",
+          "Pledges and Kidnappings",
+          "Skin Diseases",
+          "Loans and Wages"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 25,
+        "chapter_label": "25",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/25.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Limits on Punishments",
+          "Treatment of Oxen",
+          "Levirate Marriage",
+          "Various Precepts"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 26,
+        "chapter_label": "26",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/26.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Thanksgiving for the Harvest",
+          "Declaration Concerning Tithes",
+          "The Covenant"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 27,
+        "chapter_label": "27",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/27.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "The Altar on Mount Ebal",
+          "Preparation for Blessings and Curses",
+          "The Twelve Curses"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 28,
+        "chapter_label": "28",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/28.md",
+        "starts_detected": 10,
+        "sample_titles": [
+          "Blessings for Obedience",
+          "Victory and Prosperity",
+          "Curses for Disobedience",
+          "Sickness and Defeat"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 29,
+        "chapter_label": "29",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/29.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "Past Favors Recalled",
+          "All Israel Bound by Covenant",
+          "Warning Against Idolatry",
+          "Punishment for Idolatry"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 30,
+        "chapter_label": "30",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/30.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Compassion for the Repentant",
+          "The Choice Before Israel"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 31,
+        "chapter_label": "31",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/31.md",
+        "starts_detected": 8,
+        "sample_titles": [
+          "The Lord's Leadership",
+          "Call of Joshua",
+          "The Reading of the Law",
+          "Commission to Joshua"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 32,
+        "chapter_label": "32",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/32.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Final Appeal",
+          "Moses Looks upon Canaan"
+        ]
+      },
+      {
+        "book": "Deuteronomy",
+        "chapter": 33,
+        "chapter_label": "33",
+        "source_url": "https://bible.usccb.org/bible/deuteronomy/33.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Blessing upon the Tribes"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 1,
+        "chapter_label": "1",
+        "source_url": "https://bible.usccb.org/bible/joshua/1.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Divine Promise of Assistance",
+          "The Transjordan Tribes"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 2,
+        "chapter_label": "2",
+        "source_url": "https://bible.usccb.org/bible/joshua/2.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Spies Saved by Rahab"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 3,
+        "chapter_label": "3",
+        "source_url": "https://bible.usccb.org/bible/joshua/3.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Preparations for Crossing the Jordan",
+          "The Crossing Begun"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 4,
+        "chapter_label": "4",
+        "source_url": "https://bible.usccb.org/bible/joshua/4.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Memorial Stones"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 5,
+        "chapter_label": "5",
+        "source_url": "https://bible.usccb.org/bible/joshua/5.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Rites at Gilgal",
+          "Siege at Jericho"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 6,
+        "chapter_label": "6",
+        "source_url": "https://bible.usccb.org/bible/joshua/6.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "The Fall of Jericho"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 7,
+        "chapter_label": "7",
+        "source_url": "https://bible.usccb.org/bible/joshua/7.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Defeat at Ai",
+          "Achan's Guilt and Punishment"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 8,
+        "chapter_label": "8",
+        "source_url": "https://bible.usccb.org/bible/joshua/8.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "Capture of Ai",
+          "Altar on Mount Ebal"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 9,
+        "chapter_label": "9",
+        "source_url": "https://bible.usccb.org/bible/joshua/9.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Confederacy Against Israel",
+          "The Gibeonite Deception",
+          "Gibeonites Made Vassals"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 10,
+        "chapter_label": "10",
+        "source_url": "https://bible.usccb.org/bible/joshua/10.md",
+        "starts_detected": 4,
+        "sample_titles": [
+          "The Siege of Gibeon",
+          "Joshua's Victory",
+          "Execution of Amorite Kings",
+          "Conquest of Southern Canaan"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 11,
+        "chapter_label": "11",
+        "source_url": "https://bible.usccb.org/bible/joshua/11.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Northern Confederacy",
+          "Conquest of Northern Canaan",
+          "Survey of the Conquest"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 12,
+        "chapter_label": "12",
+        "source_url": "https://bible.usccb.org/bible/joshua/12.md",
+        "starts_detected": 1,
+        "sample_titles": [
+          "Lists of Conquered Kings"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 13,
+        "chapter_label": "13",
+        "source_url": "https://bible.usccb.org/bible/joshua/13.md",
+        "starts_detected": 5,
+        "sample_titles": [
+          "Division of Land Commanded",
+          "The Eastern Tribes",
+          "Reuben",
+          "Gad"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 14,
+        "chapter_label": "14",
+        "source_url": "https://bible.usccb.org/bible/joshua/14.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Western Tribes",
+          "Caleb's Portion"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 15,
+        "chapter_label": "15",
+        "source_url": "https://bible.usccb.org/bible/joshua/15.md",
+        "starts_detected": 3,
+        "sample_titles": [
+          "Boundaries of Judah",
+          "Conquest by Caleb",
+          "Cities of Judah"
+        ]
+      },
+      {
+        "book": "Joshua",
+        "chapter": 16,
+        "chapter_label": "16",
+        "source_url": "https://bible.usccb.org/bible/joshua/16.md",
+        "starts_detected": 2,
+        "sample_titles": [
+          "The Joseph Tribes",
+          "Ephraim"
+        ]
+      }
+    ]
+  }
+}

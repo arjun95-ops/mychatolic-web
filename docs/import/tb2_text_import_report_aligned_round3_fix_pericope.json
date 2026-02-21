@@ -1,0 +1,32 @@
+{
+  "dry_run": false,
+  "lang": "id",
+  "version": "TB2",
+  "csv": "docs/import/tb2_text_clean_aligned.csv",
+  "summary": {
+    "csv_rows": 35431,
+    "db_books": 73,
+    "db_chapters": 1334,
+    "db_verses_text_rows": 35431,
+    "updates_prepared": 1,
+    "rows_changed": 1,
+    "rows_unchanged": 35430,
+    "missing_in_csv": 0
+  },
+  "samples": {
+    "missing_in_csv": [],
+    "updates": [
+      {
+        "id": "da37109c-a65d-41f4-8d83-ea6e7f710417",
+        "chapter_id": "86b63fe6-ba2e-4332-8bca-cfc709f04265",
+        "verse_number": 1,
+        "book_id": 122,
+        "chapter": 13,
+        "text": "Adalah seorang orang diam di Babel, Yoyakim namanya.",
+        "content": "Adalah seorang orang diam di Babel, Yoyakim namanya.",
+        "pericope": "(13:1-64)",
+        "type": "text"
+      }
+    ]
+  }
+}

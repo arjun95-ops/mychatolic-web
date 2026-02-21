@@ -1,0 +1,157 @@
+{
+  "mode": "aggressive",
+  "wordfreq_available": true,
+  "rows": {
+    "total": 35431,
+    "changed": 25340,
+    "text_changed": 25340,
+    "pericope_changed": 0
+  },
+  "fixes": {
+    "hyphen_repairs": 0,
+    "aggressive_merges": 372430
+  },
+  "examples": [
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "1",
+      "before": "Pa da mu la nya Allah men cip ta kan la ngit dan bu mi.",
+      "after": "Pada mula nya Allah men cipta kan langit dan bumi."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "2",
+      "before": "Bu mi be lum ber ben tuk dan kosong; ge lap gu li ta me nu tupi sa mu de ra ra ya, dan Roh Allah me la yang-la yang di atas permu ka an air.",
+      "after": "Bumi belum ber bentuk dan kosong; gelap gu lita menu tupi samu dera raya, dan Roh Allah mela yang-la yang di atas permukaan air."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "3",
+      "before": "Ber fi r man lah Allah:\"Ja di lah te rang.\" Lalu te rang itu ja di.",
+      "after": "Ber firman lah Allah:\"Jadi lah terang.\" Lalu terang itu jadi."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "4",
+      "before": "Allah me li hat bah wa terang itu ba ik, la lu di pi sah kan-Nya lah te rang itu da ri ge lap.",
+      "after": "Allah melihat bahwa terang itu baik, lalu di pisah kan-Nya lah terang itu dari gelap."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "5",
+      "before": "Dan Allah me na mai te rang itu si ang, dan ge lap itu ma lam. Ja di lah pe tang dan ja di lah pa gi, itu lah ha ri per ta ma.",
+      "after": "Dan Allah mena mai terang itu siang, dan gelap itu malam. Jadi lah petang dan jadi lah pagi, itulah hari pertama."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "6",
+      "before": "Ber fi r man lah Allah:\"Ja di lah cak ra wa la di te ngah se ga la air un tuk me mi sah kan air dari air.\"",
+      "after": "Ber firman lah Allah:\"Jadi lah cakra wala di tengah segala air untuk memisahkan air dari air.\""
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "7",
+      "before": "Ma ka Allah men ja di kan cak ra wa la dan Ia me mi sah kan air yang ada di ba wah cakra wa la itu da ri air yang ada di atas nya. Dan ja di lah de mi ki an.",
+      "after": "Maka Allah men jadi kan cakra wala dan Ia memisahkan air yang ada di bawah cakra wala itu dari air yang ada di atas nya. Dan jadi lah demi kian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "8",
+      "before": "La lu Allah me na mai cakra wa la itu la ngit. Ja di lah pe tang dan ja di lah pa gi, itu lah ha ri ke dua.",
+      "after": "Lalu Allah mena mai cakra wala itu langit. Jadi lah petang dan jadi lah pagi, itulah hari ke dua."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "9",
+      "before": "Ber fi r man lah Allah:\"Hen dak lah se ga la air yang di ba wah la ngit ber kum pul pa da satu tem pat, se hing ga ke li hat an yang ke ring.\" Dan ja di lah de mi ki an.",
+      "after": "Ber firman lah Allah:\"Hendak lah segala air yang di bawah langit ber kumpul pada satu tempat, sehingga ke lihat an yang ke ring.\" Dan jadi lah demi kian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "10",
+      "before": "La lu Allah me na mai yang ke ring itu da rat, dan kum pul an air itu di na mai-Nya la ut. Allah me li hat bah wa semua nya itu ba ik.",
+      "after": "Lalu Allah mena mai yang ke ring itu darat, dan kumpulan air itu dinamai-Nya laut. Allah melihat bahwa semua nya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "11",
+      "before": "Ber fi r man lah Allah:\"Hen dak lah ta nah me num buh kan tu nas-tu nas mu da, tum buhtum buh an yang ber bi ji, se ga la je nis po hon bu ah-bu ah an yang meng ha sil kan bu ah yang ber bi ji, su pa ya ada tum buh-tum buh an di bumi.\" Dan ",
+      "after": "Ber firman lah Allah:\"Hendak lah tanah menumbuhkan tunas-tunas muda, tum buhtum buh an yang ber biji, segala jenis pohon buah-buah an yang meng hasil kan buah yang ber biji, supaya ada tumbuh-tumbuh andi bumi.\" Dan jadi lah demi kian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "12",
+      "before": "Ta nah itu menum buh kan tu nas-tu nas mu da, se ga la je nis tum buh-tum buh an yang ber bi ji dan se ga la jenis po hon-po hon an yang meng ha sil kan bu ah yang ber bi ji. Allah me li hat bah wa se mua nya itu ba ik.",
+      "after": "Tanah itu menumbuhkan tunas-tunas muda, segala jenis tumbuh-tumbuh an yang ber biji dan segala jenis pohon-pohon an yang meng hasil kan buah yang ber biji. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "13",
+      "before": "Ja di lah pe tang dan ja di lah pa gi, itu lah ha ri ke ti ga.",
+      "after": "Jadi lah petang dan jadi lah pagi, itulah hari ke tiga."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "14",
+      "before": "Ber fi r man lah Allah:\"Ja di lah ben da-benda pe ne rang pa da cak ra wa la un tuk me mi sahkan si ang da ri ma lam. Bi ar lah ben da-ben da pe ne rang itu men ja di tan da yang me nun jukkan ma sa-ma sa yang te tap dan ha ri-ha ri dan ta ",
+      "after": "Ber firman lah Allah:\"Jadi lah benda-benda pene rang pada cakra wala untuk memisahkan siang dari malam. Biar lah benda-benda pene rang itu men jadi tanda yang menunjukkan masa-masa yang tetap dan hari-hari dan tahun-tahun,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "15",
+      "before": "dan se ba gai pe ne rang pa da cak ra wa la bi ar lah ben da-ben da itu me nerangi bu mi.\" Dan ja di lah de mi ki an.",
+      "after": "dan sebagai pene rang pada cakra wala biar lah benda-benda itu menerangi bumi.\" Dan jadi lah demi kian."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "16",
+      "before": "Maka Allah men ja di kan ke dua ben da pe ne rang yang be sar itu, yak ni yang le bih be sar un tuk me ngua sai si ang dan yang le bih ke cil un tuk me ngua sai ma lam, dan men ja di kan ju ga bintang-bin tang.",
+      "after": "Maka Allah men jadi kan ke dua benda pene rang yang besar itu, yakni yang lebih besar untuk menguasai siang dan yang lebih ke cil untuk menguasai malam, dan men jadi kan juga bintang-bin tang."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "17",
+      "before": "Allah me na ruh se mua nya itu di cak ra wa la un tuk me ne rangi bu mi,",
+      "after": "Allah mena ruh semuanya itu di cakra wala untuk menerangi bumi,"
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "18",
+      "before": "dan un tuk me ngua sai si ang dan ma lam, dan untuk me mi sah kan te rang da ri ge lap. Allah meli hat bah wa se mua nya itu ba ik.",
+      "after": "dan untuk menguasai siang dan malam, dan untuk memisahkan terang dari gelap. Allah melihat bahwa semuanya itu baik."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "19",
+      "before": "Ja di lah petang dan ja di lah pa gi, itu lah ha ri ke em pat.",
+      "after": "Jadi lah petang dan jadi lah pagi, itulah hari ke empat."
+    },
+    {
+      "book": "Kejadian",
+      "chapter": "1",
+      "verse": "20",
+      "before": "Ber fi r man lah Allah:\"Hen dak lah da lam air ber ke ri ap an makh luk yang hi dup, dan hen dak lah bu rung be ter bang an di atas bumi me lin tasi cak ra wa la.\"",
+      "after": "Ber firman lah Allah:\"Hendak lah dalam air berke ri apan makhluk yang hidup, dan hendak lah burung be terbang andi atas bumi melintasi cakra wala.\""
+    }
+  ],
+  "output_csv": "docs/import/tb2_text_aggressive.csv"
+}

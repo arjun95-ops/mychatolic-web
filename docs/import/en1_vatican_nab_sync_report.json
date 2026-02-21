@@ -1,0 +1,420 @@
+{
+  "started_at": "2026-02-21T06:45:00.299Z",
+  "finished_at": "2026-02-21T06:46:37.511Z",
+  "dry_run": false,
+  "source": {
+    "index_url": "https://www.vatican.va/archive/ENG0839/_INDEX.HTM",
+    "page_base_url": "https://www.vatican.va/archive/ENG0839",
+    "indexed_pages_total": 1409,
+    "pages_with_verses": 1335
+  },
+  "target_workspace": "en/EN1",
+  "keep_extra_books": false,
+  "summary": {
+    "source_books_with_verses": 73,
+    "source_chapter_keys": 1334,
+    "source_verses": 35466,
+    "source_duplicate_verse_keys_removed": 0,
+    "target_books_before": 73,
+    "target_books_created": 0,
+    "target_books_updated": 0,
+    "target_books_stale": 0,
+    "target_chapters_before": 1334,
+    "target_chapters_created": 0,
+    "target_chapters_stale": 0,
+    "target_verses_upserted": 35466,
+    "target_verses_stale": 16,
+    "final_target_books": 73,
+    "final_target_chapters": 1334,
+    "final_target_verses": 35466,
+    "unknown_book_codes_in_source": 1,
+    "unknown_chapter_tokens_in_source": 0
+  },
+  "samples": {
+    "unknown_book_codes": [
+      [
+        "0",
+        1
+      ]
+    ],
+    "unknown_chapter_tokens": [],
+    "source_book_name_by_code": [
+      [
+        "1CHR",
+        "1 Chronicles"
+      ],
+      [
+        "1COR",
+        "1 Corinthians"
+      ],
+      [
+        "1JOH",
+        "1 John"
+      ],
+      [
+        "1KIN",
+        "1 Kings"
+      ],
+      [
+        "1MAC",
+        "1 Maccabees"
+      ],
+      [
+        "1PET",
+        "1 Peter"
+      ],
+      [
+        "1SAM",
+        "1 Samuel"
+      ],
+      [
+        "1THE",
+        "1 Thessalonians"
+      ],
+      [
+        "1TIM",
+        "1 Timothy"
+      ],
+      [
+        "2CHR",
+        "2 Chronicles"
+      ],
+      [
+        "2COR",
+        "2 Corinthians"
+      ],
+      [
+        "2JOH",
+        "2 John"
+      ],
+      [
+        "2KIN",
+        "2 Kings"
+      ],
+      [
+        "2MAC",
+        "2 Maccabees"
+      ],
+      [
+        "2PET",
+        "2 Peter"
+      ],
+      [
+        "2SAM",
+        "2 Samuel"
+      ],
+      [
+        "2THE",
+        "2 Thessalonians"
+      ],
+      [
+        "2TIM",
+        "2 Timothy"
+      ],
+      [
+        "3JOH",
+        "3 John"
+      ],
+      [
+        "ACT",
+        "Acts"
+      ],
+      [
+        "AMO",
+        "Amos"
+      ],
+      [
+        "BAR",
+        "Baruch"
+      ],
+      [
+        "COL",
+        "Colossians"
+      ],
+      [
+        "DAN",
+        "Daniel"
+      ],
+      [
+        "DEU",
+        "Deuteronomy"
+      ],
+      [
+        "ECC",
+        "Ecclesiastes"
+      ],
+      [
+        "EPH",
+        "Ephesians"
+      ],
+      [
+        "EST",
+        "Esther"
+      ],
+      [
+        "EXO",
+        "Exodus"
+      ],
+      [
+        "EZE",
+        "Ezekiel"
+      ],
+      [
+        "EZR",
+        "Ezra"
+      ],
+      [
+        "GAL",
+        "Galatians"
+      ],
+      [
+        "GEN",
+        "Genesis"
+      ],
+      [
+        "HAB",
+        "Habakkuk"
+      ],
+      [
+        "HAG",
+        "Haggai"
+      ],
+      [
+        "HEB",
+        "Hebrews"
+      ],
+      [
+        "HOS",
+        "Hosea"
+      ],
+      [
+        "ISA",
+        "Isaiah"
+      ],
+      [
+        "JAM",
+        "James"
+      ],
+      [
+        "JDT",
+        "Judith"
+      ],
+      [
+        "JER",
+        "Jeremiah"
+      ],
+      [
+        "JOB",
+        "Job"
+      ],
+      [
+        "JOE",
+        "Joel"
+      ],
+      [
+        "JOH",
+        "John"
+      ],
+      [
+        "JON",
+        "Jonah"
+      ],
+      [
+        "JOS",
+        "Joshua"
+      ],
+      [
+        "JUD",
+        "Judges"
+      ],
+      [
+        "JUDE",
+        "Jude"
+      ],
+      [
+        "LAM",
+        "Lamentations"
+      ],
+      [
+        "LEV",
+        "Leviticus"
+      ],
+      [
+        "LUK",
+        "Luke"
+      ],
+      [
+        "MAL",
+        "Malachi"
+      ],
+      [
+        "MAR",
+        "Mark"
+      ],
+      [
+        "MAT",
+        "Matthew"
+      ],
+      [
+        "MIC",
+        "Micah"
+      ],
+      [
+        "NAH",
+        "Nahum"
+      ],
+      [
+        "NEH",
+        "Nehemiah"
+      ],
+      [
+        "NUM",
+        "Numbers"
+      ],
+      [
+        "OBA",
+        "Obadiah"
+      ],
+      [
+        "PHI",
+        "Philippians"
+      ],
+      [
+        "PHL",
+        "Philemon"
+      ],
+      [
+        "PRO",
+        "Proverbs"
+      ],
+      [
+        "PSA",
+        "Psalms"
+      ],
+      [
+        "REV",
+        "Revelation"
+      ],
+      [
+        "ROM",
+        "Romans"
+      ],
+      [
+        "RUT",
+        "Ruth"
+      ],
+      [
+        "SIR",
+        "Sirach"
+      ],
+      [
+        "SON",
+        "The Song of Songs"
+      ],
+      [
+        "TIT",
+        "Titus"
+      ],
+      [
+        "TOB",
+        "Tobit"
+      ],
+      [
+        "WISD",
+        "The Book of Wisdom"
+      ],
+      [
+        "ZEC",
+        "Zechariah"
+      ],
+      [
+        "ZEP",
+        "Zephaniah"
+      ]
+    ],
+    "stale_books": [],
+    "stale_chapters": [],
+    "stale_verses": [
+      {
+        "id": "737f1d20-df8d-45a2-bda2-9e3e52e68b23",
+        "chapter_id": "0f7bcb32-7ddf-4b32-adf7-9deb757afaf3",
+        "verse_number": 20
+      },
+      {
+        "id": "36272105-da8f-4261-8f2d-28ea8e2dcfa0",
+        "chapter_id": "3c02e9e9-9800-467b-934b-2f8d64e38e91",
+        "verse_number": 11
+      },
+      {
+        "id": "472022d2-b627-4439-b35d-a9736827aa7c",
+        "chapter_id": "25c93bdd-0bb9-4f29-9794-842222c4f632",
+        "verse_number": 4
+      },
+      {
+        "id": "4b2bc310-57a2-433e-80bf-87dedaefb8d0",
+        "chapter_id": "3e23b368-fff0-488c-871e-f0c3c22a4d8e",
+        "verse_number": 7
+      },
+      {
+        "id": "2192ac56-3de4-4480-ab19-f72d0805f259",
+        "chapter_id": "63330517-8654-4342-91b5-84b1e45f9ab4",
+        "verse_number": 17
+      },
+      {
+        "id": "41659147-b6e1-4dc9-a44d-d052ffe48bc4",
+        "chapter_id": "86840083-53db-4d98-adcf-9bf4f1596f43",
+        "verse_number": 44
+      },
+      {
+        "id": "c4be615e-1e10-4430-a6f7-b376c75bb923",
+        "chapter_id": "82e43488-3830-4095-a27f-05c7c6e54d66",
+        "verse_number": 37
+      },
+      {
+        "id": "e7cbf93e-cbf4-4898-9d61-0aa763a98e25",
+        "chapter_id": "8c565a09-acfe-4a3e-9ff7-f25403f651fa",
+        "verse_number": 29
+      },
+      {
+        "id": "0b87ff39-9485-4203-952a-a75427e80189",
+        "chapter_id": "b2cec557-b593-427d-aa5c-7648bded96ae",
+        "verse_number": 21
+      },
+      {
+        "id": "74532932-1378-4eea-a232-5a22d76f1662",
+        "chapter_id": "b2258751-2a18-45ab-a12c-69bf61d537de",
+        "verse_number": 12
+      },
+      {
+        "id": "d9e1f420-4ce7-4edd-8dff-1ad563041ffe",
+        "chapter_id": "b29be851-d743-4817-af7a-92e7cd6186dd",
+        "verse_number": 36
+      },
+      {
+        "id": "d26e382a-9993-47a8-aacc-ba8965c05071",
+        "chapter_id": "ce80f611-05b7-4583-ad91-4fda260dba34",
+        "verse_number": 34
+      },
+      {
+        "id": "e0a7eed2-57a2-47ba-a41d-7fd1d00b93c3",
+        "chapter_id": "c48c16d2-b50d-48f6-9c1e-95d7d1e12f36",
+        "verse_number": 1
+      },
+      {
+        "id": "f29a74e7-688b-4b76-a6d8-1459f8e80903",
+        "chapter_id": "d334a969-7e1d-4c70-9282-dc90645ce0f5",
+        "verse_number": 15
+      },
+      {
+        "id": "0607fb6b-5f30-4ec8-a130-3ee8c98c6899",
+        "chapter_id": "e5b0e6ed-081e-4a77-9998-1f9471b5c408",
+        "verse_number": 9
+      },
+      {
+        "id": "14004d91-2791-4b1c-83dc-dda392f959cd",
+        "chapter_id": "fa34c508-87d4-4e23-8f4f-48447e059d1b",
+        "verse_number": 34
+      }
+    ]
+  }
+}

@@ -12,6 +12,7 @@ import {
     Database,
     CalendarDays,
     BookOpen,
+    Heart,
     UserCircle2,
     Shield,
     Clock3,
@@ -258,6 +259,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             >
                                 <BookOpen size={20} className={pathname.startsWith('/dashboard/bible') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
                                 <span>Alkitab</span>
+                            </Link>
+
+                            <Link
+                                href="/dashboard/prayers"
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${pathname.startsWith('/dashboard/prayers')
+                                    ? 'bg-action text-text-inverse shadow-lg shadow-action/20 font-semibold'
+                                    : 'text-text-inverse/70 hover:bg-surface-inverse/10 hover:text-text-inverse'
+                                    }`}
+                            >
+                                <Heart size={20} className={pathname.startsWith('/dashboard/prayers') ? 'text-text-inverse' : 'text-text-inverse/70 group-hover:text-text-inverse'} />
+                                <span>Kumpulan Doa</span>
                             </Link>
 
                             <Link

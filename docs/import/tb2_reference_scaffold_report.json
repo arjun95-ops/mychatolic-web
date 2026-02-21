@@ -1,0 +1,277 @@
+{
+  "started_at": "2026-02-21T06:10:15.813Z",
+  "finished_at": "2026-02-21T06:10:42.484Z",
+  "dry_run": true,
+  "source_workspace": "id/TB1",
+  "target_workspace": "id/TB2",
+  "keep_extra_books": false,
+  "placeholder_text": "[MISSING_VERSE][AUTO][TB2] Teks ayat TB2 belum tersedia dari referensi resmi. Mohon lengkapi manual.",
+  "summary": {
+    "source_books": 73,
+    "target_books_before": 73,
+    "target_books_created": 0,
+    "target_books_updated": 0,
+    "target_books_stale": 0,
+    "source_chapters": 1334,
+    "target_chapters_before": 1334,
+    "target_chapters_created": 0,
+    "target_chapters_stale": 0,
+    "source_verses": 35431,
+    "target_verses_upserted": 35431,
+    "duplicate_source_verse_keys_removed": 0,
+    "target_verses_stale": 0,
+    "heading_rows_from_reference": 0,
+    "pericope_rows_from_reference": 2365,
+    "final_target_books": 73,
+    "final_target_chapters": 1334,
+    "final_target_verses": 35431,
+    "final_target_placeholders": 35431
+  },
+  "samples": {
+    "mapping_books": [
+      {
+        "key": "kejadian",
+        "source_book_id": "25309e66-456a-4054-8011-0b490c78b52b",
+        "source_book_name": "Kejadian",
+        "target_book_id": "8b2fd4b7-b222-4f84-8013-62375e6a08f3",
+        "target_book_name": "Kejadian",
+        "target_legacy_book_id": "7"
+      },
+      {
+        "key": "keluaran",
+        "source_book_id": "3ef69e1f-7889-427f-bf72-e32a36a1951f",
+        "source_book_name": "Keluaran",
+        "target_book_id": "ecfe7859-909b-4e11-aa13-be3a8ba84348",
+        "target_book_name": "Keluaran",
+        "target_legacy_book_id": "90"
+      },
+      {
+        "key": "imamat",
+        "source_book_id": "090a4be7-56ba-4917-9120-a2557509b4f3",
+        "source_book_name": "Imamat",
+        "target_book_id": "ef1f52eb-5c37-4ad4-9f69-9d4b3fff964e",
+        "target_book_name": "Imamat",
+        "target_legacy_book_id": "91"
+      },
+      {
+        "key": "bilangan",
+        "source_book_id": "f7896e7a-6e8c-4d44-aed5-9611f4a8f2c4",
+        "source_book_name": "Bilangan",
+        "target_book_id": "0643b5fc-4d49-4710-a526-746b10974cd1",
+        "target_book_name": "Bilangan",
+        "target_legacy_book_id": "92"
+      },
+      {
+        "key": "ulangan",
+        "source_book_id": "a5eb1df8-3766-4ce6-ade5-d71a59ecf078",
+        "source_book_name": "Ulangan",
+        "target_book_id": "e6169daa-7e6b-4900-9252-a63e143e708e",
+        "target_book_name": "Ulangan",
+        "target_legacy_book_id": "93"
+      },
+      {
+        "key": "yosua",
+        "source_book_id": "fa40c58a-35b6-4b60-a6b0-18210c0b2cb7",
+        "source_book_name": "Yosua",
+        "target_book_id": "847a6870-6f56-416b-8a53-92e63f486d04",
+        "target_book_name": "Yosua",
+        "target_legacy_book_id": "94"
+      },
+      {
+        "key": "hakim hakim",
+        "source_book_id": "adfc3317-9b16-4e94-8d52-17e633b97e02",
+        "source_book_name": "Hakim-hakim",
+        "target_book_id": "34cefdd6-bb9d-4f10-b8f5-8f0140df7105",
+        "target_book_name": "Hakim-hakim",
+        "target_legacy_book_id": "95"
+      },
+      {
+        "key": "rut",
+        "source_book_id": "81927a6d-fa3b-4401-a7d1-df3f5a14488b",
+        "source_book_name": "Rut",
+        "target_book_id": "8b46da8a-efbe-4042-adea-8cc4fbb0f00c",
+        "target_book_name": "Rut",
+        "target_legacy_book_id": "96"
+      },
+      {
+        "key": "1 samuel",
+        "source_book_id": "45b8d45b-1378-495c-ae8f-1c731be29e88",
+        "source_book_name": "1 Samuel",
+        "target_book_id": "12d0f444-c83f-4246-9c43-61f519d1e9f8",
+        "target_book_name": "1 Samuel",
+        "target_legacy_book_id": "97"
+      },
+      {
+        "key": "2 samuel",
+        "source_book_id": "766fd004-6c84-4337-9a70-c764305f3ff7",
+        "source_book_name": "2 Samuel",
+        "target_book_id": "0d8b29cd-b490-4d72-a4c6-58ead7594e8d",
+        "target_book_name": "2 Samuel",
+        "target_legacy_book_id": "98"
+      },
+      {
+        "key": "1 raja raja",
+        "source_book_id": "cc4e5e09-9028-4f7a-a0f7-d9f1e8408858",
+        "source_book_name": "1 Raja-raja",
+        "target_book_id": "efd5b530-efe3-4ed7-a669-ba97dab0cc9c",
+        "target_book_name": "1 Raja-raja",
+        "target_legacy_book_id": "99"
+      },
+      {
+        "key": "2 raja raja",
+        "source_book_id": "e0d74470-3ebc-408e-baab-9cea7fad6fe1",
+        "source_book_name": "2 Raja-raja",
+        "target_book_id": "a09977b4-889a-4f00-b3d6-c236970a5c45",
+        "target_book_name": "2 Raja-raja",
+        "target_legacy_book_id": "100"
+      },
+      {
+        "key": "1 tawarikh",
+        "source_book_id": "4ee4a193-b4c8-4d0e-b9e6-6f118c67f6fc",
+        "source_book_name": "1 Tawarikh",
+        "target_book_id": "2789b738-12b7-46cf-a56f-6e086ca45632",
+        "target_book_name": "1 Tawarikh",
+        "target_legacy_book_id": "101"
+      },
+      {
+        "key": "2 tawarikh",
+        "source_book_id": "4c55cb9c-fe86-489b-9a70-ea7c3f930a09",
+        "source_book_name": "2 Tawarikh",
+        "target_book_id": "ff78caa6-4989-483c-a789-ea19467ccac0",
+        "target_book_name": "2 Tawarikh",
+        "target_legacy_book_id": "102"
+      },
+      {
+        "key": "ezra",
+        "source_book_id": "e7777889-c90c-42ca-939d-3ec3dcabb004",
+        "source_book_name": "Ezra",
+        "target_book_id": "6df6414b-4daf-4023-8395-a2c064bf1fb2",
+        "target_book_name": "Ezra",
+        "target_legacy_book_id": "103"
+      },
+      {
+        "key": "nehemia",
+        "source_book_id": "46cf9553-ed9d-4c9b-8f89-3eb58a62a499",
+        "source_book_name": "Nehemia",
+        "target_book_id": "e06c9a29-bf89-42fb-b3c5-304193683a66",
+        "target_book_name": "Nehemia",
+        "target_legacy_book_id": "104"
+      },
+      {
+        "key": "tobit",
+        "source_book_id": "958c2800-f00d-4ab6-b1cd-64cd5764c0fa",
+        "source_book_name": "Tobit",
+        "target_book_id": "7438b1e8-6532-447d-8e9e-ada674a4cd8b",
+        "target_book_name": "Tobit",
+        "target_legacy_book_id": "105"
+      },
+      {
+        "key": "yudit",
+        "source_book_id": "149e87f5-d4d9-40c3-95b5-237c5418b583",
+        "source_book_name": "Yudit",
+        "target_book_id": "4e404c71-7c21-4d0b-a05a-1175aed02e7d",
+        "target_book_name": "Yudit",
+        "target_legacy_book_id": "106"
+      },
+      {
+        "key": "ester",
+        "source_book_id": "8581497e-78b6-4161-8bca-7b15b58f179e",
+        "source_book_name": "Ester",
+        "target_book_id": "fbbc44bc-55a3-4617-9daf-ac558a76e02a",
+        "target_book_name": "Ester",
+        "target_legacy_book_id": "107"
+      },
+      {
+        "key": "1 makabe",
+        "source_book_id": "886f8a16-41ae-4f14-9510-81e4e2984ed7",
+        "source_book_name": "1 Makabe",
+        "target_book_id": "f7bab644-fd9f-469d-939f-be1ccaa0044b",
+        "target_book_name": "1 Makabe",
+        "target_legacy_book_id": "108"
+      },
+      {
+        "key": "2 makabe",
+        "source_book_id": "a14579b9-ab11-4eb5-a485-7b1fe067bc17",
+        "source_book_name": "2 Makabe",
+        "target_book_id": "571fa296-2d63-4e91-bee4-a00438b13f33",
+        "target_book_name": "2 Makabe",
+        "target_legacy_book_id": "109"
+      },
+      {
+        "key": "ayub",
+        "source_book_id": "cc038c85-6d3d-40d1-9605-8b0a5c56ea48",
+        "source_book_name": "Ayub",
+        "target_book_id": "58553d04-7038-409a-9c9a-c23efd5a9842",
+        "target_book_name": "Ayub",
+        "target_legacy_book_id": "110"
+      },
+      {
+        "key": "mazmur",
+        "source_book_id": "73dbfcda-fbab-4abe-8151-8bceec5ab83c",
+        "source_book_name": "Mazmur",
+        "target_book_id": "1306b26d-a57e-4693-8998-10e94949a5a3",
+        "target_book_name": "Mazmur",
+        "target_legacy_book_id": "111"
+      },
+      {
+        "key": "amsal",
+        "source_book_id": "65d05d78-ce29-49a2-9406-91d0257d9ff1",
+        "source_book_name": "Amsal",
+        "target_book_id": "6005fbdf-dc2a-4793-a61d-892d95287375",
+        "target_book_name": "Amsal",
+        "target_legacy_book_id": "112"
+      },
+      {
+        "key": "pengkhotbah",
+        "source_book_id": "6419ae67-c155-4ee3-ae88-0a4ea729640f",
+        "source_book_name": "Pengkhotbah",
+        "target_book_id": "41e790f3-7dbb-4bf4-b431-768a89f62f67",
+        "target_book_name": "Pengkhotbah",
+        "target_legacy_book_id": "113"
+      },
+      {
+        "key": "kidung agung",
+        "source_book_id": "607ac94f-f467-453e-b4c9-9fd3b7af176c",
+        "source_book_name": "Kidung Agung",
+        "target_book_id": "182ed834-2d6e-4eb7-8ffd-9b06cfb5f79d",
+        "target_book_name": "Kidung Agung",
+        "target_legacy_book_id": "114"
+      },
+      {
+        "key": "kebijaksanaan salomo",
+        "source_book_id": "b8fee699-04d5-4dcf-ba51-2511da48186b",
+        "source_book_name": "Kebijaksanaan Salomo",
+        "target_book_id": "88b5a32a-25f4-4e47-b532-471b32dd6563",
+        "target_book_name": "Kebijaksanaan Salomo",
+        "target_legacy_book_id": "115"
+      },
+      {
+        "key": "sirakh",
+        "source_book_id": "c2a57f50-a470-46c6-b239-7b5bb6e1bdc3",
+        "source_book_name": "Sirakh",
+        "target_book_id": "40fc3a52-0128-476f-9121-496c9389855a",
+        "target_book_name": "Sirakh",
+        "target_legacy_book_id": "116"
+      },
+      {
+        "key": "yesaya",
+        "source_book_id": "0f7702a4-4b26-4896-aa2a-b3540c003d14",
+        "source_book_name": "Yesaya",
+        "target_book_id": "eb0e2837-a747-41db-acd8-e25e5358a603",
+        "target_book_name": "Yesaya",
+        "target_legacy_book_id": "117"
+      },
+      {
+        "key": "yeremia",
+        "source_book_id": "a8f0d582-b903-43fd-ac21-9fb7cb123f7a",
+        "source_book_name": "Yeremia",
+        "target_book_id": "488e0641-c323-47b2-8aff-a9a0c71779b8",
+        "target_book_name": "Yeremia",
+        "target_legacy_book_id": "118"
+      }
+    ],
+    "stale_books": [],
+    "stale_chapters": [],
+    "stale_verses": []
+  }
+}
