@@ -1,0 +1,951 @@
+{
+  "timestamp_utc": "2026-02-21T19:17:52Z",
+  "dry_run": false,
+  "payload_rows": 111,
+  "upserted_rows": 111,
+  "counts_after_by_language": {
+    "de": 10,
+    "en": 10,
+    "es": 10,
+    "fr": 10,
+    "id": 22,
+    "it": 10,
+    "ja": 13,
+    "ko": 22,
+    "la": 10,
+    "pt": 10,
+    "tl": 6
+  },
+  "attempted_by_language": {
+    "en": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-malaikat-tuhan-angelus",
+      "doa-roh-kudus",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-arwah-orang-meninggal",
+      "kemuliaan",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "fr": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-malaikat-tuhan-angelus",
+      "doa-roh-kudus",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-arwah-orang-meninggal",
+      "kemuliaan",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "it": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-malaikat-tuhan-angelus",
+      "doa-roh-kudus",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-arwah-orang-meninggal",
+      "kemuliaan",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "es": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-malaikat-tuhan-angelus",
+      "doa-roh-kudus",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-arwah-orang-meninggal",
+      "kemuliaan",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "de": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-malaikat-tuhan-angelus",
+      "doa-roh-kudus",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-arwah-orang-meninggal",
+      "kemuliaan",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "pt": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-malaikat-tuhan-angelus",
+      "doa-roh-kudus",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-arwah-orang-meninggal",
+      "kemuliaan",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "la": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-malaikat-tuhan-angelus",
+      "doa-roh-kudus",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-arwah-orang-meninggal",
+      "kemuliaan",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "ko": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-malaikat-tuhan-angelus",
+      "doa-malam",
+      "doa-mohon-ampun",
+      "doa-mohon-berkat",
+      "doa-mohon-perlindungan",
+      "doa-pagi",
+      "doa-roh-kudus",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-arwah-orang-meninggal",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "doa-untuk-orang-tua",
+      "kemuliaan",
+      "litani-hati-kudus-yesus",
+      "litani-santa-perawan-maria",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "ja": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-mohon-ampun",
+      "doa-mohon-berkat",
+      "doa-mohon-perlindungan",
+      "doa-roh-kudus",
+      "doa-tobat-pengakuan-dosa",
+      "doa-untuk-orang-sakit",
+      "kemuliaan",
+      "litani-santa-perawan-maria",
+      "salam-maria",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "tanda-salib"
+    ],
+    "tl": [
+      "aku-percaya-syahadat",
+      "bapa-kami",
+      "doa-mohon-berkat",
+      "doa-roh-kudus",
+      "kemuliaan",
+      "tanda-salib"
+    ]
+  },
+  "unresolved_by_language": {
+    "fr": [
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-mohon-berkat",
+      "doa-mohon-ampun",
+      "doa-mohon-perlindungan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "litani-santa-perawan-maria",
+      "litani-hati-kudus-yesus"
+    ],
+    "en": [
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-mohon-berkat",
+      "doa-mohon-ampun",
+      "doa-mohon-perlindungan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "litani-santa-perawan-maria",
+      "litani-hati-kudus-yesus"
+    ],
+    "it": [
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-mohon-berkat",
+      "doa-mohon-ampun",
+      "doa-mohon-perlindungan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "litani-santa-perawan-maria",
+      "litani-hati-kudus-yesus"
+    ],
+    "pt": [
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-mohon-berkat",
+      "doa-mohon-ampun",
+      "doa-mohon-perlindungan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "litani-santa-perawan-maria",
+      "litani-hati-kudus-yesus"
+    ],
+    "es": [
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-mohon-berkat",
+      "doa-mohon-ampun",
+      "doa-mohon-perlindungan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "litani-santa-perawan-maria",
+      "litani-hati-kudus-yesus"
+    ],
+    "de": [
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-mohon-berkat",
+      "doa-mohon-ampun",
+      "doa-mohon-perlindungan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "litani-santa-perawan-maria",
+      "litani-hati-kudus-yesus"
+    ],
+    "la": [
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-mohon-berkat",
+      "doa-mohon-ampun",
+      "doa-mohon-perlindungan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "litani-santa-perawan-maria",
+      "litani-hati-kudus-yesus"
+    ],
+    "ko": [],
+    "ja": [
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-arwah-orang-meninggal",
+      "doa-malaikat-tuhan-angelus",
+      "litani-hati-kudus-yesus"
+    ],
+    "tl": [
+      "salam-maria",
+      "doa-tobat-pengakuan-dosa",
+      "doa-pagi",
+      "doa-malam",
+      "doa-sebelum-makan",
+      "doa-sesudah-makan",
+      "doa-mohon-ampun",
+      "doa-mohon-perlindungan",
+      "doa-untuk-orang-tua",
+      "doa-untuk-keluarga",
+      "doa-untuk-orang-sakit",
+      "doa-untuk-arwah-orang-meninggal",
+      "doa-malaikat-tuhan-angelus",
+      "salam-regina-ratu-surga-bersukacitalah",
+      "litani-santa-perawan-maria",
+      "litani-hati-kudus-yesus"
+    ]
+  },
+  "extraction_log": [
+    {
+      "language": "en",
+      "slug": "tanda-salib",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 70
+    },
+    {
+      "language": "en",
+      "slug": "kemuliaan",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 139
+    },
+    {
+      "language": "en",
+      "slug": "bapa-kami",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 285
+    },
+    {
+      "language": "en",
+      "slug": "salam-maria",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 210
+    },
+    {
+      "language": "en",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 612
+    },
+    {
+      "language": "en",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 314
+    },
+    {
+      "language": "en",
+      "slug": "doa-untuk-arwah-orang-meninggal",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 108
+    },
+    {
+      "language": "en",
+      "slug": "doa-roh-kudus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 923
+    },
+    {
+      "language": "en",
+      "slug": "doa-malaikat-tuhan-angelus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 868
+    },
+    {
+      "language": "en",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 393
+    },
+    {
+      "language": "fr",
+      "slug": "tanda-salib",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 53
+    },
+    {
+      "language": "fr",
+      "slug": "kemuliaan",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 138
+    },
+    {
+      "language": "fr",
+      "slug": "bapa-kami",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 330
+    },
+    {
+      "language": "fr",
+      "slug": "salam-maria",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 261
+    },
+    {
+      "language": "fr",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 621
+    },
+    {
+      "language": "fr",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 240
+    },
+    {
+      "language": "fr",
+      "slug": "doa-untuk-arwah-orang-meninggal",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 114
+    },
+    {
+      "language": "fr",
+      "slug": "doa-roh-kudus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 803
+    },
+    {
+      "language": "fr",
+      "slug": "doa-malaikat-tuhan-angelus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 676
+    },
+    {
+      "language": "fr",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_fr.html",
+      "content_length": 395
+    },
+    {
+      "language": "it",
+      "slug": "tanda-salib",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 60
+    },
+    {
+      "language": "it",
+      "slug": "kemuliaan",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 116
+    },
+    {
+      "language": "it",
+      "slug": "bapa-kami",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 617
+    },
+    {
+      "language": "it",
+      "slug": "salam-maria",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 221
+    },
+    {
+      "language": "it",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 3391
+    },
+    {
+      "language": "it",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 343
+    },
+    {
+      "language": "it",
+      "slug": "doa-untuk-arwah-orang-meninggal",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 97
+    },
+    {
+      "language": "it",
+      "slug": "doa-roh-kudus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 671
+    },
+    {
+      "language": "it",
+      "slug": "doa-malaikat-tuhan-angelus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 619
+    },
+    {
+      "language": "it",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_it.html",
+      "content_length": 369
+    },
+    {
+      "language": "es",
+      "slug": "tanda-salib",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 61
+    },
+    {
+      "language": "es",
+      "slug": "kemuliaan",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 125
+    },
+    {
+      "language": "es",
+      "slug": "bapa-kami",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 318
+    },
+    {
+      "language": "es",
+      "slug": "salam-maria",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 251
+    },
+    {
+      "language": "es",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 637
+    },
+    {
+      "language": "es",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 314
+    },
+    {
+      "language": "es",
+      "slug": "doa-untuk-arwah-orang-meninggal",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 84
+    },
+    {
+      "language": "es",
+      "slug": "doa-roh-kudus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 828
+    },
+    {
+      "language": "es",
+      "slug": "doa-malaikat-tuhan-angelus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 669
+    },
+    {
+      "language": "es",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_sp.html",
+      "content_length": 365
+    },
+    {
+      "language": "de",
+      "slug": "tanda-salib",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 66
+    },
+    {
+      "language": "de",
+      "slug": "kemuliaan",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 121
+    },
+    {
+      "language": "de",
+      "slug": "bapa-kami",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 292
+    },
+    {
+      "language": "de",
+      "slug": "salam-maria",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 249
+    },
+    {
+      "language": "de",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 679
+    },
+    {
+      "language": "de",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 363
+    },
+    {
+      "language": "de",
+      "slug": "doa-untuk-arwah-orang-meninggal",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 99
+    },
+    {
+      "language": "de",
+      "slug": "doa-roh-kudus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 879
+    },
+    {
+      "language": "de",
+      "slug": "doa-malaikat-tuhan-angelus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 694
+    },
+    {
+      "language": "de",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_ge.html",
+      "content_length": 406
+    },
+    {
+      "language": "pt",
+      "slug": "tanda-salib",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 52
+    },
+    {
+      "language": "pt",
+      "slug": "kemuliaan",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 91
+    },
+    {
+      "language": "pt",
+      "slug": "bapa-kami",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 320
+    },
+    {
+      "language": "pt",
+      "slug": "salam-maria",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 214
+    },
+    {
+      "language": "pt",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 565
+    },
+    {
+      "language": "pt",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 287
+    },
+    {
+      "language": "pt",
+      "slug": "doa-untuk-arwah-orang-meninggal",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 97
+    },
+    {
+      "language": "pt",
+      "slug": "doa-roh-kudus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 711
+    },
+    {
+      "language": "pt",
+      "slug": "doa-malaikat-tuhan-angelus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 598
+    },
+    {
+      "language": "pt",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_po.html",
+      "content_length": 458
+    },
+    {
+      "language": "la",
+      "slug": "tanda-salib",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 51
+    },
+    {
+      "language": "la",
+      "slug": "kemuliaan",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 115
+    },
+    {
+      "language": "la",
+      "slug": "bapa-kami",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 300
+    },
+    {
+      "language": "la",
+      "slug": "salam-maria",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 200
+    },
+    {
+      "language": "la",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 546
+    },
+    {
+      "language": "la",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 348
+    },
+    {
+      "language": "la",
+      "slug": "doa-untuk-arwah-orang-meninggal",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 88
+    },
+    {
+      "language": "la",
+      "slug": "doa-roh-kudus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 616
+    },
+    {
+      "language": "la",
+      "slug": "doa-malaikat-tuhan-angelus",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 550
+    },
+    {
+      "language": "la",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "https://www.vatican.va/archive/compendium_ccc/documents/archive_2005_compendium-ccc_en.html",
+      "content_length": 359
+    },
+    {
+      "language": "ko",
+      "slug": "tanda-salib",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=1",
+      "content_length": 80
+    },
+    {
+      "language": "ko",
+      "slug": "bapa-kami",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=2",
+      "content_length": 535
+    },
+    {
+      "language": "ko",
+      "slug": "salam-maria",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=3",
+      "content_length": 389
+    },
+    {
+      "language": "ko",
+      "slug": "kemuliaan",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=4",
+      "content_length": 149
+    },
+    {
+      "language": "ko",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=5",
+      "content_length": 997
+    },
+    {
+      "language": "ko",
+      "slug": "doa-mohon-ampun",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=6",
+      "content_length": 241
+    },
+    {
+      "language": "ko",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=9",
+      "content_length": 602
+    },
+    {
+      "language": "ko",
+      "slug": "doa-mohon-berkat",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=11",
+      "content_length": 443
+    },
+    {
+      "language": "ko",
+      "slug": "doa-malaikat-tuhan-angelus",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=12",
+      "content_length": 892
+    },
+    {
+      "language": "ko",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=13",
+      "content_length": 956
+    },
+    {
+      "language": "ko",
+      "slug": "doa-sebelum-makan",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=16",
+      "content_length": 185
+    },
+    {
+      "language": "ko",
+      "slug": "doa-sesudah-makan",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=17",
+      "content_length": 386
+    },
+    {
+      "language": "ko",
+      "slug": "doa-roh-kudus",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=18",
+      "content_length": 638
+    },
+    {
+      "language": "ko",
+      "slug": "doa-pagi",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=20",
+      "content_length": 1435
+    },
+    {
+      "language": "ko",
+      "slug": "doa-malam",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=21",
+      "content_length": 2194
+    },
+    {
+      "language": "ko",
+      "slug": "doa-mohon-perlindungan",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=24",
+      "content_length": 224
+    },
+    {
+      "language": "ko",
+      "slug": "litani-hati-kudus-yesus",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=31",
+      "content_length": 4031
+    },
+    {
+      "language": "ko",
+      "slug": "litani-santa-perawan-maria",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=32",
+      "content_length": 3683
+    },
+    {
+      "language": "ko",
+      "slug": "doa-untuk-keluarga",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=58",
+      "content_length": 729
+    },
+    {
+      "language": "ko",
+      "slug": "doa-untuk-orang-tua",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=60",
+      "content_length": 726
+    },
+    {
+      "language": "ko",
+      "slug": "doa-untuk-orang-sakit",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=65",
+      "content_length": 575
+    },
+    {
+      "language": "ko",
+      "slug": "doa-untuk-arwah-orang-meninggal",
+      "source": "https://cbck.or.kr/Catholic/Prayer/PrayerContentsLoad?seq=67",
+      "content_length": 8069
+    },
+    {
+      "language": "ja",
+      "slug": "bapa-kami",
+      "source": "https://www.cbcj.catholic.jp/2000/02/15/15311/",
+      "content_length": 554
+    },
+    {
+      "language": "ja",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://www.cbcj.catholic.jp/2004/02/18/7456/",
+      "content_length": 901
+    },
+    {
+      "language": "ja",
+      "slug": "salam-maria",
+      "source": "https://www.cbcj.catholic.jp/2011/06/14/5759/",
+      "content_length": 414
+    },
+    {
+      "language": "ja",
+      "slug": "litani-santa-perawan-maria",
+      "source": "https://www.cbcj.catholic.jp/wp-content/uploads/2020/10/rengan_rosary.pdf",
+      "content_length": 4424
+    },
+    {
+      "language": "ja",
+      "slug": "tanda-salib",
+      "source": "https://ubecat.jp/pray/",
+      "content_length": 86
+    },
+    {
+      "language": "ja",
+      "slug": "kemuliaan",
+      "source": "https://ubecat.jp/pray/",
+      "content_length": 127
+    },
+    {
+      "language": "ja",
+      "slug": "doa-tobat-pengakuan-dosa",
+      "source": "https://ubecat.jp/missa/",
+      "content_length": 583
+    },
+    {
+      "language": "ja",
+      "slug": "doa-mohon-ampun",
+      "source": "https://ubecat.jp/missa/",
+      "content_length": 295
+    },
+    {
+      "language": "ja",
+      "slug": "doa-mohon-berkat",
+      "source": "https://ubecat.jp/missa/",
+      "content_length": 208
+    },
+    {
+      "language": "ja",
+      "slug": "doa-roh-kudus",
+      "source": "https://www.cbcj.catholic.jp/catholic/holyyear/synod2023/stage1/",
+      "content_length": 1079
+    },
+    {
+      "language": "ja",
+      "slug": "doa-untuk-orang-sakit",
+      "source": "https://osaka-takamatsu.liturgy.jp/index.php/download_file/view_inline/3ea533d0-632a-4a93-86cd-cd74dea06a7c",
+      "content_length": 531
+    },
+    {
+      "language": "ja",
+      "slug": "doa-mohon-perlindungan",
+      "source": "https://osaka-takamatsu.liturgy.jp/index.php/download_file/view_inline/3ea533d0-632a-4a93-86cd-cd74dea06a7c",
+      "content_length": 171
+    },
+    {
+      "language": "ja",
+      "slug": "salam-regina-ratu-surga-bersukacitalah",
+      "source": "http://catholic-kasugai.jimdofree.com/%E7%A5%88%E3%82%8A/",
+      "content_length": 517
+    },
+    {
+      "language": "tl",
+      "slug": "tanda-salib",
+      "source": "https://cbcponline.net/wp-content/uploads/2021/10/Banal-na-Misa-at-Pagbubukas-ng-Sinodo-sa-Lokal-na-Simbahan.pdf",
+      "content_length": 56
+    },
+    {
+      "language": "tl",
+      "slug": "bapa-kami",
+      "source": "https://cbcponline.net/wp-content/uploads/2021/10/Banal-na-Misa-at-Pagbubukas-ng-Sinodo-sa-Lokal-na-Simbahan.pdf",
+      "content_length": 355
+    },
+    {
+      "language": "tl",
+      "slug": "aku-percaya-syahadat",
+      "source": "https://cbcponline.net/wp-content/uploads/2021/10/Banal-na-Misa-at-Pagbubukas-ng-Sinodo-sa-Lokal-na-Simbahan.pdf",
+      "content_length": 785
+    },
+    {
+      "language": "tl",
+      "slug": "kemuliaan",
+      "source": "https://cbcponline.net/wp-content/uploads/2021/10/Banal-na-Misa-at-Pagbubukas-ng-Sinodo-sa-Lokal-na-Simbahan.pdf",
+      "content_length": 768
+    },
+    {
+      "language": "tl",
+      "slug": "doa-roh-kudus",
+      "source": "https://cbcponline.net/wp-content/uploads/2021/10/Banal-na-Misa-at-Pagbubukas-ng-Sinodo-sa-Lokal-na-Simbahan.pdf",
+      "content_length": 705
+    },
+    {
+      "language": "tl",
+      "slug": "doa-mohon-berkat",
+      "source": "https://cbcponline.net/wp-content/uploads/2021/10/Banal-na-Misa-at-Pagbubukas-ng-Sinodo-sa-Lokal-na-Simbahan.pdf",
+      "content_length": 84
+    }
+  ],
+  "failures": []
+}
